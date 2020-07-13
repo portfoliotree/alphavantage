@@ -162,7 +162,7 @@ func ParseQuotesResponse(in []byte) ([]Quote, error) {
 		quotes = append(quotes, quote)
 	}
 
-	sort.Sort(QuotesInDecreasingDateOrder(quotes))
+	sort.Sort(QuotesInIncreasingDateOrder(quotes))
 
 	return quotes, nil
 }

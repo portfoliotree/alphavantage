@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"testing"
 
+	Ω "github.com/onsi/gomega"
+
 	"github.com/crhntr/alphavantage"
 	"github.com/crhntr/alphavantage/fakes"
 )
@@ -41,39 +43,30 @@ func TestService_Do(t *testing.T) {
 
 func TestService_QueryStocks(t *testing.T) {
 	t.Run("when quote keys are daily", func(t *testing.T) {
+		g := Ω.NewWithT(t)
 		buf, err := ioutil.ReadFile("test_data/query_time_series_weekly_ibm.json")
-		if err != nil {
-			t.Fatal(err)
-		}
+		g.Expect(err).NotTo(Ω.HaveOccurred())
 		quotes, err := alphavantage.ParseQuotesResponse(buf)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if len(quotes) != 1043 {
-			t.Fail()
-		}
+		g.Expect(err).NotTo(Ω.HaveOccurred())
 
-		if v := quotes[len(quotes)-1].Volume; v != 22560100 {
-			t.Errorf("expected 250 got %f", v)
-		}
+		g.Expect(quotes).To(Ω.HaveLen(1043))
 
-		if v := quotes[0].Open; v != 104.4400 {
-			t.Errorf("expected 104.4400 got %f", v)
-		}
+		lastQuote := quotes[len(quotes)-1]
+
+		g.Expect(lastQuote.Time.Hour()).To(Ω.Equal(0))
+		g.Expect(lastQuote.Volume).To(Ω.Equal(22560100.0))
+
+		firstQuote := quotes[0]
+
+		g.Expect(firstQuote.Open).To(Ω.Equal(104.4400))
 	})
 
 	t.Run("when quote keys are intraday", func(t *testing.T) {
+		g := Ω.NewWithT(t)
 		buf, err := ioutil.ReadFile("test_data/query_time_series_intraday_ibm.json")
-		if err != nil {
-			t.Fatal(err)
-		}
+		g.Expect(err).NotTo(Ω.HaveOccurred())
 		quotes, err := alphavantage.ParseQuotesResponse(buf)
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		if v := quotes[len(quotes)-1].Time.Hour(); v != 18 {
-			t.Errorf("expected 18 got %d", v)
-		}
+		g.Expect(err).NotTo(Ω.HaveOccurred())
+		g.Expect(quotes[len(quotes)-1].Time.Hour()).To(Ω.Equal(18))
 	})
 }
