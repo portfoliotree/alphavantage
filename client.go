@@ -1,28 +1,24 @@
 package alphavantage
 
 import (
-	"encoding/json"
+	"encoding/csv"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
-	"sort"
 	"strconv"
-	"strings"
 	"time"
 )
 
-const (
-	metaDataKey = "Meta Data"
+var timezone *time.Location
 
-	timeSeriesDaily          = "Time Series (Daily)"
-	timeSeriesWeekly         = "Weekly Time Series"
-	timeSeriesWeeklyAdjusted = "Weekly Adjusted Time Series"
-	timeSeriesIntraday1min   = "Time Series (1min)"
-	timeSeriesIntraday5min   = "Time Series (5min)"
-	timeSeriesIntraday15min  = "Time Series (15min)"
-	timeSeriesIntraday30min  = "Time Series (30min)"
-	timeSeriesIntraday60min  = "Time Series (60min)"
-)
+func init() {
+	var err error
+	timezone, err = time.LoadLocation("US/Eastern")
+	if err != nil {
+		panic(err)
+	}
+}
 
 type Doer interface {
 	Do(*http.Request) (*http.Response, error)
@@ -38,16 +34,14 @@ func (service Service) Do(req *http.Request) (*http.Response, error) {
 	if service.Client == nil {
 		service.Client = http.DefaultClient
 	}
-
 	u, _ := url.Parse("https://www.alphavantage.co")
-	req.URL.Host = u.Host
-	req.URL.Scheme = u.Scheme
-
-	q := req.URL.Query()
-	if q.Get("apikey") == "" {
-		q.Set("apikey", service.APIKey)
+	u.Path = req.URL.Path
+	if req.URL.Query().Get("apiKey") == "" {
+		req.URL.Query().Set("apiKey", service.APIKey)
 	}
-	req.URL.RawQuery = q.Encode()
+	req.URL.Query().Set("datatype", "csv")
+	u.RawQuery = req.URL.Query().Encode()
+	req.URL = u
 	return service.Client.Do(req)
 }
 
@@ -56,141 +50,80 @@ type Quote struct {
 	Open, High, Low, Close, Volume float64
 }
 
-func ParseQuotesResponse(in []byte) ([]Quote, error) {
-	body := make(map[string]json.RawMessage)
+var expectedColumns = []string{"timestamp", "open", "high", "low", "close", "volume"}
 
-	if err := json.Unmarshal(in, &body); err != nil {
+// ParseStockQuery handles parsing the following "Stock Time Series" functions
+// - TIME_SERIES_INTRADAY
+// - TIME_SERIES_DAILY
+// - TIME_SERIES_DAILY_ADJUSTED
+// - TIME_SERIES_MONTHLY
+// - TIME_SERIES_MONTHLY_ADJUSTED
+func ParseStockQuery(r io.Reader) ([]Quote, error) {
+	reader := csv.NewReader(r)
+	reader.TrimLeadingSpace = true
+	reader.FieldsPerRecord = len(expectedColumns)
+
+	rows, err := reader.ReadAll()
+	if err != nil {
 		return nil, err
 	}
 
-	var rawMeta map[string]string
-
-	if err := json.Unmarshal(body[metaDataKey], &rawMeta); err != nil {
-		return nil, fmt.Errorf("could not decode meta: %w", err)
-	}
-
-	var (
-		timeZone *time.Location
-	)
-
-	for k, val := range rawMeta {
-		switch {
-		// case strings.HasSuffix(k, "Last Refreshed"):
-
-		case strings.HasSuffix(k, "Time Zone"):
-			timeZone, _ = time.LoadLocation(val)
+	for i := range expectedColumns {
+		if rows[0][i] != expectedColumns[i] {
+			return nil, fmt.Errorf("header %d %s not match expected header %s", i, rows[0][i], expectedColumns[i])
 		}
 	}
 
-	if timeZone == nil {
-		return nil, fmt.Errorf("could not parse timezone from meta")
-	}
+	rows = rows[1:]
 
-	delete(body, metaDataKey)
-
-	var (
-		rawQuotes map[string]json.RawMessage
-		format    = "2006-01-02"
-	)
-
-	for key := range body {
-		switch key {
-		default:
-			return nil, fmt.Errorf("unknown key %q", key)
-
-		case timeSeriesDaily,
-			timeSeriesWeekly,
-			timeSeriesWeeklyAdjusted:
-
-		case timeSeriesIntraday1min,
-			timeSeriesIntraday5min,
-			timeSeriesIntraday15min,
-			timeSeriesIntraday30min,
-			timeSeriesIntraday60min:
-			format += " 15:04:05"
-		}
-
-		if err := json.Unmarshal(body[key], &rawQuotes); err != nil {
-			return nil, fmt.Errorf("could not decode quote: %w", err)
-		}
-
-		break
-	}
-
-	var quotes []Quote
-
-	for rawTime, rawQuote := range rawQuotes {
-		tm, err := time.ParseInLocation(format, rawTime, timeZone)
+	timestampFormat := "2006-01-02"
+	if len(rows) > 0 {
+		_, err := time.Parse(timestampFormat, rows[0][0])
 		if err != nil {
-			continue
-		}
-
-		quote := Quote{
-			Time: tm,
-		}
-
-		var valuesMap map[string]string
-
-		if err := json.Unmarshal(rawQuote, &valuesMap); err != nil {
-			return nil, err
-		}
-
-		for k, val := range valuesMap {
-			var n float64
-
-			if val != "" {
-				n, err = strconv.ParseFloat(val, 64)
-				if err != nil {
-					return nil, err
-				}
+			intradayFormat := "2006-01-02 15:04:05"
+			_, err := time.Parse(intradayFormat, rows[0][0])
+			if err != nil {
+				return nil, fmt.Errorf("could not parse timestamp %q: %s", rows[0][0], err)
 			}
-
-			switch {
-			case strings.HasSuffix(k, "open"):
-				quote.Open = n
-			case strings.HasSuffix(k, "high"):
-				quote.High = n
-			case strings.HasSuffix(k, "low"):
-				quote.Low = n
-			case strings.HasSuffix(k, "close"):
-				quote.Close = n
-			case strings.HasSuffix(k, "volume"):
-				quote.Volume = n
-			}
+			timestampFormat = intradayFormat
 		}
-
-		quotes = append(quotes, quote)
 	}
 
-	sort.Sort(QuotesInIncreasingDateOrder(quotes))
+	quotes := make([]Quote, len(rows))
+
+	for i, row := range rows {
+		var err error
+
+		quotes[i].Time, err = time.ParseInLocation(timestampFormat, row[0], timezone)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse row %d: %s", i, err)
+		}
+
+		quotes[i].Open, err = strconv.ParseFloat(row[1], 64)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse row %d: %s", i, err)
+		}
+
+		quotes[i].High, err = strconv.ParseFloat(row[2], 64)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse row %d: %s", i, err)
+		}
+
+		quotes[i].Low, err = strconv.ParseFloat(row[3], 64)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse row %d: %s", i, err)
+		}
+
+		quotes[i].Close, err = strconv.ParseFloat(row[4], 64)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse row %d: %s", i, err)
+		}
+
+		quotes[i].Volume, err = strconv.ParseFloat(row[5], 64)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse row %d: %s", i, err)
+		}
+	}
 
 	return quotes, nil
-}
-
-type QuotesInIncreasingDateOrder []Quote
-
-func (q QuotesInIncreasingDateOrder) Len() int {
-	return len(q)
-}
-
-func (q QuotesInIncreasingDateOrder) Less(i, j int) bool {
-	return q[i].Time.Before(q[j].Time)
-}
-
-func (q QuotesInIncreasingDateOrder) Swap(i, j int) {
-	q[i], q[j] = q[j], q[i]
-}
-
-type QuotesInDecreasingDateOrder []Quote
-
-func (q QuotesInDecreasingDateOrder) Len() int {
-	return len(q)
-}
-
-func (q QuotesInDecreasingDateOrder) Less(i, j int) bool {
-	return q[j].Time.Before(q[i].Time)
-}
-
-func (q QuotesInDecreasingDateOrder) Swap(i, j int) {
-	q[i], q[j] = q[j], q[i]
 }

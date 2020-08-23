@@ -1,7 +1,7 @@
 package alphavantage_test
 
 import (
-	"io/ioutil"
+	"bytes"
 	"net/http"
 	"testing"
 
@@ -12,6 +12,8 @@ import (
 )
 
 func TestService_Do(t *testing.T) {
+	please := Ω.NewGomegaWithT(t)
+
 	fakeClient := &fakes.Doer{}
 	client := alphavantage.Service{
 		Client: fakeClient,
@@ -20,53 +22,44 @@ func TestService_Do(t *testing.T) {
 
 	_, err := client.Do(req)
 
-	if err != nil {
-		t.Error("it should not error")
-		t.Logf("got: %s", err)
-	}
-	if fakeClient.CallCount != 1 {
-		t.Error("it calls the underlying client")
-	}
-	if fakeClient.Recieves.Req.URL.Scheme != "https" {
-		t.Error("it calls the correct scheme")
-		t.Logf("got: %q", fakeClient.Recieves.Req.URL.Scheme)
-	}
-	if fakeClient.Recieves.Req.URL.Host != "www.alphavantage.co" {
-		t.Error("it calls the correct host")
-		t.Logf("got: %q", fakeClient.Recieves.Req.URL.Host)
-	}
-	if fakeClient.Recieves.Req.URL.Path != "/query" {
-		t.Error("it calls the endpoint")
-		t.Logf("got: %q", fakeClient.Recieves.Req.URL.Path)
-	}
+	please.Expect(err).NotTo(Ω.HaveOccurred())
+	please.Expect(fakeClient.CallCount).To(Ω.Equal(1))
+	please.Expect(fakeClient.Recieves.Req.URL.Scheme).To(Ω.Equal("https"))
+	please.Expect(fakeClient.Recieves.Req.URL.Host).To(Ω.Equal("www.alphavantage.co"))
+	please.Expect(fakeClient.Recieves.Req.URL.Path).To(Ω.Equal("/query"))
 }
 
-func TestService_QueryStocks(t *testing.T) {
-	t.Run("when quote keys are daily", func(t *testing.T) {
-		g := Ω.NewWithT(t)
-		buf, err := ioutil.ReadFile("test_data/query_time_series_weekly_ibm.json")
-		g.Expect(err).NotTo(Ω.HaveOccurred())
-		quotes, err := alphavantage.ParseQuotesResponse(buf)
-		g.Expect(err).NotTo(Ω.HaveOccurred())
+func TestService_ParseQueryResponse(t *testing.T) {
+	t.Run("valid data", func(t *testing.T) {
+		please := Ω.NewGomegaWithT(t)
+		const responseText = `timestamp,open,high,low,close,volume
+2020-08-21,13.2600,13.3200,13.1500,13.2500,751279
+2020-08-20,13.4700,13.4750,13.2200,13.3800,854559
+2020-08-19,13.5700,13.7100,13.4700,13.5000,521089
+2020-08-18,13.8100,13.8700,13.5400,13.5700,571445
+`
 
-		g.Expect(quotes).To(Ω.HaveLen(1043))
-
-		lastQuote := quotes[len(quotes)-1]
-
-		g.Expect(lastQuote.Time.Hour()).To(Ω.Equal(0))
-		g.Expect(lastQuote.Volume).To(Ω.Equal(22560100.0))
-
-		firstQuote := quotes[0]
-
-		g.Expect(firstQuote.Open).To(Ω.Equal(104.4400))
+		_, err := alphavantage.ParseStockQuery(bytes.NewReader([]byte(responseText)))
+		please.Expect(err).NotTo(Ω.HaveOccurred())
 	})
 
-	t.Run("when quote keys are intraday", func(t *testing.T) {
-		g := Ω.NewWithT(t)
-		buf, err := ioutil.ReadFile("test_data/query_time_series_intraday_ibm.json")
-		g.Expect(err).NotTo(Ω.HaveOccurred())
-		quotes, err := alphavantage.ParseQuotesResponse(buf)
-		g.Expect(err).NotTo(Ω.HaveOccurred())
-		g.Expect(quotes[len(quotes)-1].Time.Hour()).To(Ω.Equal(18))
+	t.Run("bad headers", func(t *testing.T) {
+		please := Ω.NewGomegaWithT(t)
+		const responseText = `time_stamp,open,SO_FUCKING_HIGH,low,close,volume
+2020-08-21,13.2600,13.3200,13.1500,13.2500,751279`
+
+		_, err := alphavantage.ParseStockQuery(bytes.NewReader([]byte(responseText)))
+		please.Expect(err).To(Ω.HaveOccurred())
+	})
+
+	t.Run("intra-day", func(t *testing.T) {
+		please := Ω.NewGomegaWithT(t)
+		const responseText = `timestamp,open,high,low,close,volume
+2020-08-21 19:40:00,123.1700,123.1700,123.1700,123.1700,825
+2020-08-21 19:20:00,123.2000,123.2000,123.2000,123.2000,200
+2020-08-21 18:50:00,123.1700,123.1700,123.1700,123.1700,115
+2020-08-21 17:30:00,123.0200,123.0200,123.0200,123.0200,200`
+		_, err := alphavantage.ParseStockQuery(bytes.NewReader([]byte(responseText)))
+		please.Expect(err).NotTo(Ω.HaveOccurred())
 	})
 }
