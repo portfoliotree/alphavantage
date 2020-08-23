@@ -101,27 +101,27 @@ func ParseStockQuery(r io.Reader) ([]Quote, error) {
 
 		quotes[i].Open, err = strconv.ParseFloat(row[1], 64)
 		if err != nil {
-			return nil, fmt.Errorf("failed to parse row %d: %s", i, err)
+			return nil, fmt.Errorf("failed to Open for row %d: %s", i, err)
 		}
 
 		quotes[i].High, err = strconv.ParseFloat(row[2], 64)
 		if err != nil {
-			return nil, fmt.Errorf("failed to parse row %d: %s", i, err)
+			return nil, fmt.Errorf("failed to High for row %d: %s", i, err)
 		}
 
 		quotes[i].Low, err = strconv.ParseFloat(row[3], 64)
 		if err != nil {
-			return nil, fmt.Errorf("failed to parse row %d: %s", i, err)
+			return nil, fmt.Errorf("failed to Low for row %d: %s", i, err)
 		}
 
 		quotes[i].Close, err = strconv.ParseFloat(row[4], 64)
 		if err != nil {
-			return nil, fmt.Errorf("failed to parse row %d: %s", i, err)
+			return nil, fmt.Errorf("failed to Close for row %d: %s", i, err)
 		}
 
 		quotes[i].Volume, err = strconv.ParseFloat(row[5], 64)
 		if err != nil {
-			return nil, fmt.Errorf("failed to parse row %d: %s", i, err)
+			return nil, fmt.Errorf("failed to Volume for row %d: %s", i, err)
 		}
 	}
 
