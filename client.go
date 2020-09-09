@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -35,19 +36,122 @@ func (service Service) Do(req *http.Request) (*http.Response, error) {
 		service.Client = http.DefaultClient
 	}
 	u, _ := url.Parse("https://www.alphavantage.co")
-	u.Path = req.URL.Path
-	if req.URL.Query().Get("apiKey") == "" {
-		req.URL.Query().Set("apiKey", service.APIKey)
-	}
+	req.URL.Host = u.Host
+	req.URL.Scheme = u.Scheme
 	req.URL.Query().Set("datatype", "csv")
-	u.RawQuery = req.URL.Query().Encode()
-	req.URL = u
+	req.URL.Query().Set("apikey", service.APIKey)
+	req.URL.RawQuery = req.URL.Query().Encode()
 	return service.Client.Do(req)
 }
 
 type Quote struct {
 	Time                           time.Time
 	Open, High, Low, Close, Volume float64
+}
+
+func (q *Quote) SetTime(str string) error {
+	var err error
+	q.Time, err = time.ParseInLocation("2006-01-02", str, timezone)
+	if err != nil {
+		return fmt.Errorf("failed to set Time: %s", err)
+	}
+	return nil
+}
+
+func (q *Quote) SetTimeIntraDay(str string) error {
+	var err error
+	q.Time, err = time.ParseInLocation("2006-01-02 15:04:05", str, timezone)
+	if err != nil {
+		return fmt.Errorf("failed to set Time: %s", err)
+	}
+	return nil
+}
+
+func (q *Quote) SetOpen(str string) error {
+	var err error
+	q.Open, err = strconv.ParseFloat(str, 64)
+	if err != nil {
+		return fmt.Errorf("failed to set Open: %s", err)
+	}
+	return nil
+}
+func (q *Quote) SetHigh(str string) error {
+	var err error
+	q.High, err = strconv.ParseFloat(str, 64)
+	if err != nil {
+		return fmt.Errorf("failed to set High: %s", err)
+	}
+	return nil
+}
+
+func (q *Quote) SetLow(str string) error {
+	var err error
+	q.Low, err = strconv.ParseFloat(str, 64)
+	if err != nil {
+		return fmt.Errorf("failed to set Low: %s", err)
+	}
+	return nil
+}
+
+func (q *Quote) SetClose(str string) error {
+	var err error
+	q.Close, err = strconv.ParseFloat(str, 64)
+	if err != nil {
+		return fmt.Errorf("failed to set Close: %s", err)
+	}
+	return nil
+}
+
+func (q *Quote) SetVolume(str string) error {
+	var err error
+	q.Volume, err = strconv.ParseFloat(str, 64)
+	if err != nil {
+		return fmt.Errorf("failed to set Volume: %s", err)
+	}
+	return nil
+}
+
+func (q *Quote) ParseRow(header, row []string) error {
+	if len(header) != len(row) {
+		return fmt.Errorf("row has %d fields but %d were expected", len(row), len(header))
+	}
+
+	for i, h := range header {
+		switch h {
+		case "timestamp":
+			if strings.Contains(row[i], ":") {
+				if err := q.SetTimeIntraDay(row[i]); err != nil {
+					return nil
+				}
+			} else {
+				if err := q.SetTime(row[i]); err != nil {
+					return nil
+				}
+			}
+		case "open":
+			if err := q.SetOpen(row[i]); err != nil {
+				return nil
+			}
+		case "high":
+			if err := q.SetHigh(row[i]); err != nil {
+				return nil
+			}
+		case "low":
+			if err := q.SetLow(row[i]); err != nil {
+				return nil
+			}
+		case "close":
+			if err := q.SetClose(row[i]); err != nil {
+				return nil
+			}
+		case "volume":
+			if err := q.SetVolume(row[i]); err != nil {
+				return nil
+			}
+		}
+	}
+
+	return nil
 }
 
 var expectedColumns = []string{"timestamp", "open", "high", "low", "close", "volume"}
@@ -61,67 +165,23 @@ var expectedColumns = []string{"timestamp", "open", "high", "low", "close", "vol
 func ParseStockQuery(r io.Reader) ([]Quote, error) {
 	reader := csv.NewReader(r)
 	reader.TrimLeadingSpace = true
-	reader.FieldsPerRecord = len(expectedColumns)
+	header, err := reader.Read()
+	if err != nil {
+		return nil, err
+	}
+
+	reader.FieldsPerRecord = len(header)
 
 	rows, err := reader.ReadAll()
 	if err != nil {
 		return nil, err
 	}
 
-	for i := range expectedColumns {
-		if rows[0][i] != expectedColumns[i] {
-			return nil, fmt.Errorf("header %d %s not match expected header %s", i, rows[0][i], expectedColumns[i])
-		}
-	}
-
-	rows = rows[1:]
-
-	timestampFormat := "2006-01-02"
-	if len(rows) > 0 {
-		_, err := time.Parse(timestampFormat, rows[0][0])
-		if err != nil {
-			intradayFormat := "2006-01-02 15:04:05"
-			_, err := time.Parse(intradayFormat, rows[0][0])
-			if err != nil {
-				return nil, fmt.Errorf("could not parse timestamp %q: %s", rows[0][0], err)
-			}
-			timestampFormat = intradayFormat
-		}
-	}
-
 	quotes := make([]Quote, len(rows))
 
 	for i, row := range rows {
-		var err error
-
-		quotes[i].Time, err = time.ParseInLocation(timestampFormat, row[0], timezone)
-		if err != nil {
-			return nil, fmt.Errorf("failed to parse row %d: %s", i, err)
-		}
-
-		quotes[i].Open, err = strconv.ParseFloat(row[1], 64)
-		if err != nil {
-			return nil, fmt.Errorf("failed to Open for row %d: %s", i, err)
-		}
-
-		quotes[i].High, err = strconv.ParseFloat(row[2], 64)
-		if err != nil {
-			return nil, fmt.Errorf("failed to High for row %d: %s", i, err)
-		}
-
-		quotes[i].Low, err = strconv.ParseFloat(row[3], 64)
-		if err != nil {
-			return nil, fmt.Errorf("failed to Low for row %d: %s", i, err)
-		}
-
-		quotes[i].Close, err = strconv.ParseFloat(row[4], 64)
-		if err != nil {
-			return nil, fmt.Errorf("failed to Close for row %d: %s", i, err)
-		}
-
-		quotes[i].Volume, err = strconv.ParseFloat(row[5], 64)
-		if err != nil {
-			return nil, fmt.Errorf("failed to Volume for row %d: %s", i, err)
+		if err := quotes[i].ParseRow(header, row); err != nil {
+			return nil, err
 		}
 	}
 
