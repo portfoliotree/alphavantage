@@ -2,36 +2,12 @@ package alphavantage_test
 
 import (
 	"bytes"
-	"net/http"
 	"testing"
 
 	Ω "github.com/onsi/gomega"
 
 	"github.com/crhntr/alphavantage"
-	"github.com/crhntr/alphavantage/fakes"
 )
-
-func TestService_Do(t *testing.T) {
-	t.SkipNow()
-
-	please := Ω.NewGomegaWithT(t)
-
-	fakeClient := &fakes.Doer{}
-	client := alphavantage.Service{
-		Client: fakeClient,
-		APIKey: "demo",
-	}
-	req, _ := http.NewRequest(http.MethodGet, "/query?foo=bar", nil)
-
-	_, err := client.Do(req)
-
-	please.Expect(err).NotTo(Ω.HaveOccurred())
-	please.Expect(fakeClient.CallCount).To(Ω.Equal(1))
-	please.Expect(fakeClient.Recieves.Req.URL.Scheme).To(Ω.Equal("https"))
-	please.Expect(fakeClient.Recieves.Req.URL.Host).To(Ω.Equal("www.alphavantage.co"))
-	please.Expect(fakeClient.Recieves.Req.URL.Path).To(Ω.Equal("/query"))
-	please.Expect(fakeClient.Recieves.Req.URL.Query().Get("apikey")).To(Ω.Equal("demo"))
-}
 
 func TestService_ParseQueryResponse(t *testing.T) {
 	t.Run("valid data", func(t *testing.T) {

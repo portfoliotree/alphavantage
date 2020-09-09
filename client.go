@@ -4,8 +4,6 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
-	"net/http"
-	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -19,29 +17,6 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-}
-
-type Doer interface {
-	Do(*http.Request) (*http.Response, error)
-}
-
-type Service struct {
-	Client Doer
-
-	APIKey string
-}
-
-func (service Service) Do(req *http.Request) (*http.Response, error) {
-	if service.Client == nil {
-		service.Client = http.DefaultClient
-	}
-	u, _ := url.Parse("https://www.alphavantage.co")
-	req.URL.Host = u.Host
-	req.URL.Scheme = u.Scheme
-	req.URL.Query().Set("datatype", "csv")
-	req.URL.Query().Set("apikey", service.APIKey)
-	req.URL.RawQuery = req.URL.Query().Encode()
-	return service.Client.Do(req)
 }
 
 type Quote struct {
@@ -75,6 +50,7 @@ func (q *Quote) SetOpen(str string) error {
 	}
 	return nil
 }
+
 func (q *Quote) SetHigh(str string) error {
 	var err error
 	q.High, err = strconv.ParseFloat(str, 64)
@@ -153,8 +129,6 @@ func (q *Quote) ParseRow(header, row []string) error {
 
 	return nil
 }
-
-var expectedColumns = []string{"timestamp", "open", "high", "low", "close", "volume"}
 
 // ParseStockQuery handles parsing the following "Stock Time Series" functions
 // - TIME_SERIES_INTRADAY
