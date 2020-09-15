@@ -20,8 +20,9 @@ func init() {
 }
 
 type Quote struct {
-	Time                                             time.Time
-	Open, High, Low, Close, Volume, SplitCoefficient float64
+	Time time.Time
+	Open, High, Low, Close, Volume,
+	DividendAmount, SplitCoefficient float64
 }
 
 func (q *Quote) SetTime(str string) error {
@@ -96,6 +97,15 @@ func (q *Quote) SetSplitCoefficient(str string) error {
 	return nil
 }
 
+func (q *Quote) SetDividendAmount(str string) error {
+	var err error
+	q.DividendAmount, err = strconv.ParseFloat(str, 64)
+	if err != nil {
+		return fmt.Errorf("failed to set SplitCoefficient: %s", err)
+	}
+	return nil
+}
+
 func (q *Quote) ParseRow(header, row []string) error {
 	if len(header) != len(row) {
 		return fmt.Errorf("row has %d fields but %d were expected", len(row), len(header))
@@ -106,36 +116,40 @@ func (q *Quote) ParseRow(header, row []string) error {
 		case "timestamp":
 			if strings.Contains(row[i], ":") {
 				if err := q.SetTimeIntraDay(row[i]); err != nil {
-					return nil
+					return err
 				}
 			} else {
 				if err := q.SetTime(row[i]); err != nil {
-					return nil
+					return err
 				}
 			}
 		case "open":
 			if err := q.SetOpen(row[i]); err != nil {
-				return nil
+				return err
 			}
 		case "high":
 			if err := q.SetHigh(row[i]); err != nil {
-				return nil
+				return err
 			}
 		case "low":
 			if err := q.SetLow(row[i]); err != nil {
-				return nil
+				return err
 			}
 		case "close":
 			if err := q.SetClose(row[i]); err != nil {
-				return nil
+				return err
 			}
 		case "split_coefficient":
 			if err := q.SetSplitCoefficient(row[i]); err != nil {
-				return nil
+				return err
+			}
+		case "dividend_amount":
+			if err := q.SetDividendAmount(row[i]); err != nil {
+				return err
 			}
 		case "volume":
 			if err := q.SetVolume(row[i]); err != nil {
-				return nil
+				return err
 			}
 		}
 	}
