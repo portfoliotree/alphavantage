@@ -20,8 +20,8 @@ func init() {
 }
 
 type Quote struct {
-	Time                           time.Time
-	Open, High, Low, Close, Volume float64
+	Time                                             time.Time
+	Open, High, Low, Close, Volume, SplitCoefficient float64
 }
 
 func (q *Quote) SetTime(str string) error {
@@ -87,6 +87,15 @@ func (q *Quote) SetVolume(str string) error {
 	return nil
 }
 
+func (q *Quote) SetSplitCoefficient(str string) error {
+	var err error
+	q.SplitCoefficient, err = strconv.ParseFloat(str, 64)
+	if err != nil {
+		return fmt.Errorf("failed to set SplitCoefficient: %s", err)
+	}
+	return nil
+}
+
 func (q *Quote) ParseRow(header, row []string) error {
 	if len(header) != len(row) {
 		return fmt.Errorf("row has %d fields but %d were expected", len(row), len(header))
@@ -118,6 +127,10 @@ func (q *Quote) ParseRow(header, row []string) error {
 			}
 		case "close":
 			if err := q.SetClose(row[i]); err != nil {
+				return nil
+			}
+		case "split_coefficient":
+			if err := q.SetSplitCoefficient(row[i]); err != nil {
 				return nil
 			}
 		case "volume":

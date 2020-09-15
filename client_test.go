@@ -44,4 +44,17 @@ func TestService_ParseQueryResponse(t *testing.T) {
 		_, err := alphavantage.ParseStockQuery(bytes.NewReader([]byte(responseText)))
 		please.Expect(err).NotTo(Ω.HaveOccurred())
 	})
+
+	t.Run("split_coefficient", func(t *testing.T) {
+		please := Ω.NewGomegaWithT(t)
+		const responseText = `timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient
+2020-08-31,444.6100,500.1400,440.1100,498.3200,498.3200,115847020,0.0000,5.0000
+`
+
+		quotes, err := alphavantage.ParseStockQuery(bytes.NewReader([]byte(responseText)))
+		please.Expect(err).NotTo(Ω.HaveOccurred())
+		please.Expect(quotes).To(Ω.HaveLen(1))
+		please.Expect(quotes[0].SplitCoefficient).To(Ω.Equal(5.0))
+
+	})
 }
