@@ -23,13 +23,22 @@ func TestQuotes(t *testing.T) {
 
 	var avReq *http.Request
 
-	quotes, err := alphavantage.Quotes(ctx, doerFunc(func(request *http.Request) (*http.Response, error) {
-		avReq = request
-		return &http.Response{
-			Body:       io.NopCloser(bytes.NewReader(monthlyIBM)),
-			StatusCode: http.StatusOK,
-		}, nil
-	}), "demo", "IBM", alphavantage.TimeSeriesMonthly)
+	waitCallCount := 0
+
+	quotes, err := (&alphavantage.Client{
+		Client: doerFunc(func(request *http.Request) (*http.Response, error) {
+			avReq = request
+			return &http.Response{
+				Body:       io.NopCloser(bytes.NewReader(monthlyIBM)),
+				StatusCode: http.StatusOK,
+			}, nil
+		}),
+		APIKey: "demo",
+		Limiter: waitFunc(func(ctx context.Context) error {
+			waitCallCount++
+			return nil
+		}),
+	}).Quotes(ctx, "IBM", alphavantage.TimeSeriesMonthly)
 
 	please.Expect(err).NotTo(Ω.HaveOccurred())
 	please.Expect(quotes).To(Ω.HaveLen(260))
@@ -40,6 +49,7 @@ func TestQuotes(t *testing.T) {
 	please.Expect(avReq.URL.Query().Get("symbol")).To(Ω.Equal("IBM"))
 	please.Expect(avReq.URL.Query().Get("apikey")).To(Ω.Equal("demo"))
 	please.Expect(avReq.URL.Query().Get("datatype")).To(Ω.Equal("csv"))
+	please.Expect(waitCallCount).To(Ω.Equal(1))
 }
 
 func TestSearch(t *testing.T) {
@@ -47,15 +57,25 @@ func TestSearch(t *testing.T) {
 
 	ctx := context.TODO()
 
-	var avReq *http.Request
+	var (
+		avReq *http.Request
+		waitCallCount = 0
+	)
 
-	quotes, err := alphavantage.Search(ctx, doerFunc(func(request *http.Request) (*http.Response, error) {
-		avReq = request
-		return &http.Response{
-			Body:       io.NopCloser(bytes.NewReader(searchResults)),
-			StatusCode: http.StatusOK,
-		}, nil
-	}), "demo", "GDX")
+	quotes, err := (&alphavantage.Client{
+		Client: doerFunc(func(request *http.Request) (*http.Response, error) {
+			avReq = request
+			return &http.Response{
+				Body:       io.NopCloser(bytes.NewReader(searchResults)),
+				StatusCode: http.StatusOK,
+			}, nil
+		}),
+		APIKey: "demo",
+		Limiter: waitFunc(func(ctx context.Context) error {
+			waitCallCount++
+			return nil
+		}),
+	}).Search(ctx, "GDX")
 
 	please.Expect(err).NotTo(Ω.HaveOccurred())
 	please.Expect(quotes).To(Ω.HaveLen(9))
@@ -66,8 +86,15 @@ func TestSearch(t *testing.T) {
 	please.Expect(avReq.URL.Query().Get("keywords")).To(Ω.Equal("GDX"))
 	please.Expect(avReq.URL.Query().Get("apikey")).To(Ω.Equal("demo"))
 	please.Expect(avReq.URL.Query().Get("datatype")).To(Ω.Equal("csv"))
+	please.Expect(waitCallCount).To(Ω.Equal(1))
 }
 
 type doerFunc func(*http.Request) (*http.Response, error)
 
 func (fn doerFunc) Do(req *http.Request) (*http.Response, error) { return fn(req) }
+
+type waitFunc func(ctx context.Context) error
+
+func (wf waitFunc) Wait(ctx context.Context) error {
+	return wf(ctx)
+}
