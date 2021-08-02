@@ -18,7 +18,7 @@ func TestParseSearchQuery(t *testing.T) {
 	results, err := alphavantage.ParseSearchQuery(bytes.NewReader(searchResults))
 	please.Expect(err).NotTo(Ω.HaveOccurred())
 	please.Expect(results).To(Ω.HaveLen(9))
-	please.Expect(results[0]).To(Ω.Equal([]alphavantage.SearchResult{
+	please.Expect(results[:2]).To(Ω.Equal([]alphavantage.SearchResult{
 		{
 			Symbol:      "GDX",
 			Name:        "VanEck Vectors Gold Miners ETF",
