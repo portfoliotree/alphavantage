@@ -36,7 +36,7 @@ const (
 )
 
 type Client struct {
-	Limiter interface{
+	Limiter interface {
 		Wait(ctx context.Context) error
 	}
 	Client interface {
@@ -47,9 +47,9 @@ type Client struct {
 
 func NewClient(apiKey string) *Client {
 	return &Client{
-		Client: http.DefaultClient,
+		Client:  http.DefaultClient,
 		Limiter: rate.NewLimiter(rate.Every(time.Minute/5), 2),
-		APIKey: apiKey,
+		APIKey:  apiKey,
 	}
 }
 
@@ -68,7 +68,26 @@ func (client *Client) Do(req *http.Request) (*http.Response, error) {
 	q.Set("apikey", client.APIKey)
 	req.URL.RawQuery = q.Encode()
 
-	return client.Client.Do(req)
+	res, err := client.Client.Do(req)
+	if err != nil {
+		return res, err
+	}
+
+	if res.StatusCode < 200 || res.StatusCode >= 300 {
+		return res, RequestError(res.StatusCode)
+	}
+
+	return res, nil
+}
+
+type RequestError int
+
+func (err RequestError) Error() string {
+	return http.StatusText(int(err))
+}
+
+func (err RequestError) HTTPStatusCode() int {
+	return int(err)
 }
 
 func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteFunction) ([]Quote, error) {
