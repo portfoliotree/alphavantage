@@ -120,7 +120,8 @@ func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteF
 	mr := io.MultiReader(bytes.NewReader(buf[:]), res.Body)
 	if n > 0 && buf[0] == '{' {
 		var message struct {
-			Note string `json:"Note"`
+			Note        string `json:"Note"`
+			Information string `json:"Information"`
 		}
 		err = json.NewDecoder(mr).Decode(&message)
 		if err != nil {
@@ -130,7 +131,7 @@ func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteF
 			return nil, fmt.Errorf("reached alphavantage rate limit")
 		}
 
-		return nil, fmt.Errorf("alphavantage request did not return csv; got notice: %w", errors.New(message.Note))
+		return nil, fmt.Errorf("alphavantage request did not return csv; got notice: %w", errors.New(strings.Join([]string{message.Note, message.Information}, " ")))
 	}
 
 	return ParseStockQuery(mr)
@@ -183,7 +184,8 @@ func (client *Client) Search(ctx context.Context, keywords string) ([]SearchResu
 	mr := io.MultiReader(bytes.NewReader(buf[:]), res.Body)
 	if n > 0 && buf[0] == '{' {
 		var message struct {
-			Note string `json:"Note"`
+			Note        string `json:"Note"`
+			Information string `json:"Information"`
 		}
 		err = json.NewDecoder(mr).Decode(&message)
 		if err != nil {
@@ -193,7 +195,7 @@ func (client *Client) Search(ctx context.Context, keywords string) ([]SearchResu
 			return nil, fmt.Errorf("reached alphavantage rate limit")
 		}
 
-		return nil, fmt.Errorf("alphavantage request did not return csv; got notice: %w", errors.New(message.Note))
+		return nil, fmt.Errorf("alphavantage request did not return csv; got notice: %w", errors.New(strings.Join([]string{message.Note, message.Information}, " ")))
 	}
 
 	return ParseSearchQuery(mr)

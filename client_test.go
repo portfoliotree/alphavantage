@@ -58,7 +58,7 @@ func TestSearch(t *testing.T) {
 	ctx := context.TODO()
 
 	var (
-		avReq *http.Request
+		avReq         *http.Request
 		waitCallCount = 0
 	)
 
