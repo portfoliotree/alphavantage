@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -36,7 +37,7 @@ const (
 )
 
 type Client struct {
-	Limiter interface{
+	Limiter interface {
 		Wait(ctx context.Context) error
 	}
 	Client interface {
@@ -47,9 +48,9 @@ type Client struct {
 
 func NewClient(apiKey string) *Client {
 	return &Client{
-		Client: http.DefaultClient,
+		Client:  http.DefaultClient,
 		Limiter: rate.NewLimiter(rate.Every(time.Minute/5), 2),
-		APIKey: apiKey,
+		APIKey:  apiKey,
 	}
 }
 
@@ -100,6 +101,15 @@ func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteF
 	defer func() {
 		_ = res.Body.Close()
 	}()
+
+	if res.StatusCode >= 300 || res.StatusCode < 200 {
+		buf, err := ioutil.ReadAll(io.LimitReader(res.Body, 1<<10))
+		if err != nil {
+			buf = []byte(err.Error())
+		}
+		return nil, fmt.Errorf("failed to request got status %d %s: %s",
+			res.StatusCode, http.StatusText(res.StatusCode), string(buf))
+	}
 
 	var buf [1]byte
 	n, err := res.Body.Read(buf[:])
@@ -154,6 +164,15 @@ func (client *Client) Search(ctx context.Context, keywords string) ([]SearchResu
 	defer func() {
 		_ = res.Body.Close()
 	}()
+
+	if res.StatusCode >= 300 || res.StatusCode < 200 {
+		buf, err := ioutil.ReadAll(io.LimitReader(res.Body, 1<<10))
+		if err != nil {
+			buf = []byte(err.Error())
+		}
+		return nil, fmt.Errorf("failed to request got status %d %s: %s",
+			res.StatusCode, http.StatusText(res.StatusCode), string(buf))
+	}
 
 	var buf [1]byte
 	n, err := res.Body.Read(buf[:])
