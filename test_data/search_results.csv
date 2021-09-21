@@ -1,1 +1,11 @@
-symbol,name,type,region,marketOpen,marketClose,timezone,currency,matchScoreGDX,VanEck Vectors Gold Miners ETF,ETF,United States,09:30,16:00,UTC-04,USD,1.0000GDXD,Bank of Montreal,Equity,United States,09:30,16:00,UTC-04,USD,0.8571GDXJ,VanEck Vectors Junior Gold Miners ETF,ETF,United States,09:30,16:00,UTC-04,USD,0.8571GDXU,Bank of Montreal,Equity,United States,09:30,16:00,UTC-04,USD,0.8571GDX.FRK,General Dynamics Corporation,Equity,Frankfurt,08:00,20:00,UTC+02,EUR,0.7500GDX.LON,VanEck Vectors Gold Miners UCITS ETF,ETF,United Kingdom,08:00,16:30,UTC+01,USD,0.7500GDX.TRV,Goldex Resources Corporation,Equity,Toronto Venture,09:30,16:00,UTC-05,CAD,0.7500GDXRF,Goldex Resources Corp,Equity,United States,09:30,16:00,UTC-04,USD,0.7500GDXJ.LON,VanEck Vectors Junior Gold Miners UCITS ETF,ETF,United Kingdom,08:00,16:30,UTC+01,USD,0.6667
+symbol,name,type,region,marketOpen,marketClose,timezone,currency,matchScore
+BA,Boeing Company,Equity,United States,09:30,16:00,UTC-04,USD,1.0000
+BAB,Invesco Taxable Municipal Bond ETF,ETF,United States,09:30,16:00,UTC-04,USD,0.8000
+BA.LON,BAE Systems plc,Equity,United Kingdom,08:00,16:30,UTC+01,GBX,0.6667
+BABA,Alibaba Group Holding Ltd,Equity,United States,09:30,16:00,UTC-04,USD,0.6667
+BA3.FRK,Brooks Automation Inc,Equity,Frankfurt,08:00,20:00,UTC+02,EUR,0.5714
+BAAPX,BlackRock Aggressive GwthPrprdPtfInvstrA,Mutual Fund,United States,09:30,16:00,UTC-04,USD,0.5714
+BABAF,Alibaba Group Holding Ltd,Equity,United States,09:30,16:00,UTC-04,USD,0.5714
+BAAAAX,Building America Strategy Port CDA USD Ser 21/1Q MNT CASH,Mutual Fund,United States,09:30,16:00,UTC-04,USD,0.5000
+BABA34.SAO,BABA34,Equity,Brazil/Sao Paolo,10:00,17:30,UTC-03,BRL,0.5000
+BAAX39.SAO,Ishares Msci All Country Asia Ex Japan ETF,ETF,Brazil/Sao Paolo,10:00,17:30,UTC-03,BRL,0.3636

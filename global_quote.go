@@ -1,13 +1,64 @@
 package alphavantage
 
 import (
+	"context"
 	"encoding/csv"
 	"fmt"
 	"io"
+	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
 )
+
+type QuoteFunction string
+
+const (
+	TimeSeriesIntraday        QuoteFunction = "TIME_SERIES_INTRADAY"
+	TimeSeriesDaily           QuoteFunction = "TIME_SERIES_DAILY"
+	TimeSeriesDailyAdjusted   QuoteFunction = "TIME_SERIES_DAILY_ADJUSTED"
+	TimeSeriesMonthly         QuoteFunction = "TIME_SERIES_MONTHLY"
+	TimeSeriesMonthlyAdjusted QuoteFunction = "TIME_SERIES_MONTHLY_ADJUSTED"
+)
+
+func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteFunction) ([]Quote, error) {
+	u := url.URL{
+		Scheme: "https",
+		Host:   "www.alphavantage.co",
+		Path:   "/query",
+		RawQuery: url.Values{
+			"datatype":   []string{"csv"},
+			"outputsize": []string{"full"},
+			"function":   []string{string(function)},
+			"symbol":     []string{symbol},
+		}.Encode(),
+	}
+
+	req, err := http.NewRequestWithContext(ctx,
+		http.MethodGet,
+		u.String(),
+		nil,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create quotes request: %w", err)
+	}
+
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		_ = res.Body.Close()
+	}()
+
+	r, err := checkError(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return ParseStockQuery(r)
+}
 
 type Quote struct {
 	Time time.Time
@@ -168,13 +219,13 @@ func ParseStockQuery(r io.Reader) ([]Quote, error) {
 		return nil, err
 	}
 
-	quotes := make([]Quote, len(rows))
+	list := make([]Quote, len(rows))
 
 	for i, row := range rows {
-		if err := quotes[i].ParseRow(header, row); err != nil {
+		if err := list[i].ParseRow(header, row); err != nil {
 			return nil, err
 		}
 	}
 
-	return quotes, nil
+	return list, nil
 }

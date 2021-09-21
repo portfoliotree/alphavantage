@@ -1,12 +1,52 @@
 package alphavantage
 
 import (
+	"context"
 	"encoding/csv"
 	"fmt"
 	"io"
+	"net/http"
+	"net/url"
 	"strconv"
 	"time"
 )
+
+func (client *Client) Search(ctx context.Context, keywords string) ([]SearchResult, error) {
+	u := url.URL{
+		Scheme: "https",
+		Host:   "www.alphavantage.co",
+		Path:   "/query",
+		RawQuery: url.Values{
+			"datatype": []string{"csv"},
+			"function": []string{"SYMBOL_SEARCH"},
+			"keywords": []string{keywords},
+		}.Encode(),
+	}
+
+	req, err := http.NewRequestWithContext(ctx,
+		http.MethodGet,
+		u.String(),
+		nil,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create quotes request: %w", err)
+	}
+
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		_ = res.Body.Close()
+	}()
+
+	r, err := checkError(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return ParseSearchQuery(r)
+}
 
 type SearchResult struct {
 	Symbol      string
@@ -70,15 +110,15 @@ func ParseSearchQuery(r io.Reader) ([]SearchResult, error) {
 		return nil, err
 	}
 
-	quotes := make([]SearchResult, len(rows))
+	list := make([]SearchResult, len(rows))
 
 	for i, row := range rows {
-		if err := quotes[i].ParseRow(header, row); err != nil {
+		if err := list[i].ParseRow(header, row); err != nil {
 			return nil, err
 		}
 	}
 
-	return quotes, nil
+	return list, nil
 }
 
 func (r *SearchResult) ParseTimezone() (*time.Location, error) {
