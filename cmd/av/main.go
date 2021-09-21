@@ -27,7 +27,13 @@ func main() {
 	cmd := flag.Arg(0)
 	switch cmd {
 	case "quotes":
-		err := fetchQuotes(token, flag.Args()[1:])
+		err := quotes(token, flag.Args()[1:])
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	case "status":
+		err := listingStatus(token, flag.Args()[1:])
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -41,7 +47,7 @@ func main() {
 	}
 }
 
-func fetchQuotes(token string, args []string) error {
+func quotes(token string, args []string) error {
 	flags := flag.NewFlagSet("quotes", flag.ContinueOnError)
 
 	var function string
@@ -75,5 +81,37 @@ func fetchQuotes(token string, args []string) error {
 			return fmt.Errorf("failed saving quotes for %q: %w", symbol, err)
 		}
 	}
+	return nil
+}
+
+func listingStatus(token string, args []string) error {
+	flags := flag.NewFlagSet("status", flag.ContinueOnError)
+
+	var status bool
+	flags.BoolVar(&status, "listed", true, "listing status")
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+
+	client := alphavantage.NewClient(token)
+
+	ctx := context.TODO()
+
+	err := client.ListingStatusRequest(ctx, status, func(r io.Reader) error {
+		f, err := os.Create(fmt.Sprintf("status_listed_%t.csv", status))
+		if err != nil {
+			return err
+		}
+		defer func() {
+			_ = f.Close()
+		}()
+
+		_, err = io.Copy(f, r)
+		return err
+	})
+	if err != nil {
+		return fmt.Errorf("failed fetching listing status: %w", err)
+	}
+
 	return nil
 }

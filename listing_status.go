@@ -3,6 +3,7 @@ package alphavantage
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"time"
@@ -19,6 +20,13 @@ type ListingStatus struct {
 }
 
 func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]ListingStatus, error) {
+	var result []ListingStatus
+	return result, client.ListingStatusRequest(ctx, isListed, func(r io.Reader) error {
+		return ParseCSV(r, &result, nil)
+	})
+}
+
+func (client *Client) ListingStatusRequest(ctx context.Context, isListed bool, fn func(io.Reader) error) error {
 	state := "active"
 	if !isListed {
 		state = "delisted"
@@ -41,12 +49,12 @@ func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]Listi
 		nil,
 	)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create listing status request: %w", err)
+		return fmt.Errorf("failed to create listing status request: %w", err)
 	}
 
 	res, err := client.Do(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer func() {
 		_ = res.Body.Close()
@@ -54,9 +62,8 @@ func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]Listi
 
 	r, err := checkError(res.Body)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	var result []ListingStatus
-	return result, ParseCSV(r, &result, nil)
+	return fn(r)
 }
