@@ -215,7 +215,7 @@ func ParseCSV(r io.Reader, data interface{}, location *time.Location) error {
 				}
 				tm, err := time.ParseInLocation(layout, value, location)
 				if err != nil {
-					return fmt.Errorf("failed to parse time value %q on row %d column %d (%s): %w", value, rowIndex, columnIndex, header[columnIndex], err)
+					return fmt.Errorf("failed to parse time value on row %d column %d (%s): %w", rowIndex, columnIndex, header[columnIndex], err)
 				}
 				structValue.Elem().Field(fieldIndex).Set(reflect.ValueOf(tm))
 			}
