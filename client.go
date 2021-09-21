@@ -43,7 +43,7 @@ type Client struct {
 func NewClient(apiKey string) *Client {
 	return &Client{
 		Client:  http.DefaultClient,
-		Limiter: rate.NewLimiter(rate.Every(time.Minute/5), 2),
+		Limiter: rate.NewLimiter(rate.Every(time.Minute/5), 5),
 		APIKey:  apiKey,
 	}
 }
