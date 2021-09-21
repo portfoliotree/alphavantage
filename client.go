@@ -119,6 +119,7 @@ var typeType = reflect.TypeOf(time.Time{})
 // Fields with type time.Time may use an additional "time-layout" field
 // to specify the layout to use with time.ParseInLocation.
 // If location is not specified, eastern time is used.
+// "null" values in CSV for time are ignored; time keeps its zero value.
 func ParseCSV(r io.Reader, data interface{}, location *time.Location) error {
 	if location == nil {
 		location = easternTimezone
