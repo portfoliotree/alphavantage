@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -19,6 +20,14 @@ type ListingStatus struct {
 	Status        string    `column-name:"status"`
 }
 
+const (
+	ListingStatusActive   = "Active"
+	ListingStatusDelisted = "Delisted"
+
+	AssetTypeStock = "Stock"
+	AssetTypeETF   = "ETF"
+)
+
 func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]ListingStatus, error) {
 	var result []ListingStatus
 	return result, client.ListingStatusRequest(ctx, isListed, func(r io.Reader) error {
@@ -27,10 +36,11 @@ func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]Listi
 }
 
 func (client *Client) ListingStatusRequest(ctx context.Context, isListed bool, fn func(io.Reader) error) error {
-	state := "active"
+	state := ListingStatusActive
 	if !isListed {
-		state = "delisted"
+		state = ListingStatusDelisted
 	}
+	state = strings.ToLower(state)
 
 	u := url.URL{
 		Scheme: "https",
