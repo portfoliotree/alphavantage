@@ -5,8 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
+	"reflect"
+	"strconv"
 	"time"
 )
 
@@ -44,95 +47,124 @@ func (client *Client) CompanyOverview(ctx context.Context, symbol string) (Compa
 	}
 
 	var result CompanyOverview
-	return result, json.Unmarshal(buf, &result)
+	err = json.Unmarshal(buf, &result)
+	if err != nil {
+		log.Println(err)
+	}
+	return result, err
 }
 
 type CompanyOverview struct {
-	Symbol                     string  `json:"Symbol"`
-	AssetType                  string  `json:"AssetType"`
-	Name                       string  `json:"Name"`
-	Description                string  `json:"Description"`
-	CIK                        int     `json:"CIK,string"`
-	Exchange                   string  `json:"Exchange"`
-	Currency                   string  `json:"Currency"`
-	Country                    string  `json:"Country"`
-	Sector                     string  `json:"Sector"`
-	Industry                   string  `json:"Industry"`
-	Address                    string  `json:"Address"`
-	FiscalYearEnd              string  `json:"FiscalYearEnd"`
-	LatestQuarter              Date    `json:"LatestQuarter"`
-	MarketCapitalization       int     `json:"MarketCapitalization,string"`
-	EBITDA                     int     `json:"EBITDA,string"`
-	PERatio                    float64 `json:"PERatio,string"`
-	PEGRatio                   float64 `json:"PEGRatio,string"`
-	BookValue                  float64 `json:"BookValue,string"`
-	DividendPerShare           float64 `json:"DividendPerShare,string"`
-	DividendYield              float64 `json:"DividendYield,string"`
-	EPS                        float64 `json:"EPS,string"`
-	RevenuePerShareTTM         float64 `json:"RevenuePerShareTTM,string"`
-	ProfitMargin               float64 `json:"ProfitMargin,string"`
-	OperatingMarginTTM         float64 `json:"OperatingMarginTTM,string"`
-	ReturnOnAssetsTTM          float64 `json:"ReturnOnAssetsTTM,string"`
-	ReturnOnEquityTTM          float64 `json:"ReturnOnEquityTTM,string"`
-	RevenueTTM                 int     `json:"RevenueTTM,string"`
-	GrossProfitTTM             int     `json:"GrossProfitTTM,string"`
-	DilutedEPSTTM              float64 `json:"DilutedEPSTTM,string"`
-	QuarterlyEarningsGrowthYOY float64 `json:"QuarterlyEarningsGrowthYOY,string"`
-	QuarterlyRevenueGrowthYOY  float64 `json:"QuarterlyRevenueGrowthYOY,string"`
-	AnalystTargetPrice         float64 `json:"AnalystTargetPrice,string"`
-	TrailingPE                 float64 `json:"TrailingPE,string"`
-	ForwardPE                  float64 `json:"ForwardPE,string"`
-	PriceToSalesRatioTTM       float64 `json:"PriceToSalesRatioTTM,string"`
-	PriceToBookRatio           float64 `json:"PriceToBookRatio,string"`
-	EVToRevenue                float64 `json:"EVToRevenue,string"`
-	EVToEBITDA                 float64 `json:"EVToEBITDA,string"`
-	Beta                       float64 `json:"Beta,string"`
-	FiftyTwoWeekHigh           float64 `json:"52WeekHigh,string"`
-	FiftyTwoWeekLow            float64 `json:"52WeekLow,string"`
-	FiftyDayMovingAverage      float64 `json:"50DayMovingAverage,string"`
-	TwoHundredDayMovingAverage float64 `json:"200DayMovingAverage,string"`
-	SharesOutstanding          int     `json:"SharesOutstanding,string"`
-	SharesFloat                int     `json:"SharesFloat,string"`
-	SharesShort                int     `json:"SharesShort,string"`
-	SharesShortPriorMonth      int     `json:"SharesShortPriorMonth,string"`
-	ShortRatio                 float64 `json:"ShortRatio,string"`
-	ShortPercentOutstanding    float64 `json:"ShortPercentOutstanding,string"`
-	ShortPercentFloat          float64 `json:"ShortPercentFloat,string"`
-	PercentInsiders            float64 `json:"PercentInsiders,string"`
-	PercentInstitutions        float64 `json:"PercentInstitutions,string"`
-	ForwardAnnualDividendRate  float64 `json:"ForwardAnnualDividendRate,string"`
-	ForwardAnnualDividendYield float64 `json:"ForwardAnnualDividendYield,string"`
-	PayoutRatio                float64 `json:"PayoutRatio,string"`
-	DividendDate               Date    `json:"DividendDate"`
-	ExDividendDate             Date    `json:"ExDividendDate"`
-	LastSplitFactor            string  `json:"LastSplitFactor"`
-	LastSplitDate              Date    `json:"LastSplitDate"`
+	CIK                        string    `av-json:"CIK"`
+	Symbol                     string    `av-json:"Symbol"`
+	AssetType                  string    `av-json:"AssetType"`
+	Name                       string    `av-json:"Name"`
+	Description                string    `av-json:"Description"`
+	Exchange                   string    `av-json:"Exchange"`
+	Currency                   string    `av-json:"Currency"`
+	Country                    string    `av-json:"Country"`
+	Sector                     string    `av-json:"Sector"`
+	Industry                   string    `av-json:"Industry"`
+	Address                    string    `av-json:"Address"`
+	FiscalYearEnd              string    `av-json:"FiscalYearEnd"`
+	LatestQuarter              time.Time `av-json:"LatestQuarter"`
+	MarketCapitalization       int       `av-json:"MarketCapitalization"`
+	EBITDA                     int       `av-json:"EBITDA"`
+	PERatio                    float64   `av-json:"PERatio"`
+	PEGRatio                   float64   `av-json:"PEGRatio"`
+	BookValue                  float64   `av-json:"BookValue"`
+	DividendPerShare           float64   `av-json:"DividendPerShare"`
+	DividendYield              float64   `av-json:"DividendYield"`
+	EPS                        float64   `av-json:"EPS"`
+	RevenuePerShareTTM         float64   `av-json:"RevenuePerShareTTM"`
+	ProfitMargin               float64   `av-json:"ProfitMargin"`
+	OperatingMarginTTM         float64   `av-json:"OperatingMarginTTM"`
+	ReturnOnAssetsTTM          float64   `av-json:"ReturnOnAssetsTTM"`
+	ReturnOnEquityTTM          float64   `av-json:"ReturnOnEquityTTM"`
+	RevenueTTM                 int       `av-json:"RevenueTTM"`
+	GrossProfitTTM             int       `av-json:"GrossProfitTTM"`
+	DilutedEPSTTM              float64   `av-json:"DilutedEPSTTM"`
+	QuarterlyEarningsGrowthYOY float64   `av-json:"QuarterlyEarningsGrowthYOY"`
+	QuarterlyRevenueGrowthYOY  float64   `av-json:"QuarterlyRevenueGrowthYOY"`
+	AnalystTargetPrice         float64   `av-json:"AnalystTargetPrice"`
+	TrailingPE                 float64   `av-json:"TrailingPE"`
+	ForwardPE                  float64   `av-json:"ForwardPE"`
+	PriceToSalesRatioTTM       float64   `av-json:"PriceToSalesRatioTTM"`
+	PriceToBookRatio           float64   `av-json:"PriceToBookRatio"`
+	EVToRevenue                float64   `av-json:"EVToRevenue"`
+	EVToEBITDA                 float64   `av-json:"EVToEBITDA"`
+	Beta                       float64   `av-json:"Beta"`
+	FiftyTwoWeekHigh           float64   `av-json:"52WeekHigh"`
+	FiftyTwoWeekLow            float64   `av-json:"52WeekLow"`
+	FiftyDayMovingAverage      float64   `av-json:"50DayMovingAverage"`
+	TwoHundredDayMovingAverage float64   `av-json:"200DayMovingAverage"`
+	SharesOutstanding          int       `av-json:"SharesOutstanding"`
+	SharesFloat                int       `av-json:"SharesFloat"`
+	SharesShort                int       `av-json:"SharesShort"`
+	SharesShortPriorMonth      int       `av-json:"SharesShortPriorMonth"`
+	ShortRatio                 float64   `av-json:"ShortRatio"`
+	ShortPercentOutstanding    float64   `av-json:"ShortPercentOutstanding"`
+	ShortPercentFloat          float64   `av-json:"ShortPercentFloat"`
+	PercentInsiders            float64   `av-json:"PercentInsiders"`
+	PercentInstitutions        float64   `av-json:"PercentInstitutions"`
+	ForwardAnnualDividendRate  float64   `av-json:"ForwardAnnualDividendRate"`
+	ForwardAnnualDividendYield float64   `av-json:"ForwardAnnualDividendYield"`
+	PayoutRatio                float64   `av-json:"PayoutRatio"`
+	DividendDate               time.Time `av-json:"DividendDate"`
+	ExDividendDate             time.Time `av-json:"ExDividendDate"`
+	LastSplitFactor            string    `av-json:"LastSplitFactor"`
+	LastSplitDate              time.Time `av-json:"LastSplitDate"`
 }
 
-type Date time.Time
+func (c *CompanyOverview) UnmarshalJSON(in []byte) error {
+	var data map[string]string
 
-func (d Date) Time() time.Time {
-	return time.Time(d)
-}
-
-func (d *Date) UnmarshalJSON(in []byte) error {
-	var s string
-	err := json.Unmarshal(in, &s)
+	err := json.Unmarshal(in, &data)
 	if err != nil {
 		return err
 	}
-	t, err := time.ParseInLocation(DefaultDateFormat, s, easternTimezone)
-	if err != nil {
-		return err
+
+	rv := reflect.ValueOf(c)
+
+	numFields := rv.Type().Elem().NumField()
+	for i := 0; i < numFields; i++ {
+		ft := rv.Elem().Type().Field(i)
+		fv := rv.Elem().Field(i)
+		jsonKey := ft.Tag.Get("av-json")
+
+		v, ok := data[jsonKey]
+		if !ok || v == "" || v == "None" {
+			continue
+		}
+
+		switch fv.Interface().(type) {
+		case string:
+			fv.SetString(v)
+		case int:
+			in, err := strconv.ParseInt(v, 10, 64)
+			if err != nil {
+				return fmt.Errorf("failed to parse %s: %w", jsonKey, err)
+			}
+			fv.SetInt(in)
+		case float64:
+			f, err := strconv.ParseFloat(v, 64)
+			if err != nil {
+				return fmt.Errorf("failed to parse %s: %w", jsonKey, err)
+			}
+			fv.SetFloat(f)
+		case time.Time:
+			if v == "0000-00-00" {
+				continue
+			}
+			t, err := time.ParseInLocation(DefaultDateFormat, v, easternTimezone)
+			if err != nil {
+				return err
+			}
+			fv.Set(reflect.ValueOf(t))
+		default:
+			return fmt.Errorf("unsupported type %T", fv.Interface())
+		}
 	}
-	*d = Date(t)
+
 	return nil
-}
-
-func (d Date) MarshalJSON() ([]byte, error) {
-	return json.Marshal(time.Time(d).Format(DefaultDateFormat))
-}
-
-func (d Date) String() string {
-	return time.Time(d).Format(DefaultDateFormat)
 }
