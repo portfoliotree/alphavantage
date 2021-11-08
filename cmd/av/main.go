@@ -39,12 +39,30 @@ func main() {
 			os.Exit(1)
 		}
 	case "help":
-		flag.Usage()
+		_ = help("", nil)
 	default:
-		fmt.Printf("unknown command: %s", cmd)
-		flag.Usage()
+		if cmd != "" {
+			fmt.Printf("ERROR: unknown command: %s\n\n", cmd)
+		} else if cmd == "" {
+			fmt.Printf("ERROR: missing command\n\n")
+		}
+
+		_ = help("", nil)
 		os.Exit(1)
 	}
+}
+
+func help(string, []string) error {
+	fmt.Println("av - An AlphaVantage CLI in Go")
+	fmt.Println()
+	fmt.Println("Global Flags:")
+	flag.PrintDefaults()
+	fmt.Println()
+	fmt.Println("Commands:")
+	fmt.Println("  quotes\n\tFetch time series stock quotes.\n\thttps://www.alphavantage.co/documentation/#time-series-data")
+	fmt.Println("  status\n\tFetch listing & delisting status.\n\thttps://www.alphavantage.co/documentation/#listing-status")
+	fmt.Println()
+	return nil
 }
 
 func quotes(token string, args []string) error {
