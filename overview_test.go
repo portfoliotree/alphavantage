@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"testing"
@@ -22,7 +21,7 @@ func TestClient_CompanyOverview(t *testing.T) {
 	defer func() {
 		_ = f.Close()
 	}()
-	buf, err := ioutil.ReadAll(f)
+	buf, err := io.ReadAll(f)
 	if err != nil {
 		t.Fatal(err)
 	}

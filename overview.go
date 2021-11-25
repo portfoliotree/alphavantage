@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -41,7 +41,7 @@ func (client *Client) CompanyOverview(ctx context.Context, symbol string) (Compa
 		_ = res.Body.Close()
 	}()
 
-	buf, err := ioutil.ReadAll(res.Body)
+	buf, err := io.ReadAll(res.Body)
 	if err != nil {
 		return CompanyOverview{}, err
 	}

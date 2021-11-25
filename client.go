@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"reflect"
 	"strconv"
@@ -69,7 +68,7 @@ func (client *Client) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	if res.StatusCode >= 300 || res.StatusCode < 200 {
-		buf, err := ioutil.ReadAll(io.LimitReader(res.Body, 1<<10))
+		buf, err := io.ReadAll(io.LimitReader(res.Body, 1<<10))
 		if err != nil {
 			buf = []byte(err.Error())
 		}
