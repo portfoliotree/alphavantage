@@ -1,4 +1,4 @@
-module github.com/crhntr/alphavantage
+module github.com/portfoliotree/alphavantage
 
 go 1.16
 
