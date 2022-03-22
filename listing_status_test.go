@@ -7,8 +7,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/crhntr/alphavantage"
 	Ω "github.com/onsi/gomega"
+	"github.com/portfoliotree/alphavantage"
 )
 
 func TestClient_ListingStatus_listed(t *testing.T) {

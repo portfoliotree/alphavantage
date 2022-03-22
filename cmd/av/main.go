@@ -7,7 +7,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/crhntr/alphavantage"
+	"github.com/portfoliotree/alphavantage"
 )
 
 func main() {

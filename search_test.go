@@ -10,7 +10,7 @@ import (
 
 	Ω "github.com/onsi/gomega"
 
-	"github.com/crhntr/alphavantage"
+	"github.com/portfoliotree/alphavantage"
 )
 
 func TestSearch(t *testing.T) {

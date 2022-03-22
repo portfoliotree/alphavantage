@@ -9,8 +9,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/crhntr/alphavantage"
 	Ω "github.com/onsi/gomega"
+	"github.com/portfoliotree/alphavantage"
 )
 
 func TestClient_CompanyOverview(t *testing.T) {

@@ -11,7 +11,7 @@ import (
 
 	Ω "github.com/onsi/gomega"
 
-	"github.com/crhntr/alphavantage"
+	"github.com/portfoliotree/alphavantage"
 )
 
 type doerFunc func(*http.Request) (*http.Response, error)
