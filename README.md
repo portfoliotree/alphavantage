@@ -1,2 +1,3 @@
 # alphavantage
-REST API wrapper https://www.alphavantage.co
+
+Unofficial REST API wrapper for https://www.alphavantage.co
