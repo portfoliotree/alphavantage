@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	Ω "github.com/onsi/gomega"
+
 	"github.com/portfoliotree/alphavantage"
 )
 
@@ -22,7 +23,7 @@ func TestClient_ListingStatus_listed(t *testing.T) {
 
 	please := Ω.NewWithT(t)
 
-	ctx := context.TODO()
+	ctx := context.Background()
 
 	var (
 		avReq         *http.Request
@@ -67,7 +68,7 @@ func TestClient_ListingStatus_delisted(t *testing.T) {
 
 	please := Ω.NewWithT(t)
 
-	ctx := context.TODO()
+	ctx := context.Background()
 
 	var (
 		avReq         *http.Request

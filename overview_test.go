@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	Ω "github.com/onsi/gomega"
+
 	"github.com/portfoliotree/alphavantage"
 )
 
@@ -28,7 +29,7 @@ func TestClient_CompanyOverview(t *testing.T) {
 
 	please := Ω.NewWithT(t)
 
-	ctx := context.TODO()
+	ctx := context.Background()
 
 	var (
 		avReq         *http.Request

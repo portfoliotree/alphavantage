@@ -19,7 +19,7 @@ var monthlyIBM []byte
 func TestQuotes(t *testing.T) {
 	please := Ω.NewWithT(t)
 
-	ctx := context.TODO()
+	ctx := context.Background()
 
 	var avReq *http.Request
 
