@@ -81,7 +81,7 @@ func mustParseDate(t *testing.T, date string) time.Time {
 	if err != nil {
 		t.Fatal(err)
 	}
-	tm, err := time.ParseInLocation("2006-01-02", date, tz)
+	tm, err := time.ParseInLocation(alphavantage.DefaultDateFormat, date, tz)
 	if err != nil {
 		t.Fatal(err)
 	}
