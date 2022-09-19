@@ -21,7 +21,7 @@ type SearchResult struct {
 	MatchScore  float64 `column-name:"matchScore"`
 }
 
-func (client *Client) Search(ctx context.Context, keywords string) ([]SearchResult, error) {
+func NewSearchURL(keywords string) (string, error) {
 	u := url.URL{
 		Scheme: "https",
 		Host:   "www.alphavantage.co",
@@ -32,10 +32,26 @@ func (client *Client) Search(ctx context.Context, keywords string) ([]SearchResu
 			"keywords": []string{keywords},
 		}.Encode(),
 	}
+	return u.String(), nil
+}
 
+func (client *Client) Search(ctx context.Context, keywords string) ([]SearchResult, error) {
+	rc, err := client.DoSearchRequest(ctx, keywords)
+	if err != nil {
+		return nil, err
+	}
+	defer closeAndIgnoreError(rc)
+	return ParseSearchQuery(rc)
+}
+
+func (client *Client) DoSearchRequest(ctx context.Context, keywords string) (io.ReadCloser, error) {
+	requestURL, err := NewSearchURL(keywords)
+	if err != nil {
+		return nil, err
+	}
 	req, err := http.NewRequestWithContext(ctx,
 		http.MethodGet,
-		u.String(),
+		requestURL,
 		nil,
 	)
 	if err != nil {
@@ -46,16 +62,14 @@ func (client *Client) Search(ctx context.Context, keywords string) ([]SearchResu
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		_ = res.Body.Close()
-	}()
 
-	r, err := checkError(res.Body)
+	rc, err := checkError(res.Body)
 	if err != nil {
+		closeAndIgnoreError(res.Body)
 		return nil, err
 	}
 
-	return ParseSearchQuery(r)
+	return rc, nil
 }
 
 func ParseSearchQuery(r io.Reader) ([]SearchResult, error) {

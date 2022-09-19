@@ -3,7 +3,6 @@ package alphavantage
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -20,45 +19,10 @@ const (
 	TimeSeriesMonthlyAdjusted QuoteFunction = "TIME_SERIES_MONTHLY_ADJUSTED"
 )
 
-func (fn QuoteFunction) Validate() error {
-	switch fn {
-	case TimeSeriesIntraday,
-		TimeSeriesDaily,
-		TimeSeriesDailyAdjusted,
-		TimeSeriesMonthly,
-		TimeSeriesMonthlyAdjusted:
-		return nil
-	default:
-		return errors.New("unknown time series function")
-	}
-}
-
-func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteFunction) ([]Quote, error) {
-	var quotes []Quote
-	return quotes, client.QuotesRequest(ctx, symbol, function, func(r io.Reader) error {
-		switch function {
-		case TimeSeriesIntraday:
-			list, err := ParseIntraDayQuotes(r)
-			if err != nil {
-				return err
-			}
-			quotes = make([]Quote, len(list))
-			for i := range list {
-				quotes[i] = Quote(list[i])
-			}
-			return nil
-		default:
-			var err error
-			quotes, err = ParseQuotes(r)
-			return err
-		}
-	})
-}
-
-func (client *Client) QuotesRequest(ctx context.Context, symbol string, function QuoteFunction, fn func(r io.Reader) error) error {
+func NewQuotesURL(symbol string, function QuoteFunction) (string, error) {
 	err := function.Validate()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	u := url.URL{
@@ -73,33 +37,74 @@ func (client *Client) QuotesRequest(ctx context.Context, symbol string, function
 		}.Encode(),
 	}
 
+	return u.String(), nil
+}
+
+func (fn QuoteFunction) Validate() error {
+	switch fn {
+	case TimeSeriesIntraday,
+		TimeSeriesDaily,
+		TimeSeriesDailyAdjusted,
+		TimeSeriesMonthly,
+		TimeSeriesMonthlyAdjusted:
+		return nil
+	default:
+		return errors.New("unknown time series function")
+	}
+}
+
+func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteFunction) ([]Quote, error) {
+	rc, err := client.DoQuotesRequest(ctx, symbol, function)
+	if err != nil {
+		return nil, err
+	}
+	defer closeAndIgnoreError(rc)
+
+	switch function {
+	case TimeSeriesIntraday:
+		list, err := ParseIntraDayQuotes(rc)
+		if err != nil {
+			return nil, err
+		}
+		return convertQuoteElements(list, func(q IntraDayQuote) Quote { return Quote(q) }), nil
+	default:
+		quotes, err := ParseQuotes(rc)
+		if err != nil {
+			return nil, err
+		}
+		return quotes, nil
+	}
+}
+
+// Deprecated: use DoQuotesRequest instead. This method will be removed before 2023.
+func (client *Client) QuotesRequest(ctx context.Context, symbol string, function QuoteFunction, fn func(r io.Reader) error) error {
+	rc, err := client.DoQuotesRequest(ctx, symbol, function)
+	if err != nil {
+		return err
+	}
+	defer closeAndIgnoreError(rc)
+	return fn(rc)
+}
+
+func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, function QuoteFunction) (io.ReadCloser, error) {
+	requestURL, err := NewQuotesURL(symbol, function)
+	if err != nil {
+		return nil, err
+	}
 	req, err := http.NewRequestWithContext(ctx,
 		http.MethodGet,
-		u.String(),
+		requestURL,
 		nil,
 	)
 	if err != nil {
-		return fmt.Errorf("failed to create quotes request: %w", err)
+		return nil, err
 	}
 
 	res, err := client.Do(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	defer func() {
-		_ = res.Body.Close()
-	}()
-
-	r, err := checkError(res.Body)
-	if err != nil {
-		return err
-	}
-
-	defer func() {
-		_ = res.Body.Close()
-	}()
-
-	return fn(r)
+	return checkError(res.Body)
 }
 
 type Quote struct {
@@ -123,6 +128,7 @@ func ParseQuotes(r io.Reader) ([]Quote, error) {
 	return list, ParseCSV(r, &list, nil)
 }
 
+// IntraDayQuote is convertable to Quote. The only difference is the time-layout includes additional time information.
 type IntraDayQuote struct {
 	Time             time.Time `column-name:"timestamp" time-layout:"2006-01-02 15:04:05"`
 	Open             float64   `column-name:"open"`
@@ -141,4 +147,21 @@ var _ = Quote(IntraDayQuote{})
 func ParseIntraDayQuotes(r io.Reader) ([]IntraDayQuote, error) {
 	var list []IntraDayQuote
 	return list, ParseCSV(r, &list, nil)
+}
+
+//TODO: use this instead after bumping to 1.18
+//func convertElements[T1, T2 any](list []T1, convert func(T1) T2) []T2 {
+//	result := make([]T2, len(list))
+//	for i := range list {
+//		result[i] = convert(list[i])
+//	}
+//	return result
+//}
+
+func convertQuoteElements(list []IntraDayQuote, convert func(quote IntraDayQuote) Quote) []Quote {
+	result := make([]Quote, len(list))
+	for i := range list {
+		result[i] = convert(list[i])
+	}
+	return result
 }

@@ -60,7 +60,7 @@ func help(string, []string) error {
 	fmt.Println()
 	fmt.Println("Commands:")
 	fmt.Println("  quotes\n\tFetch time series stock quotes.\n\thttps://www.alphavantage.co/documentation/#time-series-data")
-	fmt.Println("  status\n\tFetch listing & delisting status.\n\thttps://www.alphavantage.co/documentation/#listing-status")
+	fmt.Println("  status\n\tFetch listing & de-listing status.\n\thttps://www.alphavantage.co/documentation/#listing-status")
 	fmt.Println()
 	return nil
 }
@@ -83,23 +83,28 @@ func quotes(token string, args []string) error {
 	ctx := context.TODO()
 
 	for _, symbol := range symbols {
-		err := client.QuotesRequest(ctx, symbol, alphavantage.QuoteFunction(function), func(r io.Reader) error {
-			f, err := os.Create(symbol + ".csv")
-			if err != nil {
-				return err
-			}
-			defer func() {
-				_ = f.Close()
-			}()
-
-			_, err = io.Copy(f, r)
-			return err
-		})
+		err := requestQuotes(ctx, client, function, symbol)
 		if err != nil {
 			return fmt.Errorf("failed saving quotes for %q: %w", symbol, err)
 		}
 	}
 	return nil
+}
+
+func requestQuotes(ctx context.Context, client *alphavantage.Client, function, symbol string) error {
+	f, err := os.Create(symbol + ".csv")
+	if err != nil {
+		return err
+	}
+	defer closeAndIgnoreError(f)
+
+	rc, err := client.DoQuotesRequest(ctx, symbol, alphavantage.QuoteFunction(function))
+	if err != nil {
+		return err
+	}
+	defer closeAndIgnoreError(rc)
+	_, err = io.Copy(f, rc)
+	return err
 }
 
 func listingStatus(token string, args []string) error {
@@ -115,21 +120,21 @@ func listingStatus(token string, args []string) error {
 
 	ctx := context.TODO()
 
-	err := client.ListingStatusRequest(ctx, status, func(r io.Reader) error {
-		f, err := os.Create(fmt.Sprintf("status_listed_%t.csv", status))
-		if err != nil {
-			return err
-		}
-		defer func() {
-			_ = f.Close()
-		}()
-
-		_, err = io.Copy(f, r)
+	f, err := os.Create(fmt.Sprintf("status_listed_%t.csv", status))
+	if err != nil {
 		return err
-	})
+	}
+	defer closeAndIgnoreError(f)
+
+	rc, err := client.DoListingStatusRequest(ctx, status)
 	if err != nil {
 		return fmt.Errorf("failed fetching listing status: %w", err)
 	}
-
+	defer closeAndIgnoreError(rc)
+	_, err = io.Copy(f, rc)
 	return nil
+}
+
+func closeAndIgnoreError(c io.Closer) {
+	_ = c.Close()
 }

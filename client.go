@@ -83,14 +83,14 @@ func (client *Client) Do(req *http.Request) (*http.Response, error) {
 	return res, nil
 }
 
-func checkError(r io.Reader) (io.Reader, error) {
+func checkError(rc io.ReadCloser) (io.ReadCloser, error) {
 	var buf [1]byte
-	n, err := r.Read(buf[:])
+	n, err := rc.Read(buf[:])
 	if err != nil {
 		return nil, fmt.Errorf("could not read request response: %w", err)
 	}
 
-	mr := io.MultiReader(bytes.NewReader(buf[:]), r)
+	mr := io.MultiReader(bytes.NewReader(buf[:]), rc)
 	if n > 0 && buf[0] == '{' {
 		var message struct {
 			Note        string `json:"Note"`
@@ -107,7 +107,10 @@ func checkError(r io.Reader) (io.Reader, error) {
 		return nil, fmt.Errorf("alphavantage request did not return csv; got notice: %w", errors.New(strings.Join([]string{message.Note, message.Information}, " ")))
 	}
 
-	return mr, nil
+	return multiReadCloser{
+		Reader: mr,
+		close:  rc.Close,
+	}, nil
 }
 
 var typeType = reflect.TypeOf(time.Time{})

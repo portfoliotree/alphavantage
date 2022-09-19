@@ -28,14 +28,7 @@ const (
 	AssetTypeETF   = "ETF"
 )
 
-func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]ListingStatus, error) {
-	var result []ListingStatus
-	return result, client.ListingStatusRequest(ctx, isListed, func(r io.Reader) error {
-		return ParseCSV(r, &result, nil)
-	})
-}
-
-func (client *Client) ListingStatusRequest(ctx context.Context, isListed bool, fn func(io.Reader) error) error {
+func NewListingStatusURL(isListed bool) (string, error) {
 	state := ListingStatusActive
 	if !isListed {
 		state = ListingStatusDelisted
@@ -53,27 +46,46 @@ func (client *Client) ListingStatusRequest(ctx context.Context, isListed bool, f
 		}.Encode(),
 	}
 
+	return u.String(), nil
+}
+
+func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]ListingStatus, error) {
+	rc, err := client.DoListingStatusRequest(ctx, isListed)
+	if err != nil {
+		return nil, err
+	}
+	defer closeAndIgnoreError(rc)
+	var result []ListingStatus
+	return result, ParseCSV(rc, &result, nil)
+}
+
+func (client *Client) DoListingStatusRequest(ctx context.Context, isListed bool) (io.ReadCloser, error) {
+	requestURL, err := NewListingStatusURL(isListed)
+	if err != nil {
+		return nil, err
+	}
 	req, err := http.NewRequestWithContext(ctx,
 		http.MethodGet,
-		u.String(),
+		requestURL,
 		nil,
 	)
 	if err != nil {
-		return fmt.Errorf("failed to create listing status request: %w", err)
+		return nil, fmt.Errorf("failed to create listing status request: %w", err)
 	}
 
 	res, err := client.Do(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	defer func() {
-		_ = res.Body.Close()
-	}()
+	return checkError(res.Body)
+}
 
-	r, err := checkError(res.Body)
+// Deprecated: use DoListingStatusRequest instead. This method will be removed before 2023.
+func (client *Client) ListingStatusRequest(ctx context.Context, isListed bool, fn func(io.Reader) error) error {
+	rc, err := client.DoListingStatusRequest(ctx, isListed)
 	if err != nil {
 		return err
 	}
-
-	return fn(r)
+	defer closeAndIgnoreError(rc)
+	return fn(rc)
 }
