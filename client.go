@@ -93,8 +93,9 @@ func checkError(rc io.ReadCloser) (io.ReadCloser, error) {
 	mr := io.MultiReader(bytes.NewReader(buf[:]), rc)
 	if n > 0 && buf[0] == '{' {
 		var message struct {
-			Note        string `json:"Note"`
-			Information string `json:"Information"`
+			Note         string `json:"Note,omitempty"`
+			Information  string `json:"Information,omitempty"`
+			ErrorMessage string `json:"Error Message,omitempty"`
 		}
 		err = json.NewDecoder(mr).Decode(&message)
 		if err != nil {
@@ -104,7 +105,14 @@ func checkError(rc io.ReadCloser) (io.ReadCloser, error) {
 			return nil, fmt.Errorf("reached alphavantage rate limit")
 		}
 
-		return nil, fmt.Errorf("alphavantage request did not return csv; got notice: %w", errors.New(strings.Join([]string{message.Note, message.Information}, " ")))
+		if message.ErrorMessage != "" {
+			return nil, fmt.Errorf("alphavantage request did not return csv; got notice: %w", errors.New(message.ErrorMessage))
+		}
+		if message.Note != "" || message.Information != "" {
+			return nil, fmt.Errorf("alphavantage request did not return csv; got notice: %w", errors.New(strings.Join([]string{message.Note, message.Information}, " ")))
+		}
+
+		return nil, fmt.Errorf("alphavantage request did not return csv")
 	}
 
 	return multiReadCloser{
