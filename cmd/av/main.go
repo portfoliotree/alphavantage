@@ -12,7 +12,7 @@ import (
 
 func main() {
 	token := "demo"
-	if t := os.Getenv("ALPHA_VANTAGE_TOKEN"); t != "" {
+	if t := os.Getenv(alphavantage.StandardTokenEnvironmentVariableName); t != "" {
 		token = t
 	}
 	var tokenFlag string

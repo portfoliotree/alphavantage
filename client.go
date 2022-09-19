@@ -17,6 +17,10 @@ import (
 	"golang.org/x/time/rate"
 )
 
+const (
+	StandardTokenEnvironmentVariableName = "ALPHA_VANTAGE_TOKEN"
+)
+
 var easternTimezone *time.Location
 
 func init() {
