@@ -96,6 +96,7 @@ func checkError(rc io.ReadCloser) (io.ReadCloser, error) {
 			Note         string `json:"Note,omitempty"`
 			Information  string `json:"Information,omitempty"`
 			ErrorMessage string `json:"Error Message,omitempty"`
+			Detail       string `json:"detail,omitempty"`
 		}
 		err = json.NewDecoder(mr).Decode(&message)
 		if err != nil {
@@ -107,6 +108,9 @@ func checkError(rc io.ReadCloser) (io.ReadCloser, error) {
 
 		if message.ErrorMessage != "" {
 			return nil, fmt.Errorf("alphavantage request did not return csv; got notice: %w", errors.New(message.ErrorMessage))
+		}
+		if message.Detail != "" {
+			return nil, fmt.Errorf("alphavantage request did not return csv; got notice: %w", errors.New(message.Detail))
 		}
 		if message.Note != "" || message.Information != "" {
 			return nil, fmt.Errorf("alphavantage request did not return csv; got notice: %w", errors.New(strings.Join([]string{message.Note, message.Information}, " ")))

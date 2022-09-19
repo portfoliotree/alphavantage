@@ -16,4 +16,11 @@ func Test_checkError(t *testing.T) {
 		_, err := checkError(rc)
 		please.Expect(err).To(Ω.MatchError(Ω.ContainSubstring("the parameter apikey")))
 	})
+
+	t.Run("detail", func(t *testing.T) {
+		rc := io.NopCloser(bytes.NewBufferString(`{"detail": "Could not satisfy the request Accept header."}`))
+		please := Ω.NewWithT(t)
+		_, err := checkError(rc)
+		please.Expect(err).To(Ω.MatchError(Ω.ContainSubstring(": Could not satisfy")))
+	})
 }
