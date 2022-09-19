@@ -44,7 +44,7 @@ func TestSearch(t *testing.T) {
 			waitCallCount++
 			return nil
 		}),
-	}).Search(ctx, "BA")
+	}).SymbolSearch(ctx, "BA")
 	please.Expect(err).NotTo(Ω.HaveOccurred())
 	please.Expect(results).To(Ω.HaveLen(10))
 
@@ -68,10 +68,10 @@ func TestParseSearchQuery(t *testing.T) {
 	}()
 
 	please := Ω.NewWithT(t)
-	results, err := alphavantage.ParseSearchQuery(f)
+	results, err := alphavantage.ParseSymbolSearchQuery(f)
 	please.Expect(err).NotTo(Ω.HaveOccurred())
 	please.Expect(results).To(Ω.HaveLen(10))
-	please.Expect(results[:2]).To(Ω.Equal([]alphavantage.SearchResult{
+	please.Expect(results[:2]).To(Ω.Equal([]alphavantage.SymbolSearchResult{
 		{
 			Symbol:      "BA",
 			Name:        "Boeing Company",

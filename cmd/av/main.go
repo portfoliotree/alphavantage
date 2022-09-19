@@ -38,6 +38,12 @@ func main() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+	case "symbol-search":
+		err := symbolSearch(token, flag.Args()[1:])
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	case "help":
 		_ = help("", nil)
 	default:
@@ -61,6 +67,7 @@ func help(string, []string) error {
 	fmt.Println("Commands:")
 	fmt.Println("  quotes\n\tFetch time series stock quotes.\n\thttps://www.alphavantage.co/documentation/#time-series-data")
 	fmt.Println("  status\n\tFetch listing & de-listing status.\n\thttps://www.alphavantage.co/documentation/#listing-status")
+	fmt.Println("  symbol-search\n\tWrites symbol search results to stdout.\n\thttps://www.alphavantage.co/documentation/#symbolsearch")
 	fmt.Println()
 	return nil
 }
@@ -133,6 +140,30 @@ func listingStatus(token string, args []string) error {
 	defer closeAndIgnoreError(rc)
 	_, err = io.Copy(f, rc)
 	return nil
+}
+
+func symbolSearch(token string, args []string) error {
+	flags := flag.NewFlagSet("search", flag.ContinueOnError)
+	err := flags.Parse(args)
+	if err != nil {
+		return err
+	}
+
+	client := alphavantage.NewClient(token)
+
+	ctx := context.TODO()
+
+	result, err := client.DoSymbolSearchRequest(ctx, flags.Arg(0))
+	if err != nil {
+		return err
+	}
+	defer closeAndIgnoreError(result)
+
+	_, _ = io.Copy(os.Stdout, result)
+
+	_, _ = fmt.Fprintln(os.Stdout)
+
+	return err
 }
 
 func closeAndIgnoreError(c io.Closer) {

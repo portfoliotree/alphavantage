@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-type SearchResult struct {
+type SymbolSearchResult struct {
 	Symbol      string  `column-name:"symbol"`
 	Name        string  `column-name:"name"`
 	Type        string  `column-name:"type"`
@@ -21,7 +21,7 @@ type SearchResult struct {
 	MatchScore  float64 `column-name:"matchScore"`
 }
 
-func NewSearchURL(keywords string) (string, error) {
+func NewSymbolSearchURL(keywords string) (string, error) {
 	u := url.URL{
 		Scheme: "https",
 		Host:   "www.alphavantage.co",
@@ -35,17 +35,17 @@ func NewSearchURL(keywords string) (string, error) {
 	return u.String(), nil
 }
 
-func (client *Client) Search(ctx context.Context, keywords string) ([]SearchResult, error) {
-	rc, err := client.DoSearchRequest(ctx, keywords)
+func (client *Client) SymbolSearch(ctx context.Context, keywords string) ([]SymbolSearchResult, error) {
+	rc, err := client.DoSymbolSearchRequest(ctx, keywords)
 	if err != nil {
 		return nil, err
 	}
 	defer closeAndIgnoreError(rc)
-	return ParseSearchQuery(rc)
+	return ParseSymbolSearchQuery(rc)
 }
 
-func (client *Client) DoSearchRequest(ctx context.Context, keywords string) (io.ReadCloser, error) {
-	requestURL, err := NewSearchURL(keywords)
+func (client *Client) DoSymbolSearchRequest(ctx context.Context, keywords string) (io.ReadCloser, error) {
+	requestURL, err := NewSymbolSearchURL(keywords)
 	if err != nil {
 		return nil, err
 	}
@@ -72,11 +72,11 @@ func (client *Client) DoSearchRequest(ctx context.Context, keywords string) (io.
 	return rc, nil
 }
 
-func ParseSearchQuery(r io.Reader) ([]SearchResult, error) {
-	var list []SearchResult
+func ParseSymbolSearchQuery(r io.Reader) ([]SymbolSearchResult, error) {
+	var list []SymbolSearchResult
 	return list, ParseCSV(r, &list, nil)
 }
 
-func (r *SearchResult) ParseTimezone() (*time.Location, error) {
+func (r *SymbolSearchResult) ParseTimezone() (*time.Location, error) {
 	return time.LoadLocation(r.TimeZone)
 }
