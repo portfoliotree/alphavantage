@@ -32,7 +32,7 @@ func main() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-	case "status":
+	case "listing-status":
 		err := listingStatus(token, flag.Args()[1:])
 		if err != nil {
 			fmt.Println(err)
@@ -65,8 +65,8 @@ func help(string, []string) error {
 	flag.PrintDefaults()
 	fmt.Println()
 	fmt.Println("Commands:")
+	fmt.Println("  listing-status\n\tFetch listing & de-listing status.\n\thttps://www.alphavantage.co/documentation/#listing-status")
 	fmt.Println("  quotes\n\tFetch time series stock quotes.\n\thttps://www.alphavantage.co/documentation/#time-series-data")
-	fmt.Println("  status\n\tFetch listing & de-listing status.\n\thttps://www.alphavantage.co/documentation/#listing-status")
 	fmt.Println("  symbol-search\n\tWrites symbol search results to stdout.\n\thttps://www.alphavantage.co/documentation/#symbolsearch")
 	fmt.Println()
 	return nil
