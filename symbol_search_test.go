@@ -8,7 +8,7 @@ import (
 	"os"
 	"testing"
 
-	Ω "github.com/onsi/gomega"
+	. "github.com/onsi/gomega"
 
 	"github.com/portfoliotree/alphavantage"
 )
@@ -22,7 +22,7 @@ func TestSearch(t *testing.T) {
 		_ = f.Close()
 	}()
 
-	please := Ω.NewWithT(t)
+	o := NewWithT(t)
 
 	ctx := context.Background()
 
@@ -45,17 +45,17 @@ func TestSearch(t *testing.T) {
 			return nil
 		}),
 	}).SymbolSearch(ctx, "BA")
-	please.Expect(err).NotTo(Ω.HaveOccurred())
-	please.Expect(results).To(Ω.HaveLen(10))
+	o.Expect(err).NotTo(HaveOccurred())
+	o.Expect(results).To(HaveLen(10))
 
-	please.Expect(avReq.Host).To(Ω.Equal("www.alphavantage.co"))
-	please.Expect(avReq.URL.Scheme).To(Ω.Equal("https"))
-	please.Expect(avReq.URL.Path).To(Ω.Equal("/query"))
-	please.Expect(avReq.URL.Query().Get("function")).To(Ω.Equal("SYMBOL_SEARCH"))
-	please.Expect(avReq.URL.Query().Get("keywords")).To(Ω.Equal("BA"))
-	please.Expect(avReq.URL.Query().Get("apikey")).To(Ω.Equal("demo"))
-	please.Expect(avReq.URL.Query().Get("datatype")).To(Ω.Equal("csv"))
-	please.Expect(waitCallCount).To(Ω.Equal(1))
+	o.Expect(avReq.Host).To(Equal("www.alphavantage.co"))
+	o.Expect(avReq.URL.Scheme).To(Equal("https"))
+	o.Expect(avReq.URL.Path).To(Equal("/query"))
+	o.Expect(avReq.URL.Query().Get("function")).To(Equal("SYMBOL_SEARCH"))
+	o.Expect(avReq.URL.Query().Get("keywords")).To(Equal("BA"))
+	please.Expect(avReq.URL.Query().Get("apikey")).To(Equal("demo"))
+	please.Expect(avReq.URL.Query().Get("datatype")).To(Equal("csv"))
+	please.Expect(waitCallCount).To(Equal(1))
 }
 
 func TestParseSearchQuery(t *testing.T) {
@@ -67,11 +67,11 @@ func TestParseSearchQuery(t *testing.T) {
 		_ = f.Close()
 	}()
 
-	please := Ω.NewWithT(t)
+	please := NewWithT(t)
 	results, err := alphavantage.ParseSymbolSearchQuery(f)
-	please.Expect(err).NotTo(Ω.HaveOccurred())
-	please.Expect(results).To(Ω.HaveLen(10))
-	please.Expect(results[:2]).To(Ω.Equal([]alphavantage.SymbolSearchResult{
+	please.Expect(err).NotTo(HaveOccurred())
+	please.Expect(results).To(HaveLen(10))
+	please.Expect(results[:2]).To(Equal([]alphavantage.SymbolSearchResult{
 		{
 			Symbol:      "BA",
 			Name:        "Boeing Company",

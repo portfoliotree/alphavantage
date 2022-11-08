@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	Ω "github.com/onsi/gomega"
+	. "github.com/onsi/gomega"
 
 	"github.com/portfoliotree/alphavantage"
 )
@@ -26,21 +26,21 @@ func (wf waitFunc) Wait(ctx context.Context) error {
 
 func TestParse(t *testing.T) {
 	t.Run("nil data", func(t *testing.T) {
-		please := Ω.NewWithT(t)
-		please.Expect(func() {
+		o := NewWithT(t)
+		o.Expect(func() {
 			_ = alphavantage.ParseCSV(bytes.NewReader(nil), nil, nil)
-		}).To(Ω.Panic())
+		}).To(Panic())
 	})
 
 	t.Run("non pointer data", func(t *testing.T) {
-		please := Ω.NewWithT(t)
-		please.Expect(func() {
+		o := NewWithT(t)
+		o.Expect(func() {
 			_ = alphavantage.ParseCSV(bytes.NewReader(nil), struct{}{}, nil)
-		}).To(Ω.Panic())
+		}).To(Panic())
 	})
 
 	t.Run("real data", func(t *testing.T) {
-		please := Ω.NewWithT(t)
+		o := NewWithT(t)
 
 		var someFolks []struct {
 			ID           int       `column-name:"id"`
@@ -50,23 +50,23 @@ func TestParse(t *testing.T) {
 		}
 
 		err := alphavantage.ParseCSV(strings.NewReader(panthersCSV), &someFolks, nil)
-		please.Expect(err).NotTo(Ω.HaveOccurred())
-		please.Expect(someFolks).To(Ω.HaveLen(3))
+		o.Expect(err).NotTo(HaveOccurred())
+		o.Expect(someFolks).To(HaveLen(3))
 
-		please.Expect(someFolks[0].ID).To(Ω.Equal(1))
-		please.Expect(someFolks[0].FirstInitial).To(Ω.Equal("N"))
-		please.Expect(someFolks[0].BirthDate).To(Ω.Equal(mustParseDate(t, "2020-02-17")))
-		please.Expect(someFolks[0].Mass).To(Ω.Equal(70.0))
+		o.Expect(someFolks[0].ID).To(Equal(1))
+		o.Expect(someFolks[0].FirstInitial).To(Equal("N"))
+		o.Expect(someFolks[0].BirthDate).To(Equal(mustParseDate(t, "2020-02-17")))
+		o.Expect(someFolks[0].Mass).To(Equal(70.0))
 
-		please.Expect(someFolks[1].ID).To(Ω.Equal(2))
-		please.Expect(someFolks[1].FirstInitial).To(Ω.Equal("S"))
-		please.Expect(someFolks[1].BirthDate).To(Ω.Equal(mustParseDate(t, "2020-10-22")))
-		please.Expect(someFolks[1].Mass).To(Ω.Equal(68.2))
+		o.Expect(someFolks[1].ID).To(Equal(2))
+		o.Expect(someFolks[1].FirstInitial).To(Equal("S"))
+		please.Expect(someFolks[1].BirthDate).To(Equal(mustParseDate(t, "2020-10-22")))
+		please.Expect(someFolks[1].Mass).To(Equal(68.2))
 
-		please.Expect(someFolks[2].ID).To(Ω.Equal(3))
-		please.Expect(someFolks[2].FirstInitial).To(Ω.Equal("C"))
-		please.Expect(someFolks[2].BirthDate).To(Ω.Equal(mustParseDate(t, "2021-08-31")))
-		please.Expect(someFolks[2].Mass).To(Ω.Equal(72.9))
+		please.Expect(someFolks[2].ID).To(Equal(3))
+		please.Expect(someFolks[2].FirstInitial).To(Equal("C"))
+		please.Expect(someFolks[2].BirthDate).To(Equal(mustParseDate(t, "2021-08-31")))
+		please.Expect(someFolks[2].Mass).To(Equal(72.9))
 	})
 }
 

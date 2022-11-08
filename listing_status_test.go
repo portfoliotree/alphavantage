@@ -7,7 +7,7 @@ import (
 	"os"
 	"testing"
 
-	Ω "github.com/onsi/gomega"
+	. "github.com/onsi/gomega"
 
 	"github.com/portfoliotree/alphavantage"
 )
@@ -21,7 +21,7 @@ func TestClient_ListingStatus_listed(t *testing.T) {
 		_ = f.Close()
 	}()
 
-	please := Ω.NewWithT(t)
+	o := NewWithT(t)
 
 	ctx := context.Background()
 
@@ -44,17 +44,17 @@ func TestClient_ListingStatus_listed(t *testing.T) {
 			return nil
 		}),
 	}).ListingStatus(ctx, true)
-	please.Expect(err).NotTo(Ω.HaveOccurred())
-	please.Expect(results).To(Ω.HaveLen(8))
+	o.Expect(err).NotTo(HaveOccurred())
+	o.Expect(results).To(HaveLen(8))
 
-	please.Expect(avReq.Host).To(Ω.Equal("www.alphavantage.co"))
-	please.Expect(avReq.URL.Scheme).To(Ω.Equal("https"))
-	please.Expect(avReq.URL.Path).To(Ω.Equal("/query"))
-	please.Expect(avReq.URL.Query().Get("function")).To(Ω.Equal("LISTING_STATUS"))
-	please.Expect(avReq.URL.Query().Get("state")).To(Ω.Equal("active"))
-	please.Expect(avReq.URL.Query().Get("apikey")).To(Ω.Equal("demo"))
-	please.Expect(avReq.URL.Query().Get("datatype")).To(Ω.Equal("csv"))
-	please.Expect(waitCallCount).To(Ω.Equal(1))
+	o.Expect(avReq.Host).To(Equal("www.alphavantage.co"))
+	o.Expect(avReq.URL.Scheme).To(Equal("https"))
+	o.Expect(avReq.URL.Path).To(Equal("/query"))
+	o.Expect(avReq.URL.Query().Get("function")).To(Equal("LISTING_STATUS"))
+	o.Expect(avReq.URL.Query().Get("state")).To(Equal("active"))
+	o.Expect(avReq.URL.Query().Get("apikey")).To(Equal("demo"))
+	o.Expect(avReq.URL.Query().Get("datatype")).To(Equal("csv"))
+	o.Expect(waitCallCount).To(Equal(1))
 }
 
 func TestClient_ListingStatus_delisted(t *testing.T) {
@@ -66,7 +66,7 @@ func TestClient_ListingStatus_delisted(t *testing.T) {
 		_ = f.Close()
 	}()
 
-	please := Ω.NewWithT(t)
+	o := NewWithT(t)
 
 	ctx := context.Background()
 
@@ -89,6 +89,6 @@ func TestClient_ListingStatus_delisted(t *testing.T) {
 			return nil
 		}),
 	}).ListingStatus(ctx, false)
-	please.Expect(err).NotTo(Ω.HaveOccurred())
-	please.Expect(avReq.URL.Query().Get("state")).To(Ω.Equal("delisted"))
+	o.Expect(err).NotTo(HaveOccurred())
+	o.Expect(avReq.URL.Query().Get("state")).To(Equal("delisted"))
 }
