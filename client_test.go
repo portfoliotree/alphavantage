@@ -60,13 +60,13 @@ func TestParse(t *testing.T) {
 
 		o.Expect(someFolks[1].ID).To(Equal(2))
 		o.Expect(someFolks[1].FirstInitial).To(Equal("S"))
-		please.Expect(someFolks[1].BirthDate).To(Equal(mustParseDate(t, "2020-10-22")))
-		please.Expect(someFolks[1].Mass).To(Equal(68.2))
+		o.Expect(someFolks[1].BirthDate).To(Equal(mustParseDate(t, "2020-10-22")))
+		o.Expect(someFolks[1].Mass).To(Equal(68.2))
 
-		please.Expect(someFolks[2].ID).To(Equal(3))
-		please.Expect(someFolks[2].FirstInitial).To(Equal("C"))
-		please.Expect(someFolks[2].BirthDate).To(Equal(mustParseDate(t, "2021-08-31")))
-		please.Expect(someFolks[2].Mass).To(Equal(72.9))
+		o.Expect(someFolks[2].ID).To(Equal(3))
+		o.Expect(someFolks[2].FirstInitial).To(Equal("C"))
+		o.Expect(someFolks[2].BirthDate).To(Equal(mustParseDate(t, "2021-08-31")))
+		o.Expect(someFolks[2].Mass).To(Equal(72.9))
 	})
 }
 

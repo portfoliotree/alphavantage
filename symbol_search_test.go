@@ -53,9 +53,9 @@ func TestSearch(t *testing.T) {
 	o.Expect(avReq.URL.Path).To(Equal("/query"))
 	o.Expect(avReq.URL.Query().Get("function")).To(Equal("SYMBOL_SEARCH"))
 	o.Expect(avReq.URL.Query().Get("keywords")).To(Equal("BA"))
-	please.Expect(avReq.URL.Query().Get("apikey")).To(Equal("demo"))
-	please.Expect(avReq.URL.Query().Get("datatype")).To(Equal("csv"))
-	please.Expect(waitCallCount).To(Equal(1))
+	o.Expect(avReq.URL.Query().Get("apikey")).To(Equal("demo"))
+	o.Expect(avReq.URL.Query().Get("datatype")).To(Equal("csv"))
+	o.Expect(waitCallCount).To(Equal(1))
 }
 
 func TestParseSearchQuery(t *testing.T) {
