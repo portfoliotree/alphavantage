@@ -93,7 +93,7 @@ I have found the CSV encoding easier to parse.
 - [x] Company Overview
 - [ ] Income Statement
 - [ ] Balance Sheet
-- [ ] Cache Flow
+- [ ] Cashflow
 - [ ] Earnings
 - [x] Listing & Delisting Status
 - [ ] Earnings Calendar
