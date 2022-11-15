@@ -99,7 +99,8 @@ func quotes(token string, args []string) error {
 }
 
 func requestQuotes(ctx context.Context, client *alphavantage.Client, function, symbol string) error {
-	f, err := os.Create(symbol + ".csv")
+	fileName := symbol + ".csv"
+	f, err := os.Create(fileName)
 	if err != nil {
 		return err
 	}
@@ -107,9 +108,13 @@ func requestQuotes(ctx context.Context, client *alphavantage.Client, function, s
 
 	rc, err := client.DoQuotesRequest(ctx, symbol, alphavantage.QuoteFunction(function))
 	if err != nil {
+		_ = os.Remove(fileName)
 		return err
 	}
 	defer closeAndIgnoreError(rc)
+
+	fmt.Printf("writing quotes for %q to file %s\n", symbol, fileName)
+
 	_, err = io.Copy(f, rc)
 	return err
 }
@@ -127,7 +132,8 @@ func listingStatus(token string, args []string) error {
 
 	ctx := context.TODO()
 
-	f, err := os.Create(fmt.Sprintf("status_listed_%t.csv", status))
+	fileName := fmt.Sprintf("status_listed_%t.csv", status)
+	f, err := os.Create(fileName)
 	if err != nil {
 		return err
 	}
@@ -135,9 +141,13 @@ func listingStatus(token string, args []string) error {
 
 	rc, err := client.DoListingStatusRequest(ctx, status)
 	if err != nil {
+		_ = os.Remove(fileName)
 		return fmt.Errorf("failed fetching listing status: %w", err)
 	}
 	defer closeAndIgnoreError(rc)
+
+	fmt.Printf("writing listing statuses to file %s\n", fileName)
+
 	_, err = io.Copy(f, rc)
 	return nil
 }
