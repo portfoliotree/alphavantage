@@ -38,7 +38,7 @@ func TestQuotes(t *testing.T) {
 			waitCallCount++
 			return nil
 		}),
-	}).Quotes(ctx, "IBM", alphavantage.TimeSeriesMonthly)
+	}).Quotes(ctx, "IBM", alphavantage.TimeSeriesMonthly, nil)
 
 	o.Expect(err).NotTo(HaveOccurred())
 	o.Expect(quotes).To(HaveLen(260))
@@ -62,7 +62,7 @@ func TestService_ParseQueryResponse(t *testing.T) {
 2020-08-18,13.8100,13.8700,13.5400,13.5700,571445
 `
 
-		_, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)))
+		_, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)), nil)
 		o.Expect(err).NotTo(HaveOccurred())
 	})
 
@@ -73,7 +73,7 @@ func TestService_ParseQueryResponse(t *testing.T) {
 2020-08-21 19:20:00,123.2000,123.2000,123.2000,123.2000,200
 2020-08-21 18:50:00,123.1700,123.1700,123.1700,123.1700,115
 2020-08-21 17:30:00,123.0200,123.0200,123.0200,123.0200,200`
-		_, err := alphavantage.ParseIntraDayQuotes(bytes.NewReader([]byte(responseText)))
+		_, err := alphavantage.ParseIntraDayQuotes(bytes.NewReader([]byte(responseText)), nil)
 		o.Expect(err).NotTo(HaveOccurred())
 	})
 
@@ -84,7 +84,7 @@ func TestService_ParseQueryResponse(t *testing.T) {
 2020-08-21 19:20:00,123.2000,123.2000,123.2000,123.2000,200,123456789
 2020-08-21 18:50:00,123.1700,123.1700,123.1700,123.1700,115,123456789
 2020-08-21 17:30:00,123.0200,123.0200,123.0200,123.0200,200,123456789`
-		_, err := alphavantage.ParseIntraDayQuotes(bytes.NewReader([]byte(responseText)))
+		_, err := alphavantage.ParseIntraDayQuotes(bytes.NewReader([]byte(responseText)), nil)
 		o.Expect(err).NotTo(HaveOccurred())
 	})
 
@@ -94,7 +94,7 @@ func TestService_ParseQueryResponse(t *testing.T) {
 2020-08-31,444.6100,500.1400,440.1100,498.3200,498.3200,115847020,0.0000,5.0000
 `
 
-		quotes, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)))
+		quotes, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)), nil)
 		please.Expect(err).NotTo(HaveOccurred())
 		please.Expect(quotes).To(HaveLen(1))
 		please.Expect(quotes[0].SplitCoefficient).To(Equal(5.0))
@@ -107,7 +107,7 @@ func TestService_ParseQueryResponse(t *testing.T) {
 2020-08-31,444.6100,500.1400,440.1100,498.3200,498.3200,115847020,4.20,5.0000
 `
 
-		quotes, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)))
+		quotes, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)), nil)
 		please.Expect(err).NotTo(HaveOccurred())
 		please.Expect(quotes).To(HaveLen(1))
 		please.Expect(quotes[0].DividendAmount).To(Equal(4.20))

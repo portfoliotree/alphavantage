@@ -53,7 +53,8 @@ func (fn QuoteFunction) Validate() error {
 	}
 }
 
-func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteFunction) ([]Quote, error) {
+// Quotes fetches quotes for a given symbol and function. It parses the dates in the given location.
+func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteFunction, location *time.Location) ([]Quote, error) {
 	rc, err := client.DoQuotesRequest(ctx, symbol, function)
 	if err != nil {
 		return nil, err
@@ -62,13 +63,13 @@ func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteF
 
 	switch function {
 	case TimeSeriesIntraday:
-		list, err := ParseIntraDayQuotes(rc)
+		list, err := ParseIntraDayQuotes(rc, location)
 		if err != nil {
 			return nil, err
 		}
 		return convertQuoteElements(list, func(q IntraDayQuote) Quote { return Quote(q) }), nil
 	default:
-		quotes, err := ParseQuotes(rc)
+		quotes, err := ParseQuotes(rc, location)
 		if err != nil {
 			return nil, err
 		}
@@ -123,9 +124,9 @@ type Quote struct {
 // - TIME_SERIES_DAILY_ADJUSTED
 // - TIME_SERIES_MONTHLY
 // - TIME_SERIES_MONTHLY_ADJUSTED
-func ParseQuotes(r io.Reader) ([]Quote, error) {
+func ParseQuotes(r io.Reader, location *time.Location) ([]Quote, error) {
 	var list []Quote
-	return list, ParseCSV(r, &list, nil)
+	return list, ParseCSV(r, &list, location)
 }
 
 // IntraDayQuote is convertable to Quote. The only difference is the time-layout includes additional time information.
@@ -144,9 +145,9 @@ var _ = Quote(IntraDayQuote{})
 
 // ParseIntraDayQuotes handles parsing the following "Stock Time Series" functions
 // - TIME_SERIES_INTRADAY
-func ParseIntraDayQuotes(r io.Reader) ([]IntraDayQuote, error) {
+func ParseIntraDayQuotes(r io.Reader, location *time.Location) ([]IntraDayQuote, error) {
 	var list []IntraDayQuote
-	return list, ParseCSV(r, &list, nil)
+	return list, ParseCSV(r, &list, location)
 }
 
 //TODO: use this instead after bumping to 1.18
