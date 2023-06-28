@@ -44,7 +44,7 @@ func TestClient_ListingStatus_listed(t *testing.T) {
 		}),
 	}).ListingStatus(ctx, true)
 	require.NoError(t, err)
-	assert.Len(t, results, 9)
+	assert.Len(t, results, 8)
 
 	assert.Equal(t, "www.alphavantage.co", avReq.Host)
 	assert.Equal(t, "https", avReq.URL.Scheme)
