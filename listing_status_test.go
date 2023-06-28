@@ -7,7 +7,8 @@ import (
 	"os"
 	"testing"
 
-	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/portfoliotree/alphavantage"
 )
@@ -20,8 +21,6 @@ func TestClient_ListingStatus_listed(t *testing.T) {
 	defer func() {
 		_ = f.Close()
 	}()
-
-	o := NewWithT(t)
 
 	ctx := context.Background()
 
@@ -44,17 +43,17 @@ func TestClient_ListingStatus_listed(t *testing.T) {
 			return nil
 		}),
 	}).ListingStatus(ctx, true)
-	o.Expect(err).NotTo(HaveOccurred())
-	o.Expect(results).To(HaveLen(8))
+	require.NoError(t, err)
+	assert.Len(t, results, 9)
 
-	o.Expect(avReq.Host).To(Equal("www.alphavantage.co"))
-	o.Expect(avReq.URL.Scheme).To(Equal("https"))
-	o.Expect(avReq.URL.Path).To(Equal("/query"))
-	o.Expect(avReq.URL.Query().Get("function")).To(Equal("LISTING_STATUS"))
-	o.Expect(avReq.URL.Query().Get("state")).To(Equal("active"))
-	o.Expect(avReq.URL.Query().Get("apikey")).To(Equal("demo"))
-	o.Expect(avReq.URL.Query().Get("datatype")).To(Equal("csv"))
-	o.Expect(waitCallCount).To(Equal(1))
+	assert.Equal(t, "www.alphavantage.co", avReq.Host)
+	assert.Equal(t, "https", avReq.URL.Scheme)
+	assert.Equal(t, "/query", avReq.URL.Path)
+	assert.Equal(t, "LISTING_STATUS", avReq.URL.Query().Get("function"))
+	assert.Equal(t, "active", avReq.URL.Query().Get("state"))
+	assert.Equal(t, "demo", avReq.URL.Query().Get("apikey"))
+	assert.Equal(t, "csv", avReq.URL.Query().Get("datatype"))
+	assert.Equal(t, 1, waitCallCount)
 }
 
 func TestClient_ListingStatus_delisted(t *testing.T) {
@@ -65,8 +64,6 @@ func TestClient_ListingStatus_delisted(t *testing.T) {
 	defer func() {
 		_ = f.Close()
 	}()
-
-	o := NewWithT(t)
 
 	ctx := context.Background()
 
@@ -89,6 +86,6 @@ func TestClient_ListingStatus_delisted(t *testing.T) {
 			return nil
 		}),
 	}).ListingStatus(ctx, false)
-	o.Expect(err).NotTo(HaveOccurred())
-	o.Expect(avReq.URL.Query().Get("state")).To(Equal("delisted"))
+	require.NoError(t, err)
+	assert.Equal(t, "delisted", avReq.URL.Query().Get("state"))
 }

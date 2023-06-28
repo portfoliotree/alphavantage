@@ -9,7 +9,8 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/portfoliotree/alphavantage"
 )
@@ -26,21 +27,18 @@ func (wf waitFunc) Wait(ctx context.Context) error {
 
 func TestParse(t *testing.T) {
 	t.Run("nil data", func(t *testing.T) {
-		o := NewWithT(t)
-		o.Expect(func() {
+		assert.Panics(t, func() {
 			_ = alphavantage.ParseCSV(bytes.NewReader(nil), nil, nil)
-		}).To(Panic())
+		})
 	})
 
 	t.Run("non pointer data", func(t *testing.T) {
-		o := NewWithT(t)
-		o.Expect(func() {
+		assert.Panics(t, func() {
 			_ = alphavantage.ParseCSV(bytes.NewReader(nil), struct{}{}, nil)
-		}).To(Panic())
+		})
 	})
 
 	t.Run("real data", func(t *testing.T) {
-		o := NewWithT(t)
 
 		var someFolks []struct {
 			ID           int       `column-name:"id"`
@@ -50,23 +48,23 @@ func TestParse(t *testing.T) {
 		}
 
 		err := alphavantage.ParseCSV(strings.NewReader(panthersCSV), &someFolks, nil)
-		o.Expect(err).NotTo(HaveOccurred())
-		o.Expect(someFolks).To(HaveLen(3))
+		require.NoError(t, err)
+		assert.Len(t, someFolks, 3)
 
-		o.Expect(someFolks[0].ID).To(Equal(1))
-		o.Expect(someFolks[0].FirstInitial).To(Equal("N"))
-		o.Expect(someFolks[0].BirthDate).To(Equal(mustParseDate(t, "2020-02-17")))
-		o.Expect(someFolks[0].Mass).To(Equal(70.0))
+		assert.Equal(t, 1, someFolks[0].ID)
+		assert.Equal(t, "N", someFolks[0].FirstInitial)
+		assert.Equal(t, mustParseDate(t, "2020-02-17"), someFolks[0].BirthDate)
+		assert.Equal(t, 70.0, someFolks[0].Mass)
 
-		o.Expect(someFolks[1].ID).To(Equal(2))
-		o.Expect(someFolks[1].FirstInitial).To(Equal("S"))
-		o.Expect(someFolks[1].BirthDate).To(Equal(mustParseDate(t, "2020-10-22")))
-		o.Expect(someFolks[1].Mass).To(Equal(68.2))
+		assert.Equal(t, 2, someFolks[1].ID)
+		assert.Equal(t, "S", someFolks[1].FirstInitial)
+		assert.Equal(t, mustParseDate(t, "2020-10-22"), someFolks[1].BirthDate)
+		assert.Equal(t, 68.2, someFolks[1].Mass)
 
-		o.Expect(someFolks[2].ID).To(Equal(3))
-		o.Expect(someFolks[2].FirstInitial).To(Equal("C"))
-		o.Expect(someFolks[2].BirthDate).To(Equal(mustParseDate(t, "2021-08-31")))
-		o.Expect(someFolks[2].Mass).To(Equal(72.9))
+		assert.Equal(t, 3, someFolks[2].ID)
+		assert.Equal(t, "C", someFolks[2].FirstInitial)
+		assert.Equal(t, mustParseDate(t, "2021-08-31"), someFolks[2].BirthDate)
+		assert.Equal(t, 72.9, someFolks[2].Mass)
 	})
 }
 

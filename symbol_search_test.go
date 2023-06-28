@@ -8,7 +8,8 @@ import (
 	"os"
 	"testing"
 
-	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/portfoliotree/alphavantage"
 )
@@ -21,8 +22,6 @@ func TestSearch(t *testing.T) {
 	defer func() {
 		_ = f.Close()
 	}()
-
-	o := NewWithT(t)
 
 	ctx := context.Background()
 
@@ -45,17 +44,17 @@ func TestSearch(t *testing.T) {
 			return nil
 		}),
 	}).SymbolSearch(ctx, "BA")
-	o.Expect(err).NotTo(HaveOccurred())
-	o.Expect(results).To(HaveLen(10))
+	require.NoError(t, err)
+	assert.Len(t, results, 10)
 
-	o.Expect(avReq.Host).To(Equal("www.alphavantage.co"))
-	o.Expect(avReq.URL.Scheme).To(Equal("https"))
-	o.Expect(avReq.URL.Path).To(Equal("/query"))
-	o.Expect(avReq.URL.Query().Get("function")).To(Equal("SYMBOL_SEARCH"))
-	o.Expect(avReq.URL.Query().Get("keywords")).To(Equal("BA"))
-	o.Expect(avReq.URL.Query().Get("apikey")).To(Equal("demo"))
-	o.Expect(avReq.URL.Query().Get("datatype")).To(Equal("csv"))
-	o.Expect(waitCallCount).To(Equal(1))
+	assert.Equal(t, "www.alphavantage.co", avReq.Host)
+	assert.Equal(t, "https", avReq.URL.Scheme)
+	assert.Equal(t, "/query", avReq.URL.Path)
+	assert.Equal(t, "SYMBOL_SEARCH", avReq.URL.Query().Get("function"))
+	assert.Equal(t, "BA", avReq.URL.Query().Get("keywords"))
+	assert.Equal(t, "demo", avReq.URL.Query().Get("apikey"))
+	assert.Equal(t, "csv", avReq.URL.Query().Get("datatype"))
+	assert.Equal(t, 1, waitCallCount)
 }
 
 func TestParseSearchQuery(t *testing.T) {
@@ -67,11 +66,11 @@ func TestParseSearchQuery(t *testing.T) {
 		_ = f.Close()
 	}()
 
-	please := NewWithT(t)
 	results, err := alphavantage.ParseSymbolSearchQuery(f)
-	please.Expect(err).NotTo(HaveOccurred())
-	please.Expect(results).To(HaveLen(10))
-	please.Expect(results[:2]).To(Equal([]alphavantage.SymbolSearchResult{
+	require.NoError(t, err)
+	assert.Len(t, results, 10)
+
+	assert.Equal(t, []alphavantage.SymbolSearchResult{
 		{
 			Symbol:      "BA",
 			Name:        "Boeing Company",
@@ -94,5 +93,5 @@ func TestParseSearchQuery(t *testing.T) {
 			Currency:    "USD",
 			MatchScore:  0.8,
 		},
-	}))
+	}, results[:2])
 }

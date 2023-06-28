@@ -8,7 +8,8 @@ import (
 	"net/http"
 	"testing"
 
-	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/portfoliotree/alphavantage"
 )
@@ -17,8 +18,6 @@ import (
 var monthlyIBM []byte
 
 func TestQuotes(t *testing.T) {
-	o := NewWithT(t)
-
 	ctx := context.Background()
 
 	var avReq *http.Request
@@ -40,21 +39,20 @@ func TestQuotes(t *testing.T) {
 		}),
 	}).Quotes(ctx, "IBM", alphavantage.TimeSeriesMonthly, nil)
 
-	o.Expect(err).NotTo(HaveOccurred())
-	o.Expect(quotes).To(HaveLen(260))
-	o.Expect(avReq.Host).To(Equal("www.alphavantage.co"))
-	o.Expect(avReq.URL.Scheme).To(Equal("https"))
-	o.Expect(avReq.URL.Path).To(Equal("/query"))
-	o.Expect(avReq.URL.Query().Get("function")).To(Equal("TIME_SERIES_MONTHLY"))
-	o.Expect(avReq.URL.Query().Get("symbol")).To(Equal("IBM"))
-	o.Expect(avReq.URL.Query().Get("apikey")).To(Equal("demo"))
-	o.Expect(avReq.URL.Query().Get("datatype")).To(Equal("csv"))
-	o.Expect(waitCallCount).To(Equal(1))
+	require.NoError(t, err)
+	assert.Len(t, quotes, 260)
+	assert.Equal(t, "www.alphavantage.co", avReq.Host)
+	assert.Equal(t, "https", avReq.URL.Scheme)
+	assert.Equal(t, "/query", avReq.URL.Path)
+	assert.Equal(t, "TIME_SERIES_MONTHLY", avReq.URL.Query().Get("function"))
+	assert.Equal(t, "IBM", avReq.URL.Query().Get("symbol"))
+	assert.Equal(t, "demo", avReq.URL.Query().Get("apikey"))
+	assert.Equal(t, "csv", avReq.URL.Query().Get("datatype"))
+	assert.Equal(t, 1, waitCallCount)
 }
 
 func TestService_ParseQueryResponse(t *testing.T) {
 	t.Run("valid data", func(t *testing.T) {
-		o := NewGomegaWithT(t)
 		const responseText = `timestamp,open,high,low,close,volume
 2020-08-21,13.2600,13.3200,13.1500,13.2500,751279
 2020-08-20,13.4700,13.4750,13.2200,13.3800,854559
@@ -63,52 +61,48 @@ func TestService_ParseQueryResponse(t *testing.T) {
 `
 
 		_, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)), nil)
-		o.Expect(err).NotTo(HaveOccurred())
+		require.NoError(t, err)
 	})
 
 	t.Run("intra-day", func(t *testing.T) {
-		o := NewGomegaWithT(t)
 		const responseText = `timestamp,open,high,low,close,volume
 2020-08-21 19:40:00,123.1700,123.1700,123.1700,123.1700,825
 2020-08-21 19:20:00,123.2000,123.2000,123.2000,123.2000,200
 2020-08-21 18:50:00,123.1700,123.1700,123.1700,123.1700,115
 2020-08-21 17:30:00,123.0200,123.0200,123.0200,123.0200,200`
 		_, err := alphavantage.ParseIntraDayQuotes(bytes.NewReader([]byte(responseText)), nil)
-		o.Expect(err).NotTo(HaveOccurred())
+		require.NoError(t, err)
 	})
 
 	t.Run("unexpected column", func(t *testing.T) {
-		o := NewGomegaWithT(t)
 		const responseText = `timestamp,open,high,low,close,volume,unexpected
 2020-08-21 19:40:00,123.1700,123.1700,123.1700,123.1700,825,123456789
 2020-08-21 19:20:00,123.2000,123.2000,123.2000,123.2000,200,123456789
 2020-08-21 18:50:00,123.1700,123.1700,123.1700,123.1700,115,123456789
 2020-08-21 17:30:00,123.0200,123.0200,123.0200,123.0200,200,123456789`
 		_, err := alphavantage.ParseIntraDayQuotes(bytes.NewReader([]byte(responseText)), nil)
-		o.Expect(err).NotTo(HaveOccurred())
+		require.NoError(t, err)
 	})
 
 	t.Run("split_coefficient", func(t *testing.T) {
-		please := NewGomegaWithT(t)
 		const responseText = `timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient
 2020-08-31,444.6100,500.1400,440.1100,498.3200,498.3200,115847020,0.0000,5.0000
 `
 
 		quotes, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)), nil)
-		please.Expect(err).NotTo(HaveOccurred())
-		please.Expect(quotes).To(HaveLen(1))
-		please.Expect(quotes[0].SplitCoefficient).To(Equal(5.0))
+		require.NoError(t, err)
+		assert.Len(t, quotes, 1)
+		assert.Equal(t, 5.0, quotes[0].SplitCoefficient)
 	})
 
 	t.Run("dividend", func(t *testing.T) {
-		please := NewGomegaWithT(t)
 		const responseText = `timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient
 2020-08-31,444.6100,500.1400,440.1100,498.3200,498.3200,115847020,4.20,5.0000
 `
 
 		quotes, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)), nil)
-		please.Expect(err).NotTo(HaveOccurred())
-		please.Expect(quotes).To(HaveLen(1))
-		please.Expect(quotes[0].DividendAmount).To(Equal(4.20))
+		require.NoError(t, err)
+		assert.Len(t, quotes, 1)
+		assert.Equal(t, 4.20, quotes[0].DividendAmount)
 	})
 }
