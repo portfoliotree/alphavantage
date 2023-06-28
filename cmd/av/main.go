@@ -58,7 +58,7 @@ func main() {
 	}
 }
 
-func help(string, []string) error {
+func help(_ string, _ []string) error {
 	fmt.Println("av - An AlphaVantage CLI in Go")
 	fmt.Println()
 	fmt.Println("Global Flags:")
@@ -154,6 +154,8 @@ func listingStatus(token string, args []string) error {
 
 func symbolSearch(token string, args []string) error {
 	flags := flag.NewFlagSet("search", flag.ContinueOnError)
+	var writeToFile bool
+	flags.BoolVar(&writeToFile, "O", false, "write to files instead of stdout")
 	err := flags.Parse(args)
 	if err != nil {
 		return err
@@ -163,17 +165,36 @@ func symbolSearch(token string, args []string) error {
 
 	ctx := context.TODO()
 
-	result, err := client.DoSymbolSearchRequest(ctx, flags.Arg(0))
+	for _, arg := range flags.Args() {
+		err = singleSymbolSearch(ctx, client, arg, writeToFile)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func singleSymbolSearch(ctx context.Context, client *alphavantage.Client, symbol string, writeToFile bool) error {
+	result, err := client.DoSymbolSearchRequest(ctx, symbol)
 	if err != nil {
 		return err
 	}
 	defer closeAndIgnoreError(result)
 
-	_, _ = io.Copy(os.Stdout, result)
+	if !writeToFile {
+		_, _ = io.Copy(os.Stdout, result)
+		_, _ = fmt.Fprintln(os.Stdout)
+		return nil
+	}
 
-	_, _ = fmt.Fprintln(os.Stdout)
+	buffer, err := io.ReadAll(result)
+	if err != nil {
+		return err
+	}
 
-	return err
+	fileName := symbol + ".csv"
+	fmt.Println("writing file", fileName)
+	return os.WriteFile(fileName, buffer, 0666)
 }
 
 func closeAndIgnoreError(c io.Closer) {
