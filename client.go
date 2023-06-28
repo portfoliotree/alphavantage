@@ -1,4 +1,7 @@
-package alphavantage
+// Package alphavantage implements clients and parsers for the
+// https://www.alphavantage.co API.
+
+package alphavantage /* import "github.com/portfoliotree/alphavantage" */
 
 import (
 	"bytes"
