@@ -98,7 +98,6 @@ func TestService_ParseQueryResponse(t *testing.T) {
 		please.Expect(err).NotTo(HaveOccurred())
 		please.Expect(quotes).To(HaveLen(1))
 		please.Expect(quotes[0].SplitCoefficient).To(Equal(5.0))
-
 	})
 
 	t.Run("dividend", func(t *testing.T) {
@@ -111,6 +110,5 @@ func TestService_ParseQueryResponse(t *testing.T) {
 		please.Expect(err).NotTo(HaveOccurred())
 		please.Expect(quotes).To(HaveLen(1))
 		please.Expect(quotes[0].DividendAmount).To(Equal(4.20))
-
 	})
 }

@@ -194,7 +194,7 @@ func singleSymbolSearch(ctx context.Context, client *alphavantage.Client, symbol
 
 	fileName := symbol + ".csv"
 	fmt.Println("writing file", fileName)
-	return os.WriteFile(fileName, buffer, 0666)
+	return os.WriteFile(fileName, buffer, 0o666)
 }
 
 func closeAndIgnoreError(c io.Closer) {
