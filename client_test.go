@@ -75,11 +75,7 @@ const panthersCSV = `id,first_initial,birth_date,mass
 `
 
 func mustParseDate(t *testing.T, date string) time.Time {
-	tz, err := time.LoadLocation("US/Eastern")
-	if err != nil {
-		t.Fatal(err)
-	}
-	tm, err := time.ParseInLocation(alphavantage.DefaultDateFormat, date, tz)
+	tm, err := time.ParseInLocation(alphavantage.DefaultDateFormat, date, time.UTC)
 	if err != nil {
 		t.Fatal(err)
 	}

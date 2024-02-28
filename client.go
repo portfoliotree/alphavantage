@@ -24,16 +24,6 @@ const (
 	StandardTokenEnvironmentVariableName = "ALPHA_VANTAGE_TOKEN"
 )
 
-var easternTimezone *time.Location
-
-func init() {
-	var err error
-	easternTimezone, err = time.LoadLocation("US/Eastern")
-	if err != nil {
-		panic(err)
-	}
-}
-
 const DefaultDateFormat = "2006-01-02"
 
 type Client struct {
@@ -143,7 +133,7 @@ var typeType = reflect.TypeOf(time.Time{})
 // "null" values in CSV for time are ignored; time keeps its zero value.
 func ParseCSV(r io.Reader, data interface{}, location *time.Location) error {
 	if location == nil {
-		location = easternTimezone
+		location = time.UTC
 	}
 
 	rv := reflect.ValueOf(data)

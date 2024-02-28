@@ -156,7 +156,7 @@ func (c *CompanyOverview) UnmarshalJSON(in []byte) error {
 			if v == "0000-00-00" {
 				continue
 			}
-			t, err := time.ParseInLocation(DefaultDateFormat, v, easternTimezone)
+			t, err := time.ParseInLocation(DefaultDateFormat, v, time.UTC)
 			if err != nil {
 				return err
 			}
