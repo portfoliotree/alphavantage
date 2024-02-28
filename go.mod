@@ -1,10 +1,10 @@
 module github.com/portfoliotree/alphavantage
 
-go 1.20
+go 1.22
 
 require (
 	github.com/stretchr/testify v1.8.4
-	golang.org/x/time v0.0.0-20211116232009-f0f3c7e86c11
+	golang.org/x/time v0.5.0
 )
 
 require (
