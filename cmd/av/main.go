@@ -49,7 +49,7 @@ func main() {
 	default:
 		if cmd != "" {
 			fmt.Printf("ERROR: unknown command: %s\n\n", cmd)
-		} else if cmd == "" {
+		} else {
 			fmt.Printf("ERROR: missing command\n\n")
 		}
 
