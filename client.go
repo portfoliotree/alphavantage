@@ -211,20 +211,26 @@ func ParseCSVRows[T any](r io.Reader, location *time.Location, handleErr func(er
 				case reflect.Float64:
 					fl, err := strconv.ParseFloat(value, 64)
 					if err != nil {
-						handleErr(fmt.Errorf("failed to parse float64 value %q on row %d column %d (%s): %w", value, rowIndex, columnIndex, header[columnIndex], err))
+						if handleErr(fmt.Errorf("failed to parse float64 value %q on row %d column %d (%s): %w", value, rowIndex, columnIndex, header[columnIndex], err)) {
+							continue
+						}
 						return
 					}
 					structValue.Elem().Field(fieldIndex).SetFloat(fl)
 				case reflect.Int:
 					in, err := strconv.ParseInt(value, 10, 64)
 					if err != nil {
-						handleErr(fmt.Errorf("failed to parse float64 value %q on row %d column %d (%s): %w", value, rowIndex, columnIndex, header[columnIndex], err))
+						if !handleErr(fmt.Errorf("failed to parse float64 value %q on row %d column %d (%s): %w", value, rowIndex, columnIndex, header[columnIndex], err)) {
+							continue
+						}
 						return
 					}
 					structValue.Elem().Field(fieldIndex).SetInt(in)
 				default:
 					if structFieldType.Type != typeType {
-						handleErr(fmt.Errorf("unsupported type %T for field %s", structFieldType.Type, structFieldType.Name))
+						if handleErr(fmt.Errorf("unsupported type %T for field %s", structFieldType.Type, structFieldType.Name)) {
+							continue
+						}
 						return
 					}
 
@@ -238,7 +244,9 @@ func ParseCSVRows[T any](r io.Reader, location *time.Location, handleErr func(er
 					}
 					tm, err := time.ParseInLocation(layout, value, location)
 					if err != nil {
-						handleErr(fmt.Errorf("failed to parse time value on row %d column %d (%s): %w", rowIndex, columnIndex, header[columnIndex], err))
+						if handleErr(fmt.Errorf("failed to parse time value on row %d column %d (%s): %w", rowIndex, columnIndex, header[columnIndex], err)) {
+							continue
+						}
 						return
 					}
 					structValue.Elem().Field(fieldIndex).Set(reflect.ValueOf(tm))
