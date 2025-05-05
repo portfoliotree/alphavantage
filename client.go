@@ -4,6 +4,7 @@
 package alphavantage
 
 import (
+	"bufio"
 	"bytes"
 	"context"
 	"encoding/csv"
@@ -11,6 +12,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"iter"
 	"net/http"
 	"reflect"
 	"strconv"
@@ -131,109 +133,121 @@ var typeType = reflect.TypeOf(time.Time{})
 // to specify the layout to use with time.ParseInLocation.
 // If location is not specified, eastern time is used.
 // "null" values in CSV for time are ignored; time keeps its zero value.
-func ParseCSV(r io.Reader, data interface{}, location *time.Location) error {
-	if location == nil {
-		location = time.UTC
+func ParseCSV[T any](r io.Reader, data *[]T, location *time.Location) error {
+	if data == nil {
+		panic(fmt.Errorf("data must not be nil"))
 	}
-
-	rv := reflect.ValueOf(data)
-	if rv.Kind() != reflect.Ptr {
-		panic("parse must receive pointer to data")
+	var err error
+	for row := range ParseCSVRows[T](r, location, func(e error) bool {
+		err = e
+		return false
+	}) {
+		*data = append(*data, row)
 	}
-	if rv.IsNil() {
-		panic("parse must not receive pointer to nil data")
-	}
+	return err
+}
 
-	reader := csv.NewReader(r)
-	reader.TrimLeadingSpace = true
-	header, err := reader.Read()
-	if err != nil {
-		return err
-	}
-	reader.FieldsPerRecord = len(header)
-
-	rvt := rv.Type()
-	switch rvt.Elem().Kind() {
-	default:
-		return fmt.Errorf("expected a pointer to an array or slice: got %T", data)
-	case reflect.Slice:
-	}
-	if rvt.Elem().Elem().Kind() != reflect.Struct {
-		return fmt.Errorf("expected a pointer to an array or slice of structs: got %T", data)
-	}
-
-	columnToField := make(map[int]int, len(header))
-	structType := rvt.Elem().Elem()
-	for columnHeaderIndex, columnHeaderName := range header {
-		for fieldIndex := 0; fieldIndex < structType.NumField(); fieldIndex++ {
-			fieldType := structType.Field(fieldIndex)
-
-			csvTag := fieldType.Tag.Get("column-name")
-			if csvTag != columnHeaderName {
-				continue
-			}
-
-			columnToField[columnHeaderIndex] = fieldIndex
+func ParseCSVRows[T any](r io.Reader, location *time.Location, handleErr func(error) bool) iter.Seq[T] {
+	return func(yield func(T) bool) {
+		if location == nil {
+			location = time.UTC
 		}
-	}
 
-	for rowIndex := 1; ; rowIndex++ {
-		row, err := reader.Read()
+		rowType := reflect.TypeFor[T]()
+
+		reader := csv.NewReader(bufio.NewReader(r))
+		reader.TrimLeadingSpace = true
+		header, err := reader.Read()
 		if err != nil {
-			if err == io.EOF {
-				return nil
-			}
-			return err
+			handleErr(err)
+			return
+		}
+		reader.FieldsPerRecord = len(header)
+
+		if rowType.Kind() != reflect.Struct {
+			panic(fmt.Errorf("expected a struct kind: got %s", rowType.Kind()))
+			return
 		}
 
-		structValue := reflect.New(structType)
+		structType := rowType
 
-		for columnIndex, value := range row {
-			fieldIndex, ok := columnToField[columnIndex]
-			if !ok {
-				continue
-			}
+		columnToField := make(map[int]int, len(header))
+		for columnHeaderIndex, columnHeaderName := range header {
+			for fieldIndex := 0; fieldIndex < structType.NumField(); fieldIndex++ {
+				fieldType := structType.Field(fieldIndex)
 
-			structFieldType := structType.Field(fieldIndex)
-
-			switch structFieldType.Type.Kind() {
-			case reflect.String:
-				structValue.Elem().Field(fieldIndex).SetString(value)
-			case reflect.Float64:
-				fl, err := strconv.ParseFloat(value, 64)
-				if err != nil {
-					return fmt.Errorf("failed to parse float64 value %q on row %d column %d (%s): %w", value, rowIndex, columnIndex, header[columnIndex], err)
-				}
-				structValue.Elem().Field(fieldIndex).SetFloat(fl)
-			case reflect.Int:
-				in, err := strconv.ParseInt(value, 10, 64)
-				if err != nil {
-					return fmt.Errorf("failed to parse float64 value %q on row %d column %d (%s): %w", value, rowIndex, columnIndex, header[columnIndex], err)
-				}
-				structValue.Elem().Field(fieldIndex).SetInt(in)
-			default:
-				if structFieldType.Type != typeType {
-					return fmt.Errorf("unsupported type %T for field %s", structFieldType.Type, structFieldType.Name)
-				}
-
-				layout := DefaultDateFormat
-				tagLayout := structFieldType.Tag.Get("time-layout")
-				if tagLayout != "" {
-					layout = tagLayout
-				}
-				if value == "null" {
+				csvTag := fieldType.Tag.Get("column-name")
+				if csvTag != columnHeaderName {
 					continue
 				}
-				tm, err := time.ParseInLocation(layout, value, location)
-				if err != nil {
-					return fmt.Errorf("failed to parse time value on row %d column %d (%s): %w", rowIndex, columnIndex, header[columnIndex], err)
-				}
-				structValue.Elem().Field(fieldIndex).Set(reflect.ValueOf(tm))
+
+				columnToField[columnHeaderIndex] = fieldIndex
 			}
 		}
 
-		rv.Elem().Set(reflect.Append(rv.Elem(), structValue.Elem()))
-	}
+		for rowIndex := 1; ; rowIndex++ {
+			row, err := reader.Read()
+			if err != nil {
+				if err == io.EOF {
+					return
+				}
+				handleErr(err)
+				return
+			}
 
-	return nil
+			structValue := reflect.New(structType)
+
+			for columnIndex, value := range row {
+				fieldIndex, ok := columnToField[columnIndex]
+				if !ok {
+					continue
+				}
+
+				structFieldType := structType.Field(fieldIndex)
+
+				switch structFieldType.Type.Kind() {
+				case reflect.String:
+					structValue.Elem().Field(fieldIndex).SetString(value)
+				case reflect.Float64:
+					fl, err := strconv.ParseFloat(value, 64)
+					if err != nil {
+						handleErr(fmt.Errorf("failed to parse float64 value %q on row %d column %d (%s): %w", value, rowIndex, columnIndex, header[columnIndex], err))
+						return
+					}
+					structValue.Elem().Field(fieldIndex).SetFloat(fl)
+				case reflect.Int:
+					in, err := strconv.ParseInt(value, 10, 64)
+					if err != nil {
+						handleErr(fmt.Errorf("failed to parse float64 value %q on row %d column %d (%s): %w", value, rowIndex, columnIndex, header[columnIndex], err))
+						return
+					}
+					structValue.Elem().Field(fieldIndex).SetInt(in)
+				default:
+					if structFieldType.Type != typeType {
+						handleErr(fmt.Errorf("unsupported type %T for field %s", structFieldType.Type, structFieldType.Name))
+						return
+					}
+
+					layout := DefaultDateFormat
+					tagLayout := structFieldType.Tag.Get("time-layout")
+					if tagLayout != "" {
+						layout = tagLayout
+					}
+					if value == "null" {
+						continue
+					}
+					tm, err := time.ParseInLocation(layout, value, location)
+					if err != nil {
+						handleErr(fmt.Errorf("failed to parse time value on row %d column %d (%s): %w", rowIndex, columnIndex, header[columnIndex], err))
+						return
+					}
+					structValue.Elem().Field(fieldIndex).Set(reflect.ValueOf(tm))
+				}
+			}
+
+			if !yield(structValue.Elem().Interface().(T)) {
+				return
+			}
+		}
+	}
 }

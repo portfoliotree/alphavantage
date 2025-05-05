@@ -28,16 +28,10 @@ func (wf waitFunc) Wait(ctx context.Context) error {
 func TestParse(t *testing.T) {
 	t.Run("nil data", func(t *testing.T) {
 		assert.Panics(t, func() {
-			_ = alphavantage.ParseCSV(bytes.NewReader(nil), nil, nil)
+			_ = alphavantage.ParseCSV(bytes.NewReader(nil), (*[]alphavantage.Quote)(nil), nil)
 		})
 	})
-
-	t.Run("non pointer data", func(t *testing.T) {
-		assert.Panics(t, func() {
-			_ = alphavantage.ParseCSV(bytes.NewReader(nil), struct{}{}, nil)
-		})
-	})
-
+	
 	t.Run("real data", func(t *testing.T) {
 
 		var someFolks []struct {
