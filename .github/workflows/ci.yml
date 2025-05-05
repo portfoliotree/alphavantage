@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+
 jobs:
 
   build:
@@ -15,18 +18,12 @@ jobs:
 
     - name: Set up Go
       uses: actions/setup-go@v5
-      permissions:
-        contents: read
       with:
         go-version-file: go.mod
         check-latest: true
 
     - name: Build
-      permissions:
-        contents: read
       run: go build -v ./...
 
     - name: Test
-      permissions:
-        contents: read
       run: go test -v ./...
