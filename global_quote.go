@@ -110,13 +110,13 @@ func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, functi
 
 type Quote struct {
 	Time             time.Time `column-name:"timestamp"`
-	Open             float64   `column-name:"open"`
-	High             float64   `column-name:"high"`
-	Low              float64   `column-name:"low"`
-	Close            float64   `column-name:"close"`
-	Volume           float64   `column-name:"volume"`
-	DividendAmount   float64   `column-name:"dividend_amount"`
-	SplitCoefficient float64   `column-name:"split_coefficient"`
+	Open             string    `column-name:"open"`
+	High             string    `column-name:"high"`
+	Low              string    `column-name:"low"`
+	Close            string    `column-name:"close"`
+	Volume           string    `column-name:"volume"`
+	DividendAmount   string    `column-name:"dividend_amount"`
+	SplitCoefficient string    `column-name:"split_coefficient"`
 }
 
 // ParseQuotes handles parsing the following "Stock Time Series" functions
@@ -132,13 +132,13 @@ func ParseQuotes(r io.Reader, location *time.Location) ([]Quote, error) {
 // IntraDayQuote is convertable to Quote. The only difference is the time-layout includes additional time information.
 type IntraDayQuote struct {
 	Time             time.Time `column-name:"timestamp" time-layout:"2006-01-02 15:04:05"`
-	Open             float64   `column-name:"open"`
-	High             float64   `column-name:"high"`
-	Low              float64   `column-name:"low"`
-	Close            float64   `column-name:"close"`
-	Volume           float64   `column-name:"volume"`
-	DividendAmount   float64   `column-name:"dividend_amount"`
-	SplitCoefficient float64   `column-name:"split_coefficient"`
+	Open             string    `column-name:"open"`
+	High             string    `column-name:"high"`
+	Low              string    `column-name:"low"`
+	Close            string    `column-name:"close"`
+	Volume           string    `column-name:"volume"`
+	DividendAmount   string    `column-name:"dividend_amount"`
+	SplitCoefficient string    `column-name:"split_coefficient"`
 }
 
 var _ = Quote(IntraDayQuote{})
