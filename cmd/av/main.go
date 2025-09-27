@@ -7,9 +7,11 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"runtime/debug"
+
+	"github.com/spf13/pflag"
 
 	"github.com/portfoliotree/alphavantage"
-	"github.com/spf13/pflag"
 )
 
 func main() {
@@ -60,6 +62,13 @@ func main() {
 		}
 	case "help":
 		_ = help("", nil)
+	case "version":
+		info, ok := debug.ReadBuildInfo()
+		if !ok {
+			fmt.Println("failed to read build info")
+			os.Exit(1)
+		}
+		fmt.Println(info.Main.Version)
 	default:
 		if cmd != "" {
 			fmt.Printf("ERROR: unknown command: %s\n\n", cmd)
