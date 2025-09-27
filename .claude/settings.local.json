@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.alphavantage.co)",
+      "Bash(go mod:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

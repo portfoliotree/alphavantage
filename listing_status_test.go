@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestClient_ListingStatus_listed(t *testing.T) {
-	f, err := os.Open("test_data/listing_status.csv")
+	f, err := os.Open(filepath.FromSlash("testdata/listing_status.csv"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -57,7 +58,7 @@ func TestClient_ListingStatus_listed(t *testing.T) {
 }
 
 func TestClient_ListingStatus_delisted(t *testing.T) {
-	f, err := os.Open("test_data/listing_status.csv")
+	f, err := os.Open(filepath.FromSlash("testdata/listing_status.csv"))
 	if err != nil {
 		t.Fatal(err)
 	}

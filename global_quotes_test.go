@@ -14,7 +14,7 @@ import (
 	"github.com/portfoliotree/alphavantage"
 )
 
-//go:embed test_data/monthly_IBM.csv
+//go:embed testdata/monthly_IBM.csv
 var monthlyIBM []byte
 
 func TestQuotes(t *testing.T) {
