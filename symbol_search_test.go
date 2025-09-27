@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -15,7 +16,7 @@ import (
 )
 
 func TestSearch(t *testing.T) {
-	f, err := os.Open("test_data/search_results.csv")
+	f, err := os.Open(filepath.FromSlash("testdata/search_results.csv"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,7 +59,7 @@ func TestSearch(t *testing.T) {
 }
 
 func TestParseSearchQuery(t *testing.T) {
-	f, err := os.Open("test_data/search_results.csv")
+	f, err := os.Open(filepath.FromSlash("testdata/search_results.csv"))
 	if err != nil {
 		t.Fatal(err)
 	}
