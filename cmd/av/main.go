@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -50,6 +52,12 @@ func main() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+	case "etf-profile":
+		err := etfProfile(token, flag.Args()[1:])
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	case "help":
 		_ = help("", nil)
 	default:
@@ -75,6 +83,7 @@ func help(_ string, _ []string) error {
 	fmt.Println("  listing-status\n\tFetch listing & de-listing status.\n\thttps://www.alphavantage.co/documentation/#listing-status")
 	fmt.Println("  quotes\n\tFetch time series stock quotes.\n\thttps://www.alphavantage.co/documentation/#time-series-data")
 	fmt.Println("  symbol-search\n\tWrites symbol search results to stdout.\n\thttps://www.alphavantage.co/documentation/#symbolsearch")
+	fmt.Println("  etf-profile\n\tFetch ETF profile data.\n\thttps://www.alphavantage.co/documentation/#etf")
 	fmt.Println()
 	return nil
 }
@@ -244,4 +253,47 @@ func requestGlobalQuote(ctx context.Context, client *alphavantage.Client, symbol
 
 func closeAndIgnoreError(c io.Closer) {
 	_ = c.Close()
+}
+
+func etfProfile(token string, args []string) error {
+	flags := flag.NewFlagSet("etf-profile", flag.ContinueOnError)
+	var writeToFile bool
+	flags.BoolVar(&writeToFile, "O", false, "write to files instead of stdout")
+	err := flags.Parse(args)
+	if err != nil {
+		return err
+	}
+
+	symbols := flags.Args()
+	if len(symbols) == 0 {
+		return fmt.Errorf("no symbols provided")
+	}
+
+	client := alphavantage.NewClient(token)
+	ctx := context.TODO()
+
+	for _, symbol := range symbols {
+		profile, err := client.ETFProfile(ctx, symbol)
+		if err != nil {
+			return fmt.Errorf("failed to get ETF profile for %s: %w", symbol, err)
+		}
+
+		jsonData, err := json.MarshalIndent(profile, "", "  ")
+		if err != nil {
+			return fmt.Errorf("failed to marshal ETF profile: %w", err)
+		}
+
+		if !writeToFile {
+			fmt.Println(string(jsonData))
+			continue
+		}
+
+		fileName := symbol + "_etf_profile.json"
+		fmt.Printf("writing ETF profile for %q to file %s\n", symbol, fileName)
+		err = os.WriteFile(fileName, jsonData, 0o644)
+		if err != nil {
+			return fmt.Errorf("failed to write file %s: %w", fileName, err)
+		}
+	}
+	return nil
 }
