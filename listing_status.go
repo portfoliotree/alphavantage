@@ -10,22 +10,27 @@ import (
 	"time"
 )
 
+// ListingStatus represents the listing status information for a security.
 type ListingStatus struct {
-	Symbol        string    `column-name:"symbol"`
-	Name          string    `column-name:"name"`
-	Exchange      string    `column-name:"exchange"`
-	AssetType     string    `column-name:"assetType"`
-	IPODate       time.Time `column-name:"ipoDate"`
-	DeListingDate time.Time `column-name:"delistingDate"`
-	Status        string    `column-name:"status"`
+	Symbol        string    `column-name:"symbol"`        // The security symbol
+	Name          string    `column-name:"name"`          // The company or security name
+	Exchange      string    `column-name:"exchange"`      // The exchange where it's listed
+	AssetType     string    `column-name:"assetType"`     // Type of asset (Stock, ETF, etc.)
+	IPODate       time.Time `column-name:"ipoDate"`       // Initial public offering date
+	DeListingDate time.Time `column-name:"delistingDate"` // Date when delisted (if applicable)
+	Status        string    `column-name:"status"`        // Current status (Active, Delisted)
 }
 
+// Listing status constants.
 const (
-	ListingStatusActive   = "Active"
-	ListingStatusDelisted = "Delisted"
+	ListingStatusActive   = "Active"   // Security is actively listed
+	ListingStatusDelisted = "Delisted" // Security has been delisted
+)
 
-	AssetTypeStock = "Stock"
-	AssetTypeETF   = "ETF"
+// Asset type constants.
+const (
+	AssetTypeStock = "Stock" // Stock security type
+	AssetTypeETF   = "ETF"   // Exchange-traded fund type
 )
 
 func NewListingStatusURL(isListed bool) (string, error) {
@@ -59,6 +64,10 @@ func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]Listi
 	return result, ParseCSV(rc, &result, nil)
 }
 
+// DoListingStatusRequest fetches listing or delisting status data.
+// If isListed is true, it returns currently active listings.
+// If isListed is false, it returns delisted securities.
+// The response is returned as CSV data in an io.ReadCloser that must be closed by the caller.
 func (client *Client) DoListingStatusRequest(ctx context.Context, isListed bool) (io.ReadCloser, error) {
 	requestURL, err := NewListingStatusURL(isListed)
 	if err != nil {

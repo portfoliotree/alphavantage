@@ -5,7 +5,16 @@
 
 This is an unofficial REST API wrapper for https://www.alphavantage.co
 
-## The Command Line Interface
+## Documentation
+
+This project follows the [Diataxis](https://diataxis.fr/) documentation framework:
+
+- **[Tutorial](docs/tutorial.md)** - Get started with your first API calls
+- **[How-to Guides](docs/how-to-guides.md)** - Solve specific problems and tasks
+- **[API Reference](https://pkg.go.dev/github.com/portfoliotree/alphavantage)** - Complete Go API documentation
+- **[Explanation](docs/explanation.md)** - Understand the design and architecture
+
+## Quick Start
 
 ### Installation
 
@@ -20,6 +29,14 @@ Set an environment variable `ALPHA_VANTAGE_TOKEN` with your token.
 
 ### Commands
 
+#### `global-quote`
+
+Fetches latest price and volume information for equity symbols and writes the CSV result to a file.
+
+- Given `av` is installed and the environment variable `ALPHA_VANTAGE_TOKEN` is set
+- When you run `av global-quote IBM` and it succeeds
+- Then you will see a file "IBM_quote.csv" in your current directory
+
 #### `quotes`
 
 Fetches time series data for given symbols and writes the CSV result to a file.
@@ -28,7 +45,7 @@ Fetches time series data for given symbols and writes the CSV result to a file.
 - When you run `av quotes --function=TIME_SERIES_MONTHLY IBM` and it succeeds
 - Then you will see a file "IBM.csv" in your current directory
 
-The `--function` may have any of the values listed in global_quote.go.
+The `--function` may have any of the values: TIME_SERIES_INTRADAY, TIME_SERIES_DAILY, TIME_SERIES_DAILY_ADJUSTED, TIME_SERIES_WEEKLY, TIME_SERIES_WEEKLY_ADJUSTED, TIME_SERIES_MONTHLY, TIME_SERIES_MONTHLY_ADJUSTED.
 
 #### `listing-status`
 
@@ -55,10 +72,12 @@ The output looks something like this.
 av - An AlphaVantage CLI in Go
 
 Global Flags:
-  -token string
-    	api authentication token
+      --token string   api authentication token
 
 Commands:
+  global-quote
+	Fetch latest price and volume information for equity.
+	https://www.alphavantage.co/documentation/#latestprice
   listing-status
 	Fetch listing & de-listing status.
 	https://www.alphavantage.co/documentation/#listing-status
@@ -83,9 +102,11 @@ I have found the CSV encoding easier to parse.
 - [x] TIME_SERIES_INTRADAY
 - [x] TIME_SERIES_DAILY
 - [x] TIME_SERIES_DAILY_ADJUSTED
+- [x] TIME_SERIES_WEEKLY
+- [x] TIME_SERIES_WEEKLY_ADJUSTED
 - [x] TIME_SERIES_MONTHLY
 - [x] TIME_SERIES_MONTHLY_ADJUSTED
-- [ ] Quote
+- [x] Quote (GLOBAL_QUOTE)
 - [x] Search Endpoint
 
 ### [Fundamental Data](https://www.alphavantage.co/documentation/#fx)

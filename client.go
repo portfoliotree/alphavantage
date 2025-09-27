@@ -1,6 +1,9 @@
-// Package alphavantage implements clients and parsers for the
-// https://www.alphavantage.co API.
-
+// Package alphavantage provides a Go client for the AlphaVantage financial data API.
+//
+// It supports fetching stock quotes, time series data, company fundamentals,
+// and symbol search functionality from https://www.alphavantage.co.
+//
+// See the package examples for usage patterns:
 package alphavantage
 
 import (
@@ -23,21 +26,36 @@ import (
 )
 
 const (
+	// StandardTokenEnvironmentVariableName is the standard environment variable
+	// name for storing the AlphaVantage API key.
 	StandardTokenEnvironmentVariableName = "ALPHA_VANTAGE_TOKEN"
 )
 
+// DefaultDateFormat is the RFC 3339 date format used for parsing dates.
 const DefaultDateFormat = "2006-01-02"
 
+// Client represents an AlphaVantage API client with configurable rate limiting
+// and HTTP client behavior.
 type Client struct {
+	// Limiter controls the rate at which API requests are made.
+	// The default limiter allows 5 requests per minute to comply with
+	// free tier limits.
 	Limiter interface {
 		Wait(ctx context.Context) error
 	}
+
+	// Client is the HTTP client used for making requests.
+	// Defaults to http.DefaultClient.
 	Client interface {
 		Do(*http.Request) (*http.Response, error)
 	}
+
+	// APIKey is the AlphaVantage API key used for authentication.
 	APIKey string
 }
 
+// NewClient creates a new AlphaVantage client with the specified API key.
+// It uses default rate limiting (5 requests per minute) and the default HTTP client.
 func NewClient(apiKey string) *Client {
 	return &Client{
 		Client:  http.DefaultClient,
@@ -122,17 +140,28 @@ func checkError(rc io.ReadCloser) (io.ReadCloser, error) {
 
 var typeType = reflect.TypeOf(time.Time{})
 
-// ParseCSV parses rows of data into a slice of structs it only supports decoding into
-// fields of type string, int, float64, and time.Time
+// ParseCSV parses CSV data into a slice of structs using reflection.
 //
-// Struct fields must be tagged with their expected column header with "column-name".
-// If there is no mapping for a column to field, that data column is ignored and the struct
-// field will remain unset (it will have its zero value).
+// Supported field types:
+//   - string: Direct mapping from CSV column value
+//   - int: Parsed using strconv.ParseInt with base 10
+//   - float64: Parsed using strconv.ParseFloat
+//   - time.Time: Parsed using time.ParseInLocation (see time-layout tag)
 //
-// Fields with type time.Time may use an additional "time-layout" field
-// to specify the layout to use with time.ParseInLocation.
-// If location is not specified, eastern time is used.
-// "null" values in CSV for time are ignored; time keeps its zero value.
+// Struct field tags:
+//   - `column-name:"header"`: Maps field to CSV column header (required)
+//   - `time-layout:"layout"`: Custom time format for time.Time fields (optional, defaults to "2006-01-02")
+//
+// Example struct:
+//   type StockPrice struct {
+//       Date   time.Time `column-name:"timestamp"`
+//       Open   float64   `column-name:"open"`
+//       High   float64   `column-name:"high"`
+//       Volume int       `column-name:"volume"`
+//   }
+//
+// Unmapped columns are ignored. Fields without matching columns keep their zero value.
+// Time fields with "null" values remain as zero time.Time.
 func ParseCSV[T any](r io.Reader, data *[]T, location *time.Location) error {
 	if data == nil {
 		panic(fmt.Errorf("data must not be nil"))
@@ -147,6 +176,23 @@ func ParseCSV[T any](r io.Reader, data *[]T, location *time.Location) error {
 	return err
 }
 
+// ParseCSVRows returns an iterator that parses CSV data row by row into structs.
+// This is memory-efficient for large datasets as it processes one row at a time.
+//
+// Uses the same struct field tagging system as ParseCSV:
+//   - `column-name:"header"`: Maps field to CSV column header (required)
+//   - `time-layout:"layout"`: Custom time format for time.Time fields (optional)
+//
+// The handleErr function is called when parsing errors occur. Return true to continue
+// processing, false to stop. Location defaults to UTC if nil.
+//
+// Example usage:
+//   for price := range ParseCSVRows[StockPrice](reader, time.UTC, func(err error) bool {
+//       log.Printf("Parse error: %v", err)
+//       return true // continue on errors
+//   }) {
+//       fmt.Printf("Price: %+v\n", price)
+//   }
 func ParseCSVRows[T any](r io.Reader, location *time.Location, handleErr func(error) bool) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		if location == nil {

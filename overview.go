@@ -13,6 +13,9 @@ import (
 	"time"
 )
 
+// CompanyOverview fetches comprehensive company information for the specified symbol.
+// It returns detailed company data including financial metrics, sector information,
+// and key statistics as a CompanyOverview struct.
 func (client *Client) CompanyOverview(ctx context.Context, symbol string) (CompanyOverview, error) {
 	u := url.URL{
 		Scheme: "https",
@@ -54,6 +57,8 @@ func (client *Client) CompanyOverview(ctx context.Context, symbol string) (Compa
 	return result, err
 }
 
+// CompanyOverview contains comprehensive company information and financial metrics
+// returned by the AlphaVantage OVERVIEW function.
 type CompanyOverview struct {
 	CIK                        string    `av-json:"CIK"`
 	Symbol                     string    `av-json:"Symbol"`
