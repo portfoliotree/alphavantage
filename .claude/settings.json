@@ -1,4 +1,5 @@
 {
+  "defaultMode": "acceptEdits",
   "permissions": {
     "allow": [
       "Bash(go build:*)",
