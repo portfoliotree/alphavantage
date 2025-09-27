@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:www.alphavantage.co)",
-      "Bash(go mod:*)"
+      "Bash(go mod:*)",
+      "Bash(go build:*)",
+      "Bash(./av help)",
+      "Bash(go test:*)",
+      "Bash(go doc:*)",
+      "Bash(go list:*)",
+      "Bash(./av quotes:*)"
     ],
     "deny": [],
     "ask": []

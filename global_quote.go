@@ -9,16 +9,23 @@ import (
 	"time"
 )
 
+// QuoteFunction represents the different time series functions available
+// from the AlphaVantage API.
 type QuoteFunction string
 
+// Time series function constants for different data intervals and types.
 const (
-	TimeSeriesIntraday        QuoteFunction = "TIME_SERIES_INTRADAY"
-	TimeSeriesDaily           QuoteFunction = "TIME_SERIES_DAILY"
-	TimeSeriesDailyAdjusted   QuoteFunction = "TIME_SERIES_DAILY_ADJUSTED"
-	TimeSeriesMonthly         QuoteFunction = "TIME_SERIES_MONTHLY"
-	TimeSeriesMonthlyAdjusted QuoteFunction = "TIME_SERIES_MONTHLY_ADJUSTED"
+	TimeSeriesIntraday        QuoteFunction = "TIME_SERIES_INTRADAY"        // Intraday time series data
+	TimeSeriesDaily           QuoteFunction = "TIME_SERIES_DAILY"           // Daily time series data
+	TimeSeriesDailyAdjusted   QuoteFunction = "TIME_SERIES_DAILY_ADJUSTED"   // Daily adjusted time series data
+	TimeSeriesWeekly          QuoteFunction = "TIME_SERIES_WEEKLY"          // Weekly time series data
+	TimeSeriesWeeklyAdjusted  QuoteFunction = "TIME_SERIES_WEEKLY_ADJUSTED"  // Weekly adjusted time series data
+	TimeSeriesMonthly         QuoteFunction = "TIME_SERIES_MONTHLY"         // Monthly time series data
+	TimeSeriesMonthlyAdjusted QuoteFunction = "TIME_SERIES_MONTHLY_ADJUSTED" // Monthly adjusted time series data
 )
 
+// NewQuotesURL constructs a URL for time series data requests.
+// It validates the function parameter and returns a properly formatted API URL.
 func NewQuotesURL(symbol string, function QuoteFunction) (string, error) {
 	err := function.Validate()
 	if err != nil {
@@ -40,11 +47,15 @@ func NewQuotesURL(symbol string, function QuoteFunction) (string, error) {
 	return u.String(), nil
 }
 
+// Validate checks if the QuoteFunction is one of the supported time series functions.
+// It returns an error if the function is not recognized.
 func (fn QuoteFunction) Validate() error {
 	switch fn {
 	case TimeSeriesIntraday,
 		TimeSeriesDaily,
 		TimeSeriesDailyAdjusted,
+		TimeSeriesWeekly,
+		TimeSeriesWeeklyAdjusted,
 		TimeSeriesMonthly,
 		TimeSeriesMonthlyAdjusted:
 		return nil
@@ -53,7 +64,9 @@ func (fn QuoteFunction) Validate() error {
 	}
 }
 
-// Quotes fetches quotes for a given symbol and function. It parses the dates in the given location.
+// Quotes fetches time series data for the specified symbol and function.
+// It parses the CSV response into a slice of Quote structs with dates in the given location.
+// The location parameter is used for parsing timestamps; use time.UTC for UTC times.
 func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteFunction, location *time.Location) ([]Quote, error) {
 	rc, err := client.DoQuotesRequest(ctx, symbol, function)
 	if err != nil {
@@ -87,6 +100,9 @@ func (client *Client) QuotesRequest(ctx context.Context, symbol string, function
 	return fn(rc)
 }
 
+// DoQuotesRequest fetches time series data for the specified symbol and function.
+// It returns the raw CSV response as an io.ReadCloser that must be closed by the caller.
+// This method provides direct access to the CSV data without parsing.
 func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, function QuoteFunction) (io.ReadCloser, error) {
 	requestURL, err := NewQuotesURL(symbol, function)
 	if err != nil {
