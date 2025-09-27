@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"io"
 	"os"
 
 	"github.com/portfoliotree/alphavantage"
+	"github.com/spf13/pflag"
 )
 
 func main() {
@@ -16,30 +16,36 @@ func main() {
 		token = t
 	}
 	var tokenFlag string
-	flag.StringVar(&tokenFlag, "token", "", "api authentication token")
+	pflag.StringVar(&tokenFlag, "token", "", "api authentication token")
 
-	flag.Parse()
+	pflag.Parse()
 
 	if tokenFlag != "" {
 		token = tokenFlag
 	}
 
-	cmd := flag.Arg(0)
+	cmd := pflag.Arg(0)
 	switch cmd {
 	case "quotes":
-		err := quotes(token, flag.Args()[1:])
+		err := quotes(token, pflag.Args()[1:])
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 	case "listing-status":
-		err := listingStatus(token, flag.Args()[1:])
+		err := listingStatus(token, pflag.Args()[1:])
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 	case "symbol-search":
-		err := symbolSearch(token, flag.Args()[1:])
+		err := symbolSearch(token, pflag.Args()[1:])
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	case "global-quote":
+		err := globalQuote(token, pflag.Args()[1:])
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -62,9 +68,10 @@ func help(_ string, _ []string) error {
 	fmt.Println("av - An AlphaVantage CLI in Go")
 	fmt.Println()
 	fmt.Println("Global Flags:")
-	flag.PrintDefaults()
+	pflag.PrintDefaults()
 	fmt.Println()
 	fmt.Println("Commands:")
+	fmt.Println("  global-quote\n\tFetch latest price and volume information for equity.\n\thttps://www.alphavantage.co/documentation/#latestprice")
 	fmt.Println("  listing-status\n\tFetch listing & de-listing status.\n\thttps://www.alphavantage.co/documentation/#listing-status")
 	fmt.Println("  quotes\n\tFetch time series stock quotes.\n\thttps://www.alphavantage.co/documentation/#time-series-data")
 	fmt.Println("  symbol-search\n\tWrites symbol search results to stdout.\n\thttps://www.alphavantage.co/documentation/#symbolsearch")
@@ -73,7 +80,7 @@ func help(_ string, _ []string) error {
 }
 
 func quotes(token string, args []string) error {
-	flags := flag.NewFlagSet("quotes", flag.ContinueOnError)
+	flags := pflag.NewFlagSet("quotes", pflag.ContinueOnError)
 
 	var function string
 	flags.StringVar(&function, "function", string(alphavantage.TimeSeriesDailyAdjusted), "enter one of the stock time series functions with the TIME_ prefix")
@@ -120,7 +127,7 @@ func requestQuotes(ctx context.Context, client *alphavantage.Client, function, s
 }
 
 func listingStatus(token string, args []string) error {
-	flags := flag.NewFlagSet("status", flag.ContinueOnError)
+	flags := pflag.NewFlagSet("status", pflag.ContinueOnError)
 
 	var status bool
 	flags.BoolVar(&status, "listed", true, "listing status")
@@ -153,7 +160,7 @@ func listingStatus(token string, args []string) error {
 }
 
 func symbolSearch(token string, args []string) error {
-	flags := flag.NewFlagSet("search", flag.ContinueOnError)
+	flags := pflag.NewFlagSet("search", pflag.ContinueOnError)
 	var writeToFile bool
 	flags.BoolVar(&writeToFile, "O", false, "write to files instead of stdout")
 	err := flags.Parse(args)
@@ -195,6 +202,44 @@ func singleSymbolSearch(ctx context.Context, client *alphavantage.Client, symbol
 	fileName := symbol + ".csv"
 	fmt.Println("writing file", fileName)
 	return os.WriteFile(fileName, buffer, 0o666)
+}
+
+func globalQuote(token string, args []string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("symbol is required")
+	}
+
+	client := alphavantage.NewClient(token)
+	ctx := context.TODO()
+
+	for _, symbol := range args {
+		err := requestGlobalQuote(ctx, client, symbol)
+		if err != nil {
+			return fmt.Errorf("failed getting quote for %q: %w", symbol, err)
+		}
+	}
+	return nil
+}
+
+func requestGlobalQuote(ctx context.Context, client *alphavantage.Client, symbol string) error {
+	fileName := symbol + "_quote.csv"
+	f, err := os.Create(fileName)
+	if err != nil {
+		return err
+	}
+	defer closeAndIgnoreError(f)
+
+	rc, err := client.GlobalQuote(ctx, symbol)
+	if err != nil {
+		_ = os.Remove(fileName)
+		return err
+	}
+	defer closeAndIgnoreError(rc)
+
+	fmt.Printf("writing global quote for %q to file %s\n", symbol, fileName)
+
+	_, err = io.Copy(f, rc)
+	return err
 }
 
 func closeAndIgnoreError(c io.Closer) {

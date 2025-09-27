@@ -9,16 +9,17 @@ import (
 	"time"
 )
 
+// SymbolSearchResult represents a single result from the symbol search API.
 type SymbolSearchResult struct {
-	Symbol      string  `column-name:"symbol"`
-	Name        string  `column-name:"name"`
-	Type        string  `column-name:"type"`
-	Region      string  `column-name:"region"`
-	MarketOpen  string  `column-name:"marketOpen"`
-	MarketClose string  `column-name:"marketClose"`
-	TimeZone    string  `column-name:"timezone"`
-	Currency    string  `column-name:"currency"`
-	MatchScore  float64 `column-name:"matchScore"`
+	Symbol      string  `column-name:"symbol"`      // The security symbol
+	Name        string  `column-name:"name"`        // Company or security name
+	Type        string  `column-name:"type"`        // Security type (Equity, ETF, etc.)
+	Region      string  `column-name:"region"`      // Geographic region
+	MarketOpen  string  `column-name:"marketOpen"`  // Market opening time
+	MarketClose string  `column-name:"marketClose"` // Market closing time
+	TimeZone    string  `column-name:"timezone"`    // Market timezone
+	Currency    string  `column-name:"currency"`    // Trading currency
+	MatchScore  float64 `column-name:"matchScore"`  // Relevance score (0.0 to 1.0)
 }
 
 func NewSymbolSearchURL(keywords string) (string, error) {
@@ -44,6 +45,9 @@ func (client *Client) SymbolSearch(ctx context.Context, keywords string) ([]Symb
 	return ParseSymbolSearchQuery(rc)
 }
 
+// DoSymbolSearchRequest searches for securities matching the given keywords.
+// It returns CSV data containing symbol search results as an io.ReadCloser that must be closed by the caller.
+// The results include symbol, name, type, region, market times, timezone, currency, and match score.
 func (client *Client) DoSymbolSearchRequest(ctx context.Context, keywords string) (io.ReadCloser, error) {
 	requestURL, err := NewSymbolSearchURL(keywords)
 	if err != nil {
