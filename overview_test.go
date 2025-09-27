@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -15,7 +16,7 @@ import (
 )
 
 func TestClient_CompanyOverview(t *testing.T) {
-	f, err := os.Open("test_data/company_overview.json")
+	f, err := os.Open(filepath.FromSlash("testdata/company_overview.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
