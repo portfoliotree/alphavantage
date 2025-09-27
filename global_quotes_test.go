@@ -92,7 +92,7 @@ func TestService_ParseQueryResponse(t *testing.T) {
 		quotes, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)), nil)
 		require.NoError(t, err)
 		assert.Len(t, quotes, 1)
-		assert.Equal(t, "5.0000", quotes[0].SplitCoefficient)
+		assert.Equal(t, 5.0, quotes[0].SplitCoefficient)
 	})
 
 	t.Run("dividend", func(t *testing.T) {
@@ -103,6 +103,6 @@ func TestService_ParseQueryResponse(t *testing.T) {
 		quotes, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)), nil)
 		require.NoError(t, err)
 		assert.Len(t, quotes, 1)
-		assert.Equal(t, "4.20", quotes[0].DividendAmount)
+		assert.Equal(t, 4.20, quotes[0].DividendAmount)
 	})
 }

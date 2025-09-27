@@ -75,46 +75,46 @@ type CompanyOverview struct {
 	LatestQuarter              time.Time `av-json:"LatestQuarter"`
 	MarketCapitalization       int       `av-json:"MarketCapitalization"`
 	EBITDA                     int       `av-json:"EBITDA"`
-	PERatio                    string    `av-json:"PERatio"`
-	PEGRatio                   string    `av-json:"PEGRatio"`
-	BookValue                  string    `av-json:"BookValue"`
-	DividendPerShare           string    `av-json:"DividendPerShare"`
-	DividendYield              string    `av-json:"DividendYield"`
-	EPS                        string    `av-json:"EPS"`
-	RevenuePerShareTTM         string    `av-json:"RevenuePerShareTTM"`
-	ProfitMargin               string    `av-json:"ProfitMargin"`
-	OperatingMarginTTM         string    `av-json:"OperatingMarginTTM"`
-	ReturnOnAssetsTTM          string    `av-json:"ReturnOnAssetsTTM"`
-	ReturnOnEquityTTM          string    `av-json:"ReturnOnEquityTTM"`
+	PERatio                    float64   `av-json:"PERatio"`
+	PEGRatio                   float64   `av-json:"PEGRatio"`
+	BookValue                  float64   `av-json:"BookValue"`
+	DividendPerShare           float64   `av-json:"DividendPerShare"`
+	DividendYield              float64   `av-json:"DividendYield"`
+	EPS                        float64   `av-json:"EPS"`
+	RevenuePerShareTTM         float64   `av-json:"RevenuePerShareTTM"`
+	ProfitMargin               float64   `av-json:"ProfitMargin"`
+	OperatingMarginTTM         float64   `av-json:"OperatingMarginTTM"`
+	ReturnOnAssetsTTM          float64   `av-json:"ReturnOnAssetsTTM"`
+	ReturnOnEquityTTM          float64   `av-json:"ReturnOnEquityTTM"`
 	RevenueTTM                 int       `av-json:"RevenueTTM"`
 	GrossProfitTTM             int       `av-json:"GrossProfitTTM"`
-	DilutedEPSTTM              string    `av-json:"DilutedEPSTTM"`
-	QuarterlyEarningsGrowthYOY string    `av-json:"QuarterlyEarningsGrowthYOY"`
-	QuarterlyRevenueGrowthYOY  string    `av-json:"QuarterlyRevenueGrowthYOY"`
-	AnalystTargetPrice         string    `av-json:"AnalystTargetPrice"`
-	TrailingPE                 string    `av-json:"TrailingPE"`
-	ForwardPE                  string    `av-json:"ForwardPE"`
-	PriceToSalesRatioTTM       string    `av-json:"PriceToSalesRatioTTM"`
-	PriceToBookRatio           string    `av-json:"PriceToBookRatio"`
-	EVToRevenue                string    `av-json:"EVToRevenue"`
-	EVToEBITDA                 string    `av-json:"EVToEBITDA"`
-	Beta                       string    `av-json:"Beta"`
-	FiftyTwoWeekHigh           string    `av-json:"52WeekHigh"`
-	FiftyTwoWeekLow            string    `av-json:"52WeekLow"`
-	FiftyDayMovingAverage      string    `av-json:"50DayMovingAverage"`
-	TwoHundredDayMovingAverage string    `av-json:"200DayMovingAverage"`
+	DilutedEPSTTM              float64   `av-json:"DilutedEPSTTM"`
+	QuarterlyEarningsGrowthYOY float64   `av-json:"QuarterlyEarningsGrowthYOY"`
+	QuarterlyRevenueGrowthYOY  float64   `av-json:"QuarterlyRevenueGrowthYOY"`
+	AnalystTargetPrice         float64   `av-json:"AnalystTargetPrice"`
+	TrailingPE                 float64   `av-json:"TrailingPE"`
+	ForwardPE                  float64   `av-json:"ForwardPE"`
+	PriceToSalesRatioTTM       float64   `av-json:"PriceToSalesRatioTTM"`
+	PriceToBookRatio           float64   `av-json:"PriceToBookRatio"`
+	EVToRevenue                float64   `av-json:"EVToRevenue"`
+	EVToEBITDA                 float64   `av-json:"EVToEBITDA"`
+	Beta                       float64   `av-json:"Beta"`
+	FiftyTwoWeekHigh           float64   `av-json:"52WeekHigh"`
+	FiftyTwoWeekLow            float64   `av-json:"52WeekLow"`
+	FiftyDayMovingAverage      float64   `av-json:"50DayMovingAverage"`
+	TwoHundredDayMovingAverage float64   `av-json:"200DayMovingAverage"`
 	SharesOutstanding          int       `av-json:"SharesOutstanding"`
 	SharesFloat                int       `av-json:"SharesFloat"`
 	SharesShort                int       `av-json:"SharesShort"`
 	SharesShortPriorMonth      int       `av-json:"SharesShortPriorMonth"`
-	ShortRatio                 string    `av-json:"ShortRatio"`
-	ShortPercentOutstanding    string    `av-json:"ShortPercentOutstanding"`
-	ShortPercentFloat          string    `av-json:"ShortPercentFloat"`
-	PercentInsiders            string    `av-json:"PercentInsiders"`
-	PercentInstitutions        string    `av-json:"PercentInstitutions"`
-	ForwardAnnualDividendRate  string    `av-json:"ForwardAnnualDividendRate"`
-	ForwardAnnualDividendYield string    `av-json:"ForwardAnnualDividendYield"`
-	PayoutRatio                string    `av-json:"PayoutRatio"`
+	ShortRatio                 float64   `av-json:"ShortRatio"`
+	ShortPercentOutstanding    float64   `av-json:"ShortPercentOutstanding"`
+	ShortPercentFloat          float64   `av-json:"ShortPercentFloat"`
+	PercentInsiders            float64   `av-json:"PercentInsiders"`
+	PercentInstitutions        float64   `av-json:"PercentInstitutions"`
+	ForwardAnnualDividendRate  float64   `av-json:"ForwardAnnualDividendRate"`
+	ForwardAnnualDividendYield float64   `av-json:"ForwardAnnualDividendYield"`
+	PayoutRatio                float64   `av-json:"PayoutRatio"`
 	DividendDate               time.Time `av-json:"DividendDate"`
 	ExDividendDate             time.Time `av-json:"ExDividendDate"`
 	LastSplitFactor            string    `av-json:"LastSplitFactor"`
