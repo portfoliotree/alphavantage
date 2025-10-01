@@ -31,7 +31,7 @@ func TestParse(t *testing.T) {
 			_ = alphavantage.ParseCSV(bytes.NewReader(nil), (*[]alphavantage.Quote)(nil), nil)
 		})
 	})
-	
+
 	t.Run("real data", func(t *testing.T) {
 
 		var someFolks []struct {

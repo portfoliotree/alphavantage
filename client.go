@@ -153,12 +153,13 @@ var typeType = reflect.TypeOf(time.Time{})
 //   - `time-layout:"layout"`: Custom time format for time.Time fields (optional, defaults to "2006-01-02")
 //
 // Example struct:
-//   type StockPrice struct {
-//       Date   time.Time `column-name:"timestamp"`
-//       Open   float64   `column-name:"open"`
-//       High   float64   `column-name:"high"`
-//       Volume int       `column-name:"volume"`
-//   }
+//
+//	type StockPrice struct {
+//	    Date   time.Time `column-name:"timestamp"`
+//	    Open   float64   `column-name:"open"`
+//	    High   float64   `column-name:"high"`
+//	    Volume int       `column-name:"volume"`
+//	}
 //
 // Unmapped columns are ignored. Fields without matching columns keep their zero value.
 // Time fields with "null" values remain as zero time.Time.
@@ -187,12 +188,13 @@ func ParseCSV[T any](r io.Reader, data *[]T, location *time.Location) error {
 // processing, false to stop. Location defaults to UTC if nil.
 //
 // Example usage:
-//   for price := range ParseCSVRows[StockPrice](reader, time.UTC, func(err error) bool {
-//       log.Printf("Parse error: %v", err)
-//       return true // continue on errors
-//   }) {
-//       fmt.Printf("Price: %+v\n", price)
-//   }
+//
+//	for price := range ParseCSVRows[StockPrice](reader, time.UTC, func(err error) bool {
+//	    log.Printf("Parse error: %v", err)
+//	    return true // continue on errors
+//	}) {
+//	    fmt.Printf("Price: %+v\n", price)
+//	}
 func ParseCSVRows[T any](r io.Reader, location *time.Location, handleErr func(error) bool) iter.Seq[T] {
 	return func(yield func(T) bool) {
 		if location == nil {

@@ -15,12 +15,12 @@ type QuoteFunction string
 
 // Time series function constants for different data intervals and types.
 const (
-	TimeSeriesIntraday        QuoteFunction = "TIME_SERIES_INTRADAY"        // Intraday time series data
-	TimeSeriesDaily           QuoteFunction = "TIME_SERIES_DAILY"           // Daily time series data
+	TimeSeriesIntraday        QuoteFunction = "TIME_SERIES_INTRADAY"         // Intraday time series data
+	TimeSeriesDaily           QuoteFunction = "TIME_SERIES_DAILY"            // Daily time series data
 	TimeSeriesDailyAdjusted   QuoteFunction = "TIME_SERIES_DAILY_ADJUSTED"   // Daily adjusted time series data
-	TimeSeriesWeekly          QuoteFunction = "TIME_SERIES_WEEKLY"          // Weekly time series data
+	TimeSeriesWeekly          QuoteFunction = "TIME_SERIES_WEEKLY"           // Weekly time series data
 	TimeSeriesWeeklyAdjusted  QuoteFunction = "TIME_SERIES_WEEKLY_ADJUSTED"  // Weekly adjusted time series data
-	TimeSeriesMonthly         QuoteFunction = "TIME_SERIES_MONTHLY"         // Monthly time series data
+	TimeSeriesMonthly         QuoteFunction = "TIME_SERIES_MONTHLY"          // Monthly time series data
 	TimeSeriesMonthlyAdjusted QuoteFunction = "TIME_SERIES_MONTHLY_ADJUSTED" // Monthly adjusted time series data
 )
 

@@ -18,8 +18,8 @@ func (client *Client) GlobalQuote(ctx context.Context, symbol string) (io.ReadCl
 		Host:   "www.alphavantage.co",
 		Path:   "/query",
 		RawQuery: url.Values{
-			"function":  []string{"GLOBAL_QUOTE"},
-			"symbol":    []string{symbol},
+			"function": []string{"GLOBAL_QUOTE"},
+			"symbol":   []string{symbol},
 			"datatype": []string{"csv"},
 		}.Encode(),
 	}
