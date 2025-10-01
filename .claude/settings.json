@@ -1,16 +1,10 @@
 {
-  "defaultMode": "acceptEdits",
   "permissions": {
-    "allow": [
-      "Bash(go build:*)",
-      "Bash(go doc:*)",
-      "Bash(go list:*)",
-      "Bash(go mod:*)",
-      "Bash(go run github.com/portfoliotree/alphavantage/cmd/av: *)",
-      "Bash(go test:*)",
-      "WebFetch(domain:www.alphavantage.co)"
-    ],
+    "allow": [],
     "deny": [],
-    "ask": []
+    "ask": [
+      "Bash(go run github.com/portfoliotree/alphavantage/cmd/av: *)",
+      "WebFetch(domain:www.alphavantage.co)"
+    ]
   }
 }
