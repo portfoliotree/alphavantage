@@ -145,6 +145,40 @@ func ParseQuotes(r io.Reader, location *time.Location) ([]Quote, error) {
 	return list, ParseCSV(r, &list, location)
 }
 
+func NewIntraDayQuotesURL(symbol string) string {
+	u := url.URL{
+		Scheme: "https",
+		Host:   "www.alphavantage.co",
+		Path:   "/query",
+		RawQuery: url.Values{
+			"datatype":       []string{"csv"},
+			"outputsize":     []string{"compact"},
+			"function":       []string{"TIME_SERIES_INTRADAY"},
+			"symbol":         []string{symbol},
+			"interval":       []string{"15min"},
+			"extended_hours": []string{"true"},
+		}.Encode(),
+	}
+	return u.String()
+}
+
+func (client *Client) TimeSeriesIntraday(ctx context.Context, symbol string) ([]IntraDayQuote, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, NewIntraDayQuotesURL(symbol), nil)
+	if err != nil {
+		return nil, err
+	}
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer closeAndIgnoreError(res.Body)
+	quotes, err := ParseIntraDayQuotes(res.Body, time.UTC)
+	if err != nil {
+		return nil, err
+	}
+	return quotes, nil
+}
+
 // IntraDayQuote is convertable to Quote. The only difference is the time-layout includes additional time information.
 type IntraDayQuote struct {
 	Time             time.Time `column-name:"timestamp" time-layout:"2006-01-02 15:04:05"`
