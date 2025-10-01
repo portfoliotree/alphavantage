@@ -51,6 +51,63 @@ func TestQuotes(t *testing.T) {
 	assert.Equal(t, 1, waitCallCount)
 }
 
+//go:embed testdata/intraday_5min_IBM.csv
+var intradayIBM []byte
+
+func TestTimeSeriesIntraday(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping unit test in short mode")
+	}
+
+	ctx := context.Background()
+
+	// Mock client that intercepts HTTP requests
+	mockClient := &alphavantage.Client{
+		Client: doerFunc(func(req *http.Request) (*http.Response, error) {
+			// Verify the request
+			assert.Equal(t, "/query", req.URL.Path)
+			assert.Equal(t, "TIME_SERIES_INTRADAY", req.URL.Query().Get("function"))
+			assert.Equal(t, "IBM", req.URL.Query().Get("symbol"))
+			assert.Equal(t, "csv", req.URL.Query().Get("datatype"))
+			assert.Equal(t, "15min", req.URL.Query().Get("interval"))
+			assert.Equal(t, "true", req.URL.Query().Get("extended_hours"))
+			assert.Equal(t, "compact", req.URL.Query().Get("outputsize"))
+			assert.Equal(t, "test-key", req.URL.Query().Get("apikey"))
+
+			// Return test data from embedded CSV
+			return &http.Response{
+				StatusCode: 200,
+				Header:     make(http.Header),
+				Body:       io.NopCloser(bytes.NewReader(intradayIBM)),
+			}, nil
+		}),
+		Limiter: waitFunc(func(ctx context.Context) error { return nil }),
+		APIKey:  "test-key",
+	}
+
+	result, err := mockClient.TimeSeriesIntraday(ctx, "IBM")
+	require.NoError(t, err)
+
+	// Verify we got the expected number of quotes
+	assert.Len(t, result, 100)
+
+	// Verify first quote details
+	assert.Equal(t, "2020-08-21 19:40:00 +0000 UTC", result[0].Time.String())
+	assert.Equal(t, 123.17, result[0].Open)
+	assert.Equal(t, 123.17, result[0].High)
+	assert.Equal(t, 123.17, result[0].Low)
+	assert.Equal(t, 123.17, result[0].Close)
+	assert.Equal(t, 825.0, result[0].Volume)
+
+	// Verify last quote details (from previous day)
+	assert.Equal(t, "2020-08-20 17:10:00 +0000 UTC", result[99].Time.String())
+	assert.Equal(t, 123.15, result[99].Open)
+	assert.Equal(t, 123.15, result[99].High)
+	assert.Equal(t, 123.15, result[99].Low)
+	assert.Equal(t, 123.15, result[99].Close)
+	assert.Equal(t, 2916.0, result[99].Volume)
+}
+
 func TestService_ParseQueryResponse(t *testing.T) {
 	t.Run("valid data", func(t *testing.T) {
 		const responseText = `timestamp,open,high,low,close,volume
