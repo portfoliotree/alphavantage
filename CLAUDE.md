@@ -97,7 +97,7 @@ Set the `ALPHA_VANTAGE_TOKEN` environment variable with your AlphaVantage API ke
 
 ### Unit Tests
 - Use `testify` library for assertions
-- Mock HTTP responses with test data in `test_data/` directory
+- Mock HTTP responses with test data in `testdata/` directory
 - Fast execution, no external dependencies
 
 ### Integration Tests
