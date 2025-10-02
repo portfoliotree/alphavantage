@@ -17,6 +17,8 @@ import (
 	"io"
 	"iter"
 	"net/http"
+	"net/url"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -29,6 +31,10 @@ const (
 	// StandardTokenEnvironmentVariableName is the standard environment variable
 	// name for storing the AlphaVantage API key.
 	StandardTokenEnvironmentVariableName = "ALPHA_VANTAGE_TOKEN"
+
+	// StandardURLEnvironmentVariableName is the standard environment variable
+	// name for storing the AlphaVantage API base URL.
+	StandardURLEnvironmentVariableName = "ALPHA_VANTAGE_URL"
 )
 
 // DefaultDateFormat is the RFC 3339 date format used for parsing dates.
@@ -52,16 +58,121 @@ type Client struct {
 
 	// APIKey is the AlphaVantage API key used for authentication.
 	APIKey string
+
+	// PrimaryScheme is the URL scheme for the primary API endpoint (http or https).
+	// Defaults to "https" if not specified.
+	PrimaryScheme string
+
+	// PrimaryHost is the hostname for the primary API endpoint.
+	// Defaults to "www.alphavantage.co" if not specified.
+	PrimaryHost string
+
+	// FallbackScheme is the URL scheme for the fallback API endpoint (http or https).
+	// If specified along with FallbackHost, requests will retry using this URL if the primary fails.
+	FallbackScheme string
+
+	// FallbackHost is the hostname for the fallback API endpoint.
+	// If specified along with FallbackScheme, requests will retry using this URL if the primary fails.
+	FallbackHost string
 }
 
 // NewClient creates a new AlphaVantage client with the specified API key.
 // It uses default rate limiting (5 requests per minute) and the default HTTP client.
+// The client will use environment variable ALPHA_VANTAGE_URL if set, otherwise defaults
+// to https://www.alphavantage.co.
 func NewClient(apiKey string) *Client {
 	return &Client{
 		Client:  http.DefaultClient,
 		Limiter: rate.NewLimiter(rate.Every(time.Minute/5), 5),
 		APIKey:  apiKey,
 	}
+}
+
+// getSchemeAndHost returns the scheme and host for API requests.
+// It checks environment variable ALPHA_VANTAGE_URL first, then falls back to
+// client configuration, and finally defaults to https://www.alphavantage.co.
+func (client *Client) getSchemeAndHost() (scheme, host string) {
+	// Try environment variable first
+	if envURL := getEnvURL(); envURL != "" {
+		return parseURLSchemeHost(envURL)
+	}
+
+	// Use client configuration or defaults
+	scheme = client.PrimaryScheme
+	if scheme == "" {
+		scheme = "https"
+	}
+
+	host = client.PrimaryHost
+	if host == "" {
+		host = "www.alphavantage.co"
+	}
+
+	return scheme, host
+}
+
+// hasFallback returns true if the client has a fallback URL configured.
+func (client *Client) hasFallback() bool {
+	return client.FallbackHost != "" && client.FallbackScheme != ""
+}
+
+// getEnvURL returns the ALPHA_VANTAGE_URL environment variable value if set.
+func getEnvURL() string {
+	return os.Getenv(StandardURLEnvironmentVariableName)
+}
+
+// parseURLSchemeHost parses a URL string and extracts scheme and host.
+// Returns "https" and "www.alphavantage.co" as defaults if parsing fails.
+func parseURLSchemeHost(urlStr string) (scheme, host string) {
+	u, err := url.Parse(urlStr)
+	if err != nil || u.Host == "" {
+		return "https", "www.alphavantage.co"
+	}
+
+	scheme = u.Scheme
+	if scheme == "" {
+		scheme = "https"
+	}
+
+	return scheme, u.Host
+}
+
+// doWithFallback executes a request with automatic fallback support.
+// It first tries the primary URL, and if that fails and a fallback is configured,
+// it retries with the fallback URL.
+func (client *Client) doWithFallback(ctx context.Context, makeURL func(scheme, host string) string) (io.ReadCloser, error) {
+	// Try primary URL first
+	scheme, host := client.getSchemeAndHost()
+	requestURL := makeURL(scheme, host)
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, requestURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, primaryErr := client.Do(req)
+	if primaryErr == nil {
+		return checkError(res.Body)
+	}
+
+	// If primary failed and we have a fallback, try it
+	if client.hasFallback() {
+		fallbackURL := makeURL(client.FallbackScheme, client.FallbackHost)
+
+		req, err = http.NewRequestWithContext(ctx, http.MethodGet, fallbackURL, nil)
+		if err != nil {
+			return nil, fmt.Errorf("primary request failed: %w; fallback request creation failed: %v", primaryErr, err)
+		}
+
+		res, fallbackErr := client.Do(req)
+		if fallbackErr == nil {
+			return checkError(res.Body)
+		}
+
+		return nil, fmt.Errorf("primary request failed: %w; fallback request failed: %v", primaryErr, fallbackErr)
+	}
+
+	return nil, primaryErr
 }
 
 func (client *Client) Do(req *http.Request) (*http.Response, error) {
