@@ -3,7 +3,6 @@ package alphavantage
 import (
 	"context"
 	"io"
-	"net/http"
 	"net/url"
 )
 
@@ -13,26 +12,19 @@ import (
 // The CSV response includes columns for symbol, open, high, low, price, volume, latestDay,
 // previousClose, change, and changePercent.
 func (client *Client) GlobalQuote(ctx context.Context, symbol string) (io.ReadCloser, error) {
-	u := url.URL{
-		Scheme: "https",
-		Host:   "www.alphavantage.co",
-		Path:   "/query",
-		RawQuery: url.Values{
-			"function": []string{"GLOBAL_QUOTE"},
-			"symbol":   []string{symbol},
-			"datatype": []string{"csv"},
-		}.Encode(),
+	makeURL := func(scheme, host string) string {
+		u := url.URL{
+			Scheme: scheme,
+			Host:   host,
+			Path:   "/query",
+			RawQuery: url.Values{
+				"function": []string{"GLOBAL_QUOTE"},
+				"symbol":   []string{symbol},
+				"datatype": []string{"csv"},
+			}.Encode(),
+		}
+		return u.String()
 	}
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	return checkError(res.Body)
+	return client.doWithFallback(ctx, makeURL)
 }
