@@ -26,6 +26,8 @@ const (
 )
 
 // NewQuotesURL constructs a URL for time series data requests.
+// The host parameter should normally be an empty string (""), which will default to www.alphavantage.co.
+// Only provide a custom host value for testing or when using a proxy/mirror of the AlphaVantage API.
 // It validates the function parameter and returns a properly formatted API URL.
 func NewQuotesURL(host, symbol string, function QuoteFunction) (string, error) {
 	err := function.Validate()

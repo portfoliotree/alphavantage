@@ -23,6 +23,9 @@ type SymbolSearchResult struct {
 	MatchScore  float64 `column-name:"matchScore"`  // Relevance score (0.0 to 1.0)
 }
 
+// NewSymbolSearchURL constructs a URL for symbol search requests.
+// The host parameter should normally be an empty string (""), which will default to www.alphavantage.co.
+// Only provide a custom host value for testing or when using a proxy/mirror of the AlphaVantage API.
 func NewSymbolSearchURL(host, keywords string) (string, error) {
 	u := url.URL{
 		Scheme: "https",

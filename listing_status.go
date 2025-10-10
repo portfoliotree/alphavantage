@@ -34,6 +34,9 @@ const (
 	AssetTypeETF   = "ETF"   // Exchange-traded fund type
 )
 
+// NewListingStatusURL constructs a URL for listing status requests.
+// The host parameter should normally be an empty string (""), which will default to www.alphavantage.co.
+// Only provide a custom host value for testing or when using a proxy/mirror of the AlphaVantage API.
 func NewListingStatusURL(host string, isListed bool) (string, error) {
 	state := ListingStatusActive
 	if !isListed {
