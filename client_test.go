@@ -33,7 +33,6 @@ func TestParse(t *testing.T) {
 	})
 
 	t.Run("real data", func(t *testing.T) {
-
 		var someFolks []struct {
 			ID           int       `column-name:"id"`
 			FirstInitial string    `column-name:"first_initial"`
