@@ -1,6 +1,7 @@
 package alphavantage
 
 import (
+	"cmp"
 	"context"
 	"fmt"
 	"io"
@@ -33,7 +34,10 @@ const (
 	AssetTypeETF   = "ETF"   // Exchange-traded fund type
 )
 
-func NewListingStatusURL(isListed bool) (string, error) {
+// NewListingStatusURL constructs a URL for listing status requests.
+// The host parameter should normally be an empty string (""), which will default to www.alphavantage.co.
+// Only provide a custom host value for testing or when using a proxy/mirror of the AlphaVantage API.
+func NewListingStatusURL(host string, isListed bool) (string, error) {
 	state := ListingStatusActive
 	if !isListed {
 		state = ListingStatusDelisted
@@ -42,7 +46,7 @@ func NewListingStatusURL(isListed bool) (string, error) {
 
 	u := url.URL{
 		Scheme: "https",
-		Host:   "www.alphavantage.co",
+		Host:   cmp.Or(host, DefaultHost),
 		Path:   "/query",
 		RawQuery: url.Values{
 			"datatype": []string{"csv"},
@@ -69,7 +73,7 @@ func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]Listi
 // If isListed is false, it returns delisted securities.
 // The response is returned as CSV data in an io.ReadCloser that must be closed by the caller.
 func (client *Client) DoListingStatusRequest(ctx context.Context, isListed bool) (io.ReadCloser, error) {
-	requestURL, err := NewListingStatusURL(isListed)
+	requestURL, err := NewListingStatusURL(client.host(), isListed)
 	if err != nil {
 		return nil, err
 	}
