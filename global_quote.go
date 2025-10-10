@@ -1,6 +1,7 @@
 package alphavantage
 
 import (
+	"cmp"
 	"context"
 	"errors"
 	"io"
@@ -15,18 +16,18 @@ type QuoteFunction string
 
 // Time series function constants for different data intervals and types.
 const (
-	TimeSeriesIntraday        QuoteFunction = "TIME_SERIES_INTRADAY"        // Intraday time series data
-	TimeSeriesDaily           QuoteFunction = "TIME_SERIES_DAILY"           // Daily time series data
+	TimeSeriesIntraday        QuoteFunction = "TIME_SERIES_INTRADAY"         // Intraday time series data
+	TimeSeriesDaily           QuoteFunction = "TIME_SERIES_DAILY"            // Daily time series data
 	TimeSeriesDailyAdjusted   QuoteFunction = "TIME_SERIES_DAILY_ADJUSTED"   // Daily adjusted time series data
-	TimeSeriesWeekly          QuoteFunction = "TIME_SERIES_WEEKLY"          // Weekly time series data
+	TimeSeriesWeekly          QuoteFunction = "TIME_SERIES_WEEKLY"           // Weekly time series data
 	TimeSeriesWeeklyAdjusted  QuoteFunction = "TIME_SERIES_WEEKLY_ADJUSTED"  // Weekly adjusted time series data
-	TimeSeriesMonthly         QuoteFunction = "TIME_SERIES_MONTHLY"         // Monthly time series data
+	TimeSeriesMonthly         QuoteFunction = "TIME_SERIES_MONTHLY"          // Monthly time series data
 	TimeSeriesMonthlyAdjusted QuoteFunction = "TIME_SERIES_MONTHLY_ADJUSTED" // Monthly adjusted time series data
 )
 
 // NewQuotesURL constructs a URL for time series data requests.
 // It validates the function parameter and returns a properly formatted API URL.
-func NewQuotesURL(symbol string, function QuoteFunction) (string, error) {
+func NewQuotesURL(host, symbol string, function QuoteFunction) (string, error) {
 	err := function.Validate()
 	if err != nil {
 		return "", err
@@ -34,7 +35,7 @@ func NewQuotesURL(symbol string, function QuoteFunction) (string, error) {
 
 	u := url.URL{
 		Scheme: "https",
-		Host:   "www.alphavantage.co",
+		Host:   cmp.Or(host, DefaultHost),
 		Path:   "/query",
 		RawQuery: url.Values{
 			"datatype":   []string{"csv"},
@@ -104,7 +105,7 @@ func (client *Client) QuotesRequest(ctx context.Context, symbol string, function
 // It returns the raw CSV response as an io.ReadCloser that must be closed by the caller.
 // This method provides direct access to the CSV data without parsing.
 func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, function QuoteFunction) (io.ReadCloser, error) {
-	requestURL, err := NewQuotesURL(symbol, function)
+	requestURL, err := NewQuotesURL(client.host(), symbol, function)
 	if err != nil {
 		return nil, err
 	}
