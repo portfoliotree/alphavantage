@@ -1,6 +1,7 @@
 package alphavantage
 
 import (
+	"cmp"
 	"context"
 	"errors"
 	"io"
@@ -25,8 +26,10 @@ const (
 )
 
 // NewQuotesURL constructs a URL for time series data requests.
+// The host parameter should normally be an empty string (""), which will default to www.alphavantage.co.
+// Only provide a custom host value for testing or when using a proxy/mirror of the AlphaVantage API.
 // It validates the function parameter and returns a properly formatted API URL.
-func NewQuotesURL(symbol string, function QuoteFunction) (string, error) {
+func NewQuotesURL(host, symbol string, function QuoteFunction) (string, error) {
 	err := function.Validate()
 	if err != nil {
 		return "", err
@@ -34,7 +37,7 @@ func NewQuotesURL(symbol string, function QuoteFunction) (string, error) {
 
 	u := url.URL{
 		Scheme: "https",
-		Host:   "www.alphavantage.co",
+		Host:   cmp.Or(host, DefaultHost),
 		Path:   "/query",
 		RawQuery: url.Values{
 			"datatype":   []string{"csv"},
@@ -104,7 +107,7 @@ func (client *Client) QuotesRequest(ctx context.Context, symbol string, function
 // It returns the raw CSV response as an io.ReadCloser that must be closed by the caller.
 // This method provides direct access to the CSV data without parsing.
 func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, function QuoteFunction) (io.ReadCloser, error) {
-	requestURL, err := NewQuotesURL(symbol, function)
+	requestURL, err := NewQuotesURL(client.host(), symbol, function)
 	if err != nil {
 		return nil, err
 	}

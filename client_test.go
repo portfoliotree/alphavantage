@@ -3,8 +3,10 @@ package alphavantage_test
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	_ "embed"
 	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
@@ -73,4 +75,84 @@ func mustParseDate(t *testing.T, date string) time.Time {
 		t.Fatal(err)
 	}
 	return tm
+}
+
+// TestClientHostConfiguration verifies that the Client uses a configured host
+// when making API requests. This test creates a fake server and ensures the
+// client targets it instead of the default AlphaVantage host.
+func TestClientHostConfiguration(t *testing.T) {
+	// Create a TLS test server that returns mock CSV data
+	server := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Verify the request has the API key query parameter
+		assert.Equal(t, "test-api-key", r.URL.Query().Get("apikey"))
+
+		// Return mock CSV data
+		w.Header().Set("Content-Type", "text/csv")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte("timestamp,open,high,low,close,volume,dividend_amount,split_coefficient\n2024-01-01,100,110,90,105,1000000,0,1\n"))
+	}))
+	defer server.Close()
+
+	// Create a client with the test server's host and a custom HTTP client that accepts self-signed certs
+	client := alphavantage.NewClient("test-api-key")
+	client.Host = server.URL[len("https://"):] // Remove the scheme
+	client.Limiter = nil                       // Disable rate limiting for tests
+	client.Client = &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+	}
+
+	// Make a request
+	ctx := context.Background()
+	_, err := client.DoQuotesRequest(ctx, "TEST", alphavantage.TimeSeriesDaily)
+
+	require.NoError(t, err)
+}
+
+// TestClientHostFallback verifies that when Host is not set, the client
+// falls back to the DefaultHost.
+func TestClientHostFallback(t *testing.T) {
+	client := alphavantage.NewClientWithHost("", "test-api-key")
+
+	// Host should be empty by default
+	assert.Equal(t, "", client.Host)
+
+	// When creating a URL, it should use the default host
+	url, err := alphavantage.NewQuotesURL("", "TEST", alphavantage.TimeSeriesDaily)
+	require.NoError(t, err)
+
+	assert.Contains(t, url, alphavantage.DefaultHost)
+}
+
+// TestClientHostEnvironmentVariable verifies that the host can be configured
+// via the Client.Host field, which can be set from an environment variable.
+func TestClientHostEnvironmentVariable(t *testing.T) {
+	// Create a TLS test server
+	server := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/csv")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte("symbol,name,exchange,assetType,ipoDate,delistingDate,status\nTEST,Test Company,NYSE,Stock,2020-01-01,null,Active\n"))
+	}))
+	defer server.Close()
+
+	// Simulate setting host from environment variable
+	customHost := server.URL[len("https://"):]
+
+	client := alphavantage.NewClient("test-api-key")
+	client.Host = customHost
+	client.Limiter = nil
+	client.Client = &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+	}
+
+	// Test with ListingStatus endpoint
+	ctx := context.Background()
+	results, err := client.ListingStatus(ctx, true)
+
+	require.NoError(t, err)
+	assert.Len(t, results, 1)
+	assert.Equal(t, "TEST", results[0].Symbol)
 }
