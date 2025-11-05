@@ -420,6 +420,222 @@ func ParseCSVRows[T any](r io.Reader, location *time.Location, handleErr func(er
 	}
 }
 
+// QuoteFunction represents the different time series functions available
+// from the AlphaVantage API.
+type QuoteFunction string
+
+// Time series function constants for different data intervals and types.
+const (
+	TimeSeriesIntraday        QuoteFunction = "TIME_SERIES_INTRADAY"         // Intraday time series data
+	TimeSeriesDaily           QuoteFunction = "TIME_SERIES_DAILY"            // Daily time series data
+	TimeSeriesDailyAdjusted   QuoteFunction = "TIME_SERIES_DAILY_ADJUSTED"   // Daily adjusted time series data
+	TimeSeriesWeekly          QuoteFunction = "TIME_SERIES_WEEKLY"           // Weekly time series data
+	TimeSeriesWeeklyAdjusted  QuoteFunction = "TIME_SERIES_WEEKLY_ADJUSTED"  // Weekly adjusted time series data
+	TimeSeriesMonthly         QuoteFunction = "TIME_SERIES_MONTHLY"          // Monthly time series data
+	TimeSeriesMonthlyAdjusted QuoteFunction = "TIME_SERIES_MONTHLY_ADJUSTED" // Monthly adjusted time series data
+)
+
+type ETFProfile struct {
+	Symbol            string       `json:"symbol,omitempty"`
+	NetAssets         string       `json:"net_assets,omitempty"`
+	NetExpenseRatio   string       `json:"net_expense_ratio,omitempty"`
+	PortfolioTurnover string       `json:"portfolio_turnover,omitempty"`
+	DividendYield     string       `json:"dividend_yield,omitempty"`
+	InceptionDate     string       `json:"inception_date,omitempty"`
+	Leveraged         string       `json:"leveraged,omitempty"`
+	Sectors           []ETFSector  `json:"sectors,omitempty"`
+	Holdings          []ETFHolding `json:"holdings,omitempty"`
+}
+
+type ETFSector struct {
+	Sector string `json:"sector,omitempty"`
+	Weight string `json:"weight,omitempty"`
+}
+
+type ETFHolding struct {
+	Symbol      string `json:"symbol,omitempty"`
+	Description string `json:"description,omitempty"`
+	Weight      string `json:"weight,omitempty"`
+}
+
+type Quote struct {
+	Time             time.Time `column-name:"timestamp"`
+	Open             float64   `column-name:"open"`
+	High             float64   `column-name:"high"`
+	Low              float64   `column-name:"low"`
+	Close            float64   `column-name:"close"`
+	Volume           float64   `column-name:"volume"`
+	DividendAmount   float64   `column-name:"dividend_amount"`
+	SplitCoefficient float64   `column-name:"split_coefficient"`
+}
+
+// IntraDayQuote is convertable to Quote. The only difference is the time-layout includes additional time information.
+type IntraDayQuote struct {
+	Time             time.Time `column-name:"timestamp" time-layout:"2006-01-02 15:04:05"`
+	Open             float64   `column-name:"open"`
+	High             float64   `column-name:"high"`
+	Low              float64   `column-name:"low"`
+	Close            float64   `column-name:"close"`
+	Volume           float64   `column-name:"volume"`
+	DividendAmount   float64   `column-name:"dividend_amount"`
+	SplitCoefficient float64   `column-name:"split_coefficient"`
+}
+
+var _ = Quote(IntraDayQuote{})
+
+// ListingStatus represents the listing status information for a security.
+type ListingStatus struct {
+	Symbol        string    `column-name:"symbol"`        // The security symbol
+	Name          string    `column-name:"name"`          // The company or security name
+	Exchange      string    `column-name:"exchange"`      // The exchange where it's listed
+	AssetType     string    `column-name:"assetType"`     // Type of asset (Stock, ETF, etc.)
+	IPODate       time.Time `column-name:"ipoDate"`       // Initial public offering date
+	DeListingDate time.Time `column-name:"delistingDate"` // Date when delisted (if applicable)
+	Status        string    `column-name:"status"`        // Current status (Active, Delisted)
+}
+
+// Listing status constants.
+const (
+	ListingStatusActive   = "Active"   // Security is actively listed
+	ListingStatusDelisted = "Delisted" // Security has been delisted
+)
+
+// Asset type constants.
+const (
+	AssetTypeStock = "Stock" // Stock security type
+	AssetTypeETF   = "ETF"   // Exchange-traded fund type
+)
+
+// CompanyOverview contains comprehensive company information and financial metrics
+// returned by the AlphaVantage OVERVIEW function.
+type CompanyOverview struct {
+	CIK                        string    `av-json:"CIK"`
+	Symbol                     string    `av-json:"Symbol"`
+	AssetType                  string    `av-json:"AssetType"`
+	Name                       string    `av-json:"Name"`
+	Description                string    `av-json:"Description"`
+	Exchange                   string    `av-json:"Exchange"`
+	Currency                   string    `av-json:"Currency"`
+	Country                    string    `av-json:"Country"`
+	Sector                     string    `av-json:"Sector"`
+	Industry                   string    `av-json:"Industry"`
+	Address                    string    `av-json:"Address"`
+	FiscalYearEnd              string    `av-json:"FiscalYearEnd"`
+	LatestQuarter              time.Time `av-json:"LatestQuarter"`
+	MarketCapitalization       int       `av-json:"MarketCapitalization"`
+	EBITDA                     int       `av-json:"EBITDA"`
+	PERatio                    float64   `av-json:"PERatio"`
+	PEGRatio                   float64   `av-json:"PEGRatio"`
+	BookValue                  float64   `av-json:"BookValue"`
+	DividendPerShare           float64   `av-json:"DividendPerShare"`
+	DividendYield              float64   `av-json:"DividendYield"`
+	EPS                        float64   `av-json:"EPS"`
+	RevenuePerShareTTM         float64   `av-json:"RevenuePerShareTTM"`
+	ProfitMargin               float64   `av-json:"ProfitMargin"`
+	OperatingMarginTTM         float64   `av-json:"OperatingMarginTTM"`
+	ReturnOnAssetsTTM          float64   `av-json:"ReturnOnAssetsTTM"`
+	ReturnOnEquityTTM          float64   `av-json:"ReturnOnEquityTTM"`
+	RevenueTTM                 int       `av-json:"RevenueTTM"`
+	GrossProfitTTM             int       `av-json:"GrossProfitTTM"`
+	DilutedEPSTTM              float64   `av-json:"DilutedEPSTTM"`
+	QuarterlyEarningsGrowthYOY float64   `av-json:"QuarterlyEarningsGrowthYOY"`
+	QuarterlyRevenueGrowthYOY  float64   `av-json:"QuarterlyRevenueGrowthYOY"`
+	AnalystTargetPrice         float64   `av-json:"AnalystTargetPrice"`
+	TrailingPE                 float64   `av-json:"TrailingPE"`
+	ForwardPE                  float64   `av-json:"ForwardPE"`
+	PriceToSalesRatioTTM       float64   `av-json:"PriceToSalesRatioTTM"`
+	PriceToBookRatio           float64   `av-json:"PriceToBookRatio"`
+	EVToRevenue                float64   `av-json:"EVToRevenue"`
+	EVToEBITDA                 float64   `av-json:"EVToEBITDA"`
+	Beta                       float64   `av-json:"Beta"`
+	FiftyTwoWeekHigh           float64   `av-json:"52WeekHigh"`
+	FiftyTwoWeekLow            float64   `av-json:"52WeekLow"`
+	FiftyDayMovingAverage      float64   `av-json:"50DayMovingAverage"`
+	TwoHundredDayMovingAverage float64   `av-json:"200DayMovingAverage"`
+	SharesOutstanding          int       `av-json:"SharesOutstanding"`
+	SharesFloat                int       `av-json:"SharesFloat"`
+	SharesShort                int       `av-json:"SharesShort"`
+	SharesShortPriorMonth      int       `av-json:"SharesShortPriorMonth"`
+	ShortRatio                 float64   `av-json:"ShortRatio"`
+	ShortPercentOutstanding    float64   `av-json:"ShortPercentOutstanding"`
+	ShortPercentFloat          float64   `av-json:"ShortPercentFloat"`
+	PercentInsiders            float64   `av-json:"PercentInsiders"`
+	PercentInstitutions        float64   `av-json:"PercentInstitutions"`
+	ForwardAnnualDividendRate  float64   `av-json:"ForwardAnnualDividendRate"`
+	ForwardAnnualDividendYield float64   `av-json:"ForwardAnnualDividendYield"`
+	PayoutRatio                float64   `av-json:"PayoutRatio"`
+	DividendDate               time.Time `av-json:"DividendDate"`
+	ExDividendDate             time.Time `av-json:"ExDividendDate"`
+	LastSplitFactor            string    `av-json:"LastSplitFactor"`
+	LastSplitDate              time.Time `av-json:"LastSplitDate"`
+}
+
+// SymbolSearchResult represents a single result from the symbol search API.
+type SymbolSearchResult struct {
+	Symbol      string  `column-name:"symbol"`      // The security symbol
+	Name        string  `column-name:"name"`        // Company or security name
+	Type        string  `column-name:"type"`        // Security type (Equity, ETF, etc.)
+	Region      string  `column-name:"region"`      // Geographic region
+	MarketOpen  string  `column-name:"marketOpen"`  // Market opening time
+	MarketClose string  `column-name:"marketClose"` // Market closing time
+	TimeZone    string  `column-name:"timezone"`    // Market timezone
+	Currency    string  `column-name:"currency"`    // Trading currency
+	MatchScore  float64 `column-name:"matchScore"`  // Relevance score (0.0 to 1.0)
+}
+
+func (c *CompanyOverview) UnmarshalJSON(in []byte) error {
+	var data map[string]string
+
+	err := json.Unmarshal(in, &data)
+	if err != nil {
+		return err
+	}
+
+	rv := reflect.ValueOf(c)
+
+	numFields := rv.Type().Elem().NumField()
+	for i := 0; i < numFields; i++ {
+		ft := rv.Elem().Type().Field(i)
+		fv := rv.Elem().Field(i)
+		jsonKey := ft.Tag.Get("av-json")
+
+		v, ok := data[jsonKey]
+		if !ok || v == "" || v == "None" {
+			continue
+		}
+
+		switch fv.Interface().(type) {
+		case string:
+			fv.SetString(v)
+		case int:
+			in, err := strconv.ParseInt(v, 10, 64)
+			if err != nil {
+				return fmt.Errorf("failed to parse %s: %w", jsonKey, err)
+			}
+			fv.SetInt(in)
+		case float64:
+			f, err := strconv.ParseFloat(v, 64)
+			if err != nil {
+				return fmt.Errorf("failed to parse %s: %w", jsonKey, err)
+			}
+			fv.SetFloat(f)
+		case time.Time:
+			if v == "0000-00-00" {
+				continue
+			}
+			t, err := time.ParseInLocation(DefaultDateFormat, v, time.UTC)
+			if err != nil {
+				return err
+			}
+			fv.Set(reflect.ValueOf(t))
+		default:
+			return fmt.Errorf("unsupported type %T", fv.Interface())
+		}
+	}
+
+	return nil
+}
+
 func (client *Client) ETFProfile(ctx context.Context, symbol string) (ETFProfile, error) {
 	u := url.URL{
 		Scheme: "https",
@@ -457,44 +673,6 @@ func (client *Client) ETFProfile(ctx context.Context, symbol string) (ETFProfile
 	err = json.Unmarshal(buf, &result)
 	return result, err
 }
-
-type ETFProfile struct {
-	Symbol            string       `json:"symbol,omitempty"`
-	NetAssets         string       `json:"net_assets,omitempty"`
-	NetExpenseRatio   string       `json:"net_expense_ratio,omitempty"`
-	PortfolioTurnover string       `json:"portfolio_turnover,omitempty"`
-	DividendYield     string       `json:"dividend_yield,omitempty"`
-	InceptionDate     string       `json:"inception_date,omitempty"`
-	Leveraged         string       `json:"leveraged,omitempty"`
-	Sectors           []ETFSector  `json:"sectors,omitempty"`
-	Holdings          []ETFHolding `json:"holdings,omitempty"`
-}
-
-type ETFSector struct {
-	Sector string `json:"sector,omitempty"`
-	Weight string `json:"weight,omitempty"`
-}
-
-type ETFHolding struct {
-	Symbol      string `json:"symbol,omitempty"`
-	Description string `json:"description,omitempty"`
-	Weight      string `json:"weight,omitempty"`
-}
-
-// QuoteFunction represents the different time series functions available
-// from the AlphaVantage API.
-type QuoteFunction string
-
-// Time series function constants for different data intervals and types.
-const (
-	TimeSeriesIntraday        QuoteFunction = "TIME_SERIES_INTRADAY"         // Intraday time series data
-	TimeSeriesDaily           QuoteFunction = "TIME_SERIES_DAILY"            // Daily time series data
-	TimeSeriesDailyAdjusted   QuoteFunction = "TIME_SERIES_DAILY_ADJUSTED"   // Daily adjusted time series data
-	TimeSeriesWeekly          QuoteFunction = "TIME_SERIES_WEEKLY"           // Weekly time series data
-	TimeSeriesWeeklyAdjusted  QuoteFunction = "TIME_SERIES_WEEKLY_ADJUSTED"  // Weekly adjusted time series data
-	TimeSeriesMonthly         QuoteFunction = "TIME_SERIES_MONTHLY"          // Monthly time series data
-	TimeSeriesMonthlyAdjusted QuoteFunction = "TIME_SERIES_MONTHLY_ADJUSTED" // Monthly adjusted time series data
-)
 
 // NewQuotesURL constructs a URL for time series data requests.
 // It validates the function parameter and returns a properly formatted API URL.
@@ -596,17 +774,6 @@ func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, functi
 	return checkError(res.Body)
 }
 
-type Quote struct {
-	Time             time.Time `column-name:"timestamp"`
-	Open             float64   `column-name:"open"`
-	High             float64   `column-name:"high"`
-	Low              float64   `column-name:"low"`
-	Close            float64   `column-name:"close"`
-	Volume           float64   `column-name:"volume"`
-	DividendAmount   float64   `column-name:"dividend_amount"`
-	SplitCoefficient float64   `column-name:"split_coefficient"`
-}
-
 // ParseQuotes handles parsing the following "Stock Time Series" functions
 // - TIME_SERIES_DAILY
 // - TIME_SERIES_DAILY_ADJUSTED
@@ -651,20 +818,6 @@ func (client *Client) TimeSeriesIntraday(ctx context.Context, symbol string) ([]
 	return quotes, nil
 }
 
-// IntraDayQuote is convertable to Quote. The only difference is the time-layout includes additional time information.
-type IntraDayQuote struct {
-	Time             time.Time `column-name:"timestamp" time-layout:"2006-01-02 15:04:05"`
-	Open             float64   `column-name:"open"`
-	High             float64   `column-name:"high"`
-	Low              float64   `column-name:"low"`
-	Close            float64   `column-name:"close"`
-	Volume           float64   `column-name:"volume"`
-	DividendAmount   float64   `column-name:"dividend_amount"`
-	SplitCoefficient float64   `column-name:"split_coefficient"`
-}
-
-var _ = Quote(IntraDayQuote{})
-
 // ParseIntraDayQuotes handles parsing the following "Stock Time Series" functions
 // - TIME_SERIES_INTRADAY
 func ParseIntraDayQuotes(r io.Reader, location *time.Location) ([]IntraDayQuote, error) {
@@ -688,29 +841,6 @@ func convertQuoteElements(list []IntraDayQuote, convert func(quote IntraDayQuote
 	}
 	return result
 }
-
-// ListingStatus represents the listing status information for a security.
-type ListingStatus struct {
-	Symbol        string    `column-name:"symbol"`        // The security symbol
-	Name          string    `column-name:"name"`          // The company or security name
-	Exchange      string    `column-name:"exchange"`      // The exchange where it's listed
-	AssetType     string    `column-name:"assetType"`     // Type of asset (Stock, ETF, etc.)
-	IPODate       time.Time `column-name:"ipoDate"`       // Initial public offering date
-	DeListingDate time.Time `column-name:"delistingDate"` // Date when delisted (if applicable)
-	Status        string    `column-name:"status"`        // Current status (Active, Delisted)
-}
-
-// Listing status constants.
-const (
-	ListingStatusActive   = "Active"   // Security is actively listed
-	ListingStatusDelisted = "Delisted" // Security has been delisted
-)
-
-// Asset type constants.
-const (
-	AssetTypeStock = "Stock" // Stock security type
-	AssetTypeETF   = "ETF"   // Exchange-traded fund type
-)
 
 func NewListingStatusURL(isListed bool) (string, error) {
 	state := ListingStatusActive
@@ -822,123 +952,6 @@ func (client *Client) CompanyOverview(ctx context.Context, symbol string) (Compa
 	return result, err
 }
 
-// CompanyOverview contains comprehensive company information and financial metrics
-// returned by the AlphaVantage OVERVIEW function.
-type CompanyOverview struct {
-	CIK                        string    `av-json:"CIK"`
-	Symbol                     string    `av-json:"Symbol"`
-	AssetType                  string    `av-json:"AssetType"`
-	Name                       string    `av-json:"Name"`
-	Description                string    `av-json:"Description"`
-	Exchange                   string    `av-json:"Exchange"`
-	Currency                   string    `av-json:"Currency"`
-	Country                    string    `av-json:"Country"`
-	Sector                     string    `av-json:"Sector"`
-	Industry                   string    `av-json:"Industry"`
-	Address                    string    `av-json:"Address"`
-	FiscalYearEnd              string    `av-json:"FiscalYearEnd"`
-	LatestQuarter              time.Time `av-json:"LatestQuarter"`
-	MarketCapitalization       int       `av-json:"MarketCapitalization"`
-	EBITDA                     int       `av-json:"EBITDA"`
-	PERatio                    float64   `av-json:"PERatio"`
-	PEGRatio                   float64   `av-json:"PEGRatio"`
-	BookValue                  float64   `av-json:"BookValue"`
-	DividendPerShare           float64   `av-json:"DividendPerShare"`
-	DividendYield              float64   `av-json:"DividendYield"`
-	EPS                        float64   `av-json:"EPS"`
-	RevenuePerShareTTM         float64   `av-json:"RevenuePerShareTTM"`
-	ProfitMargin               float64   `av-json:"ProfitMargin"`
-	OperatingMarginTTM         float64   `av-json:"OperatingMarginTTM"`
-	ReturnOnAssetsTTM          float64   `av-json:"ReturnOnAssetsTTM"`
-	ReturnOnEquityTTM          float64   `av-json:"ReturnOnEquityTTM"`
-	RevenueTTM                 int       `av-json:"RevenueTTM"`
-	GrossProfitTTM             int       `av-json:"GrossProfitTTM"`
-	DilutedEPSTTM              float64   `av-json:"DilutedEPSTTM"`
-	QuarterlyEarningsGrowthYOY float64   `av-json:"QuarterlyEarningsGrowthYOY"`
-	QuarterlyRevenueGrowthYOY  float64   `av-json:"QuarterlyRevenueGrowthYOY"`
-	AnalystTargetPrice         float64   `av-json:"AnalystTargetPrice"`
-	TrailingPE                 float64   `av-json:"TrailingPE"`
-	ForwardPE                  float64   `av-json:"ForwardPE"`
-	PriceToSalesRatioTTM       float64   `av-json:"PriceToSalesRatioTTM"`
-	PriceToBookRatio           float64   `av-json:"PriceToBookRatio"`
-	EVToRevenue                float64   `av-json:"EVToRevenue"`
-	EVToEBITDA                 float64   `av-json:"EVToEBITDA"`
-	Beta                       float64   `av-json:"Beta"`
-	FiftyTwoWeekHigh           float64   `av-json:"52WeekHigh"`
-	FiftyTwoWeekLow            float64   `av-json:"52WeekLow"`
-	FiftyDayMovingAverage      float64   `av-json:"50DayMovingAverage"`
-	TwoHundredDayMovingAverage float64   `av-json:"200DayMovingAverage"`
-	SharesOutstanding          int       `av-json:"SharesOutstanding"`
-	SharesFloat                int       `av-json:"SharesFloat"`
-	SharesShort                int       `av-json:"SharesShort"`
-	SharesShortPriorMonth      int       `av-json:"SharesShortPriorMonth"`
-	ShortRatio                 float64   `av-json:"ShortRatio"`
-	ShortPercentOutstanding    float64   `av-json:"ShortPercentOutstanding"`
-	ShortPercentFloat          float64   `av-json:"ShortPercentFloat"`
-	PercentInsiders            float64   `av-json:"PercentInsiders"`
-	PercentInstitutions        float64   `av-json:"PercentInstitutions"`
-	ForwardAnnualDividendRate  float64   `av-json:"ForwardAnnualDividendRate"`
-	ForwardAnnualDividendYield float64   `av-json:"ForwardAnnualDividendYield"`
-	PayoutRatio                float64   `av-json:"PayoutRatio"`
-	DividendDate               time.Time `av-json:"DividendDate"`
-	ExDividendDate             time.Time `av-json:"ExDividendDate"`
-	LastSplitFactor            string    `av-json:"LastSplitFactor"`
-	LastSplitDate              time.Time `av-json:"LastSplitDate"`
-}
-
-func (c *CompanyOverview) UnmarshalJSON(in []byte) error {
-	var data map[string]string
-
-	err := json.Unmarshal(in, &data)
-	if err != nil {
-		return err
-	}
-
-	rv := reflect.ValueOf(c)
-
-	numFields := rv.Type().Elem().NumField()
-	for i := 0; i < numFields; i++ {
-		ft := rv.Elem().Type().Field(i)
-		fv := rv.Elem().Field(i)
-		jsonKey := ft.Tag.Get("av-json")
-
-		v, ok := data[jsonKey]
-		if !ok || v == "" || v == "None" {
-			continue
-		}
-
-		switch fv.Interface().(type) {
-		case string:
-			fv.SetString(v)
-		case int:
-			in, err := strconv.ParseInt(v, 10, 64)
-			if err != nil {
-				return fmt.Errorf("failed to parse %s: %w", jsonKey, err)
-			}
-			fv.SetInt(in)
-		case float64:
-			f, err := strconv.ParseFloat(v, 64)
-			if err != nil {
-				return fmt.Errorf("failed to parse %s: %w", jsonKey, err)
-			}
-			fv.SetFloat(f)
-		case time.Time:
-			if v == "0000-00-00" {
-				continue
-			}
-			t, err := time.ParseInLocation(DefaultDateFormat, v, time.UTC)
-			if err != nil {
-				return err
-			}
-			fv.Set(reflect.ValueOf(t))
-		default:
-			return fmt.Errorf("unsupported type %T", fv.Interface())
-		}
-	}
-
-	return nil
-}
-
 // GlobalQuote fetches the latest price and volume information for the specified equity symbol.
 // It returns the data in CSV format as an io.ReadCloser that must be closed by the caller.
 //
@@ -960,19 +973,6 @@ func (client *Client) GlobalQuote(ctx context.Context, symbol string) (io.ReadCl
 	}
 
 	return client.doWithFallback(ctx, makeURL)
-}
-
-// SymbolSearchResult represents a single result from the symbol search API.
-type SymbolSearchResult struct {
-	Symbol      string  `column-name:"symbol"`      // The security symbol
-	Name        string  `column-name:"name"`        // Company or security name
-	Type        string  `column-name:"type"`        // Security type (Equity, ETF, etc.)
-	Region      string  `column-name:"region"`      // Geographic region
-	MarketOpen  string  `column-name:"marketOpen"`  // Market opening time
-	MarketClose string  `column-name:"marketClose"` // Market closing time
-	TimeZone    string  `column-name:"timezone"`    // Market timezone
-	Currency    string  `column-name:"currency"`    // Trading currency
-	MatchScore  float64 `column-name:"matchScore"`  // Relevance score (0.0 to 1.0)
 }
 
 func NewSymbolSearchURL(keywords string) (string, error) {
