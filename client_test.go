@@ -266,18 +266,6 @@ func ExampleQuoteFunction_Validate() {
 	// Invalid function rejected: true
 }
 
-// ExampleNewQuotesURL demonstrates URL construction for time series requests.
-func ExampleNewQuotesURL() {
-	url, err := alphavantage.NewQuotesURL("IBM", alphavantage.TimeSeriesDaily)
-	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
-	}
-
-	fmt.Printf("URL contains symbol: %t\n", len(url) > 0)
-	// Output: URL contains symbol: true
-}
-
 //go:embed testdata/monthly_IBM.csv
 var monthlyIBM []byte
 

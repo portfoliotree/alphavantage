@@ -420,6 +420,363 @@ func ParseCSVRows[T any](r io.Reader, location *time.Location, handleErr func(er
 	}
 }
 
+func (client *Client) ETFProfile(ctx context.Context, symbol string) (ETFProfile, error) {
+	req, err := http.NewRequestWithContext(ctx,
+		http.MethodGet,
+		(&url.URL{
+			Scheme: "https",
+			Host:   "www.alphavantage.co",
+			Path:   "/query",
+			RawQuery: url.Values{
+				"function": []string{"ETF_PROFILE"},
+				"symbol":   []string{symbol},
+			}.Encode(),
+		}).String(),
+		nil,
+	)
+	if err != nil {
+		return ETFProfile{}, fmt.Errorf("failed to create ETF profile request: %w", err)
+	}
+
+	res, err := client.Do(req)
+	if err != nil {
+		return ETFProfile{}, err
+	}
+	defer func() {
+		_ = res.Body.Close()
+	}()
+
+	buf, err := io.ReadAll(res.Body)
+	if err != nil {
+		return ETFProfile{}, err
+	}
+
+	var result ETFProfile
+	err = json.Unmarshal(buf, &result)
+	return result, err
+}
+
+// Quotes fetches time series data for the specified symbol and function.
+// It parses the CSV response into a slice of Quote structs with dates in the given location.
+// The location parameter is used for parsing timestamps; use time.UTC for UTC times.
+func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteFunction, location *time.Location) ([]Quote, error) {
+	rc, err := client.DoQuotesRequest(ctx, symbol, function)
+	if err != nil {
+		return nil, err
+	}
+	defer closeAndIgnoreError(rc)
+
+	switch function {
+	case TimeSeriesIntraday:
+		list, err := ParseIntraDayQuotes(rc, location)
+		if err != nil {
+			return nil, err
+		}
+		return convertQuoteElements(list, func(q IntraDayQuote) Quote { return Quote(q) }), nil
+	default:
+		quotes, err := ParseQuotes(rc, location)
+		if err != nil {
+			return nil, err
+		}
+		return quotes, nil
+	}
+}
+
+// Deprecated: use DoQuotesRequest instead. This method will be removed before 2023.
+func (client *Client) QuotesRequest(ctx context.Context, symbol string, function QuoteFunction, fn func(r io.Reader) error) error {
+	rc, err := client.DoQuotesRequest(ctx, symbol, function)
+	if err != nil {
+		return err
+	}
+	defer closeAndIgnoreError(rc)
+	return fn(rc)
+}
+
+// DoQuotesRequest fetches time series data for the specified symbol and function.
+// It returns the raw CSV response as an io.ReadCloser that must be closed by the caller.
+// This method provides direct access to the CSV data without parsing.
+func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, function QuoteFunction) (io.ReadCloser, error) {
+	err := function.Validate()
+	if err != nil {
+		return nil, err
+	}
+	req, err := http.NewRequestWithContext(ctx,
+		http.MethodGet,
+		(&url.URL{
+			Scheme: "https",
+			Host:   "www.alphavantage.co",
+			Path:   "/query",
+			RawQuery: url.Values{
+				"datatype":   []string{"csv"},
+				"outputsize": []string{"full"},
+				"function":   []string{string(function)},
+				"symbol":     []string{symbol},
+			}.Encode(),
+		}).String(),
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	return checkError(res.Body)
+}
+
+// ParseQuotes handles parsing the following "Stock Time Series" functions
+// - TIME_SERIES_DAILY
+// - TIME_SERIES_DAILY_ADJUSTED
+// - TIME_SERIES_MONTHLY
+// - TIME_SERIES_MONTHLY_ADJUSTED
+func ParseQuotes(r io.Reader, location *time.Location) ([]Quote, error) {
+	var list []Quote
+	return list, ParseCSV(r, &list, location)
+}
+
+func (client *Client) TimeSeriesIntraday(ctx context.Context, symbol string) ([]IntraDayQuote, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, (&url.URL{
+		Scheme: "https",
+		Host:   "www.alphavantage.co",
+		Path:   "/query",
+		RawQuery: url.Values{
+			"datatype":       []string{"csv"},
+			"outputsize":     []string{"compact"},
+			"function":       []string{"TIME_SERIES_INTRADAY"},
+			"symbol":         []string{symbol},
+			"interval":       []string{"15min"},
+			"extended_hours": []string{"true"},
+		}.Encode(),
+	}).String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer closeAndIgnoreError(res.Body)
+	quotes, err := ParseIntraDayQuotes(res.Body, time.UTC)
+	if err != nil {
+		return nil, err
+	}
+	return quotes, nil
+}
+
+// ParseIntraDayQuotes handles parsing the following "Stock Time Series" functions
+// - TIME_SERIES_INTRADAY
+func ParseIntraDayQuotes(r io.Reader, location *time.Location) ([]IntraDayQuote, error) {
+	var list []IntraDayQuote
+	return list, ParseCSV(r, &list, location)
+}
+
+//TODO: use this instead after bumping to 1.18
+//func convertElements[T1, T2 any](list []T1, convert func(T1) T2) []T2 {
+//	result := make([]T2, len(list))
+//	for i := range list {
+//		result[i] = convert(list[i])
+//	}
+//	return result
+//}
+
+func convertQuoteElements(list []IntraDayQuote, convert func(quote IntraDayQuote) Quote) []Quote {
+	result := make([]Quote, len(list))
+	for i := range list {
+		result[i] = convert(list[i])
+	}
+	return result
+}
+
+func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]ListingStatus, error) {
+	rc, err := client.DoListingStatusRequest(ctx, isListed)
+	if err != nil {
+		return nil, err
+	}
+	defer closeAndIgnoreError(rc)
+	var result []ListingStatus
+	return result, ParseCSV(rc, &result, nil)
+}
+
+// DoListingStatusRequest fetches listing or delisting status data.
+// If isListed is true, it returns currently active listings.
+// If isListed is false, it returns delisted securities.
+// The response is returned as CSV data in an io.ReadCloser that must be closed by the caller.
+func (client *Client) DoListingStatusRequest(ctx context.Context, isListed bool) (io.ReadCloser, error) {
+	state := ListingStatusActive
+	if !isListed {
+		state = ListingStatusDelisted
+	}
+	state = strings.ToLower(state)
+
+	req, err := http.NewRequestWithContext(ctx,
+		http.MethodGet,
+		(&url.URL{
+			Scheme: "https",
+			Host:   "www.alphavantage.co",
+			Path:   "/query",
+			RawQuery: url.Values{
+				"datatype": []string{"csv"},
+				"function": []string{"LISTING_STATUS"},
+				"state":    []string{state},
+			}.Encode(),
+		}).String(),
+		nil,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create listing status request: %w", err)
+	}
+
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	return checkError(res.Body)
+}
+
+// Deprecated: use DoListingStatusRequest instead. This method will be removed before 2023.
+func (client *Client) ListingStatusRequest(ctx context.Context, isListed bool, fn func(io.Reader) error) error {
+	rc, err := client.DoListingStatusRequest(ctx, isListed)
+	if err != nil {
+		return err
+	}
+	defer closeAndIgnoreError(rc)
+	return fn(rc)
+}
+
+// CompanyOverview fetches comprehensive company information for the specified symbol.
+// It returns detailed company data including financial metrics, sector information,
+// and key statistics as a CompanyOverview struct.
+func (client *Client) CompanyOverview(ctx context.Context, symbol string) (CompanyOverview, error) {
+	req, err := http.NewRequestWithContext(ctx,
+		http.MethodGet,
+		(&url.URL{
+			Scheme: "https",
+			Host:   "www.alphavantage.co",
+			Path:   "/query",
+			RawQuery: url.Values{
+				"function": []string{"OVERVIEW"},
+				"symbol":   []string{symbol},
+			}.Encode(),
+		}).String(),
+		nil,
+	)
+	if err != nil {
+		return CompanyOverview{}, fmt.Errorf("failed to create listing status request: %w", err)
+	}
+
+	res, err := client.Do(req)
+	if err != nil {
+		return CompanyOverview{}, err
+	}
+	defer func() {
+		_ = res.Body.Close()
+	}()
+
+	buf, err := io.ReadAll(res.Body)
+	if err != nil {
+		return CompanyOverview{}, err
+	}
+
+	var result CompanyOverview
+	err = json.Unmarshal(buf, &result)
+	if err != nil {
+		log.Println(err)
+	}
+	return result, err
+}
+
+// GlobalQuote fetches the latest price and volume information for the specified equity symbol.
+// It returns the data in CSV format as an io.ReadCloser that must be closed by the caller.
+//
+// The CSV response includes columns for symbol, open, high, low, price, volume, latestDay,
+// previousClose, change, and changePercent.
+func (client *Client) GlobalQuote(ctx context.Context, symbol string) (io.ReadCloser, error) {
+	makeURL := func(scheme, host string) string {
+		u := url.URL{
+			Scheme: scheme,
+			Host:   host,
+			Path:   "/query",
+			RawQuery: url.Values{
+				"function": []string{"GLOBAL_QUOTE"},
+				"symbol":   []string{symbol},
+				"datatype": []string{"csv"},
+			}.Encode(),
+		}
+		return u.String()
+	}
+
+	return client.doWithFallback(ctx, makeURL)
+}
+
+func (client *Client) SymbolSearch(ctx context.Context, keywords string) ([]SymbolSearchResult, error) {
+	rc, err := client.DoSymbolSearchRequest(ctx, keywords)
+	if err != nil {
+		return nil, err
+	}
+	defer closeAndIgnoreError(rc)
+	return ParseSymbolSearchQuery(rc)
+}
+
+// DoSymbolSearchRequest searches for securities matching the given keywords.
+// It returns CSV data containing symbol search results as an io.ReadCloser that must be closed by the caller.
+// The results include symbol, name, type, region, market times, timezone, currency, and match score.
+func (client *Client) DoSymbolSearchRequest(ctx context.Context, keywords string) (io.ReadCloser, error) {
+	req, err := http.NewRequestWithContext(ctx,
+		http.MethodGet,
+		(&url.URL{
+			Scheme: "https",
+			Host:   "www.alphavantage.co",
+			Path:   "/query",
+			RawQuery: url.Values{
+				"datatype": []string{"csv"},
+				"function": []string{"SYMBOL_SEARCH"},
+				"keywords": []string{keywords},
+			}.Encode(),
+		}).String(),
+		nil,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create quotes request: %w", err)
+	}
+
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	rc, err := checkError(res.Body)
+	if err != nil {
+		closeAndIgnoreError(res.Body)
+		return nil, err
+	}
+
+	return rc, nil
+}
+
+func ParseSymbolSearchQuery(r io.Reader) ([]SymbolSearchResult, error) {
+	var list []SymbolSearchResult
+	return list, ParseCSV(r, &list, nil)
+}
+
+func (r *SymbolSearchResult) ParseTimezone() (*time.Location, error) {
+	return time.LoadLocation(r.TimeZone)
+}
+
+func closeAndIgnoreError(c io.Closer) {
+	_ = c.Close()
+}
+
+type multiReadCloser struct {
+	io.Reader
+	close func() error
+}
+
+func (mrc multiReadCloser) Close() error {
+	return mrc.close()
+}
+
 // QuoteFunction represents the different time series functions available
 // from the AlphaVantage API.
 type QuoteFunction string
@@ -434,6 +791,23 @@ const (
 	TimeSeriesMonthly         QuoteFunction = "TIME_SERIES_MONTHLY"          // Monthly time series data
 	TimeSeriesMonthlyAdjusted QuoteFunction = "TIME_SERIES_MONTHLY_ADJUSTED" // Monthly adjusted time series data
 )
+
+// Validate checks if the QuoteFunction is one of the supported time series functions.
+// It returns an error if the function is not recognized.
+func (fn QuoteFunction) Validate() error {
+	switch fn {
+	case TimeSeriesIntraday,
+		TimeSeriesDaily,
+		TimeSeriesDailyAdjusted,
+		TimeSeriesWeekly,
+		TimeSeriesWeeklyAdjusted,
+		TimeSeriesMonthly,
+		TimeSeriesMonthlyAdjusted:
+		return nil
+	default:
+		return errors.New("unknown time series function")
+	}
+}
 
 type ETFProfile struct {
 	Symbol            string       `json:"symbol,omitempty"`
@@ -634,419 +1008,4 @@ func (c *CompanyOverview) UnmarshalJSON(in []byte) error {
 	}
 
 	return nil
-}
-
-func (client *Client) ETFProfile(ctx context.Context, symbol string) (ETFProfile, error) {
-	u := url.URL{
-		Scheme: "https",
-		Host:   "www.alphavantage.co",
-		Path:   "/query",
-		RawQuery: url.Values{
-			"function": []string{"ETF_PROFILE"},
-			"symbol":   []string{symbol},
-		}.Encode(),
-	}
-
-	req, err := http.NewRequestWithContext(ctx,
-		http.MethodGet,
-		u.String(),
-		nil,
-	)
-	if err != nil {
-		return ETFProfile{}, fmt.Errorf("failed to create ETF profile request: %w", err)
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return ETFProfile{}, err
-	}
-	defer func() {
-		_ = res.Body.Close()
-	}()
-
-	buf, err := io.ReadAll(res.Body)
-	if err != nil {
-		return ETFProfile{}, err
-	}
-
-	var result ETFProfile
-	err = json.Unmarshal(buf, &result)
-	return result, err
-}
-
-// NewQuotesURL constructs a URL for time series data requests.
-// It validates the function parameter and returns a properly formatted API URL.
-func NewQuotesURL(symbol string, function QuoteFunction) (string, error) {
-	err := function.Validate()
-	if err != nil {
-		return "", err
-	}
-
-	u := url.URL{
-		Scheme: "https",
-		Host:   "www.alphavantage.co",
-		Path:   "/query",
-		RawQuery: url.Values{
-			"datatype":   []string{"csv"},
-			"outputsize": []string{"full"},
-			"function":   []string{string(function)},
-			"symbol":     []string{symbol},
-		}.Encode(),
-	}
-
-	return u.String(), nil
-}
-
-// Validate checks if the QuoteFunction is one of the supported time series functions.
-// It returns an error if the function is not recognized.
-func (fn QuoteFunction) Validate() error {
-	switch fn {
-	case TimeSeriesIntraday,
-		TimeSeriesDaily,
-		TimeSeriesDailyAdjusted,
-		TimeSeriesWeekly,
-		TimeSeriesWeeklyAdjusted,
-		TimeSeriesMonthly,
-		TimeSeriesMonthlyAdjusted:
-		return nil
-	default:
-		return errors.New("unknown time series function")
-	}
-}
-
-// Quotes fetches time series data for the specified symbol and function.
-// It parses the CSV response into a slice of Quote structs with dates in the given location.
-// The location parameter is used for parsing timestamps; use time.UTC for UTC times.
-func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteFunction, location *time.Location) ([]Quote, error) {
-	rc, err := client.DoQuotesRequest(ctx, symbol, function)
-	if err != nil {
-		return nil, err
-	}
-	defer closeAndIgnoreError(rc)
-
-	switch function {
-	case TimeSeriesIntraday:
-		list, err := ParseIntraDayQuotes(rc, location)
-		if err != nil {
-			return nil, err
-		}
-		return convertQuoteElements(list, func(q IntraDayQuote) Quote { return Quote(q) }), nil
-	default:
-		quotes, err := ParseQuotes(rc, location)
-		if err != nil {
-			return nil, err
-		}
-		return quotes, nil
-	}
-}
-
-// Deprecated: use DoQuotesRequest instead. This method will be removed before 2023.
-func (client *Client) QuotesRequest(ctx context.Context, symbol string, function QuoteFunction, fn func(r io.Reader) error) error {
-	rc, err := client.DoQuotesRequest(ctx, symbol, function)
-	if err != nil {
-		return err
-	}
-	defer closeAndIgnoreError(rc)
-	return fn(rc)
-}
-
-// DoQuotesRequest fetches time series data for the specified symbol and function.
-// It returns the raw CSV response as an io.ReadCloser that must be closed by the caller.
-// This method provides direct access to the CSV data without parsing.
-func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, function QuoteFunction) (io.ReadCloser, error) {
-	requestURL, err := NewQuotesURL(symbol, function)
-	if err != nil {
-		return nil, err
-	}
-	req, err := http.NewRequestWithContext(ctx,
-		http.MethodGet,
-		requestURL,
-		nil,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return checkError(res.Body)
-}
-
-// ParseQuotes handles parsing the following "Stock Time Series" functions
-// - TIME_SERIES_DAILY
-// - TIME_SERIES_DAILY_ADJUSTED
-// - TIME_SERIES_MONTHLY
-// - TIME_SERIES_MONTHLY_ADJUSTED
-func ParseQuotes(r io.Reader, location *time.Location) ([]Quote, error) {
-	var list []Quote
-	return list, ParseCSV(r, &list, location)
-}
-
-func NewIntraDayQuotesURL(symbol string) string {
-	u := url.URL{
-		Scheme: "https",
-		Host:   "www.alphavantage.co",
-		Path:   "/query",
-		RawQuery: url.Values{
-			"datatype":       []string{"csv"},
-			"outputsize":     []string{"compact"},
-			"function":       []string{"TIME_SERIES_INTRADAY"},
-			"symbol":         []string{symbol},
-			"interval":       []string{"15min"},
-			"extended_hours": []string{"true"},
-		}.Encode(),
-	}
-	return u.String()
-}
-
-func (client *Client) TimeSeriesIntraday(ctx context.Context, symbol string) ([]IntraDayQuote, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, NewIntraDayQuotesURL(symbol), nil)
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer closeAndIgnoreError(res.Body)
-	quotes, err := ParseIntraDayQuotes(res.Body, time.UTC)
-	if err != nil {
-		return nil, err
-	}
-	return quotes, nil
-}
-
-// ParseIntraDayQuotes handles parsing the following "Stock Time Series" functions
-// - TIME_SERIES_INTRADAY
-func ParseIntraDayQuotes(r io.Reader, location *time.Location) ([]IntraDayQuote, error) {
-	var list []IntraDayQuote
-	return list, ParseCSV(r, &list, location)
-}
-
-//TODO: use this instead after bumping to 1.18
-//func convertElements[T1, T2 any](list []T1, convert func(T1) T2) []T2 {
-//	result := make([]T2, len(list))
-//	for i := range list {
-//		result[i] = convert(list[i])
-//	}
-//	return result
-//}
-
-func convertQuoteElements(list []IntraDayQuote, convert func(quote IntraDayQuote) Quote) []Quote {
-	result := make([]Quote, len(list))
-	for i := range list {
-		result[i] = convert(list[i])
-	}
-	return result
-}
-
-func NewListingStatusURL(isListed bool) (string, error) {
-	state := ListingStatusActive
-	if !isListed {
-		state = ListingStatusDelisted
-	}
-	state = strings.ToLower(state)
-
-	u := url.URL{
-		Scheme: "https",
-		Host:   "www.alphavantage.co",
-		Path:   "/query",
-		RawQuery: url.Values{
-			"datatype": []string{"csv"},
-			"function": []string{"LISTING_STATUS"},
-			"state":    []string{state},
-		}.Encode(),
-	}
-
-	return u.String(), nil
-}
-
-func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]ListingStatus, error) {
-	rc, err := client.DoListingStatusRequest(ctx, isListed)
-	if err != nil {
-		return nil, err
-	}
-	defer closeAndIgnoreError(rc)
-	var result []ListingStatus
-	return result, ParseCSV(rc, &result, nil)
-}
-
-// DoListingStatusRequest fetches listing or delisting status data.
-// If isListed is true, it returns currently active listings.
-// If isListed is false, it returns delisted securities.
-// The response is returned as CSV data in an io.ReadCloser that must be closed by the caller.
-func (client *Client) DoListingStatusRequest(ctx context.Context, isListed bool) (io.ReadCloser, error) {
-	requestURL, err := NewListingStatusURL(isListed)
-	if err != nil {
-		return nil, err
-	}
-	req, err := http.NewRequestWithContext(ctx,
-		http.MethodGet,
-		requestURL,
-		nil,
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create listing status request: %w", err)
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return checkError(res.Body)
-}
-
-// Deprecated: use DoListingStatusRequest instead. This method will be removed before 2023.
-func (client *Client) ListingStatusRequest(ctx context.Context, isListed bool, fn func(io.Reader) error) error {
-	rc, err := client.DoListingStatusRequest(ctx, isListed)
-	if err != nil {
-		return err
-	}
-	defer closeAndIgnoreError(rc)
-	return fn(rc)
-}
-
-// CompanyOverview fetches comprehensive company information for the specified symbol.
-// It returns detailed company data including financial metrics, sector information,
-// and key statistics as a CompanyOverview struct.
-func (client *Client) CompanyOverview(ctx context.Context, symbol string) (CompanyOverview, error) {
-	u := url.URL{
-		Scheme: "https",
-		Host:   "www.alphavantage.co",
-		Path:   "/query",
-		RawQuery: url.Values{
-			"function": []string{"OVERVIEW"},
-			"symbol":   []string{symbol},
-		}.Encode(),
-	}
-
-	req, err := http.NewRequestWithContext(ctx,
-		http.MethodGet,
-		u.String(),
-		nil,
-	)
-	if err != nil {
-		return CompanyOverview{}, fmt.Errorf("failed to create listing status request: %w", err)
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return CompanyOverview{}, err
-	}
-	defer func() {
-		_ = res.Body.Close()
-	}()
-
-	buf, err := io.ReadAll(res.Body)
-	if err != nil {
-		return CompanyOverview{}, err
-	}
-
-	var result CompanyOverview
-	err = json.Unmarshal(buf, &result)
-	if err != nil {
-		log.Println(err)
-	}
-	return result, err
-}
-
-// GlobalQuote fetches the latest price and volume information for the specified equity symbol.
-// It returns the data in CSV format as an io.ReadCloser that must be closed by the caller.
-//
-// The CSV response includes columns for symbol, open, high, low, price, volume, latestDay,
-// previousClose, change, and changePercent.
-func (client *Client) GlobalQuote(ctx context.Context, symbol string) (io.ReadCloser, error) {
-	makeURL := func(scheme, host string) string {
-		u := url.URL{
-			Scheme: scheme,
-			Host:   host,
-			Path:   "/query",
-			RawQuery: url.Values{
-				"function": []string{"GLOBAL_QUOTE"},
-				"symbol":   []string{symbol},
-				"datatype": []string{"csv"},
-			}.Encode(),
-		}
-		return u.String()
-	}
-
-	return client.doWithFallback(ctx, makeURL)
-}
-
-func NewSymbolSearchURL(keywords string) (string, error) {
-	u := url.URL{
-		Scheme: "https",
-		Host:   "www.alphavantage.co",
-		Path:   "/query",
-		RawQuery: url.Values{
-			"datatype": []string{"csv"},
-			"function": []string{"SYMBOL_SEARCH"},
-			"keywords": []string{keywords},
-		}.Encode(),
-	}
-	return u.String(), nil
-}
-
-func (client *Client) SymbolSearch(ctx context.Context, keywords string) ([]SymbolSearchResult, error) {
-	rc, err := client.DoSymbolSearchRequest(ctx, keywords)
-	if err != nil {
-		return nil, err
-	}
-	defer closeAndIgnoreError(rc)
-	return ParseSymbolSearchQuery(rc)
-}
-
-// DoSymbolSearchRequest searches for securities matching the given keywords.
-// It returns CSV data containing symbol search results as an io.ReadCloser that must be closed by the caller.
-// The results include symbol, name, type, region, market times, timezone, currency, and match score.
-func (client *Client) DoSymbolSearchRequest(ctx context.Context, keywords string) (io.ReadCloser, error) {
-	requestURL, err := NewSymbolSearchURL(keywords)
-	if err != nil {
-		return nil, err
-	}
-	req, err := http.NewRequestWithContext(ctx,
-		http.MethodGet,
-		requestURL,
-		nil,
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create quotes request: %w", err)
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	rc, err := checkError(res.Body)
-	if err != nil {
-		closeAndIgnoreError(res.Body)
-		return nil, err
-	}
-
-	return rc, nil
-}
-
-func ParseSymbolSearchQuery(r io.Reader) ([]SymbolSearchResult, error) {
-	var list []SymbolSearchResult
-	return list, ParseCSV(r, &list, nil)
-}
-
-func (r *SymbolSearchResult) ParseTimezone() (*time.Location, error) {
-	return time.LoadLocation(r.TimeZone)
-}
-
-func closeAndIgnoreError(c io.Closer) {
-	_ = c.Close()
-}
-
-type multiReadCloser struct {
-	io.Reader
-	close func() error
-}
-
-func (mrc multiReadCloser) Close() error {
-	return mrc.close()
 }
