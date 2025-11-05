@@ -187,10 +187,6 @@ func (client *Client) Do(req *http.Request) (*http.Response, error) {
 		}
 	}
 
-	q := req.URL.Query()
-	q.Set("apikey", client.APIKey)
-	req.URL.RawQuery = q.Encode()
-
 	res, err := client.Client.Do(req)
 	if err != nil {
 		return nil, err
@@ -430,6 +426,7 @@ func (client *Client) ETFProfile(ctx context.Context, symbol string) (ETFProfile
 			RawQuery: url.Values{
 				"function": []string{"ETF_PROFILE"},
 				"symbol":   []string{symbol},
+				"apikey":   []string{client.APIKey},
 			}.Encode(),
 		}).String(),
 		nil,
@@ -511,6 +508,7 @@ func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, functi
 				"outputsize": []string{"full"},
 				"function":   []string{string(function)},
 				"symbol":     []string{symbol},
+				"apikey":     []string{client.APIKey},
 			}.Encode(),
 		}).String(),
 		nil,
@@ -548,6 +546,7 @@ func (client *Client) TimeSeriesIntraday(ctx context.Context, symbol string) ([]
 			"symbol":         []string{symbol},
 			"interval":       []string{"15min"},
 			"extended_hours": []string{"true"},
+			"apikey":         []string{client.APIKey},
 		}.Encode(),
 	}).String(), nil)
 	if err != nil {
@@ -620,6 +619,7 @@ func (client *Client) DoListingStatusRequest(ctx context.Context, isListed bool)
 				"datatype": []string{"csv"},
 				"function": []string{"LISTING_STATUS"},
 				"state":    []string{state},
+				"apikey":   []string{client.APIKey},
 			}.Encode(),
 		}).String(),
 		nil,
@@ -658,6 +658,7 @@ func (client *Client) CompanyOverview(ctx context.Context, symbol string) (Compa
 			RawQuery: url.Values{
 				"function": []string{"OVERVIEW"},
 				"symbol":   []string{symbol},
+				"apikey":   []string{client.APIKey},
 			}.Encode(),
 		}).String(),
 		nil,
@@ -702,6 +703,7 @@ func (client *Client) GlobalQuote(ctx context.Context, symbol string) (io.ReadCl
 				"function": []string{"GLOBAL_QUOTE"},
 				"symbol":   []string{symbol},
 				"datatype": []string{"csv"},
+				"apikey":   []string{client.APIKey},
 			}.Encode(),
 		}
 		return u.String()
@@ -733,6 +735,7 @@ func (client *Client) DoSymbolSearchRequest(ctx context.Context, keywords string
 				"datatype": []string{"csv"},
 				"function": []string{"SYMBOL_SEARCH"},
 				"keywords": []string{keywords},
+				"apikey":   []string{client.APIKey},
 			}.Encode(),
 		}).String(),
 		nil,
