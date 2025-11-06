@@ -18,7 +18,10 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/portfoliotree/alphavantage"
+	"github.com/portfoliotree/alphavantage/internal/query"
 )
+
+const apiKeyTestValue = "demo"
 
 type doerFunc func(*http.Request) (*http.Response, error)
 
@@ -108,7 +111,7 @@ func TestClient_ETFProfile(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}, nil
 		}),
-		APIKey: "demo",
+		APIKey: apiKeyTestValue,
 		Limiter: waitFunc(func(ctx context.Context) error {
 			waitCallCount++
 			return nil
@@ -117,7 +120,7 @@ func TestClient_ETFProfile(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, "ETF_PROFILE", avReq.URL.Query().Get("function"))
-	assert.Equal(t, "SPY", avReq.URL.Query().Get("symbol"))
+	assert.Equal(t, "SPY", avReq.URL.Query().Get(query.KeySymbol))
 
 	assert.Equal(t, "654800000000", profile.NetAssets)
 	assert.Equal(t, "0.000945", profile.NetExpenseRatio)
@@ -211,7 +214,7 @@ BAB,Invesco Taxable Municipal Bond ETF,ETF,United States,09:30,16:00,UTC-04,USD,
 
 // ExampleClient_DoQuotesRequest_parseCSV demonstrates fetching real data and parsing it.
 func ExampleClient_DoQuotesRequest_parseCSV() {
-	apiKey := cmp.Or(os.Getenv(alphavantage.StandardTokenEnvironmentVariableName), "demo")
+	apiKey := cmp.Or(os.Getenv(alphavantage.StandardTokenEnvironmentVariableName), apiKeyTestValue)
 	client := alphavantage.NewClient(apiKey)
 
 	// This example shows the pattern but doesn't make a real API call
@@ -239,7 +242,7 @@ func ExampleClient_DoQuotesRequest_parseCSV() {
 // ExampleClient demonstrates how to create a new AlphaVantage client.
 func ExampleClient() {
 	// Get API key from environment variable
-	apiKey := cmp.Or(os.Getenv(alphavantage.StandardTokenEnvironmentVariableName), "demo")
+	apiKey := cmp.Or(os.Getenv(alphavantage.StandardTokenEnvironmentVariableName), apiKeyTestValue)
 
 	client := alphavantage.NewClient(apiKey)
 	fmt.Printf("Client created: %t\n", client != nil)
@@ -284,7 +287,7 @@ func TestQuotes(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}, nil
 		}),
-		APIKey: "demo",
+		APIKey: apiKeyTestValue,
 		Limiter: waitFunc(func(ctx context.Context) error {
 			waitCallCount++
 			return nil
@@ -297,9 +300,9 @@ func TestQuotes(t *testing.T) {
 	assert.Equal(t, "https", avReq.URL.Scheme)
 	assert.Equal(t, "/query", avReq.URL.Path)
 	assert.Equal(t, "TIME_SERIES_MONTHLY", avReq.URL.Query().Get("function"))
-	assert.Equal(t, "IBM", avReq.URL.Query().Get("symbol"))
-	assert.Equal(t, "demo", avReq.URL.Query().Get("apikey"))
-	assert.Equal(t, "csv", avReq.URL.Query().Get("datatype"))
+	assert.Equal(t, "IBM", avReq.URL.Query().Get(query.KeySymbol))
+	assert.Equal(t, apiKeyTestValue, avReq.URL.Query().Get(query.KeyAPIKey))
+	assert.Equal(t, "csv", avReq.URL.Query().Get(query.KeyDataType))
 	assert.Equal(t, 1, waitCallCount)
 }
 
@@ -319,12 +322,12 @@ func TestTimeSeriesIntraday(t *testing.T) {
 			// Verify the request
 			assert.Equal(t, "/query", req.URL.Path)
 			assert.Equal(t, "TIME_SERIES_INTRADAY", req.URL.Query().Get("function"))
-			assert.Equal(t, "IBM", req.URL.Query().Get("symbol"))
-			assert.Equal(t, "csv", req.URL.Query().Get("datatype"))
+			assert.Equal(t, "IBM", req.URL.Query().Get(query.KeySymbol))
+			assert.Equal(t, "csv", req.URL.Query().Get(query.KeyDataType))
 			assert.Equal(t, "15min", req.URL.Query().Get("interval"))
 			assert.Equal(t, "true", req.URL.Query().Get("extended_hours"))
 			assert.Equal(t, "compact", req.URL.Query().Get("outputsize"))
-			assert.Equal(t, "test-key", req.URL.Query().Get("apikey"))
+			assert.Equal(t, "test-key", req.URL.Query().Get(query.KeyAPIKey))
 
 			// Return test data from embedded CSV
 			return &http.Response{
@@ -440,7 +443,7 @@ func TestClient_ListingStatus_listed(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}, nil
 		}),
-		APIKey: "demo",
+		APIKey: apiKeyTestValue,
 		Limiter: waitFunc(func(ctx context.Context) error {
 			waitCallCount++
 			return nil
@@ -454,8 +457,7 @@ func TestClient_ListingStatus_listed(t *testing.T) {
 	assert.Equal(t, "/query", avReq.URL.Path)
 	assert.Equal(t, "LISTING_STATUS", avReq.URL.Query().Get("function"))
 	assert.Equal(t, "active", avReq.URL.Query().Get("state"))
-	assert.Equal(t, "demo", avReq.URL.Query().Get("apikey"))
-	assert.Equal(t, "csv", avReq.URL.Query().Get("datatype"))
+	assert.Equal(t, apiKeyTestValue, avReq.URL.Query().Get(query.KeyAPIKey))
 	assert.Equal(t, 1, waitCallCount)
 }
 
@@ -483,7 +485,7 @@ func TestClient_ListingStatus_delisted(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}, nil
 		}),
-		APIKey: "demo",
+		APIKey: apiKeyTestValue,
 		Limiter: waitFunc(func(ctx context.Context) error {
 			waitCallCount++
 			return nil
@@ -521,7 +523,7 @@ func TestClient_CompanyOverview(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}, nil
 		}),
-		APIKey: "demo",
+		APIKey: apiKeyTestValue,
 		Limiter: waitFunc(func(ctx context.Context) error {
 			waitCallCount++
 			return nil
@@ -530,7 +532,7 @@ func TestClient_CompanyOverview(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, "OVERVIEW", avReq.URL.Query().Get("function"))
-	assert.Equal(t, "IBM", avReq.URL.Query().Get("symbol"))
+	assert.Equal(t, "IBM", avReq.URL.Query().Get(query.KeySymbol))
 
 	assert.Equal(t, "IBM", overview.Symbol)
 	assert.Equal(t, "Common Stock", overview.AssetType)
@@ -617,7 +619,7 @@ func TestSearch(t *testing.T) {
 				StatusCode: http.StatusOK,
 			}, nil
 		}),
-		APIKey: "demo",
+		APIKey: apiKeyTestValue,
 		Limiter: waitFunc(func(ctx context.Context) error {
 			waitCallCount++
 			return nil
@@ -631,8 +633,8 @@ func TestSearch(t *testing.T) {
 	assert.Equal(t, "/query", avReq.URL.Path)
 	assert.Equal(t, "SYMBOL_SEARCH", avReq.URL.Query().Get("function"))
 	assert.Equal(t, "BA", avReq.URL.Query().Get("keywords"))
-	assert.Equal(t, "demo", avReq.URL.Query().Get("apikey"))
-	assert.Equal(t, "csv", avReq.URL.Query().Get("datatype"))
+	assert.Equal(t, apiKeyTestValue, avReq.URL.Query().Get(query.KeyAPIKey))
+	assert.Equal(t, "csv", avReq.URL.Query().Get(query.KeyDataType))
 	assert.Equal(t, 1, waitCallCount)
 }
 
