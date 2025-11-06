@@ -25,6 +25,8 @@ import (
 	"time"
 
 	"golang.org/x/time/rate"
+
+	"github.com/portfoliotree/alphavantage/internal/query"
 )
 
 const (
@@ -68,7 +70,11 @@ func NewClient(apiKey string) *Client {
 	}
 }
 
-func (client *Client) newRequest(ctx context.Context, values url.Values) (*http.Request, error) {
+type queryEncoder interface {
+	Encode() string
+}
+
+func (client *Client) newRequest(ctx context.Context, values queryEncoder) (*http.Request, error) {
 	return http.NewRequestWithContext(ctx,
 		http.MethodGet,
 		(&url.URL{
@@ -154,11 +160,7 @@ func checkError(rc io.ReadCloser) (io.ReadCloser, error) {
 var typeType = reflect.TypeOf(time.Time{})
 
 func (client *Client) ETFProfile(ctx context.Context, symbol string) (ETFProfile, error) {
-	req, err := client.newRequest(ctx, url.Values{
-		"function": []string{"ETF_PROFILE"},
-		"symbol":   []string{symbol},
-		"apikey":   []string{client.APIKey},
-	})
+	req, err := client.newRequest(ctx, query.NewETFProfile(client.APIKey, symbol))
 	if err != nil {
 		return ETFProfile{}, fmt.Errorf("failed to create ETF profile request: %w", err)
 	}
@@ -224,11 +226,11 @@ func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, functi
 		return nil, err
 	}
 	req, err := client.newRequest(ctx, url.Values{
-		"datatype":   []string{"csv"},
-		"outputsize": []string{"full"},
-		"function":   []string{string(function)},
-		"symbol":     []string{symbol},
-		"apikey":     []string{client.APIKey},
+		query.KeyDataType: []string{"csv"},
+		"outputsize":      []string{"full"},
+		"function":        []string{string(function)},
+		query.KeySymbol:   []string{symbol},
+		query.KeyAPIKey:   []string{client.APIKey},
 	})
 	if err != nil {
 		return nil, err
@@ -252,15 +254,11 @@ func ParseQuotes(r io.Reader, location *time.Location) ([]Quote, error) {
 }
 
 func (client *Client) TimeSeriesIntraday(ctx context.Context, symbol string) ([]IntraDayQuote, error) {
-	req, err := client.newRequest(ctx, url.Values{
-		"datatype":       []string{"csv"},
-		"outputsize":     []string{"compact"},
-		"function":       []string{"TIME_SERIES_INTRADAY"},
-		"symbol":         []string{symbol},
-		"interval":       []string{"15min"},
-		"extended_hours": []string{"true"},
-		"apikey":         []string{client.APIKey},
-	})
+	q := query.NewTimeSeriesIntraday(client.APIKey, symbol, "15min").
+		ExtendedHours(true).
+		OutputSize("compact").
+		DataTypeCSV()
+	req, err := client.newRequest(ctx, q)
 	if err != nil {
 		return nil, err
 	}
@@ -306,18 +304,12 @@ func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]Listi
 // If isListed is false, it returns delisted securities.
 // The response is returned as CSV data in an io.ReadCloser that must be closed by the caller.
 func (client *Client) DoListingStatusRequest(ctx context.Context, isListed bool) (io.ReadCloser, error) {
-	state := ListingStatusActive
+	state := query.StateOptionActive
 	if !isListed {
-		state = ListingStatusDelisted
+		state = query.StateOptionDelisted
 	}
-	state = strings.ToLower(state)
 
-	req, err := client.newRequest(ctx, url.Values{
-		"datatype": []string{"csv"},
-		"function": []string{"LISTING_STATUS"},
-		"state":    []string{state},
-		"apikey":   []string{client.APIKey},
-	})
+	req, err := client.newRequest(ctx, query.NewListingStatus(client.APIKey).State(state))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create listing status request: %w", err)
 	}
@@ -343,11 +335,7 @@ func (client *Client) ListingStatusRequest(ctx context.Context, isListed bool, f
 // It returns detailed company data including financial metrics, sector information,
 // and key statistics as a CompanyOverview struct.
 func (client *Client) CompanyOverview(ctx context.Context, symbol string) (CompanyOverview, error) {
-	req, err := client.newRequest(ctx, url.Values{
-		"function": []string{"OVERVIEW"},
-		"symbol":   []string{symbol},
-		"apikey":   []string{client.APIKey},
-	})
+	req, err := client.newRequest(ctx, query.NewOverview(client.APIKey, symbol))
 	if err != nil {
 		return CompanyOverview{}, fmt.Errorf("failed to create listing status request: %w", err)
 	}
@@ -377,12 +365,7 @@ func (client *Client) CompanyOverview(ctx context.Context, symbol string) (Compa
 // The CSV response includes columns for symbol, open, high, low, price, volume, latestDay,
 // previousClose, change, and changePercent.
 func (client *Client) GlobalQuote(ctx context.Context, symbol string) (io.ReadCloser, error) {
-	req, err := client.newRequest(ctx, url.Values{
-		"function": []string{"GLOBAL_QUOTE"},
-		"symbol":   []string{symbol},
-		"datatype": []string{"csv"},
-		"apikey":   []string{client.APIKey},
-	})
+	req, err := client.newRequest(ctx, query.NewGlobalQuote(client.APIKey, symbol).DataTypeCSV())
 	if err != nil {
 		return nil, err
 	}
@@ -406,12 +389,7 @@ func (client *Client) SymbolSearch(ctx context.Context, keywords string) ([]Symb
 // It returns CSV data containing symbol search results as an io.ReadCloser that must be closed by the caller.
 // The results include symbol, name, type, region, market times, timezone, currency, and match score.
 func (client *Client) DoSymbolSearchRequest(ctx context.Context, keywords string) (io.ReadCloser, error) {
-	req, err := client.newRequest(ctx, url.Values{
-		"datatype": []string{"csv"},
-		"function": []string{"SYMBOL_SEARCH"},
-		"keywords": []string{keywords},
-		"apikey":   []string{client.APIKey},
-	})
+	req, err := client.newRequest(ctx, query.NewSymbolSearch(client.APIKey, keywords).DataTypeCSV())
 	if err != nil {
 		return nil, fmt.Errorf("failed to create quotes request: %w", err)
 	}
