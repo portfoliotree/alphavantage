@@ -226,11 +226,11 @@ func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, functi
 		return nil, err
 	}
 	req, err := client.newRequest(ctx, url.Values{
-		query.KeyDataType: []string{"csv"},
-		"outputsize":      []string{"full"},
-		"function":        []string{string(function)},
-		query.KeySymbol:   []string{symbol},
-		query.KeyAPIKey:   []string{client.APIKey},
+		query.KeyDataType:   []string{string(query.DatatypeOptionCSV)},
+		query.KeyOutputSize: []string{string(query.OutputSizeOptionFull)},
+		query.KeyFunction:   []string{string(function)},
+		query.KeySymbol:     []string{symbol},
+		query.KeyAPIKey:     []string{client.APIKey},
 	})
 	if err != nil {
 		return nil, err
@@ -254,9 +254,9 @@ func ParseQuotes(r io.Reader, location *time.Location) ([]Quote, error) {
 }
 
 func (client *Client) TimeSeriesIntraday(ctx context.Context, symbol string) ([]IntraDayQuote, error) {
-	q := query.NewTimeSeriesIntraday(client.APIKey, symbol, "15min").
+	q := query.NewTimeSeriesIntraday(client.APIKey, symbol, query.IIntervalOption15min).
 		ExtendedHours(true).
-		OutputSize("compact").
+		OutputSizeCompact().
 		DataTypeCSV()
 	req, err := client.newRequest(ctx, q)
 	if err != nil {
@@ -304,12 +304,13 @@ func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]Listi
 // If isListed is false, it returns delisted securities.
 // The response is returned as CSV data in an io.ReadCloser that must be closed by the caller.
 func (client *Client) DoListingStatusRequest(ctx context.Context, isListed bool) (io.ReadCloser, error) {
-	state := query.StateOptionActive
-	if !isListed {
-		state = query.StateOptionDelisted
+	q := query.NewListingStatus(client.APIKey)
+	if isListed {
+		q = q.StateActive()
+	} else {
+		q = q.StateDelisted()
 	}
-
-	req, err := client.newRequest(ctx, query.NewListingStatus(client.APIKey).State(state))
+	req, err := client.newRequest(ctx, q)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create listing status request: %w", err)
 	}
@@ -436,13 +437,13 @@ type QuoteFunction string
 
 // Time series function constants for different data intervals and types.
 const (
-	TimeSeriesIntraday        QuoteFunction = "TIME_SERIES_INTRADAY"         // Intraday time series data
-	TimeSeriesDaily           QuoteFunction = "TIME_SERIES_DAILY"            // Daily time series data
-	TimeSeriesDailyAdjusted   QuoteFunction = "TIME_SERIES_DAILY_ADJUSTED"   // Daily adjusted time series data
-	TimeSeriesWeekly          QuoteFunction = "TIME_SERIES_WEEKLY"           // Weekly time series data
-	TimeSeriesWeeklyAdjusted  QuoteFunction = "TIME_SERIES_WEEKLY_ADJUSTED"  // Weekly adjusted time series data
-	TimeSeriesMonthly         QuoteFunction = "TIME_SERIES_MONTHLY"          // Monthly time series data
-	TimeSeriesMonthlyAdjusted QuoteFunction = "TIME_SERIES_MONTHLY_ADJUSTED" // Monthly adjusted time series data
+	TimeSeriesIntraday        QuoteFunction = query.FunctionTimeSeriesIntraday
+	TimeSeriesDaily           QuoteFunction = query.FunctionTimeSeriesDaily
+	TimeSeriesDailyAdjusted   QuoteFunction = query.FunctionTimeSeriesDailyAdjusted
+	TimeSeriesWeekly          QuoteFunction = query.FunctionTimeSeriesWeekly
+	TimeSeriesWeeklyAdjusted  QuoteFunction = query.FunctionTimeSeriesWeeklyAdjusted
+	TimeSeriesMonthly         QuoteFunction = query.FunctionTimeSeriesMonthly
+	TimeSeriesMonthlyAdjusted QuoteFunction = query.FunctionTimeSeriesMonthlyAdjusted
 )
 
 // Validate checks if the QuoteFunction is one of the supported time series functions.
@@ -523,8 +524,8 @@ type ListingStatus struct {
 
 // Listing status constants.
 const (
-	ListingStatusActive   = "Active"   // Security is actively listed
-	ListingStatusDelisted = "Delisted" // Security has been delisted
+	ListingStatusActive   = query.StateOptionActive   // Security is actively listed
+	ListingStatusDelisted = query.StateOptionDelisted // Security has been delisted
 )
 
 // Asset type constants.
