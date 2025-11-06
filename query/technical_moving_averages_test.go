@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/portfoliotree/alphavantage/internal/query"
+	"github.com/portfoliotree/alphavantage/query"
 )
 
 func TestSMA(t *testing.T) {

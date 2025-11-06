@@ -18,7 +18,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/portfoliotree/alphavantage"
-	"github.com/portfoliotree/alphavantage/internal/query"
+	"github.com/portfoliotree/alphavantage/query"
 )
 
 const apiKeyTestValue = "demo"

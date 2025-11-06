@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/portfoliotree/alphavantage/internal/query"
+	"github.com/portfoliotree/alphavantage/query"
 )
 
 // TestRealtimeOptions tests the REALTIME_OPTIONS query builder

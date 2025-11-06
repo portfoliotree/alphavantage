@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/portfoliotree/alphavantage/internal/query"
+	"github.com/portfoliotree/alphavantage/query"
 )
 
 func Test_checkError(t *testing.T) {

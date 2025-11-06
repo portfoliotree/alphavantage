@@ -26,7 +26,7 @@ import (
 
 	"golang.org/x/time/rate"
 
-	"github.com/portfoliotree/alphavantage/internal/query"
+	"github.com/portfoliotree/alphavantage/query"
 )
 
 const (
