@@ -12,7 +12,7 @@ import (
 func (client *Client) ETFProfile(ctx context.Context, symbol string) (ETFProfile, error) {
 	u := url.URL{
 		Scheme: "https",
-		Host:   client.host(),
+		Host:   "www.alphavantage.co",
 		Path:   "/query",
 		RawQuery: url.Values{
 			"function": []string{"ETF_PROFILE"},

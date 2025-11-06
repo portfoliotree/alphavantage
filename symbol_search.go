@@ -1,7 +1,6 @@
 package alphavantage
 
 import (
-	"cmp"
 	"context"
 	"fmt"
 	"io"
@@ -23,13 +22,10 @@ type SymbolSearchResult struct {
 	MatchScore  float64 `column-name:"matchScore"`  // Relevance score (0.0 to 1.0)
 }
 
-// NewSymbolSearchURL constructs a URL for symbol search requests.
-// The host parameter should normally be an empty string (""), which will default to www.alphavantage.co.
-// Only provide a custom host value for testing or when using a proxy/mirror of the AlphaVantage API.
-func NewSymbolSearchURL(host, keywords string) (string, error) {
+func NewSymbolSearchURL(keywords string) (string, error) {
 	u := url.URL{
 		Scheme: "https",
-		Host:   cmp.Or(host, DefaultHost),
+		Host:   "www.alphavantage.co",
 		Path:   "/query",
 		RawQuery: url.Values{
 			"datatype": []string{"csv"},
@@ -53,7 +49,7 @@ func (client *Client) SymbolSearch(ctx context.Context, keywords string) ([]Symb
 // It returns CSV data containing symbol search results as an io.ReadCloser that must be closed by the caller.
 // The results include symbol, name, type, region, market times, timezone, currency, and match score.
 func (client *Client) DoSymbolSearchRequest(ctx context.Context, keywords string) (io.ReadCloser, error) {
-	requestURL, err := NewSymbolSearchURL(client.host(), keywords)
+	requestURL, err := NewSymbolSearchURL(keywords)
 	if err != nil {
 		return nil, err
 	}

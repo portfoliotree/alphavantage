@@ -19,7 +19,7 @@ import (
 func (client *Client) CompanyOverview(ctx context.Context, symbol string) (CompanyOverview, error) {
 	u := url.URL{
 		Scheme: "https",
-		Host:   client.host(),
+		Host:   "www.alphavantage.co",
 		Path:   "/query",
 		RawQuery: url.Values{
 			"function": []string{"OVERVIEW"},
