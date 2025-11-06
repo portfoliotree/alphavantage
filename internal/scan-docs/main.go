@@ -3,11 +3,18 @@ package main
 
 import (
 	"bytes"
+	"cmp"
+	"context"
+	"crypto/sha256"
 	_ "embed"
+	"encoding/hex"
+	"errors"
+	"fmt"
 	"io"
 	"log/slog"
 	"maps"
 	"net/http"
+	"net/http/httputil"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -15,9 +22,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/crhntr/channels"
 	"github.com/typelate/dom"
 	"github.com/typelate/dom/spec"
 	"golang.org/x/net/html"
+	"golang.org/x/time/rate"
 	"gopkg.in/yaml.v3"
 )
 
@@ -177,6 +186,100 @@ func main() {
 
 	if err := os.WriteFile(filepath.FromSlash(yamlFile), outYAML, 0644); err != nil {
 		panic(err)
+	}
+
+	exampleChannel := channels.Send(examples(functions))
+
+	exampleDir := filepath.FromSlash("testdata/examples")
+	if err := os.RemoveAll(exampleDir); err != nil && !errors.Is(err, os.ErrNotExist) {
+		panic(err)
+	}
+
+	for _, fn := range allFunctionNames {
+		dir := filepath.Join(exampleDir, fn)
+		if err := os.MkdirAll(dir, 0755); err != nil && !os.IsExist(err) {
+			panic(err)
+		}
+	}
+
+	r := rate.NewLimiter(rate.Every(time.Minute/50), 10)
+
+	ctx := context.Background()
+	channels.Drain(channels.Workers(5, exampleChannel, func(example string) (struct{}, bool) {
+		u, err := url.Parse(example)
+		if err != nil {
+			panic(err)
+		}
+
+		apiKey := cmp.Or(os.Getenv("ALPHA_VANTAGE_TOKEN"), "demo")
+		q := u.Query()
+		q.Set("apikey", apiKey)
+		u.RawQuery = q.Encode()
+
+		if err := r.Wait(ctx); err != nil {
+			return struct{}{}, false
+		}
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
+		if err != nil {
+			return struct{}{}, false
+		}
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			panic(err)
+		}
+		fn := res.Request.URL.Query().Get("function")
+		dir := filepath.Join(exampleDir, fn)
+		fmt.Println(example)
+
+		sum := sha256.New()
+		sum.Write([]byte(example))
+		hash := hex.EncodeToString(sum.Sum(nil))
+
+		resBuf, err := httputil.DumpResponse(res, true)
+		if err != nil {
+			panic(err)
+		}
+
+		reqBuf, err := httputil.DumpRequest(res.Request, true)
+		if err != nil {
+			panic(err)
+		}
+
+		if apiKey != "demo" {
+			resBuf = bytes.Replace(resBuf, []byte(apiKey), []byte("demo"), -1)
+			reqBuf = bytes.Replace(reqBuf, []byte(apiKey), []byte("demo"), -1)
+		}
+
+		if err := os.WriteFile(filepath.Join(dir, hash[:8]+".http_response"), resBuf, 0644); err != nil {
+			panic(err)
+		}
+		if err := os.WriteFile(filepath.Join(dir, hash[:8]+".http_request"), reqBuf, 0644); err != nil {
+			panic(err)
+		}
+
+		return struct{}{}, true
+	}))
+}
+
+func examples(functions []Function) func(func(string) bool) {
+	return func(yield func(string) bool) {
+		for _, f := range functions {
+			for _, example := range f.Examples {
+				if slices.Contains(f.Optional, "datatype") {
+					if u, err := url.Parse(example); err != nil {
+						continue
+					} else {
+						q := u.Query()
+						q.Set("datatype", "csv")
+						u.RawQuery = q.Encode()
+						example = u.String()
+					}
+				}
+				if !yield(example) {
+					return
+				}
+			}
+		}
 	}
 }
 
