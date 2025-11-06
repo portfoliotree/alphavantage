@@ -17,11 +17,9 @@ import (
 	"io"
 	"iter"
 	"net/http"
-	"os"
 	"reflect"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 
 	"golang.org/x/time/rate"
@@ -31,13 +29,6 @@ const (
 	// StandardTokenEnvironmentVariableName is the standard environment variable
 	// name for storing the AlphaVantage API key.
 	StandardTokenEnvironmentVariableName = "ALPHA_VANTAGE_TOKEN"
-
-	// StandardHostEnvironmentVariableName is the environment variable name
-	// for overriding the default AlphaVantage API host.
-	StandardHostEnvironmentVariableName = "ALPHA_VANTAGE_HOST"
-
-	// DefaultHost is the default AlphaVantage API host.
-	DefaultHost = "www.alphavantage.co"
 )
 
 // DefaultDateFormat is the RFC 3339 date format used for parsing dates.
@@ -61,40 +52,16 @@ type Client struct {
 
 	// APIKey is the AlphaVantage API key used for authentication.
 	APIKey string
-
-	// Host is the AlphaVantage API host. Defaults to DefaultHost if empty.
-	// Can be overridden using the ALPHA_VANTAGE_HOST environment variable.
-	Host string
-
-	hostEnvVar func() string
 }
 
 // NewClient creates a new AlphaVantage client with the specified API key.
 // It uses default rate limiting (5 requests per minute) and the default HTTP client.
-// The Host field defaults to DefaultHost but can be overridden.
 func NewClient(apiKey string) *Client {
-	return NewClientWithHost("", apiKey)
-}
-
-func NewClientWithHost(host, apiKey string) *Client {
 	return &Client{
-		Client:     http.DefaultClient,
-		Limiter:    rate.NewLimiter(rate.Every(time.Minute/5), 5),
-		APIKey:     apiKey,
-		Host:       host,
-		hostEnvVar: sync.OnceValue(func() string { return os.Getenv(StandardHostEnvironmentVariableName) }),
+		Client:  http.DefaultClient,
+		Limiter: rate.NewLimiter(rate.Every(time.Minute/5), 5),
+		APIKey:  apiKey,
 	}
-}
-
-// host returns the API host to use, falling back to DefaultHost if not set.
-func (client *Client) host() string {
-	if client.Host != "" {
-		return client.Host
-	}
-	if client.hostEnvVar != nil {
-		return client.hostEnvVar()
-	}
-	return DefaultHost
 }
 
 func (client *Client) Do(req *http.Request) (*http.Response, error) {

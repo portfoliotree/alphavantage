@@ -40,7 +40,7 @@ func ExampleQuoteFunction_Validate() {
 
 // ExampleNewQuotesURL demonstrates URL construction for time series requests.
 func ExampleNewQuotesURL() {
-	url, err := alphavantage.NewQuotesURL("", "IBM", alphavantage.TimeSeriesDaily)
+	url, err := alphavantage.NewQuotesURL("IBM", alphavantage.TimeSeriesDaily)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		return
