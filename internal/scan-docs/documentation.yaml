@@ -2841,4 +2841,3 @@
         - IBM
   examples:
     - https://www.alphavantage.co/query?function=HT_PHASOR&symbol=IBM&interval=weekly&series_type=close&apikey=demo
-

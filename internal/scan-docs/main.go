@@ -1,15 +1,19 @@
+// scan-docs should be run from the repository root
 package main
 
 import (
+	"bytes"
 	_ "embed"
-	"fmt"
 	"io"
 	"log/slog"
 	"maps"
 	"net/http"
 	"net/url"
+	"os"
+	"path/filepath"
 	"slices"
 	"strings"
+	"time"
 
 	"github.com/typelate/dom"
 	"github.com/typelate/dom/spec"
@@ -26,13 +30,34 @@ type Function struct {
 	Examples []string
 }
 
+const (
+	htmlFile = "internal/scan-docs/documentation.html"
+	yamlFile = "internal/scan-docs/documentation.yaml"
+)
+
 func main() {
-	documentationResponse, err := http.Get("https://www.alphavantage.co/documentation/")
-	if err != nil {
-		panic(err)
+	var buf []byte
+	if info, err := os.Stat(filepath.FromSlash(htmlFile)); err != nil || info.ModTime().Before(time.Now().AddDate(0, 0, 7)) {
+		documentationResponse, err := http.Get("https://www.alphavantage.co/documentation/")
+		if err != nil {
+			panic(err)
+		}
+		defer closeAndIgnoreError(documentationResponse.Body)
+		buf, err = io.ReadAll(documentationResponse.Body)
+		if err != nil {
+			panic(err)
+		}
+		if err := os.WriteFile(filepath.FromSlash(htmlFile), buf, 0644); err != nil {
+			panic(err)
+		}
+	} else {
+		buf, err = os.ReadFile(filepath.FromSlash(htmlFile))
+		if err != nil {
+			panic(err)
+		}
 	}
-	defer closeAndIgnoreError(documentationResponse.Body)
-	dn, err := html.Parse(documentationResponse.Body)
+
+	dn, err := html.Parse(bytes.NewBuffer(buf))
 	if err != nil {
 		panic(err)
 	}
@@ -145,11 +170,14 @@ func main() {
 	slices.Sort(allFunctionNames)
 	allFunctionNames = slices.Compact(allFunctionNames)
 
-	out, err := yaml.Marshal(functions)
+	outYAML, err := yaml.Marshal(functions)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(out))
+
+	if err := os.WriteFile(filepath.FromSlash(yamlFile), outYAML, 0644); err != nil {
+		panic(err)
+	}
 }
 
 func currySecondParamOneResult[P1, P2, R1 any](f func(P1, P2) R1, p2 P2) func(P1) R1 {
