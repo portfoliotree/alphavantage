@@ -1,0 +1,434 @@
+[
+	{
+		"ident": "OutputSize",
+		"name": "outputsize",
+		"type": "enum",
+		"values": [
+			"compact",
+			"full"
+		]
+	},
+	{
+		"ident": "DataType",
+		"name": "datatype",
+		"type": "enum",
+		"values": [
+			"csv",
+			"json"
+		]
+	},
+	{
+		"ident": "APIKey",
+		"name": "apikey",
+		"type": "string"
+	},
+	{
+		"ident": "Function",
+		"name": "function",
+		"type": "string"
+	},
+	{
+		"name": "interval",
+		"type": "enum",
+		"values": [
+			"1min",
+			"5min",
+			"15min",
+			"30min",
+			"60min",
+			"daily",
+			"weekly",
+			"monthly",
+			"quarterly",
+			"semiannual",
+			"annual"
+		]
+	},
+	{
+		"ident": "Symbol",
+		"name": "symbol",
+		"type": "string"
+	},
+	{
+		"ident": "SeriesType",
+		"name": "series_type",
+		"type": "enum",
+		"values": [
+			"close",
+			"open",
+			"high",
+			"low"
+		]
+	},
+	{
+		"ident": "TimePeriod",
+		"name": "time_period",
+		"type": "int",
+		"validate": [
+			{
+				"message": "must be a positive number",
+				"identifier": "value",
+				"expression": "value \u003e= 0"
+			}
+		]
+	},
+	{
+		"ident": "Month",
+		"name": "month",
+		"type": "time",
+		"format": "2006-01"
+	},
+	{
+		"ident": "Market",
+		"name": "market",
+		"type": "string"
+	},
+	{
+		"ident": "FromCurrency",
+		"name": "from_currency",
+		"type": "string",
+		"values_url": "https://www.alphavantage.co/physical_currency_list/"
+	},
+	{
+		"ident": "ToCurrency",
+		"name": "to_currency",
+		"values_url": "https://www.alphavantage.co/physical_currency_list/",
+		"type": "string"
+	},
+	{
+		"ident": "FromSymbol",
+		"name": "from_symbol",
+		"type": "string"
+	},
+	{
+		"ident": "ToSymbol",
+		"name": "to_symbol",
+		"type": "string"
+	},
+	{
+		"ident": "OHLC",
+		"name": "OHLC",
+		"type": "enum",
+		"values": [
+			"open",
+			"high",
+			"low",
+			"close"
+		]
+	},
+	{
+		"ident": "State",
+		"name": "state",
+		"type": "enum",
+		"values": [
+			"active",
+			"delisted"
+		]
+	},
+	{
+		"ident": "Horizon",
+		"name": "horizon",
+		"type": "enum",
+		"values": [
+			"3month",
+			"6month",
+			"12month"
+		]
+	},
+	{
+		"ident": "Sort",
+		"name": "sort",
+		"type": "enum",
+		"values": [
+			{
+				"ident": "Latest",
+				"value": "LATEST"
+			},
+			{
+				"ident": "Earliest",
+				"value": "EARLIEST"
+			},
+			{
+				"ident": "Relevance",
+				"value": "RELEVANCE"
+			}
+		]
+	},
+	{
+		"ident": "Maturity",
+		"name": "maturity",
+		"type": "enum",
+		"values": [
+			"3month",
+			"2year",
+			"5year",
+			"7year",
+			"10year",
+			"30year"
+		]
+	},
+	{
+		"ident": "Date",
+		"name": "date",
+		"type": "string"
+	},
+	{
+		"ident": "FastPeriod",
+		"name": "fastperiod",
+		"type": "int"
+	},
+	{
+		"ident": "SlowPeriod",
+		"name": "slowperiod",
+		"type": "int"
+	},
+	{
+		"ident": "SignalPeriod",
+		"name": "signalperiod",
+		"type": "int"
+	},
+	{
+		"ident": "FastMAType",
+		"name": "fastmatype",
+		"type": "int"
+	},
+	{
+		"ident": "SlowMAType",
+		"name": "slowmatype",
+		"type": "int"
+	},
+	{
+		"ident": "MAType",
+		"name": "matype",
+		"type": "int"
+	},
+	{
+		"ident": "FastKPeriod",
+		"name": "fastkperiod",
+		"type": "int"
+	},
+	{
+		"ident": "SlowKPeriod",
+		"name": "slowkperiod",
+		"type": "int"
+	},
+	{
+		"ident": "FastDPeriod",
+		"name": "fastdperiod",
+		"type": "int"
+	},
+	{
+		"ident": "SlowDPeriod",
+		"name": "slowdperiod",
+		"type": "int"
+	},
+	{
+		"ident": "FastDMAType",
+		"name": "fastdmatype",
+		"type": "int"
+	},
+	{
+		"ident": "SlowDMAType",
+		"name": "slowdmatype",
+		"type": "int"
+	},
+	{
+		"ident": "SlowKMAType",
+		"name": "slowkmatype",
+		"type": "int"
+	},
+	{
+		"ident": "SignalMAType",
+		"name": "signalmatype",
+		"type": "int"
+	},
+	{
+		"ident": "SlowLimit",
+		"name": "slowlimit",
+		"type": "float"
+	},
+	{
+		"ident": "FastLimit",
+		"name": "fastlimit",
+		"type": "float"
+	},
+	{
+		"ident": "Nbdevup",
+		"name": "nbdevup",
+		"type": "float"
+	},
+	{
+		"ident": "Nbdevdn",
+		"name": "nbdevdn",
+		"type": "float"
+	},
+	{
+		"ident": "Acceleration",
+		"name": "acceleration",
+		"type": "float"
+	},
+	{
+		"ident": "Maximum",
+		"name": "maximum",
+		"type": "float"
+	},
+	{
+		"ident": "TimePeriod1",
+		"name": "timeperiod1",
+		"type": "int"
+	},
+	{
+		"ident": "TimePeriod2",
+		"name": "timeperiod2",
+		"type": "int"
+	},
+	{
+		"ident": "TimePeriod3",
+		"name": "timeperiod3",
+		"type": "int"
+	},
+	{
+		"ident": "Symbols",
+		"name": "SYMBOLS",
+		"type": "string"
+	},
+	{
+		"ident": "Range",
+		"name": "RANGE",
+		"type": "string"
+	},
+	{
+		"ident": "IntervalAnalytics",
+		"name": "INTERVAL",
+		"type": "string"
+	},
+	{
+		"ident": "WindowSize",
+		"name": "WINDOW_SIZE",
+		"type": "string"
+	},
+	{
+		"ident": "Calculations",
+		"name": "CALCULATIONS",
+		"type": "string"
+	},
+	{
+		"ident": "Quarter",
+		"name": "quarter",
+		"type": "string"
+	},
+	{
+		"ident": "Tickers",
+		"name": "tickers",
+		"type": "comma_separated_list"
+	},
+	{
+		"ident": "Topics",
+		"name": "topics",
+		"type": "comma_separated_enum",
+		"values": [
+			{
+				"description": "Blockchain",
+				"value": "blockchain"
+			},
+			{
+				"description": "Earnings",
+				"value": "earnings"
+			},
+			{
+				"description": "IPO",
+				"value": "ipo"
+			},
+			{
+				"description": "Mergers \u0026 Acquisitions",
+				"value": "mergers_and_acquisitions"
+			},
+			{
+				"description": "Financial Markets",
+				"value": "financial_markets"
+			},
+			{
+				"description": "Economy - Fiscal Policy (e.g., tax reform, government spending)",
+				"value": "economy_fiscal"
+			},
+			{
+				"description": "Economy - Monetary Policy (e.g., interest rates, inflation)",
+				"value": "economy_monetary"
+			},
+			{
+				"description": "Economy - Macro/Overall",
+				"value": "economy_macro"
+			},
+			{
+				"description": "Energy \u0026 Transportation",
+				"value": "energy_transportation"
+			},
+			{
+				"description": "Finance",
+				"value": "finance"
+			},
+			{
+				"description": "Life Sciences",
+				"value": "life_sciences"
+			},
+			{
+				"description": "Manufacturing",
+				"value": "manufacturing"
+			},
+			{
+				"description": "Real Estate \u0026 Construction",
+				"value": "real_estate"
+			},
+			{
+				"description": "Retail \u0026 Wholesale",
+				"value": "retail_wholesale"
+			},
+			{
+				"description": "Technology",
+				"value": "technology"
+			}
+		]
+	},
+	{
+		"ident": "TimeFrom",
+		"name": "time_from",
+		"type": "time",
+		"format": "20060102T1504"
+	},
+	{
+		"ident": "TimeTo",
+		"name": "time_to",
+		"type": "time",
+		"format": "20060102T1504"
+	},
+	{
+		"ident": "Limit",
+		"name": "limit",
+		"type": "int"
+	},
+	{
+		"ident": "Contract",
+		"name": "contract",
+		"type": "string"
+	},
+	{
+		"ident": "RequireGreeks",
+		"name": "require_greeks",
+		"type": "bool"
+	},
+	{
+		"ident": "Adjusted",
+		"name": "adjusted",
+		"type": "bool"
+	},
+	{
+		"ident": "ExtendedHours",
+		"name": "extended_hours",
+		"type": "bool"
+	},
+	{
+		"ident": "Keywords",
+		"name": "keywords",
+		"type": "string"
+	}
+]

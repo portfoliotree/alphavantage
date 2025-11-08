@@ -1,0 +1,153 @@
+[
+	{
+		"name": "BBANDS",
+		"ident": "BollingerBands",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"time_period",
+			"nbdevup",
+			"nbdevdn",
+			"matype",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=BBANDS\u0026symbol=IBM\u0026interval=weekly\u0026time_period=5\u0026series_type=close\u0026nbdevup=3\u0026nbdevdn=3\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "TRANGE",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=TRANGE\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "ATR",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"time_period",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=ATR\u0026symbol=IBM\u0026interval=daily\u0026time_period=14\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "NATR",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"time_period",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=NATR\u0026symbol=IBM\u0026interval=weekly\u0026time_period=14\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "SAR",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"acceleration",
+			"maximum",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=SAR\u0026symbol=IBM\u0026interval=weekly\u0026acceleration=0.05\u0026maximum=0.25\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "ULTOSC",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"timeperiod1",
+			"timeperiod2",
+			"timeperiod3",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=ULTOSC\u0026symbol=IBM\u0026interval=daily\u0026timeperiod1=8\u0026apikey=demo"
+		]
+	}
+]

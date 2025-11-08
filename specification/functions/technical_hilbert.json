@@ -1,0 +1,152 @@
+[
+	{
+		"name": "HT_TRENDLINE",
+		"ident": "HilbertTransformTrendLine",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=HT_TRENDLINE\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "HT_SINE",
+		"ident": "HilbertTransformSine",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=HT_SINE\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "HT_TRENDMODE",
+		"ident": "HilbertTransformTrendMode",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=HT_TRENDMODE\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "HT_DCPERIOD",
+		"ident": "HilbertTransformDCPeriod",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=HT_DCPERIOD\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "HT_DCPHASE",
+		"ident": "HilbertTransformDCPhase",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=HT_DCPHASE\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "HT_PHASOR",
+		"ident": "HilbertTransformPhasor",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=HT_PHASOR\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		]
+	}
+]

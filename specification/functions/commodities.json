@@ -1,0 +1,248 @@
+[
+	{
+		"name": "WTI",
+		"ident": "WTI",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=WTI\u0026interval=monthly\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "BRENT",
+		"ident": "Brent",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=BRENT\u0026interval=monthly\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "NATURAL_GAS",
+		"ident": "NaturalGas",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=NATURAL_GAS\u0026interval=monthly\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "COPPER",
+		"ident": "Copper",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=COPPER\u0026interval=monthly\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "ALUMINUM",
+		"ident": "Aluminum",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly",
+				"quarterly",
+				"annual"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=ALUMINUM\u0026interval=monthly\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "WHEAT",
+		"ident": "Wheat",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=WHEAT\u0026interval=monthly\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "CORN",
+		"ident": "Corn",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=CORN\u0026interval=monthly\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "COTTON",
+		"ident": "Cotton",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=COTTON\u0026interval=monthly\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "SUGAR",
+		"ident": "Sugar",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=SUGAR\u0026interval=monthly\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "COFFEE",
+		"ident": "Coffee",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=COFFEE\u0026interval=monthly\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "ALL_COMMODITIES",
+		"ident": "AllCommodities",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly",
+				"quarterly",
+				"annual"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=ALL_COMMODITIES\u0026interval=monthly\u0026apikey=demo"
+		]
+	}
+]

@@ -1,0 +1,92 @@
+[
+	{
+		"name": "CURRENCY_EXCHANGE_RATE",
+		"ident": "CurrencyExchangeRate",
+		"required": [
+			"function",
+			"from_currency",
+			"to_currency",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE\u0026from_currency=USD\u0026to_currency=JPY\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "FX_INTRADAY",
+		"ident": "FXIntraday",
+		"required": [
+			"function",
+			"from_symbol",
+			"to_symbol",
+			"interval",
+			"apikey"
+		],
+		"optional": [
+			"outputsize",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"1min",
+				"5min",
+				"15min",
+				"30min",
+				"60min"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=FX_INTRADAY\u0026from_symbol=EUR\u0026to_symbol=USD\u0026interval=5min\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "FX_DAILY",
+		"ident": "FXDaily",
+		"required": [
+			"function",
+			"from_symbol",
+			"to_symbol",
+			"apikey"
+		],
+		"optional": [
+			"outputsize",
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=FX_DAILY\u0026from_symbol=EUR\u0026to_symbol=USD\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "FX_WEEKLY",
+		"ident": "FXWeekly",
+		"required": [
+			"function",
+			"from_symbol",
+			"to_symbol",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=FX_WEEKLY\u0026from_symbol=EUR\u0026to_symbol=USD\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "FX_MONTHLY",
+		"ident": "FXMonthly",
+		"required": [
+			"function",
+			"from_symbol",
+			"to_symbol",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=FX_MONTHLY\u0026from_symbol=EUR\u0026to_symbol=USD\u0026apikey=demo"
+		]
+	}
+]

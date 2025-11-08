@@ -93,11 +93,11 @@ Commands:
 
 ## Supported Endpoints
 
-Not all endpoints are supported yet. Make an Issue or PR if you'd like to have more endpoints covered.
+**All functions are supported by `github.com/portfoliotree/alphavantage/query`** but only a subset of query functions are currently supported by the `alphavantage.Client`. Make an Issue or PR if you'd like to add more support to the `Client`.
 
-I have found the CSV encoding easier to parse.
+### Supported by `github.com/portfoliotree/alphavantage.Client`
 
-### [Core Stock APIs](https://www.alphavantage.co/documentation/#fundamentals)
+#### [Core Stock APIs](https://www.alphavantage.co/documentation/#fundamentals)
 
 - [x] TIME_SERIES_INTRADAY
 - [x] TIME_SERIES_DAILY
@@ -109,7 +109,7 @@ I have found the CSV encoding easier to parse.
 - [x] Quote (GLOBAL_QUOTE)
 - [x] Search Endpoint
 
-### [Fundamental Data](https://www.alphavantage.co/documentation/#fx)
+#### [Fundamental Data](https://www.alphavantage.co/documentation/#fx)
 
 - [x] Company Overview
 - [ ] Income Statement
@@ -120,14 +120,14 @@ I have found the CSV encoding easier to parse.
 - [ ] Earnings Calendar
 - [ ] IPO Calendar
 
-### [Digital & Crypto Currencies](https://www.alphavantage.co/documentation/#digital-currency)
+#### [Digital & Crypto Currencies](https://www.alphavantage.co/documentation/#digital-currency)
 
 None implemented.
 
-### [Economic Indicators](https://www.alphavantage.co/documentation/#fx)
+#### [Economic Indicators](https://www.alphavantage.co/documentation/#fx)
 
 None implemented (I generally just use FRED directly).
 
-### [Technical Indicators](https://www.alphavantage.co/documentation/#technical-indicators)
+#### [Technical Indicators](https://www.alphavantage.co/documentation/#technical-indicators)
 
 None implemented.

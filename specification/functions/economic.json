@@ -1,0 +1,172 @@
+[
+	{
+		"name": "REAL_GDP",
+		"ident": "RealGDP",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"annual",
+				"quarterly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=REAL_GDP\u0026interval=annual\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "REAL_GDP_PER_CAPITA",
+		"ident": "RealGDPPerCapita",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=REAL_GDP_PER_CAPITA\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "TREASURY_YIELD",
+		"ident": "TreasuryYield",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"maturity",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=TREASURY_YIELD\u0026interval=monthly\u0026maturity=10year\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "FEDERAL_FUNDS_RATE",
+		"ident": "FederalFundsRate",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=FEDERAL_FUNDS_RATE\u0026interval=monthly\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "CPI",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"interval",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"monthly",
+				"semiannual"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=CPI\u0026interval=monthly\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "INFLATION",
+		"ident": "Inflation",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=INFLATION\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "RETAIL_SALES",
+		"ident": "RetailSales",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=RETAIL_SALES\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "DURABLES",
+		"ident": "Durables",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=DURABLES\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "UNEMPLOYMENT",
+		"ident": "Unemployment",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=UNEMPLOYMENT\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "NONFARM_PAYROLL",
+		"ident": "NonfarmPayroll",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=NONFARM_PAYROLL\u0026apikey=demo"
+		]
+	}
+]

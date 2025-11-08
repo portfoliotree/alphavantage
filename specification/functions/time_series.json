@@ -1,0 +1,180 @@
+[
+	{
+		"name": "TIME_SERIES_INTRADAY",
+		"ident": "TimeSeriesIntraday",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"apikey"
+		],
+		"optional": [
+			"adjusted",
+			"extended_hours",
+			"month",
+			"outputsize",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"1min",
+				"5min",
+				"15min",
+				"30min",
+				"60min"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY\u0026symbol=IBM\u0026interval=5min\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "TIME_SERIES_DAILY",
+		"ident": "TimeSeriesDaily",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"outputsize",
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "TIME_SERIES_DAILY_ADJUSTED",
+		"ident": "TimeSeriesDailyAdjusted",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"outputsize",
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "TIME_SERIES_WEEKLY",
+		"ident": "TimeSeriesWeekly",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "TIME_SERIES_WEEKLY_ADJUSTED",
+		"ident": "TimeSeriesWeeklyAdjusted",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "TIME_SERIES_MONTHLY",
+		"ident": "TimeSeriesMonthly",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "TIME_SERIES_MONTHLY_ADJUSTED",
+		"ident": "TimeSeriesMonthlyAdjusted",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "REALTIME_BULK_QUOTES",
+		"ident": "RealtimeBulkQuotes",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES\u0026symbol=MSFT,AAPL,IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "SYMBOL_SEARCH",
+		"ident": "SymbolSearch",
+		"required": [
+			"function",
+			"keywords",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=SYMBOL_SEARCH\u0026keywords=tesco\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "MARKET_STATUS",
+		"ident": "MarketStatus",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=MARKET_STATUS\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "GLOBAL_QUOTE",
+		"ident": "GlobalQuote",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=GLOBAL_QUOTE\u0026symbol=IBM\u0026apikey=demo"
+		]
+	}
+]

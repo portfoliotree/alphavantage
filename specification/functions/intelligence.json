@@ -1,0 +1,97 @@
+[
+	{
+		"name": "NEWS_SENTIMENT",
+		"ident": "NewsSentiment",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"tickers",
+			"topics",
+			"time_from",
+			"time_to",
+			"sort",
+			"limit"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=NEWS_SENTIMENT\u0026tickers=AAPL\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "EARNINGS_CALL_TRANSCRIPT",
+		"ident": "EarningsCallTranscript",
+		"required": [
+			"function",
+			"symbol",
+			"quarter",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=EARNINGS_CALL_TRANSCRIPT\u0026symbol=IBM\u0026quarter=2024Q1\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "TOP_GAINERS_LOSERS",
+		"ident": "TopGainersLosers",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "INSIDER_TRANSACTIONS",
+		"ident": "InsiderTransactions",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=INSIDER_TRANSACTIONS\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "ANALYTICS_FIXED_WINDOW",
+		"ident": "AnalyticsFixedWindow",
+		"required": [
+			"function",
+			"SYMBOLS",
+			"RANGE",
+			"INTERVAL",
+			"CALCULATIONS",
+			"apikey"
+		],
+		"optional": [
+			"OHLC"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=ANALYTICS_FIXED_WINDOW\u0026SYMBOLS=AAPL,MSFT,IBM\u0026RANGE=2023-07-01\u0026RANGE=2023-08-31\u0026INTERVAL=DAILY\u0026OHLC=close\u0026CALCULATIONS=MEAN,STDDEV,CORRELATION\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "ANALYTICS_SLIDING_WINDOW",
+		"ident": "AnalyticsSlidingWindow",
+		"required": [
+			"function",
+			"SYMBOLS",
+			"RANGE",
+			"INTERVAL",
+			"WINDOW_SIZE",
+			"CALCULATIONS",
+			"apikey"
+		],
+		"optional": [
+			"OHLC"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=ANALYTICS_SLIDING_WINDOW\u0026SYMBOLS=AAPL,IBM\u0026RANGE=2month\u0026INTERVAL=DAILY\u0026OHLC=close\u0026WINDOW_SIZE=20\u0026CALCULATIONS=MEAN,STDDEV(annualized=True)\u0026apikey=demo"
+		]
+	}
+]

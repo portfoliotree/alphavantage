@@ -1,0 +1,35 @@
+[
+	{
+		"name": "REALTIME_OPTIONS",
+		"ident": "RealtimeOptions",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"require_greeks",
+			"contract",
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=REALTIME_OPTIONS\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "HISTORICAL_OPTIONS",
+		"ident": "HistoricalOptions",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"date",
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS\u0026symbol=IBM\u0026apikey=demo"
+		]
+	}
+]

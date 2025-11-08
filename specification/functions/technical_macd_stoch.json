@@ -1,0 +1,166 @@
+[
+	{
+		"name": "MACD",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"fastperiod",
+			"slowperiod",
+			"signalperiod",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=MACD\u0026symbol=IBM\u0026interval=daily\u0026series_type=open\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "MACDEXT",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"fastperiod",
+			"slowperiod",
+			"signalperiod",
+			"fastmatype",
+			"slowmatype",
+			"signalmatype",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=MACDEXT\u0026symbol=IBM\u0026interval=daily\u0026series_type=open\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "STOCH",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"fastkperiod",
+			"slowkperiod",
+			"slowdperiod",
+			"slowkmatype",
+			"slowdmatype",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=STOCH\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "STOCHF",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"fastkperiod",
+			"fastdperiod",
+			"fastdmatype",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=STOCHF\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "RSI",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"time_period",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=RSI\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "STOCHRSI",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"time_period",
+			"fastkperiod",
+			"fastdperiod",
+			"fastdmatype",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=STOCHRSI\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026series_type=close\u0026fastkperiod=6\u0026fastdmatype=1\u0026apikey=demo"
+		]
+	}
+]
