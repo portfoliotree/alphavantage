@@ -1,0 +1,180 @@
+[
+	{
+		"name": "OVERVIEW",
+		"ident": "Overview",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=OVERVIEW\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "ETF_PROFILE",
+		"ident": "ETFProfile",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=ETF_PROFILE\u0026symbol=QQQ\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "DIVIDENDS",
+		"ident": "Dividends",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=DIVIDENDS\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "SPLITS",
+		"ident": "Splits",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=SPLITS\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "INCOME_STATEMENT",
+		"ident": "IncomeStatement",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=INCOME_STATEMENT\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "BALANCE_SHEET",
+		"ident": "BalanceSheet",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=BALANCE_SHEET\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "CASH_FLOW",
+		"ident": "CashFlow",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=CASH_FLOW\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "SHARES_OUTSTANDING",
+		"ident": "SharesOutstanding",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=SHARES_OUTSTANDING\u0026symbol=MSFT\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "EARNINGS",
+		"ident": "Earnings",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=EARNINGS\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "EARNINGS_ESTIMATES",
+		"ident": "EarningsEstimates",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=EARNINGS_ESTIMATES\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "LISTING_STATUS",
+		"ident": "ListingStatus",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"date",
+			"state"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=LISTING_STATUS\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "EARNINGS_CALENDAR",
+		"ident": "EarningsCalendar",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"symbol",
+			"horizon"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=EARNINGS_CALENDAR\u0026horizon=3month\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "IPO_CALENDAR",
+		"ident": "IPOCalendar",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=IPO_CALENDAR\u0026apikey=demo"
+		]
+	}
+]

@@ -1,0 +1,71 @@
+[
+	{
+		"name": "CRYPTO_INTRADAY",
+		"ident": "CryptoIntraday",
+		"required": [
+			"function",
+			"symbol",
+			"market",
+			"interval",
+			"apikey"
+		],
+		"optional": [
+			"outputsize",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"1min",
+				"5min",
+				"15min",
+				"30min",
+				"60min"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=CRYPTO_INTRADAY\u0026symbol=ETH\u0026market=USD\u0026interval=5min\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "DIGITAL_CURRENCY_DAILY",
+		"ident": "DigitalCurrencyDaily",
+		"required": [
+			"function",
+			"symbol",
+			"market",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY\u0026symbol=BTC\u0026market=EUR\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "DIGITAL_CURRENCY_WEEKLY",
+		"ident": "DigitalCurrencyWeekly",
+		"required": [
+			"function",
+			"symbol",
+			"market",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_WEEKLY\u0026symbol=BTC\u0026market=EUR\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "DIGITAL_CURRENCY_MONTHLY",
+		"ident": "DigitalCurrencyMonthly",
+		"required": [
+			"function",
+			"symbol",
+			"market",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_MONTHLY\u0026symbol=BTC\u0026market=EUR\u0026apikey=demo"
+		]
+	}
+]

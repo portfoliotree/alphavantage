@@ -1,0 +1,210 @@
+[
+	{
+		"name": "SMA",
+		"ident": "SMA",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"time_period",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=SMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "EMA",
+		"ident": "EMA",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"time_period",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=EMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "WMA",
+		"ident": "WMA",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"time_period",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=WMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "DEMA",
+		"ident": "DEMA",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"time_period",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=DEMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "TEMA",
+		"ident": "TEMA",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"time_period",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=TEMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "TRIMA",
+		"ident": "TRIMA",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"time_period",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=TRIMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "KAMA",
+		"ident": "KAMA",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"time_period",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=KAMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "T3",
+		"ident": "T3",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"series_type",
+			"apikey"
+		],
+		"optional": [
+			"month",
+			"time_period",
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=T3\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		]
+	}
+]
