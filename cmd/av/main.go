@@ -110,7 +110,7 @@ func quotes(token string, args []string) error {
 		return nil
 	}
 
-	client := alphavantage.NewClient(token)
+	client := alphavantage.NewClient(token, alphavantage.PremiumPlan75)
 
 	ctx := context.TODO()
 
@@ -153,7 +153,7 @@ func listingStatus(token string, args []string) error {
 		return err
 	}
 
-	client := alphavantage.NewClient(token)
+	client := alphavantage.NewClient(token, alphavantage.PremiumPlan75)
 
 	ctx := context.TODO()
 
@@ -186,7 +186,7 @@ func symbolSearch(token string, args []string) error {
 		return err
 	}
 
-	client := alphavantage.NewClient(token)
+	client := alphavantage.NewClient(token, alphavantage.PremiumPlan75)
 
 	ctx := context.TODO()
 
@@ -227,7 +227,7 @@ func globalQuote(token string, args []string) error {
 		return fmt.Errorf("symbol is required")
 	}
 
-	client := alphavantage.NewClient(token)
+	client := alphavantage.NewClient(token, alphavantage.PremiumPlan75)
 	ctx := context.TODO()
 
 	for _, symbol := range args {
@@ -278,11 +278,11 @@ func etfProfile(token string, args []string) error {
 		return fmt.Errorf("no symbols provided")
 	}
 
-	client := alphavantage.NewClient(token)
+	client := alphavantage.NewClient(token, alphavantage.PremiumPlan75)
 	ctx := context.TODO()
 
 	for _, symbol := range symbols {
-		profile, err := client.ETFProfile(ctx, symbol)
+		profile, err := client.ETFProfile(ctx, alphavantage.QueryETFProfile(client.APIKey, symbol))
 		if err != nil {
 			return fmt.Errorf("failed to get ETF profile for %s: %w", symbol, err)
 		}

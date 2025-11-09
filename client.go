@@ -9,6 +9,7 @@ package alphavantage
 import (
 	"bufio"
 	"bytes"
+	"cmp"
 	"context"
 	"encoding/csv"
 	"encoding/json"
@@ -16,9 +17,9 @@ import (
 	"fmt"
 	"io"
 	"iter"
-	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -57,19 +58,14 @@ type Client struct {
 }
 
 // NewClient creates a new AlphaVantage client with the specified API key.
-// It uses default rate limiting (5 requests per minute) and the default HTTP client.
 // The client will use environment variable ALPHA_VANTAGE_URL if set, otherwise defaults
 // to https://www.alphavantage.co.
-func NewClient(apiKey string) *Client {
+func NewClient(apiKey string, plan PremiumPlan) *Client {
 	return &Client{
 		Client:  http.DefaultClient,
-		Limiter: rate.NewLimiter(rate.Every(time.Minute/5), 5),
-		APIKey:  apiKey,
+		Limiter: rate.NewLimiter(plan.Limit(), 5),
+		APIKey:  cmp.Or(apiKey, os.Getenv("ALPHA_VANTAGE_TOKEN"), "demo"),
 	}
-}
-
-type queryEncoder interface {
-	Encode() string
 }
 
 func (client *Client) newRequest(ctx context.Context, values url.Values) (*http.Request, error) {
@@ -157,90 +153,6 @@ func checkError(rc io.ReadCloser) (io.ReadCloser, error) {
 
 var typeType = reflect.TypeOf(time.Time{})
 
-func (client *Client) ETFProfile(ctx context.Context, symbol string) (ETFProfile, error) {
-	req, err := client.newRequest(ctx, url.Values(QueryETFProfile(client.APIKey, symbol)))
-	if err != nil {
-		return ETFProfile{}, fmt.Errorf("failed to create ETF profile request: %w", err)
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return ETFProfile{}, err
-	}
-	defer closeAndIgnoreError(res.Body)
-
-	buf, err := io.ReadAll(res.Body)
-	if err != nil {
-		return ETFProfile{}, err
-	}
-
-	var result ETFProfile
-	err = json.Unmarshal(buf, &result)
-	return result, err
-}
-
-// Quotes fetches time series data for the specified symbol and function.
-// It parses the CSV response into a slice of Quote structs with dates in the given location.
-// The location parameter is used for parsing timestamps; use time.UTC for UTC times.
-func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteFunction, location *time.Location) ([]Quote, error) {
-	rc, err := client.DoQuotesRequest(ctx, symbol, function)
-	if err != nil {
-		return nil, err
-	}
-	defer closeAndIgnoreError(rc)
-
-	switch function {
-	case TimeSeriesIntraday:
-		list, err := ParseIntraDayQuotes(rc, location)
-		if err != nil {
-			return nil, err
-		}
-		return convertElements(list, func(q IntraDayQuote) Quote { return Quote(q) }), nil
-	default:
-		quotes, err := ParseQuotes(rc, location)
-		if err != nil {
-			return nil, err
-		}
-		return quotes, nil
-	}
-}
-
-// Deprecated: use DoQuotesRequest instead. This method will be removed before 2023.
-func (client *Client) QuotesRequest(ctx context.Context, symbol string, function QuoteFunction, fn func(r io.Reader) error) error {
-	rc, err := client.DoQuotesRequest(ctx, symbol, function)
-	if err != nil {
-		return err
-	}
-	defer closeAndIgnoreError(rc)
-	return fn(rc)
-}
-
-// DoQuotesRequest fetches time series data for the specified symbol and function.
-// It returns the raw CSV response as an io.ReadCloser that must be closed by the caller.
-// This method provides direct access to the CSV data without parsing.
-func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, function QuoteFunction) (io.ReadCloser, error) {
-	err := function.Validate()
-	if err != nil {
-		return nil, err
-	}
-	req, err := client.newRequest(ctx, url.Values{
-		"datatype":   []string{"csv"},
-		"outputsize": []string{"full"},
-		"function":   []string{string(function)},
-		"symbol":     []string{symbol},
-		"apikey":     []string{client.APIKey},
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return checkError(res.Body)
-}
-
 // ParseQuotes handles parsing the following "Stock Time Series" functions
 // - TIME_SERIES_DAILY
 // - TIME_SERIES_DAILY_ADJUSTED
@@ -258,117 +170,6 @@ func ParseIntraDayQuotes(r io.Reader, location *time.Location) ([]IntraDayQuote,
 	return list, ParseCSV(r, &list, location)
 }
 
-func convertElements[T1, T2 any](list []T1, convert func(T1) T2) []T2 {
-	result := make([]T2, len(list))
-	for i := range list {
-		result[i] = convert(list[i])
-	}
-	return result
-}
-
-func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]ListingStatus, error) {
-	rc, err := client.DoListingStatusRequest(ctx, isListed)
-	if err != nil {
-		return nil, err
-	}
-	defer closeAndIgnoreError(rc)
-	var result []ListingStatus
-	return result, ParseCSV(rc, &result, nil)
-}
-
-// DoListingStatusRequest fetches listing or delisting status data.
-// If isListed is true, it returns currently active listings.
-// If isListed is false, it returns delisted securities.
-// The response is returned as CSV data in an io.ReadCloser that must be closed by the caller.
-func (client *Client) DoListingStatusRequest(ctx context.Context, isListed bool) (io.ReadCloser, error) {
-	q := QueryListingStatus(client.APIKey)
-	if isListed {
-		q = q.StateActive()
-	} else {
-		q = q.StateDelisted()
-	}
-	req, err := client.newRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, fmt.Errorf("failed to create listing status request: %w", err)
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return checkError(res.Body)
-}
-
-// Deprecated: use DoListingStatusRequest instead. This method will be removed before 2023.
-func (client *Client) ListingStatusRequest(ctx context.Context, isListed bool, fn func(io.Reader) error) error {
-	rc, err := client.DoListingStatusRequest(ctx, isListed)
-	if err != nil {
-		return err
-	}
-	defer closeAndIgnoreError(rc)
-	return fn(rc)
-}
-
-// CompanyOverview fetches comprehensive company information for the specified symbol.
-// It returns detailed company data including financial metrics, sector information,
-// and key statistics as a CompanyOverview struct.
-func (client *Client) CompanyOverview(ctx context.Context, symbol string) (CompanyOverview, error) {
-	req, err := client.newRequest(ctx, url.Values(QueryOverview(client.APIKey, symbol)))
-	if err != nil {
-		return CompanyOverview{}, fmt.Errorf("failed to create listing status request: %w", err)
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return CompanyOverview{}, err
-	}
-	defer closeAndIgnoreError(res.Body)
-
-	buf, err := io.ReadAll(res.Body)
-	if err != nil {
-		return CompanyOverview{}, err
-	}
-
-	var result CompanyOverview
-	err = json.Unmarshal(buf, &result)
-	if err != nil {
-		log.Println(err)
-	}
-	return result, err
-}
-
-// DoSymbolSearchRequest searches for securities matching the given keywords.
-// It returns CSV data containing symbol search results as an io.ReadCloser that must be closed by the caller.
-// The results include symbol, name, type, region, market times, timezone, currency, and match score.
-func (client *Client) DoSymbolSearchRequest(ctx context.Context, keywords string) (io.ReadCloser, error) {
-	req, err := client.newRequest(ctx, url.Values(QuerySymbolSearch(client.APIKey, keywords).DataTypeCSV()))
-	if err != nil {
-		return nil, fmt.Errorf("failed to create quotes request: %w", err)
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	rc, err := checkError(res.Body)
-	if err != nil {
-		closeAndIgnoreError(res.Body)
-		return nil, err
-	}
-
-	return rc, nil
-}
-
-func ParseSymbolSearchQuery(r io.Reader) ([]SymbolSearchResult, error) {
-	var list []SymbolSearchResult
-	return list, ParseCSV(r, &list, nil)
-}
-
-func (r *SymbolSearchResult) ParseTimezone() (*time.Location, error) {
-	return time.LoadLocation(r.TimeZone)
-}
-
 func closeAndIgnoreError(c io.Closer) {
 	_ = c.Close()
 }
@@ -380,233 +181,6 @@ type multiReadCloser struct {
 
 func (mrc multiReadCloser) Close() error {
 	return mrc.close()
-}
-
-// QuoteFunction represents the different time series functions available
-// from the AlphaVantage API.
-type QuoteFunction string
-
-// Time series function constants for different data intervals and types.
-const (
-	TimeSeriesIntraday        QuoteFunction = "TIME_SERIES_INTRADAY"
-	TimeSeriesDaily           QuoteFunction = "TIME_SERIES_DAILY"
-	TimeSeriesDailyAdjusted   QuoteFunction = "TIME_SERIES_DAILY_ADJUSTED"
-	TimeSeriesWeekly          QuoteFunction = "TIME_SERIES_WEEKLY"
-	TimeSeriesWeeklyAdjusted  QuoteFunction = "TIME_SERIES_WEEKLY_ADJUSTED"
-	TimeSeriesMonthly         QuoteFunction = "TIME_SERIES_MONTHLY"
-	TimeSeriesMonthlyAdjusted QuoteFunction = "TIME_SERIES_MONTHLY_ADJUSTED"
-)
-
-// Validate checks if the QuoteFunction is one of the supported time series functions.
-// It returns an error if the function is not recognized.
-func (fn QuoteFunction) Validate() error {
-	switch fn {
-	case TimeSeriesIntraday,
-		TimeSeriesDaily,
-		TimeSeriesDailyAdjusted,
-		TimeSeriesWeekly,
-		TimeSeriesWeeklyAdjusted,
-		TimeSeriesMonthly,
-		TimeSeriesMonthlyAdjusted:
-		return nil
-	default:
-		return errors.New("unknown time series function")
-	}
-}
-
-type ETFProfile struct {
-	Symbol            string       `json:"symbol,omitempty"`
-	NetAssets         string       `json:"net_assets,omitempty"`
-	NetExpenseRatio   string       `json:"net_expense_ratio,omitempty"`
-	PortfolioTurnover string       `json:"portfolio_turnover,omitempty"`
-	DividendYield     string       `json:"dividend_yield,omitempty"`
-	InceptionDate     string       `json:"inception_date,omitempty"`
-	Leveraged         string       `json:"leveraged,omitempty"`
-	Sectors           []ETFSector  `json:"sectors,omitempty"`
-	Holdings          []ETFHolding `json:"holdings,omitempty"`
-}
-
-type ETFSector struct {
-	Sector string `json:"sector,omitempty"`
-	Weight string `json:"weight,omitempty"`
-}
-
-type ETFHolding struct {
-	Symbol      string `json:"symbol,omitempty"`
-	Description string `json:"description,omitempty"`
-	Weight      string `json:"weight,omitempty"`
-}
-
-type Quote struct {
-	Time             time.Time `column-name:"timestamp"`
-	Open             float64   `column-name:"open"`
-	High             float64   `column-name:"high"`
-	Low              float64   `column-name:"low"`
-	Close            float64   `column-name:"close"`
-	Volume           float64   `column-name:"volume"`
-	DividendAmount   float64   `column-name:"dividend_amount"`
-	SplitCoefficient float64   `column-name:"split_coefficient"`
-}
-
-// IntraDayQuote is convertable to Quote. The only difference is the time-layout includes additional time information.
-type IntraDayQuote struct {
-	Time             time.Time `column-name:"timestamp" time-layout:"2006-01-02 15:04:05"`
-	Open             float64   `column-name:"open"`
-	High             float64   `column-name:"high"`
-	Low              float64   `column-name:"low"`
-	Close            float64   `column-name:"close"`
-	Volume           float64   `column-name:"volume"`
-	DividendAmount   float64   `column-name:"dividend_amount"`
-	SplitCoefficient float64   `column-name:"split_coefficient"`
-}
-
-var _ = Quote(IntraDayQuote{})
-
-// ListingStatus represents the listing status information for a security.
-type ListingStatus struct {
-	Symbol        string    `column-name:"symbol"`        // The security symbol
-	Name          string    `column-name:"name"`          // The company or security name
-	Exchange      string    `column-name:"exchange"`      // The exchange where it's listed
-	AssetType     string    `column-name:"assetType"`     // Type of asset (Stock, ETF, etc.)
-	IPODate       time.Time `column-name:"ipoDate"`       // Initial public offering date
-	DeListingDate time.Time `column-name:"delistingDate"` // Date when delisted (if applicable)
-	Status        string    `column-name:"status"`        // Current status (Active, Delisted)
-}
-
-// Asset type constants.
-const (
-	AssetTypeStock = "Stock" // Stock security type
-	AssetTypeETF   = "ETF"   // Exchange-traded fund type
-)
-
-// CompanyOverview contains comprehensive company information and financial metrics
-// returned by the AlphaVantage OVERVIEW function.
-type CompanyOverview struct {
-	CIK                        string    `av-json:"CIK"`
-	Symbol                     string    `av-json:"Symbol"`
-	AssetType                  string    `av-json:"AssetType"`
-	Name                       string    `av-json:"Name"`
-	Description                string    `av-json:"Description"`
-	Exchange                   string    `av-json:"Exchange"`
-	Currency                   string    `av-json:"Currency"`
-	Country                    string    `av-json:"Country"`
-	Sector                     string    `av-json:"Sector"`
-	Industry                   string    `av-json:"Industry"`
-	Address                    string    `av-json:"Address"`
-	FiscalYearEnd              string    `av-json:"FiscalYearEnd"`
-	LatestQuarter              time.Time `av-json:"LatestQuarter"`
-	MarketCapitalization       int       `av-json:"MarketCapitalization"`
-	EBITDA                     int       `av-json:"EBITDA"`
-	PERatio                    float64   `av-json:"PERatio"`
-	PEGRatio                   float64   `av-json:"PEGRatio"`
-	BookValue                  float64   `av-json:"BookValue"`
-	DividendPerShare           float64   `av-json:"DividendPerShare"`
-	DividendYield              float64   `av-json:"DividendYield"`
-	EPS                        float64   `av-json:"EPS"`
-	RevenuePerShareTTM         float64   `av-json:"RevenuePerShareTTM"`
-	ProfitMargin               float64   `av-json:"ProfitMargin"`
-	OperatingMarginTTM         float64   `av-json:"OperatingMarginTTM"`
-	ReturnOnAssetsTTM          float64   `av-json:"ReturnOnAssetsTTM"`
-	ReturnOnEquityTTM          float64   `av-json:"ReturnOnEquityTTM"`
-	RevenueTTM                 int       `av-json:"RevenueTTM"`
-	GrossProfitTTM             int       `av-json:"GrossProfitTTM"`
-	DilutedEPSTTM              float64   `av-json:"DilutedEPSTTM"`
-	QuarterlyEarningsGrowthYOY float64   `av-json:"QuarterlyEarningsGrowthYOY"`
-	QuarterlyRevenueGrowthYOY  float64   `av-json:"QuarterlyRevenueGrowthYOY"`
-	AnalystTargetPrice         float64   `av-json:"AnalystTargetPrice"`
-	TrailingPE                 float64   `av-json:"TrailingPE"`
-	ForwardPE                  float64   `av-json:"ForwardPE"`
-	PriceToSalesRatioTTM       float64   `av-json:"PriceToSalesRatioTTM"`
-	PriceToBookRatio           float64   `av-json:"PriceToBookRatio"`
-	EVToRevenue                float64   `av-json:"EVToRevenue"`
-	EVToEBITDA                 float64   `av-json:"EVToEBITDA"`
-	Beta                       float64   `av-json:"Beta"`
-	FiftyTwoWeekHigh           float64   `av-json:"52WeekHigh"`
-	FiftyTwoWeekLow            float64   `av-json:"52WeekLow"`
-	FiftyDayMovingAverage      float64   `av-json:"50DayMovingAverage"`
-	TwoHundredDayMovingAverage float64   `av-json:"200DayMovingAverage"`
-	SharesOutstanding          int       `av-json:"SharesOutstanding"`
-	SharesFloat                int       `av-json:"SharesFloat"`
-	SharesShort                int       `av-json:"SharesShort"`
-	SharesShortPriorMonth      int       `av-json:"SharesShortPriorMonth"`
-	ShortRatio                 float64   `av-json:"ShortRatio"`
-	ShortPercentOutstanding    float64   `av-json:"ShortPercentOutstanding"`
-	ShortPercentFloat          float64   `av-json:"ShortPercentFloat"`
-	PercentInsiders            float64   `av-json:"PercentInsiders"`
-	PercentInstitutions        float64   `av-json:"PercentInstitutions"`
-	ForwardAnnualDividendRate  float64   `av-json:"ForwardAnnualDividendRate"`
-	ForwardAnnualDividendYield float64   `av-json:"ForwardAnnualDividendYield"`
-	PayoutRatio                float64   `av-json:"PayoutRatio"`
-	DividendDate               time.Time `av-json:"DividendDate"`
-	ExDividendDate             time.Time `av-json:"ExDividendDate"`
-	LastSplitFactor            string    `av-json:"LastSplitFactor"`
-	LastSplitDate              time.Time `av-json:"LastSplitDate"`
-}
-
-// SymbolSearchResult represents a single result from the symbol search API.
-type SymbolSearchResult struct {
-	Symbol      string  `column-name:"symbol"`      // The security symbol
-	Name        string  `column-name:"name"`        // Company or security name
-	Type        string  `column-name:"type"`        // Security type (Equity, ETF, etc.)
-	Region      string  `column-name:"region"`      // Geographic region
-	MarketOpen  string  `column-name:"marketOpen"`  // Market opening time
-	MarketClose string  `column-name:"marketClose"` // Market closing time
-	TimeZone    string  `column-name:"timezone"`    // Market timezone
-	Currency    string  `column-name:"currency"`    // Trading currency
-	MatchScore  float64 `column-name:"matchScore"`  // Relevance score (0.0 to 1.0)
-}
-
-func (c *CompanyOverview) UnmarshalJSON(in []byte) error {
-	var data map[string]string
-
-	err := json.Unmarshal(in, &data)
-	if err != nil {
-		return err
-	}
-
-	rv := reflect.ValueOf(c)
-
-	numFields := rv.Type().Elem().NumField()
-	for i := 0; i < numFields; i++ {
-		ft := rv.Elem().Type().Field(i)
-		fv := rv.Elem().Field(i)
-		jsonKey := ft.Tag.Get("av-json")
-
-		v, ok := data[jsonKey]
-		if !ok || v == "" || v == "None" {
-			continue
-		}
-
-		switch fv.Interface().(type) {
-		case string:
-			fv.SetString(v)
-		case int:
-			in, err := strconv.ParseInt(v, 10, 64)
-			if err != nil {
-				return fmt.Errorf("failed to parse %s: %w", jsonKey, err)
-			}
-			fv.SetInt(in)
-		case float64:
-			f, err := strconv.ParseFloat(v, 64)
-			if err != nil {
-				return fmt.Errorf("failed to parse %s: %w", jsonKey, err)
-			}
-			fv.SetFloat(f)
-		case time.Time:
-			if v == "0000-00-00" {
-				continue
-			}
-			t, err := time.ParseInLocation(DefaultDateFormat, v, time.UTC)
-			if err != nil {
-				return err
-			}
-			fv.Set(reflect.ValueOf(t))
-		default:
-			return fmt.Errorf("unsupported type %T", fv.Interface())
-		}
-	}
-
-	return nil
 }
 
 // ParseCSV parses CSV data into a slice of structs using reflection.
