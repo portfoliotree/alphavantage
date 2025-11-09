@@ -44,7 +44,7 @@ func TestRealtimeOptions(t *testing.T) {
 		assert.Equal(t, "IBM270115C00390000", v.Get("contract"))
 	})
 
-	t.Run("with dataType", func(t *testing.T) {
+	t.Run("with datatype", func(t *testing.T) {
 		q := query.NewRealtimeOptions(apiKeyTestValue, "IBM").DataTypeCSV()
 
 		err := q.Validate()
@@ -85,7 +85,7 @@ func TestRealtimeOptions(t *testing.T) {
 		assert.Contains(t, err.Error(), "require_greeks")
 	})
 
-	t.Run("invalid dataType", func(t *testing.T) {
+	t.Run("invalid datatype", func(t *testing.T) {
 		q := query.NewRealtimeOptions(apiKeyTestValue, "IBM")
 		q[query.KeyDataType] = []string{"cake"}
 
@@ -138,7 +138,7 @@ func TestHistoricalOptions(t *testing.T) {
 		assert.Equal(t, "2017-11-15", v.Get("date"))
 	})
 
-	t.Run("with dataType", func(t *testing.T) {
+	t.Run("with datatype", func(t *testing.T) {
 		q := query.NewHistoricalOptions(apiKeyTestValue, "IBM").DataTypeJSON()
 
 		err := q.Validate()
@@ -170,7 +170,7 @@ func TestHistoricalOptions(t *testing.T) {
 		assert.Contains(t, err.Error(), query.KeySymbol)
 	})
 
-	t.Run("invalid dataType", func(t *testing.T) {
+	t.Run("invalid datatype", func(t *testing.T) {
 		q := query.NewHistoricalOptions(apiKeyTestValue, "IBM")
 		q[query.KeyDataType] = []string{"cake"}
 
@@ -195,6 +195,6 @@ func TestHistoricalOptions(t *testing.T) {
 		s := q.Encode()
 
 		assert.Contains(t, s, "date=2017-11-15")
-		assert.Contains(t, s, "dataType=csv")
+		assert.Contains(t, s, "datatype=csv")
 	})
 }

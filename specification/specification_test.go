@@ -1,6 +1,7 @@
 package specification_test
 
 import (
+	"encoding/csv"
 	"encoding/json"
 	"net/url"
 	"os"
@@ -9,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	"github.com/portfoliotree/alphavantage/specification"
@@ -27,7 +29,7 @@ func TestJSON(t *testing.T) {
 			require.NoError(t, err)
 			buf, err := os.ReadFile(match)
 			require.NoError(t, err)
-			formatted, err := json.MarshalIndent(json.RawMessage(buf), "", "\t")
+			formatted, err := json.MarshalIndent(json.RawMessage(buf), "", specification.JSONIndent)
 			require.NoError(t, err)
 			require.NoError(t, os.WriteFile(match, formatted, info.Mode().Perm()))
 		}
@@ -91,27 +93,16 @@ func validateQueryParameterType(t *testing.T, param specification.QueryParameter
 }
 
 func TestFunctions(t *testing.T) {
-	apikey, hasAPIKey := os.LookupEnv("ALPHA_VANTAGE_TOKEN")
-	hasAPIKey = hasAPIKey && apikey != ""
-
-	exampleDir := filepath.FromSlash("testdata/examples")
-
 	buf, err := os.ReadFile("query_parameters.json")
 	require.NoError(t, err, "failed to read query_parameters.json")
 	var queryParameters []specification.QueryParameter
 	require.NoError(t, json.Unmarshal(buf, &queryParameters), "failed to parse query_parameters.json")
 
-	filePaths, err := filepath.Glob(filepath.FromSlash("functions/*.json"))
-	require.NoError(t, err)
-	for _, filePath := range filePaths {
+	functionFiles := loadFunctions(t)
+	for filePath, functions := range functionFiles {
 		baseFileName := strings.TrimSuffix(filepath.Base(filePath), ".json")
 		t.Run(baseFileName, func(t *testing.T) {
 			t.Parallel()
-			buf, err := os.ReadFile(filePath)
-			require.NoError(t, err)
-			var functions []specification.Function
-			require.NoError(t, json.Unmarshal(buf, &functions))
-
 			for _, fn := range functions {
 				t.Run(fn.Name, func(t *testing.T) {
 					require.NotEmpty(t, fn.Name)
@@ -121,16 +112,63 @@ func TestFunctions(t *testing.T) {
 					testExampleURLs(t, fn)
 				})
 			}
-
-			t.Run("fetch_examples", func(t *testing.T) {
-				if !hasAPIKey {
-					t.Skip("skipping test because env var ALPHA_VANTAGE_TOKEN is not set")
-				}
-				_ = os.MkdirAll(filepath.Join(exampleDir, baseFileName), 0744)
-				require.NoError(t, specification.FetchCSVExamples(t.Context(), filepath.Join(exampleDir, baseFileName), apikey, functions))
-			})
 		})
 	}
+}
+
+func TestCSVColumns(t *testing.T) {
+	apikey, hasAPIKey := os.LookupEnv("ALPHA_VANTAGE_TOKEN")
+	if !hasAPIKey || apikey == "" {
+		t.Skip("skipping test because env var ALPHA_VANTAGE_TOKEN is not set")
+		return
+	}
+
+	exampleDir := filepath.FromSlash("testdata/examples")
+
+	indexEntrees := loadTestdataExampleIndex(t)
+	indexEntrees = removeMissingExampleFileEntries(t, indexEntrees)
+
+	for filePath, functions := range loadFunctions(t) {
+		baseFileName := strings.TrimSuffix(filepath.Base(filePath), ".json")
+		require.NoError(t, os.MkdirAll(filepath.Join(exampleDir, baseFileName), 0744))
+
+		columnsSet := false
+
+		t.Run(baseFileName, func(t *testing.T) {
+			for fi, fn := range functions {
+				for _, exampleURL := range fn.Examples {
+					indexEntrees = testdataExampleBody(t, filepath.Join(exampleDir, baseFileName), apikey, indexEntrees, fn, exampleURL, func(bodyFilepath string) {
+						if filepath.Ext(bodyFilepath) != ".csv" {
+							return
+						}
+
+						f, err := os.Open(bodyFilepath)
+						require.NoError(t, err)
+						t.Cleanup(func() {
+							_ = f.Close()
+						})
+						r := csv.NewReader(f)
+
+						firstLine, err := r.Read()
+						require.NoError(t, err)
+
+						if !assert.Equal(t, fn.CSVColumns, firstLine) && len(fn.CSVColumns) == 0 {
+							functions[fi].CSVColumns = firstLine
+							columnsSet = true
+						}
+					})
+				}
+			}
+		})
+
+		if columnsSet {
+			buf, err := json.MarshalIndent(functions, "", specification.JSONIndent)
+			require.NoError(t, err)
+			require.NoError(t, os.WriteFile(filePath, buf, 0644))
+		}
+	}
+
+	saveTestdataExampleIndex(t, indexEntrees)
 }
 
 func allQueryParamsSpecified(t *testing.T, fn specification.Function, queryParameters []specification.QueryParameter, names ...string) {
@@ -166,11 +204,11 @@ func enumValuesSubset(t *testing.T, fn specification.Function, queryParameters [
 				var elem struct {
 					Value string `json:"value"`
 				}
-				require.NoError(t, json.Unmarshal([]byte(value), &elem))
+				require.NoError(t, json.Unmarshal(value, &elem))
 				specValues = append(specValues, elem.Value)
 			case '"':
 				var str string
-				require.NoError(t, json.Unmarshal([]byte(value), &str))
+				require.NoError(t, json.Unmarshal(value, &str))
 				specValues = append(specValues, str)
 			default:
 				t.Errorf("unknown query parameter value shape `%s` for %s", value, fn.Name)
@@ -196,4 +234,24 @@ func testExampleURLs(t *testing.T, fn specification.Function) {
 
 		require.Equal(t, fn.Name, q.Get("function"))
 	}
+}
+
+func loadFunctions(t *testing.T) map[string][]specification.Function {
+	t.Helper()
+
+	filePaths, err := filepath.Glob(filepath.FromSlash("functions/*.json"))
+	require.NoError(t, err)
+
+	files := make(map[string][]specification.Function)
+
+	for _, filePath := range filePaths {
+		buf, err := os.ReadFile(filePath)
+		require.NoError(t, err)
+		var functions []specification.Function
+		require.NoError(t, json.Unmarshal(buf, &functions))
+
+		files[filePath] = functions
+	}
+
+	return files
 }

@@ -23,6 +23,11 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=MAMA\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"FAMA",
+			"MAMA"
 		]
 	},
 	{
@@ -48,6 +53,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=VWAP\u0026symbol=IBM\u0026interval=15min\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"VWAP"
 		]
 	}
 ]

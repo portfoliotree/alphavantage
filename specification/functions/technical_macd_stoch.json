@@ -24,6 +24,12 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=MACD\u0026symbol=IBM\u0026interval=daily\u0026series_type=open\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"MACD",
+			"MACD_Hist",
+			"MACD_Signal"
 		]
 	},
 	{
@@ -54,6 +60,12 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=MACDEXT\u0026symbol=IBM\u0026interval=daily\u0026series_type=open\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"MACD",
+			"MACD_Hist",
+			"MACD_Signal"
 		]
 	},
 	{
@@ -82,6 +94,11 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=STOCH\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"SlowD",
+			"SlowK"
 		]
 	},
 	{
@@ -108,6 +125,11 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=STOCHF\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"FastD",
+			"FastK"
 		]
 	},
 	{
@@ -133,6 +155,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=RSI\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"RSI"
 		]
 	},
 	{
@@ -161,6 +187,11 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=STOCHRSI\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026series_type=close\u0026fastkperiod=6\u0026fastdmatype=1\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"FastD",
+			"FastK"
 		]
 	}
 ]

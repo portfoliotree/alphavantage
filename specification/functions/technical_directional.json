@@ -21,6 +21,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=DX\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"DX"
 		]
 	},
 	{
@@ -45,6 +49,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=ADX\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"ADX"
 		]
 	},
 	{
@@ -69,6 +77,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=ADXR\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"ADXR"
 		]
 	},
 	{
@@ -94,6 +106,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=MINUS_DI\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"MINUS_DI"
 		]
 	},
 	{
@@ -118,6 +134,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=PLUS_DI\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"PLUS_DI"
 		]
 	},
 	{
@@ -143,6 +163,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=MINUS_DM\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"MINUS_DM"
 		]
 	},
 	{
@@ -167,6 +191,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=PLUS_DM\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"PLUS_DM"
 		]
 	},
 	{
@@ -191,6 +219,11 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=AROON\u0026symbol=IBM\u0026interval=daily\u0026time_period=14\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"Aroon Down",
+			"Aroon Up"
 		]
 	},
 	{
@@ -215,6 +248,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=AROONOSC\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"AROONOSC"
 		]
 	}
 ]

@@ -22,6 +22,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=HT_TRENDLINE\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"HT_TRENDLINE"
 		]
 	},
 	{
@@ -47,6 +51,11 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=HT_SINE\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"LEAD SINE",
+			"SINE"
 		]
 	},
 	{
@@ -72,6 +81,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=HT_TRENDMODE\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"TRENDMODE"
 		]
 	},
 	{
@@ -97,6 +110,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=HT_DCPERIOD\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"DCPERIOD"
 		]
 	},
 	{
@@ -122,6 +139,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=HT_DCPHASE\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"HT_DCPHASE"
 		]
 	},
 	{
@@ -147,6 +168,11 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=HT_PHASOR\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"PHASE",
+			"QUADRATURE"
 		]
 	}
 ]

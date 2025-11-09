@@ -81,7 +81,7 @@ func TestFXIntraday(t *testing.T) {
 		assert.Equal(t, "full", v.Get(query.KeyOutputSize))
 	})
 
-	t.Run("with dataType", func(t *testing.T) {
+	t.Run("with datatype", func(t *testing.T) {
 		q := query.NewFXIntraday(apiKeyTestValue, "EUR", "USD", "5min").DataTypeCSV()
 
 		err := q.Validate()
@@ -144,7 +144,7 @@ func TestFXDaily(t *testing.T) {
 		assert.Equal(t, "full", v.Get(query.KeyOutputSize))
 	})
 
-	t.Run("with dataType", func(t *testing.T) {
+	t.Run("with datatype", func(t *testing.T) {
 		q := query.NewFXDaily(apiKeyTestValue, "EUR", "USD").DataTypeCSV()
 
 		err := q.Validate()
@@ -170,7 +170,7 @@ func TestFXDaily(t *testing.T) {
 
 		assert.Contains(t, s, "function=FX_DAILY")
 		assert.Contains(t, s, "outputsize=full")
-		assert.Contains(t, s, "dataType=csv")
+		assert.Contains(t, s, "datatype=csv")
 	})
 }
 
@@ -188,7 +188,7 @@ func TestFXWeekly(t *testing.T) {
 		assert.Equal(t, apiKeyTestValue, v.Get(query.KeyAPIKey))
 	})
 
-	t.Run("with dataType", func(t *testing.T) {
+	t.Run("with datatype", func(t *testing.T) {
 		q := query.NewFXWeekly(apiKeyTestValue, "EUR", "USD").DataTypeJSON()
 
 		err := q.Validate()
@@ -198,7 +198,7 @@ func TestFXWeekly(t *testing.T) {
 		assert.Equal(t, "json", v.Get(query.KeyDataType))
 	})
 
-	t.Run("invalid dataType", func(t *testing.T) {
+	t.Run("invalid datatype", func(t *testing.T) {
 		q := query.NewFXWeekly(apiKeyTestValue, "EUR", "USD")
 		q[query.KeyDataType] = []string{"cake"}
 
@@ -231,7 +231,7 @@ func TestFXMonthly(t *testing.T) {
 		assert.Equal(t, apiKeyTestValue, v.Get(query.KeyAPIKey))
 	})
 
-	t.Run("with dataType", func(t *testing.T) {
+	t.Run("with datatype", func(t *testing.T) {
 		q := query.NewFXMonthly(apiKeyTestValue, "EUR", "USD").DataTypeCSV()
 
 		err := q.Validate()
@@ -258,6 +258,6 @@ func TestFXMonthly(t *testing.T) {
 		s := q.Encode()
 
 		assert.Contains(t, s, "function=FX_MONTHLY")
-		assert.Contains(t, s, "dataType=csv")
+		assert.Contains(t, s, "datatype=csv")
 	})
 }

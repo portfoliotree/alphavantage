@@ -18,6 +18,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=REAL_GDP\u0026interval=annual\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"value"
 		]
 	},
 	{
@@ -32,6 +36,10 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=REAL_GDP_PER_CAPITA\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"value"
 		]
 	},
 	{
@@ -55,6 +63,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=TREASURY_YIELD\u0026interval=monthly\u0026maturity=10year\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"value"
 		]
 	},
 	{
@@ -77,6 +89,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=FEDERAL_FUNDS_RATE\u0026interval=monthly\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"value"
 		]
 	},
 	{
@@ -97,6 +113,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=CPI\u0026interval=monthly\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"value"
 		]
 	},
 	{
@@ -111,6 +131,10 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=INFLATION\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"value"
 		]
 	},
 	{
@@ -125,6 +149,10 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=RETAIL_SALES\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"value"
 		]
 	},
 	{
@@ -139,6 +167,10 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=DURABLES\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"value"
 		]
 	},
 	{
@@ -153,6 +185,10 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=UNEMPLOYMENT\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"value"
 		]
 	},
 	{
@@ -167,6 +203,10 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=NONFARM_PAYROLL\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"value"
 		]
 	}
 ]

@@ -23,6 +23,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=MIDPOINT\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026series_type=close\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"MIDPOINT"
 		]
 	},
 	{
@@ -48,6 +52,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=MIDPRICE\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"MIDPRICE"
 		]
 	}
 ]
