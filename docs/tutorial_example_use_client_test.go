@@ -10,7 +10,7 @@ import (
 
 // ExampleClient_GlobalQuote demonstrates the basic usage pattern shown in the tutorial
 // for getting a stock quote.
-func ExampleClient_GlobalQuote() {
+func ExampleClient_GetGlobalQuote() {
 	// Step 1: Create a client with your API key from environment variable
 	apiKey := cmp.Or(os.Getenv(alphavantage.StandardTokenEnvironmentVariableName), "demo")
 	client := alphavantage.NewClient(apiKey)

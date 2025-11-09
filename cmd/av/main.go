@@ -247,16 +247,16 @@ func requestGlobalQuote(ctx context.Context, client *alphavantage.Client, symbol
 	}
 	defer closeAndIgnoreError(f)
 
-	rc, err := client.GlobalQuote(ctx, symbol)
+	rc, err := client.GetGlobalQuote(ctx, alphavantage.QueryGlobalQuote(client.APIKey, symbol))
 	if err != nil {
 		_ = os.Remove(fileName)
 		return err
 	}
-	defer closeAndIgnoreError(rc)
+	defer closeAndIgnoreError(rc.Body)
 
 	fmt.Printf("writing global quote for %q to file %s\n", symbol, fileName)
 
-	_, err = io.Copy(f, rc)
+	_, err = io.Copy(f, rc.Body)
 	return err
 }
 

@@ -25,8 +25,6 @@ import (
 	"time"
 
 	"golang.org/x/time/rate"
-
-	"github.com/portfoliotree/alphavantage/query"
 )
 
 const (
@@ -74,7 +72,7 @@ type queryEncoder interface {
 	Encode() string
 }
 
-func (client *Client) newRequest(ctx context.Context, values queryEncoder) (*http.Request, error) {
+func (client *Client) newRequest(ctx context.Context, values url.Values) (*http.Request, error) {
 	return http.NewRequestWithContext(ctx,
 		http.MethodGet,
 		(&url.URL{
@@ -160,7 +158,7 @@ func checkError(rc io.ReadCloser) (io.ReadCloser, error) {
 var typeType = reflect.TypeOf(time.Time{})
 
 func (client *Client) ETFProfile(ctx context.Context, symbol string) (ETFProfile, error) {
-	req, err := client.newRequest(ctx, query.NewETFProfile(client.APIKey, symbol))
+	req, err := client.newRequest(ctx, url.Values(QueryETFProfile(client.APIKey, symbol)))
 	if err != nil {
 		return ETFProfile{}, fmt.Errorf("failed to create ETF profile request: %w", err)
 	}
@@ -226,11 +224,11 @@ func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, functi
 		return nil, err
 	}
 	req, err := client.newRequest(ctx, url.Values{
-		query.KeyDataType:   []string{string(query.DatatypeOptionCSV)},
-		query.KeyOutputSize: []string{string(query.OutputSizeOptionFull)},
-		query.KeyFunction:   []string{string(function)},
-		query.KeySymbol:     []string{symbol},
-		query.KeyAPIKey:     []string{client.APIKey},
+		"datatype":   []string{"csv"},
+		"outputsize": []string{"full"},
+		"function":   []string{string(function)},
+		"symbol":     []string{symbol},
+		"apikey":     []string{client.APIKey},
 	})
 	if err != nil {
 		return nil, err
@@ -251,27 +249,6 @@ func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, functi
 func ParseQuotes(r io.Reader, location *time.Location) ([]Quote, error) {
 	var list []Quote
 	return list, ParseCSV(r, &list, location)
-}
-
-func (client *Client) TimeSeriesIntraday(ctx context.Context, symbol string) ([]IntraDayQuote, error) {
-	q := query.NewTimeSeriesIntraday(client.APIKey, symbol, query.IIntervalOption15min).
-		ExtendedHours(true).
-		OutputSizeCompact().
-		DataTypeCSV()
-	req, err := client.newRequest(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer closeAndIgnoreError(res.Body)
-	quotes, err := ParseIntraDayQuotes(res.Body, time.UTC)
-	if err != nil {
-		return nil, err
-	}
-	return quotes, nil
 }
 
 // ParseIntraDayQuotes handles parsing the following "Stock Time Series" functions
@@ -304,13 +281,13 @@ func (client *Client) ListingStatus(ctx context.Context, isListed bool) ([]Listi
 // If isListed is false, it returns delisted securities.
 // The response is returned as CSV data in an io.ReadCloser that must be closed by the caller.
 func (client *Client) DoListingStatusRequest(ctx context.Context, isListed bool) (io.ReadCloser, error) {
-	q := query.NewListingStatus(client.APIKey)
+	q := QueryListingStatus(client.APIKey)
 	if isListed {
 		q = q.StateActive()
 	} else {
 		q = q.StateDelisted()
 	}
-	req, err := client.newRequest(ctx, q)
+	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create listing status request: %w", err)
 	}
@@ -336,7 +313,7 @@ func (client *Client) ListingStatusRequest(ctx context.Context, isListed bool, f
 // It returns detailed company data including financial metrics, sector information,
 // and key statistics as a CompanyOverview struct.
 func (client *Client) CompanyOverview(ctx context.Context, symbol string) (CompanyOverview, error) {
-	req, err := client.newRequest(ctx, query.NewOverview(client.APIKey, symbol))
+	req, err := client.newRequest(ctx, url.Values(QueryOverview(client.APIKey, symbol)))
 	if err != nil {
 		return CompanyOverview{}, fmt.Errorf("failed to create listing status request: %w", err)
 	}
@@ -360,37 +337,11 @@ func (client *Client) CompanyOverview(ctx context.Context, symbol string) (Compa
 	return result, err
 }
 
-// GlobalQuote fetches the latest price and volume information for the specified equity symbol.
-// It returns the data in CSV format as an io.ReadCloser that must be closed by the caller.
-//
-// The CSV response includes columns for symbol, open, high, low, price, volume, latestDay,
-// previousClose, change, and changePercent.
-func (client *Client) GlobalQuote(ctx context.Context, symbol string) (io.ReadCloser, error) {
-	req, err := client.newRequest(ctx, query.NewGlobalQuote(client.APIKey, symbol).DataTypeCSV())
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return checkError(res.Body)
-}
-
-func (client *Client) SymbolSearch(ctx context.Context, keywords string) ([]SymbolSearchResult, error) {
-	rc, err := client.DoSymbolSearchRequest(ctx, keywords)
-	if err != nil {
-		return nil, err
-	}
-	defer closeAndIgnoreError(rc)
-	return ParseSymbolSearchQuery(rc)
-}
-
 // DoSymbolSearchRequest searches for securities matching the given keywords.
 // It returns CSV data containing symbol search results as an io.ReadCloser that must be closed by the caller.
 // The results include symbol, name, type, region, market times, timezone, currency, and match score.
 func (client *Client) DoSymbolSearchRequest(ctx context.Context, keywords string) (io.ReadCloser, error) {
-	req, err := client.newRequest(ctx, query.NewSymbolSearch(client.APIKey, keywords).DataTypeCSV())
+	req, err := client.newRequest(ctx, url.Values(QuerySymbolSearch(client.APIKey, keywords).DataTypeCSV()))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create quotes request: %w", err)
 	}
@@ -437,13 +388,13 @@ type QuoteFunction string
 
 // Time series function constants for different data intervals and types.
 const (
-	TimeSeriesIntraday        QuoteFunction = query.FunctionTimeSeriesIntraday
-	TimeSeriesDaily           QuoteFunction = query.FunctionTimeSeriesDaily
-	TimeSeriesDailyAdjusted   QuoteFunction = query.FunctionTimeSeriesDailyAdjusted
-	TimeSeriesWeekly          QuoteFunction = query.FunctionTimeSeriesWeekly
-	TimeSeriesWeeklyAdjusted  QuoteFunction = query.FunctionTimeSeriesWeeklyAdjusted
-	TimeSeriesMonthly         QuoteFunction = query.FunctionTimeSeriesMonthly
-	TimeSeriesMonthlyAdjusted QuoteFunction = query.FunctionTimeSeriesMonthlyAdjusted
+	TimeSeriesIntraday        QuoteFunction = "TIME_SERIES_INTRADAY"
+	TimeSeriesDaily           QuoteFunction = "TIME_SERIES_DAILY"
+	TimeSeriesDailyAdjusted   QuoteFunction = "TIME_SERIES_DAILY_ADJUSTED"
+	TimeSeriesWeekly          QuoteFunction = "TIME_SERIES_WEEKLY"
+	TimeSeriesWeeklyAdjusted  QuoteFunction = "TIME_SERIES_WEEKLY_ADJUSTED"
+	TimeSeriesMonthly         QuoteFunction = "TIME_SERIES_MONTHLY"
+	TimeSeriesMonthlyAdjusted QuoteFunction = "TIME_SERIES_MONTHLY_ADJUSTED"
 )
 
 // Validate checks if the QuoteFunction is one of the supported time series functions.
@@ -521,12 +472,6 @@ type ListingStatus struct {
 	DeListingDate time.Time `column-name:"delistingDate"` // Date when delisted (if applicable)
 	Status        string    `column-name:"status"`        // Current status (Active, Delisted)
 }
-
-// Listing status constants.
-const (
-	ListingStatusActive   = query.StateOptionActive   // Security is actively listed
-	ListingStatusDelisted = query.StateOptionDelisted // Security has been delisted
-)
 
 // Asset type constants.
 const (

@@ -2,6 +2,7 @@ package specification
 
 import (
 	"encoding/json"
+	"fmt"
 	"slices"
 )
 
@@ -10,10 +11,35 @@ const JSONIndent = "\t"
 type QueryParameter struct {
 	Name      string                    `json:"name"`
 	Type      string                    `json:"type"`
-	Values    []json.RawMessage         `json:"values,omitempty"`
+	Values    []EnumValue               `json:"values,omitempty"`
 	ValuesURL string                    `json:"values_url,omitempty"`
 	Validate  []QueryParameterValidator `json:"validate,omitempty"`
 	Format    string                    `json:"format,omitempty"`
+}
+
+type EnumValue struct {
+	json.RawMessage
+}
+
+func (v EnumValue) Name() (string, error) {
+	switch v.RawMessage[0] {
+	case '{':
+		var elem struct {
+			Value string `json:"value"`
+		}
+		if err := json.Unmarshal([]byte(v.RawMessage), &elem); err != nil {
+			return "", err
+		}
+		return elem.Value, nil
+	case '"':
+		var str string
+		if err := json.Unmarshal([]byte(v.RawMessage), &str); err != nil {
+			return "", err
+		}
+		return str, nil
+	default:
+		return "", fmt.Errorf("unexpected query parameter value shape `%s`", string(v.RawMessage))
+	}
 }
 
 type QueryParameterValidator struct {

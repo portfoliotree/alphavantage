@@ -308,12 +308,12 @@
 		"midPrice"
 	],
 	"MINUS_DI": [
-		"MinusDI",
-		"minusDI"
+		"MinusDirectionalIndicator",
+		"minusDirectionalIndicator"
 	],
 	"MINUS_DM": [
-		"MinusDM",
-		"minusDM"
+		"MinusDirectionalMovement",
+		"minusDirectionalMovement"
 	],
 	"MOM": [
 		"Momentum",
@@ -424,7 +424,7 @@
 		"sharesOutstanding"
 	],
 	"SINE": [
-		"SINE",
+		"Sine",
 		"sine"
 	],
 	"SMA": [
@@ -623,6 +623,10 @@
 		"ContractID",
 		"contractID"
 	],
+	"csv": [
+		"CSV",
+		"csv"
+	],
 	"currency": [
 		"Currency",
 		"currency"
@@ -747,6 +751,10 @@
 		"Keywords",
 		"keywords"
 	],
+	"json": [
+		"JSON",
+		"json"
+	],
 	"last": [
 		"Last",
 		"last"
@@ -822,6 +830,14 @@
 	"outputsize": [
 		"OutputSize",
 		"outputSize"
+	],
+	"compact": [
+		"Compact",
+		"compact"
+	],
+	"full": [
+		"Full",
+		"full"
 	],
 	"payment_date": [
 		"PaymentDate",
@@ -930,6 +946,14 @@
 	"state": [
 		"State",
 		"state"
+	],
+	"active": [
+		"Active",
+		"active"
+	],
+	"delisted": [
+		"Delisted",
+		"delisted"
 	],
 	"status": [
 		"Status",

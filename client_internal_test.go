@@ -10,8 +10,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"github.com/portfoliotree/alphavantage/query"
 )
 
 func Test_checkError(t *testing.T) {
@@ -40,9 +38,9 @@ func TestClient_GlobalQuote(t *testing.T) {
 			// Verify the request
 			assert.Equal(t, "/query", req.URL.Path)
 			assert.Equal(t, "GLOBAL_QUOTE", req.URL.Query().Get("function"))
-			assert.Equal(t, "IBM", req.URL.Query().Get(query.KeySymbol))
-			assert.Equal(t, "csv", req.URL.Query().Get(query.KeyDataType))
-			assert.Equal(t, "test-key", req.URL.Query().Get(query.KeyAPIKey))
+			assert.Equal(t, "IBM", req.URL.Query().Get("symbol"))
+			assert.Equal(t, "csv", req.URL.Query().Get("datatype"))
+			assert.Equal(t, "test-key", req.URL.Query().Get("apikey"))
 
 			// Return mock CSV response
 			mockResponse := `symbol,open,high,low,price,volume,latestDay,previousClose,change,changePercent
@@ -59,13 +57,13 @@ IBM,129.00,130.50,128.50,129.75,1234567,2023-12-01,129.25,0.50,0.3867%`
 	}
 
 	ctx := context.Background()
-	result, err := mockClient.GlobalQuote(ctx, "IBM")
+	res, err := mockClient.GetGlobalQuote(ctx, QueryGlobalQuote(mockClient.APIKey, "IBM").DataTypeCSV())
 
 	require.NoError(t, err)
-	defer result.Close()
+	defer res.Body.Close()
 
 	// Verify we can read the CSV response
-	content, err := io.ReadAll(result)
+	content, err := io.ReadAll(res.Body)
 	require.NoError(t, err)
 
 	responseText := string(content)
@@ -86,17 +84,17 @@ func TestClient_GlobalQuote_Integration(t *testing.T) {
 	client := NewClient(token)
 	ctx := context.Background()
 
-	result, err := client.GlobalQuote(ctx, "IBM")
+	res, err := client.GetGlobalQuote(ctx, QueryGlobalQuote(token, "IBM"))
 	require.NoError(t, err)
-	defer result.Close()
+	defer res.Body.Close()
 
 	// Verify we get valid CSV data
-	content, err := io.ReadAll(result)
+	content, err := io.ReadAll(res.Body)
 	require.NoError(t, err)
 
 	responseText := string(content)
 	// Should contain the CSV header
-	assert.Contains(t, responseText, query.KeySymbol)
+	assert.Contains(t, responseText, "symbol")
 	// And should contain IBM data
 	assert.Contains(t, responseText, "IBM")
 }
@@ -122,9 +120,9 @@ func TestClient_WeeklyQuotes(t *testing.T) {
 			// Verify the request
 			assert.Equal(t, "/query", req.URL.Path)
 			assert.Equal(t, "TIME_SERIES_WEEKLY", req.URL.Query().Get("function"))
-			assert.Equal(t, "IBM", req.URL.Query().Get(query.KeySymbol))
-			assert.Equal(t, "csv", req.URL.Query().Get(query.KeyDataType))
-			assert.Equal(t, "test-key", req.URL.Query().Get(query.KeyAPIKey))
+			assert.Equal(t, "IBM", req.URL.Query().Get("symbol"))
+			assert.Equal(t, "csv", req.URL.Query().Get("datatype"))
+			assert.Equal(t, "test-key", req.URL.Query().Get("apikey"))
 
 			// Return mock CSV response
 			mockResponse := `timestamp,open,high,low,close,volume
@@ -168,9 +166,9 @@ func TestClient_WeeklyAdjustedQuotes(t *testing.T) {
 			// Verify the request for adjusted weekly data
 			assert.Equal(t, "/query", req.URL.Path)
 			assert.Equal(t, "TIME_SERIES_WEEKLY_ADJUSTED", req.URL.Query().Get("function"))
-			assert.Equal(t, "IBM", req.URL.Query().Get(query.KeySymbol))
-			assert.Equal(t, "csv", req.URL.Query().Get(query.KeyDataType))
-			assert.Equal(t, "test-key", req.URL.Query().Get(query.KeyAPIKey))
+			assert.Equal(t, "IBM", req.URL.Query().Get("symbol"))
+			assert.Equal(t, "csv", req.URL.Query().Get("datatype"))
+			assert.Equal(t, "test-key", req.URL.Query().Get("apikey"))
 
 			// Return mock CSV response with adjusted fields
 			mockResponse := `timestamp,open,high,low,close,adjusted_close,volume,dividend_amount

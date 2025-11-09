@@ -18,7 +18,6 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/portfoliotree/alphavantage"
-	"github.com/portfoliotree/alphavantage/query"
 )
 
 const apiKeyTestValue = "demo"
@@ -120,7 +119,7 @@ func TestClient_ETFProfile(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, "ETF_PROFILE", avReq.URL.Query().Get("function"))
-	assert.Equal(t, "SPY", avReq.URL.Query().Get(query.KeySymbol))
+	assert.Equal(t, "SPY", avReq.URL.Query().Get("symbol"))
 
 	assert.Equal(t, "654800000000", profile.NetAssets)
 	assert.Equal(t, "0.000945", profile.NetExpenseRatio)
@@ -300,9 +299,9 @@ func TestQuotes(t *testing.T) {
 	assert.Equal(t, "https", avReq.URL.Scheme)
 	assert.Equal(t, "/query", avReq.URL.Path)
 	assert.Equal(t, "TIME_SERIES_MONTHLY", avReq.URL.Query().Get("function"))
-	assert.Equal(t, "IBM", avReq.URL.Query().Get(query.KeySymbol))
-	assert.Equal(t, apiKeyTestValue, avReq.URL.Query().Get(query.KeyAPIKey))
-	assert.Equal(t, "csv", avReq.URL.Query().Get(query.KeyDataType))
+	assert.Equal(t, "IBM", avReq.URL.Query().Get("symbol"))
+	assert.Equal(t, apiKeyTestValue, avReq.URL.Query().Get("apikey"))
+	assert.Equal(t, "csv", avReq.URL.Query().Get("datatype"))
 	assert.Equal(t, 1, waitCallCount)
 }
 
@@ -322,12 +321,12 @@ func TestTimeSeriesIntraday(t *testing.T) {
 			// Verify the request
 			assert.Equal(t, "/query", req.URL.Path)
 			assert.Equal(t, "TIME_SERIES_INTRADAY", req.URL.Query().Get("function"))
-			assert.Equal(t, "IBM", req.URL.Query().Get(query.KeySymbol))
-			assert.Equal(t, "csv", req.URL.Query().Get(query.KeyDataType))
+			assert.Equal(t, "IBM", req.URL.Query().Get("symbol"))
+			assert.Equal(t, "csv", req.URL.Query().Get("datatype"))
 			assert.Equal(t, "15min", req.URL.Query().Get("interval"))
 			assert.Equal(t, "true", req.URL.Query().Get("extended_hours"))
 			assert.Equal(t, "compact", req.URL.Query().Get("outputsize"))
-			assert.Equal(t, "test-key", req.URL.Query().Get(query.KeyAPIKey))
+			assert.Equal(t, "test-key", req.URL.Query().Get("apikey"))
 
 			// Return test data from embedded CSV
 			return &http.Response{
@@ -340,27 +339,27 @@ func TestTimeSeriesIntraday(t *testing.T) {
 		APIKey:  "test-key",
 	}
 
-	result, err := mockClient.TimeSeriesIntraday(ctx, "IBM")
+	result, err := mockClient.GetTimeSeriesIntradayCSVRows(ctx, alphavantage.QueryTimeSeriesIntraday("test-key", "IBM", alphavantage.IntervalOption15min).ExtendedHours(true).OutputSizeCompact())
 	require.NoError(t, err)
 
 	// Verify we got the expected number of quotes
 	assert.Len(t, result, 100)
 
 	// Verify first quote details
-	assert.Equal(t, "2020-08-21 19:40:00 +0000 UTC", result[0].Time.String())
-	assert.Equal(t, 123.17, result[0].Open)
-	assert.Equal(t, 123.17, result[0].High)
-	assert.Equal(t, 123.17, result[0].Low)
-	assert.Equal(t, 123.17, result[0].Close)
-	assert.Equal(t, 825.0, result[0].Volume)
+	assert.Equal(t, "2020-08-21 19:40:00", result[0].TimeStamp)
+	assert.Equal(t, "123.1700", result[0].Open)
+	assert.Equal(t, "123.1700", result[0].High)
+	assert.Equal(t, "123.1700", result[0].Low)
+	assert.Equal(t, "123.1700", result[0].Close)
+	assert.Equal(t, "825", result[0].Volume)
 
 	// Verify last quote details (from previous day)
-	assert.Equal(t, "2020-08-20 17:10:00 +0000 UTC", result[99].Time.String())
-	assert.Equal(t, 123.15, result[99].Open)
-	assert.Equal(t, 123.15, result[99].High)
-	assert.Equal(t, 123.15, result[99].Low)
-	assert.Equal(t, 123.15, result[99].Close)
-	assert.Equal(t, 2916.0, result[99].Volume)
+	assert.Equal(t, "2020-08-20 17:10:00", result[99].TimeStamp)
+	assert.Equal(t, "123.1500", result[99].Open)
+	assert.Equal(t, "123.1500", result[99].High)
+	assert.Equal(t, "123.1500", result[99].Low)
+	assert.Equal(t, "123.1500", result[99].Close)
+	assert.Equal(t, "2916", result[99].Volume)
 }
 
 func TestService_ParseQueryResponse(t *testing.T) {
@@ -457,7 +456,7 @@ func TestClient_ListingStatus_listed(t *testing.T) {
 	assert.Equal(t, "/query", avReq.URL.Path)
 	assert.Equal(t, "LISTING_STATUS", avReq.URL.Query().Get("function"))
 	assert.Equal(t, "active", avReq.URL.Query().Get("state"))
-	assert.Equal(t, apiKeyTestValue, avReq.URL.Query().Get(query.KeyAPIKey))
+	assert.Equal(t, apiKeyTestValue, avReq.URL.Query().Get("apikey"))
 	assert.Equal(t, 1, waitCallCount)
 }
 
@@ -532,7 +531,7 @@ func TestClient_CompanyOverview(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, "OVERVIEW", avReq.URL.Query().Get("function"))
-	assert.Equal(t, "IBM", avReq.URL.Query().Get(query.KeySymbol))
+	assert.Equal(t, "IBM", avReq.URL.Query().Get("symbol"))
 
 	assert.Equal(t, "IBM", overview.Symbol)
 	assert.Equal(t, "Common Stock", overview.AssetType)
@@ -624,7 +623,7 @@ func TestSearch(t *testing.T) {
 			waitCallCount++
 			return nil
 		}),
-	}).SymbolSearch(ctx, "BA")
+	}).GetSymbolSearchCSVRows(ctx, alphavantage.QuerySymbolSearch("demo", "BA"))
 	require.NoError(t, err)
 	assert.Len(t, results, 10)
 
@@ -633,8 +632,8 @@ func TestSearch(t *testing.T) {
 	assert.Equal(t, "/query", avReq.URL.Path)
 	assert.Equal(t, "SYMBOL_SEARCH", avReq.URL.Query().Get("function"))
 	assert.Equal(t, "BA", avReq.URL.Query().Get("keywords"))
-	assert.Equal(t, apiKeyTestValue, avReq.URL.Query().Get(query.KeyAPIKey))
-	assert.Equal(t, "csv", avReq.URL.Query().Get(query.KeyDataType))
+	assert.Equal(t, apiKeyTestValue, avReq.URL.Query().Get("apikey"))
+	assert.Equal(t, "csv", avReq.URL.Query().Get("datatype"))
 	assert.Equal(t, 1, waitCallCount)
 }
 

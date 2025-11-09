@@ -1,6 +1,7 @@
 package specification_test
 
 import (
+	"cmp"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
@@ -40,6 +41,9 @@ func loadTestdataExampleIndex(t *testing.T) []TestdataExampleEntree {
 }
 
 func saveTestdataExampleIndex(t *testing.T, data []TestdataExampleEntree) {
+	slices.SortFunc(data, func(a, b TestdataExampleEntree) int {
+		return cmp.Compare(a.ID, b.ID)
+	})
 	buf, err := json.MarshalIndent(data, "", specification.JSONIndent)
 	assert.NoError(t, err)
 	require.NoError(t, os.WriteFile(filepath.FromSlash(testdataExampleIndex), buf, 0644))

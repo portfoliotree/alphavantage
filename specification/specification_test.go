@@ -227,20 +227,9 @@ func enumValuesSubset(t *testing.T, fn specification.Function, queryParameters [
 		var specValues []string
 
 		for _, value := range paramSpec.Values {
-			switch value[0] {
-			case '{':
-				var elem struct {
-					Value string `json:"value"`
-				}
-				require.NoError(t, json.Unmarshal(value, &elem))
-				specValues = append(specValues, elem.Value)
-			case '"':
-				var str string
-				require.NoError(t, json.Unmarshal(value, &str))
-				specValues = append(specValues, str)
-			default:
-				t.Errorf("unknown query parameter value shape `%s` for %s", value, fn.Name)
-			}
+			s, err := value.Name()
+			require.NoError(t, err)
+			specValues = append(specValues, s)
 		}
 
 		for _, value := range values {
