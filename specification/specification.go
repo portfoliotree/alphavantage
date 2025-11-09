@@ -8,7 +8,6 @@ import (
 const JSONIndent = "\t"
 
 type QueryParameter struct {
-	Ident     string                    `json:"ident,omitempty"`
 	Name      string                    `json:"name"`
 	Type      string                    `json:"type"`
 	Values    []json.RawMessage         `json:"values,omitempty"`
@@ -34,7 +33,6 @@ type File struct {
 
 type Function struct {
 	Name       string              `json:"name"`
-	Ident      string              `json:"ident,omitempty"`
 	Required   []string            `json:"required"`
 	Optional   []string            `json:"optional"`
 	EnumSubset map[string][]string `json:"enum_subset,omitempty"`

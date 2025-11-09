@@ -1,7 +1,6 @@
 [
 	{
 		"name": "NEWS_SENTIMENT",
-		"ident": "NewsSentiment",
 		"required": [
 			"function",
 			"apikey"
@@ -20,7 +19,6 @@
 	},
 	{
 		"name": "EARNINGS_CALL_TRANSCRIPT",
-		"ident": "EarningsCallTranscript",
 		"required": [
 			"function",
 			"symbol",
@@ -34,7 +32,6 @@
 	},
 	{
 		"name": "TOP_GAINERS_LOSERS",
-		"ident": "TopGainersLosers",
 		"required": [
 			"function",
 			"apikey"
@@ -46,7 +43,6 @@
 	},
 	{
 		"name": "INSIDER_TRANSACTIONS",
-		"ident": "InsiderTransactions",
 		"required": [
 			"function",
 			"symbol",
@@ -59,7 +55,6 @@
 	},
 	{
 		"name": "ANALYTICS_FIXED_WINDOW",
-		"ident": "AnalyticsFixedWindow",
 		"required": [
 			"function",
 			"SYMBOLS",
@@ -77,7 +72,6 @@
 	},
 	{
 		"name": "ANALYTICS_SLIDING_WINDOW",
-		"ident": "AnalyticsSlidingWindow",
 		"required": [
 			"function",
 			"SYMBOLS",

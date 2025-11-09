@@ -1,7 +1,6 @@
 [
 	{
 		"name": "REAL_GDP",
-		"ident": "RealGDP",
 		"required": [
 			"function",
 			"apikey"
@@ -26,7 +25,6 @@
 	},
 	{
 		"name": "REAL_GDP_PER_CAPITA",
-		"ident": "RealGDPPerCapita",
 		"required": [
 			"function",
 			"apikey"
@@ -44,7 +42,6 @@
 	},
 	{
 		"name": "TREASURY_YIELD",
-		"ident": "TreasuryYield",
 		"required": [
 			"function",
 			"apikey"
@@ -71,7 +68,6 @@
 	},
 	{
 		"name": "FEDERAL_FUNDS_RATE",
-		"ident": "FederalFundsRate",
 		"required": [
 			"function",
 			"apikey"
@@ -121,7 +117,6 @@
 	},
 	{
 		"name": "INFLATION",
-		"ident": "Inflation",
 		"required": [
 			"function",
 			"apikey"
@@ -139,7 +134,6 @@
 	},
 	{
 		"name": "RETAIL_SALES",
-		"ident": "RetailSales",
 		"required": [
 			"function",
 			"apikey"
@@ -157,7 +151,6 @@
 	},
 	{
 		"name": "DURABLES",
-		"ident": "Durables",
 		"required": [
 			"function",
 			"apikey"
@@ -175,7 +168,6 @@
 	},
 	{
 		"name": "UNEMPLOYMENT",
-		"ident": "Unemployment",
 		"required": [
 			"function",
 			"apikey"
@@ -193,7 +185,6 @@
 	},
 	{
 		"name": "NONFARM_PAYROLL",
-		"ident": "NonfarmPayroll",
 		"required": [
 			"function",
 			"apikey"

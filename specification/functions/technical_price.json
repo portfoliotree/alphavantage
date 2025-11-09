@@ -1,7 +1,6 @@
 [
 	{
 		"name": "MIDPOINT",
-		"ident": "Midpoint",
 		"required": [
 			"function",
 			"symbol",
@@ -31,7 +30,6 @@
 	},
 	{
 		"name": "MIDPRICE",
-		"ident": "Midprice",
 		"required": [
 			"function",
 			"symbol",

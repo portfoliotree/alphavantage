@@ -1,7 +1,6 @@
 [
 	{
 		"name": "TIME_SERIES_INTRADAY",
-		"ident": "TimeSeriesIntraday",
 		"required": [
 			"function",
 			"symbol",
@@ -38,7 +37,6 @@
 	},
 	{
 		"name": "TIME_SERIES_DAILY",
-		"ident": "TimeSeriesDaily",
 		"required": [
 			"function",
 			"symbol",
@@ -62,7 +60,6 @@
 	},
 	{
 		"name": "TIME_SERIES_DAILY_ADJUSTED",
-		"ident": "TimeSeriesDailyAdjusted",
 		"required": [
 			"function",
 			"symbol",
@@ -89,7 +86,6 @@
 	},
 	{
 		"name": "TIME_SERIES_WEEKLY",
-		"ident": "TimeSeriesWeekly",
 		"required": [
 			"function",
 			"symbol",
@@ -112,7 +108,6 @@
 	},
 	{
 		"name": "TIME_SERIES_WEEKLY_ADJUSTED",
-		"ident": "TimeSeriesWeeklyAdjusted",
 		"required": [
 			"function",
 			"symbol",
@@ -137,7 +132,6 @@
 	},
 	{
 		"name": "TIME_SERIES_MONTHLY",
-		"ident": "TimeSeriesMonthly",
 		"required": [
 			"function",
 			"symbol",
@@ -160,7 +154,6 @@
 	},
 	{
 		"name": "TIME_SERIES_MONTHLY_ADJUSTED",
-		"ident": "TimeSeriesMonthlyAdjusted",
 		"required": [
 			"function",
 			"symbol",
@@ -185,7 +178,6 @@
 	},
 	{
 		"name": "REALTIME_BULK_QUOTES",
-		"ident": "RealtimeBulkQuotes",
 		"required": [
 			"function",
 			"symbol",
@@ -200,7 +192,6 @@
 	},
 	{
 		"name": "SYMBOL_SEARCH",
-		"ident": "SymbolSearch",
 		"required": [
 			"function",
 			"keywords",
@@ -226,7 +217,6 @@
 	},
 	{
 		"name": "MARKET_STATUS",
-		"ident": "MarketStatus",
 		"required": [
 			"function",
 			"apikey"
@@ -238,7 +228,6 @@
 	},
 	{
 		"name": "GLOBAL_QUOTE",
-		"ident": "GlobalQuote",
 		"required": [
 			"function",
 			"symbol",

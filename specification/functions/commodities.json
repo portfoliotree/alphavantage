@@ -1,7 +1,6 @@
 [
 	{
 		"name": "WTI",
-		"ident": "WTI",
 		"required": [
 			"function",
 			"apikey"
@@ -27,7 +26,6 @@
 	},
 	{
 		"name": "BRENT",
-		"ident": "Brent",
 		"required": [
 			"function",
 			"apikey"
@@ -53,7 +51,6 @@
 	},
 	{
 		"name": "NATURAL_GAS",
-		"ident": "NaturalGas",
 		"required": [
 			"function",
 			"apikey"
@@ -79,7 +76,6 @@
 	},
 	{
 		"name": "COPPER",
-		"ident": "Copper",
 		"required": [
 			"function",
 			"apikey"
@@ -105,7 +101,6 @@
 	},
 	{
 		"name": "ALUMINUM",
-		"ident": "Aluminum",
 		"required": [
 			"function",
 			"apikey"
@@ -133,7 +128,6 @@
 	},
 	{
 		"name": "WHEAT",
-		"ident": "Wheat",
 		"required": [
 			"function",
 			"apikey"
@@ -159,7 +153,6 @@
 	},
 	{
 		"name": "CORN",
-		"ident": "Corn",
 		"required": [
 			"function",
 			"apikey"
@@ -185,7 +178,6 @@
 	},
 	{
 		"name": "COTTON",
-		"ident": "Cotton",
 		"required": [
 			"function",
 			"apikey"
@@ -211,7 +203,6 @@
 	},
 	{
 		"name": "SUGAR",
-		"ident": "Sugar",
 		"required": [
 			"function",
 			"apikey"
@@ -237,7 +228,6 @@
 	},
 	{
 		"name": "COFFEE",
-		"ident": "Coffee",
 		"required": [
 			"function",
 			"apikey"
@@ -263,7 +253,6 @@
 	},
 	{
 		"name": "ALL_COMMODITIES",
-		"ident": "AllCommodities",
 		"required": [
 			"function",
 			"apikey"

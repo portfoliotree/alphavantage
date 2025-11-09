@@ -1,0 +1,1018 @@
+{
+	"AD": [
+		"ChaikinADLine",
+		"chaikinADLine"
+	],
+	"ADOSC": [
+		"ChaikinADOscillator",
+		"chaikinADOscillator"
+	],
+	"ADX": [
+		"AverageDirectionalMovementIndex",
+		"averageDirectionalMovementIndex"
+	],
+	"ADXR": [
+		"AverageDirectionalMovementIndexRating",
+		"averageDirectionalMovementIndexRating"
+	],
+	"ALL_COMMODITIES": [
+		"AllCommodities",
+		"allCommodities"
+	],
+	"ALUMINUM": [
+		"Aluminum",
+		"aluminum"
+	],
+	"ANALYTICS_FIXED_WINDOW": [
+		"AnalyticsFixedWindow",
+		"analyticsFixedWindow"
+	],
+	"ANALYTICS_SLIDING_WINDOW": [
+		"AnalyticsSlidingWindow",
+		"analyticsSlidingWindow"
+	],
+	"APO": [
+		"AbsolutePriceOscillator",
+		"absolutePriceOscillator"
+	],
+	"AROON": [
+		"Aroon",
+		"aroon"
+	],
+	"AROONOSC": [
+		"AroonOsc",
+		"aroonOsc"
+	],
+	"ATR": [
+		"AverageTrueRange",
+		"averageTrueRange"
+	],
+	"Aroon Down": [
+		"AroonDown",
+		"aroonDown"
+	],
+	"Aroon Up": [
+		"AroonUp",
+		"aroonUp"
+	],
+	"BALANCE_SHEET": [
+		"BalanceSheet",
+		"balanceSheet"
+	],
+	"BBANDS": [
+		"BollingerBands",
+		"bollingerBands"
+	],
+	"BOP": [
+		"BalanceOfPower",
+		"balanceOfPower"
+	],
+	"BRENT": [
+		"Brent",
+		"brent"
+	],
+	"CALCULATIONS": [
+		"Calculations",
+		"calculations"
+	],
+	"CASH_FLOW": [
+		"CashFlow",
+		"cashFlow"
+	],
+	"CCI": [
+		"CommodityChannelIndex",
+		"commodityChannelIndex"
+	],
+	"CMO": [
+		"ChandeMomentumOscillator",
+		"chandeMomentumOscillator"
+	],
+	"COFFEE": [
+		"Coffee",
+		"coffee"
+	],
+	"COPPER": [
+		"Copper",
+		"copper"
+	],
+	"CORN": [
+		"Corn",
+		"corn"
+	],
+	"COTTON": [
+		"Cotton",
+		"cotton"
+	],
+	"CPI": [
+		"ConsumerPriceIndex",
+		"consumerPriceIndex"
+	],
+	"CRYPTO_INTRADAY": [
+		"CryptoIntraday",
+		"cryptoIntraday"
+	],
+	"CURRENCY_EXCHANGE_RATE": [
+		"CurrencyExchangeRate",
+		"currencyExchangeRate"
+	],
+	"Chaikin A/D": [
+		"ChaikinAD",
+		"chaikinAD"
+	],
+	"DCPERIOD": [
+		"DCPeriod",
+		"dcPeriod"
+	],
+	"DEMA": [
+		"DoubleExponentialMovingAverage",
+		"doubleExponentialMovingAverage"
+	],
+	"DIGITAL_CURRENCY_DAILY": [
+		"DigitalCurrencyDaily",
+		"digitalCurrencyDaily"
+	],
+	"DIGITAL_CURRENCY_MONTHLY": [
+		"DigitalCurrencyMonthly",
+		"digitalCurrencyMonthly"
+	],
+	"DIGITAL_CURRENCY_WEEKLY": [
+		"DigitalCurrencyWeekly",
+		"digitalCurrencyWeekly"
+	],
+	"DIVIDENDS": [
+		"Dividends",
+		"dividends"
+	],
+	"DURABLES": [
+		"Durables",
+		"durables"
+	],
+	"DX": [
+		"DirectionalMovementIndex",
+		"directionalMovementIndex"
+	],
+	"EARNINGS": [
+		"Earnings",
+		"earnings"
+	],
+	"EARNINGS_CALENDAR": [
+		"EarningsCalendar",
+		"earningsCalendar"
+	],
+	"EARNINGS_CALL_TRANSCRIPT": [
+		"EarningsCallTranscript",
+		"earningsCallTranscript"
+	],
+	"EARNINGS_ESTIMATES": [
+		"EarningsEstimates",
+		"earningsEstimates"
+	],
+	"EMA": [
+		"ExponentialMovingAverage",
+		"exponentialMovingAverage"
+	],
+	"ETF_PROFILE": [
+		"ETFProfile",
+		"etfProfile"
+	],
+	"FAMA": [
+		"FAMA",
+		"fama"
+	],
+	"FEDERAL_FUNDS_RATE": [
+		"FederalFundsRate",
+		"federalFundsRate"
+	],
+	"FX_DAILY": [
+		"FXDaily",
+		"fxDaily"
+	],
+	"FX_INTRADAY": [
+		"FXIntraday",
+		"fxIntraday"
+	],
+	"FX_MONTHLY": [
+		"FXMonthly",
+		"fxMonthly"
+	],
+	"FX_WEEKLY": [
+		"FXWeekly",
+		"fxWeekly"
+	],
+	"FastD": [
+		"FastD",
+		"fastD"
+	],
+	"FastK": [
+		"FastK",
+		"fastK"
+	],
+	"GLOBAL_QUOTE": [
+		"GlobalQuote",
+		"globalQuote"
+	],
+	"HISTORICAL_OPTIONS": [
+		"HistoricalOptions",
+		"historicalOptions"
+	],
+	"HT_DCPERIOD": [
+		"HilbertTransformDCPeriod",
+		"hilbertTransformDCPeriod"
+	],
+	"HT_DCPHASE": [
+		"HilbertTransformDCPhase",
+		"hilbertTransformDCPhase"
+	],
+	"HT_PHASOR": [
+		"HilbertTransformPhasor",
+		"hilbertTransformPhasor"
+	],
+	"HT_SINE": [
+		"HilbertTransformSine",
+		"hilbertTransformSine"
+	],
+	"HT_TRENDLINE": [
+		"HilbertTransformTrendLine",
+		"hilbertTransformTrendLine"
+	],
+	"HT_TRENDMODE": [
+		"HilbertTransformTrendMode",
+		"hilbertTransformTrendMode"
+	],
+	"INCOME_STATEMENT": [
+		"IncomeStatement",
+		"incomeStatement"
+	],
+	"INFLATION": [
+		"Inflation",
+		"inflation"
+	],
+	"INSIDER_TRANSACTIONS": [
+		"InsiderTransactions",
+		"insiderTransactions"
+	],
+	"INTERVAL": [
+		"IntervalAnalytics",
+		"intervalAnalytics"
+	],
+	"IPO_CALENDAR": [
+		"IPOCalendar",
+		"ipoCalendar"
+	],
+	"KAMA": [
+		"KaufmanAdaptiveMovingAverage",
+		"kaufmanAdaptiveMovingAverage"
+	],
+	"LEAD SINE": [
+		"LeadSine",
+		"leadSine"
+	],
+	"LISTING_STATUS": [
+		"ListingStatus",
+		"listingStatus"
+	],
+	"MACD": [
+		"MovingAverageConvergenceDivergence",
+		"movingAverageConvergenceDivergence"
+	],
+	"MACDEXT": [
+		"MovingAverageConvergenceDivergenceExt",
+		"movingAverageConvergenceDivergenceExt"
+	],
+	"MACD_Hist": [
+		"MACDHist",
+		"macdHist"
+	],
+	"MACD_Signal": [
+		"MACDSignal",
+		"macdSignal"
+	],
+	"MAMA": [
+		"MESAAdaptiveMovingAverage",
+		"mesaAdaptiveMovingAverage"
+	],
+	"MARKET_STATUS": [
+		"MarketStatus",
+		"marketStatus"
+	],
+	"MFI": [
+		"MoneyFlowIndex",
+		"moneyFlowIndex"
+	],
+	"MIDPOINT": [
+		"MidPoint",
+		"midPoint"
+	],
+	"MIDPRICE": [
+		"MidPrice",
+		"midPrice"
+	],
+	"MINUS_DI": [
+		"MinusDI",
+		"minusDI"
+	],
+	"MINUS_DM": [
+		"MinusDM",
+		"minusDM"
+	],
+	"MOM": [
+		"Momentum",
+		"momentum"
+	],
+	"NATR": [
+		"NormalizedAverageTrueRange",
+		"normalizedAverageTrueRange"
+	],
+	"NATURAL_GAS": [
+		"NaturalGas",
+		"naturalGas"
+	],
+	"NEWS_SENTIMENT": [
+		"NewsSentiment",
+		"newsSentiment"
+	],
+	"NONFARM_PAYROLL": [
+		"NonFarmPayroll",
+		"nonFarmPayroll"
+	],
+	"OBV": [
+		"OnBalanceVolume",
+		"onBalanceVolume"
+	],
+	"OHLC": [
+		"OpenHighLowClose",
+		"openHighLowClose"
+	],
+	"OVERVIEW": [
+		"Overview",
+		"overview"
+	],
+	"PHASE": [
+		"Phase",
+		"phase"
+	],
+	"PLUS_DI": [
+		"PlusDirectionalIndicator",
+		"plusDirectionalIndicator"
+	],
+	"PLUS_DM": [
+		"PlusDirectionalMovement",
+		"plusDirectionalMovement"
+	],
+	"PPO": [
+		"PercentagePriceOscillator",
+		"percentagePriceOscillator"
+	],
+	"QUADRATURE": [
+		"Quadrature",
+		"quadrature"
+	],
+	"RANGE": [
+		"Range",
+		"rng"
+	],
+	"REALTIME_BULK_QUOTES": [
+		"RealtimeBulkQuotes",
+		"realtimeBulkQuotes"
+	],
+	"REALTIME_OPTIONS": [
+		"RealtimeOptions",
+		"realtimeOptions"
+	],
+	"REAL_GDP": [
+		"RealGDP",
+		"realGDP"
+	],
+	"REAL_GDP_PER_CAPITA": [
+		"RealGDPPerCapita",
+		"realGDPPerCapita"
+	],
+	"RETAIL_SALES": [
+		"RetailSales",
+		"retailSales"
+	],
+	"ROC": [
+		"RateOfChange",
+		"rateOfChange"
+	],
+	"ROCR": [
+		"RateOfChangeRatio",
+		"rateOfChangeRatio"
+	],
+	"RSI": [
+		"RelativeStrengthIndex",
+		"relativeStrengthIndex"
+	],
+	"Real Lower Band": [
+		"RealLowerBand",
+		"realLowerBand"
+	],
+	"Real Middle Band": [
+		"RealMiddleBand",
+		"realMiddleBand"
+	],
+	"Real Upper Band": [
+		"RealUpperBand",
+		"realUpperBand"
+	],
+	"SAR": [
+		"SAR",
+		"sar"
+	],
+	"SHARES_OUTSTANDING": [
+		"SharesOutstanding",
+		"sharesOutstanding"
+	],
+	"SINE": [
+		"SINE",
+		"sine"
+	],
+	"SMA": [
+		"SimpleMovingAverage",
+		"simpleMovingAverage"
+	],
+	"SPLITS": [
+		"Splits",
+		"splits"
+	],
+	"STOCH": [
+		"StochasticOscillator",
+		"stochasticOscillator"
+	],
+	"STOCHF": [
+		"StochasticFast",
+		"stochasticFast"
+	],
+	"STOCHRSI": [
+		"StochasticRelativeStrengthIndex",
+		"stochasticRelativeStrengthIndex"
+	],
+	"SUGAR": [
+		"Sugar",
+		"sugar"
+	],
+	"SYMBOLS": [
+		"Symbols",
+		"symbols"
+	],
+	"SYMBOL_SEARCH": [
+		"SymbolSearch",
+		"symbolSearch"
+	],
+	"SlowD": [
+		"SlowD",
+		"slowD"
+	],
+	"SlowK": [
+		"SlowK",
+		"slowK"
+	],
+	"T3": [
+		"T3",
+		"t3"
+	],
+	"TEMA": [
+		"TripleExponentialMovingAverage",
+		"tripleExponentialMovingAverage"
+	],
+	"TIME_SERIES_DAILY": [
+		"TimeSeriesDaily",
+		"timeSeriesDaily"
+	],
+	"TIME_SERIES_DAILY_ADJUSTED": [
+		"TimeSeriesDailyAdjusted",
+		"timeSeriesDailyAdjusted"
+	],
+	"TIME_SERIES_INTRADAY": [
+		"TimeSeriesIntraday",
+		"timeSeriesIntraday"
+	],
+	"TIME_SERIES_MONTHLY": [
+		"TimeSeriesMonthly",
+		"timeSeriesMonthly"
+	],
+	"TIME_SERIES_MONTHLY_ADJUSTED": [
+		"TimeSeriesMonthlyAdjusted",
+		"timeSeriesMonthlyAdjusted"
+	],
+	"TIME_SERIES_WEEKLY": [
+		"TimeSeriesWeekly",
+		"timeSeriesWeekly"
+	],
+	"TIME_SERIES_WEEKLY_ADJUSTED": [
+		"TimeSeriesWeeklyAdjusted",
+		"timeSeriesWeeklyAdjusted"
+	],
+	"TOP_GAINERS_LOSERS": [
+		"TopGainersLosers",
+		"topGainersLosers"
+	],
+	"TRANGE": [
+		"TrueRange",
+		"trueRange"
+	],
+	"TREASURY_YIELD": [
+		"TreasuryYield",
+		"treasuryYield"
+	],
+	"TRENDMODE": [
+		"TrendMode",
+		"trendMode"
+	],
+	"TRIMA": [
+		"TriangularMovingAverage",
+		"triangularMovingAverage"
+	],
+	"TRIX": [
+		"OneDayRateOfChangeTripleSmoothExponentialMovingAverage",
+		"oneDayRateOfChangeTripleSmoothExponentialMovingAverage"
+	],
+	"ULTOSC": [
+		"UltimateOscillator",
+		"ultimateOscillator"
+	],
+	"UNEMPLOYMENT": [
+		"Unemployment",
+		"unemployment"
+	],
+	"VWAP": [
+		"VolumeWeightedAveragePrice",
+		"volumeWeightedAveragePrice"
+	],
+	"WHEAT": [
+		"Wheat",
+		"wheat"
+	],
+	"WILLR": [
+		"WilliamsR",
+		"williamsR"
+	],
+	"WINDOW_SIZE": [
+		"WindowSize",
+		"windowSize"
+	],
+	"WMA": [
+		"WeightedMovingAverage",
+		"weightedMovingAverage"
+	],
+	"WTI": [
+		"WestTexasIntermediate",
+		"westTexasIntermediate"
+	],
+	"acceleration": [
+		"Acceleration",
+		"acceleration"
+	],
+	"adjusted": [
+		"Adjusted",
+		"adjusted"
+	],
+	"adjusted close": [
+		"AdjustedClose",
+		"adjustedClose"
+	],
+	"adjusted_close": [
+		"AdjustedClose",
+		"adjustedClose"
+	],
+	"amount": [
+		"Amount",
+		"amount"
+	],
+	"apikey": [
+		"APIKey",
+		"apiKey"
+	],
+	"ask": [
+		"Ask",
+		"ask"
+	],
+	"ask_size": [
+		"AskSize",
+		"askSize"
+	],
+	"assetType": [
+		"AssetType",
+		"assetType"
+	],
+	"bid": [
+		"Bid",
+		"bid"
+	],
+	"bid_size": [
+		"BidSize",
+		"bidSize"
+	],
+	"change": [
+		"Change",
+		"change"
+	],
+	"changePercent": [
+		"ChangePercent",
+		"changePercent"
+	],
+	"close": [
+		"Close",
+		"close"
+	],
+	"contract": [
+		"Contract",
+		"contract"
+	],
+	"contractID": [
+		"ContractID",
+		"contractID"
+	],
+	"currency": [
+		"Currency",
+		"currency"
+	],
+	"datatype": [
+		"DataType",
+		"dataType"
+	],
+	"date": [
+		"Date",
+		"date"
+	],
+	"declaration_date": [
+		"DeclarationDate",
+		"declarationDate"
+	],
+	"delistingDate": [
+		"DelistingDate",
+		"delistingDate"
+	],
+	"delta": [
+		"Delta",
+		"delta"
+	],
+	"dividend amount": [
+		"DividendAmount",
+		"dividendAmount"
+	],
+	"dividend_amount": [
+		"DividendAmount",
+		"dividendAmount"
+	],
+	"effective_date": [
+		"EffectiveDate",
+		"effectiveDate"
+	],
+	"estimate": [
+		"Estimate",
+		"estimate"
+	],
+	"ex_dividend_date": [
+		"ExDividendDate",
+		"exDividendDate"
+	],
+	"exchange": [
+		"Exchange",
+		"exchange"
+	],
+	"expiration": [
+		"Expiration",
+		"expiration"
+	],
+	"extended_hours": [
+		"ExtendedHours",
+		"extendedHours"
+	],
+	"fastdmatype": [
+		"FastDMAType",
+		"fastDMAType"
+	],
+	"fastdperiod": [
+		"FastDPeriod",
+		"fastDPeriod"
+	],
+	"fastkperiod": [
+		"FastKPeriod",
+		"fastKPeriod"
+	],
+	"fastlimit": [
+		"FastLimit",
+		"fastLimit"
+	],
+	"fastmatype": [
+		"FastMAType",
+		"fastMAType"
+	],
+	"fastperiod": [
+		"FastPeriod",
+		"fastPeriod"
+	],
+	"fiscalDateEnding": [
+		"FiscalDateEnding",
+		"fiscalDateEnding"
+	],
+	"from_currency": [
+		"FromCurrency",
+		"fromCurrency"
+	],
+	"from_symbol": [
+		"FromSymbol",
+		"fromSymbol"
+	],
+	"function": [
+		"Function",
+		"function"
+	],
+	"gamma": [
+		"Gamma",
+		"gamma"
+	],
+	"high": [
+		"High",
+		"high"
+	],
+	"horizon": [
+		"Horizon",
+		"horizon"
+	],
+	"implied_volatility": [
+		"ImpliedVolatility",
+		"impliedVolatility"
+	],
+	"interval": [
+		"Interval",
+		"interval"
+	],
+	"ipoDate": [
+		"IpoDate",
+		"ipoDate"
+	],
+	"keywords": [
+		"Keywords",
+		"keywords"
+	],
+	"last": [
+		"Last",
+		"last"
+	],
+	"latestDay": [
+		"LatestDay",
+		"latestDay"
+	],
+	"limit": [
+		"Limit",
+		"limit"
+	],
+	"low": [
+		"Low",
+		"low"
+	],
+	"mark": [
+		"Mark",
+		"mark"
+	],
+	"market": [
+		"Market",
+		"market"
+	],
+	"marketClose": [
+		"MarketClose",
+		"marketClose"
+	],
+	"marketOpen": [
+		"MarketOpen",
+		"marketOpen"
+	],
+	"matchScore": [
+		"MatchScore",
+		"matchScore"
+	],
+	"maturity": [
+		"Maturity",
+		"maturity"
+	],
+	"matype": [
+		"MovingAverageType",
+		"movingAverageType"
+	],
+	"maximum": [
+		"Maximum",
+		"maximum"
+	],
+	"month": [
+		"Month",
+		"month"
+	],
+	"name": [
+		"Name",
+		"name"
+	],
+	"nbdevdn": [
+		"LowerBandStandardDeviationMultiplier",
+		"lowerBandStandardDeviationMultiplier"
+	],
+	"nbdevup": [
+		"UpperBandStandardDeviationMultiplier",
+		"upperBandStandardDeviationMultiplier"
+	],
+	"open": [
+		"Open",
+		"open"
+	],
+	"open_interest": [
+		"OpenInterest",
+		"openInterest"
+	],
+	"outputsize": [
+		"OutputSize",
+		"outputSize"
+	],
+	"payment_date": [
+		"PaymentDate",
+		"paymentDate"
+	],
+	"previousClose": [
+		"PreviousClose",
+		"previousClose"
+	],
+	"price": [
+		"Price",
+		"price"
+	],
+	"priceRangeHigh": [
+		"PriceRangeHigh",
+		"priceRangeHigh"
+	],
+	"priceRangeLow": [
+		"PriceRangeLow",
+		"priceRangeLow"
+	],
+	"quarter": [
+		"Quarter",
+		"quarter"
+	],
+	"record_date": [
+		"RecordDate",
+		"recordDate"
+	],
+	"region": [
+		"Region",
+		"region"
+	],
+	"reportDate": [
+		"ReportDate",
+		"reportDate"
+	],
+	"require_greeks": [
+		"RequireGreeks",
+		"requireGreeks"
+	],
+	"rho": [
+		"RHO",
+		"rho"
+	],
+	"series_type": [
+		"SeriesType",
+		"seriesType"
+	],
+	"shares_outstanding_basic": [
+		"SharesOutstandingBasic",
+		"sharesOutstandingBasic"
+	],
+	"shares_outstanding_diluted": [
+		"SharesOutstandingDiluted",
+		"sharesOutstandingDiluted"
+	],
+	"signalmatype": [
+		"SignalMAType",
+		"signalMAType"
+	],
+	"signalperiod": [
+		"SignalPeriod",
+		"signalPeriod"
+	],
+	"slowdmatype": [
+		"SlowDMAType",
+		"slowDMAType"
+	],
+	"slowdperiod": [
+		"SlowDPeriod",
+		"slowDPeriod"
+	],
+	"slowkmatype": [
+		"SlowKMAType",
+		"slowKMAType"
+	],
+	"slowkperiod": [
+		"SlowKPeriod",
+		"slowKPeriod"
+	],
+	"slowlimit": [
+		"SlowLimit",
+		"slowLimit"
+	],
+	"slowmatype": [
+		"SlowMAType",
+		"slowMAType"
+	],
+	"slowperiod": [
+		"SlowPeriod",
+		"slowPeriod"
+	],
+	"sort": [
+		"Sort",
+		"sort"
+	],
+	"split_coefficient": [
+		"SplitCoefficient",
+		"splitCoefficient"
+	],
+	"split_factor": [
+		"SplitFactor",
+		"splitFactor"
+	],
+	"state": [
+		"State",
+		"state"
+	],
+	"status": [
+		"Status",
+		"status"
+	],
+	"strike": [
+		"Strike",
+		"strike"
+	],
+	"symbol": [
+		"Symbol",
+		"symbol"
+	],
+	"theta": [
+		"Theta",
+		"theta"
+	],
+	"tickers": [
+		"Tickers",
+		"tickers"
+	],
+	"time": [
+		"Time",
+		"time"
+	],
+	"time_from": [
+		"TimeFrom",
+		"timeFrom"
+	],
+	"time_period": [
+		"TimePeriod",
+		"timePeriod"
+	],
+	"time_to": [
+		"TimeTo",
+		"timeTo"
+	],
+	"timeperiod1": [
+		"TimePeriod1",
+		"timePeriod1"
+	],
+	"timeperiod2": [
+		"TimePeriod2",
+		"timePeriod2"
+	],
+	"timeperiod3": [
+		"TimePeriod3",
+		"timePeriod3"
+	],
+	"timestamp": [
+		"TimeStamp",
+		"timeStamp"
+	],
+	"timezone": [
+		"TimeZone",
+		"timeZone"
+	],
+	"to_currency": [
+		"ToCurrency",
+		"toCurrency"
+	],
+	"to_symbol": [
+		"ToSymbol",
+		"toSymbol"
+	],
+	"topics": [
+		"Topics",
+		"topics"
+	],
+	"type": [
+		"Type",
+		"tp"
+	],
+	"value": [
+		"Value",
+		"value"
+	],
+	"vega": [
+		"Vega",
+		"vega"
+	],
+	"volume": [
+		"Volume",
+		"volume"
+	]
+}

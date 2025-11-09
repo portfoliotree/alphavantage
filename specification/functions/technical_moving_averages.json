@@ -1,7 +1,6 @@
 [
 	{
 		"name": "SMA",
-		"ident": "SMA",
 		"required": [
 			"function",
 			"symbol",
@@ -31,7 +30,6 @@
 	},
 	{
 		"name": "EMA",
-		"ident": "EMA",
 		"required": [
 			"function",
 			"symbol",
@@ -61,7 +59,6 @@
 	},
 	{
 		"name": "WMA",
-		"ident": "WMA",
 		"required": [
 			"function",
 			"symbol",
@@ -91,7 +88,6 @@
 	},
 	{
 		"name": "DEMA",
-		"ident": "DEMA",
 		"required": [
 			"function",
 			"symbol",
@@ -121,7 +117,6 @@
 	},
 	{
 		"name": "TEMA",
-		"ident": "TEMA",
 		"required": [
 			"function",
 			"symbol",
@@ -151,7 +146,6 @@
 	},
 	{
 		"name": "TRIMA",
-		"ident": "TRIMA",
 		"required": [
 			"function",
 			"symbol",
@@ -181,7 +175,6 @@
 	},
 	{
 		"name": "KAMA",
-		"ident": "KAMA",
 		"required": [
 			"function",
 			"symbol",
@@ -211,7 +204,6 @@
 	},
 	{
 		"name": "T3",
-		"ident": "T3",
 		"required": [
 			"function",
 			"symbol",

@@ -1,7 +1,6 @@
 [
 	{
 		"name": "HT_TRENDLINE",
-		"ident": "HilbertTransformTrendLine",
 		"required": [
 			"function",
 			"symbol",
@@ -30,7 +29,6 @@
 	},
 	{
 		"name": "HT_SINE",
-		"ident": "HilbertTransformSine",
 		"required": [
 			"function",
 			"symbol",
@@ -60,7 +58,6 @@
 	},
 	{
 		"name": "HT_TRENDMODE",
-		"ident": "HilbertTransformTrendMode",
 		"required": [
 			"function",
 			"symbol",
@@ -89,7 +86,6 @@
 	},
 	{
 		"name": "HT_DCPERIOD",
-		"ident": "HilbertTransformDCPeriod",
 		"required": [
 			"function",
 			"symbol",
@@ -118,7 +114,6 @@
 	},
 	{
 		"name": "HT_DCPHASE",
-		"ident": "HilbertTransformDCPhase",
 		"required": [
 			"function",
 			"symbol",
@@ -147,7 +142,6 @@
 	},
 	{
 		"name": "HT_PHASOR",
-		"ident": "HilbertTransformPhasor",
 		"required": [
 			"function",
 			"symbol",

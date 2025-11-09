@@ -1,7 +1,6 @@
 [
 	{
 		"name": "REALTIME_OPTIONS",
-		"ident": "RealtimeOptions",
 		"required": [
 			"function",
 			"symbol",
@@ -18,7 +17,6 @@
 	},
 	{
 		"name": "HISTORICAL_OPTIONS",
-		"ident": "HistoricalOptions",
 		"required": [
 			"function",
 			"symbol",

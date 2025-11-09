@@ -1,7 +1,6 @@
 [
 	{
 		"name": "BBANDS",
-		"ident": "BollingerBands",
 		"required": [
 			"function",
 			"symbol",

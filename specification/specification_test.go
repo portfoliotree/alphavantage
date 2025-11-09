@@ -3,6 +3,7 @@ package specification_test
 import (
 	"encoding/csv"
 	"encoding/json"
+	"go/token"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -34,21 +35,6 @@ func TestJSON(t *testing.T) {
 			require.NoError(t, os.WriteFile(match, formatted, info.Mode().Perm()))
 		}
 	}
-}
-
-func TestInitialisms(t *testing.T) {
-	buf, err := os.ReadFile("initialisms.json")
-	require.NoError(t, err)
-	var data []string
-	require.NoError(t, json.Unmarshal(buf, &data))
-	require.Truef(t, slices.IsSorted(data), "expected values to be sorted alphabetically")
-}
-
-func TestCompoundWords(t *testing.T) {
-	buf, err := os.ReadFile("compound_words.json")
-	require.NoError(t, err)
-	var data map[string][]string
-	require.NoError(t, json.Unmarshal(buf, &data))
 }
 
 func TestQueryParameters(t *testing.T) {
@@ -92,11 +78,41 @@ func validateQueryParameterType(t *testing.T, param specification.QueryParameter
 	}
 }
 
+func TestIdentifiers(t *testing.T) {
+	buf, err := os.ReadFile("identifiers.json")
+	require.NoError(t, err)
+	var data map[string][]string
+	require.NoError(t, json.Unmarshal(buf, &data))
+
+	for avID, goIDs := range data {
+		t.Run(avID, func(t *testing.T) {
+			require.Truef(t, token.IsIdentifier(goIDs[0]), "expected %s to be an identifier", goIDs[0])
+			switch goIDs[1] {
+			case "rng", "tp": // exceptions
+			default:
+				require.Equal(t, strings.ToLower(goIDs[0]), strings.ToLower(goIDs[1]))
+			}
+			require.Truef(t, token.IsIdentifier(goIDs[1]), "expected %s to be an identifier", goIDs[1])
+			require.Truef(t, token.IsExported(goIDs[0]), "expected %s to be an public", goIDs[0])
+			require.Falsef(t, token.IsExported(goIDs[1]), "expected %s to be an private", goIDs[1])
+			require.NotContains(t, goIDs[0], "_")
+			require.NotContains(t, goIDs[0], " ")
+			require.NotContains(t, goIDs[1], "_")
+			require.NotContains(t, goIDs[1], " ")
+		})
+	}
+}
+
 func TestFunctions(t *testing.T) {
-	buf, err := os.ReadFile("query_parameters.json")
+	qpBuf, err := os.ReadFile("query_parameters.json")
 	require.NoError(t, err, "failed to read query_parameters.json")
 	var queryParameters []specification.QueryParameter
-	require.NoError(t, json.Unmarshal(buf, &queryParameters), "failed to parse query_parameters.json")
+	require.NoError(t, json.Unmarshal(qpBuf, &queryParameters), "failed to parse query_parameters.json")
+
+	idsBuf, err := os.ReadFile("identifiers.json")
+	require.NoError(t, err)
+	var goIdentifiers map[string][]string
+	require.NoError(t, json.Unmarshal(idsBuf, &goIdentifiers))
 
 	functionFiles := loadFunctions(t)
 	for filePath, functions := range functionFiles {
@@ -110,6 +126,18 @@ func TestFunctions(t *testing.T) {
 					allQueryParamsSpecified(t, fn, queryParameters, fn.Optional...)
 					enumValuesSubset(t, fn, queryParameters)
 					testExampleURLs(t, fn)
+
+					if _, found := goIdentifiers[fn.Name]; assert.Truef(t, found, "go identifiers must have key for %q", fn.Name) {
+					}
+
+					for _, val := range fn.Required {
+						if _, found := goIdentifiers[fn.Name]; assert.Truef(t, found, "go identifiers must have key for required query param key %q", val) {
+						}
+					}
+					for _, val := range fn.Optional {
+						if _, found := goIdentifiers[fn.Name]; assert.Truef(t, found, "go identifiers must have key for optional query param key %q", val) {
+						}
+					}
 				})
 			}
 		})

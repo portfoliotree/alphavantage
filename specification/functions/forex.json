@@ -1,7 +1,6 @@
 [
 	{
 		"name": "CURRENCY_EXCHANGE_RATE",
-		"ident": "CurrencyExchangeRate",
 		"required": [
 			"function",
 			"from_currency",
@@ -15,7 +14,6 @@
 	},
 	{
 		"name": "FX_INTRADAY",
-		"ident": "FXIntraday",
 		"required": [
 			"function",
 			"from_symbol",
@@ -49,7 +47,6 @@
 	},
 	{
 		"name": "FX_DAILY",
-		"ident": "FXDaily",
 		"required": [
 			"function",
 			"from_symbol",
@@ -73,7 +70,6 @@
 	},
 	{
 		"name": "FX_WEEKLY",
-		"ident": "FXWeekly",
 		"required": [
 			"function",
 			"from_symbol",
@@ -96,7 +92,6 @@
 	},
 	{
 		"name": "FX_MONTHLY",
-		"ident": "FXMonthly",
 		"required": [
 			"function",
 			"from_symbol",

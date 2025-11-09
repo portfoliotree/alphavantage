@@ -1,7 +1,6 @@
 [
 	{
 		"name": "OVERVIEW",
-		"ident": "Overview",
 		"required": [
 			"function",
 			"symbol",
@@ -14,7 +13,6 @@
 	},
 	{
 		"name": "ETF_PROFILE",
-		"ident": "ETFProfile",
 		"required": [
 			"function",
 			"symbol",
@@ -27,7 +25,6 @@
 	},
 	{
 		"name": "DIVIDENDS",
-		"ident": "Dividends",
 		"required": [
 			"function",
 			"symbol",
@@ -49,7 +46,6 @@
 	},
 	{
 		"name": "SPLITS",
-		"ident": "Splits",
 		"required": [
 			"function",
 			"symbol",
@@ -68,7 +64,6 @@
 	},
 	{
 		"name": "INCOME_STATEMENT",
-		"ident": "IncomeStatement",
 		"required": [
 			"function",
 			"symbol",
@@ -81,7 +76,6 @@
 	},
 	{
 		"name": "BALANCE_SHEET",
-		"ident": "BalanceSheet",
 		"required": [
 			"function",
 			"symbol",
@@ -94,7 +88,6 @@
 	},
 	{
 		"name": "CASH_FLOW",
-		"ident": "CashFlow",
 		"required": [
 			"function",
 			"symbol",
@@ -107,7 +100,6 @@
 	},
 	{
 		"name": "SHARES_OUTSTANDING",
-		"ident": "SharesOutstanding",
 		"required": [
 			"function",
 			"symbol",
@@ -127,7 +119,6 @@
 	},
 	{
 		"name": "EARNINGS",
-		"ident": "Earnings",
 		"required": [
 			"function",
 			"symbol",
@@ -140,7 +131,6 @@
 	},
 	{
 		"name": "EARNINGS_ESTIMATES",
-		"ident": "EarningsEstimates",
 		"required": [
 			"function",
 			"symbol",
@@ -153,7 +143,6 @@
 	},
 	{
 		"name": "LISTING_STATUS",
-		"ident": "ListingStatus",
 		"required": [
 			"function",
 			"apikey"
@@ -177,7 +166,6 @@
 	},
 	{
 		"name": "EARNINGS_CALENDAR",
-		"ident": "EarningsCalendar",
 		"required": [
 			"function",
 			"apikey"
@@ -200,7 +188,6 @@
 	},
 	{
 		"name": "IPO_CALENDAR",
-		"ident": "IPOCalendar",
 		"required": [
 			"function",
 			"apikey"

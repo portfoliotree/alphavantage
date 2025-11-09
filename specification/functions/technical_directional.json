@@ -85,7 +85,6 @@
 	},
 	{
 		"name": "MINUS_DI",
-		"ident": "MinusDirectionalIndicator",
 		"required": [
 			"function",
 			"symbol",
@@ -142,7 +141,6 @@
 	},
 	{
 		"name": "MINUS_DM",
-		"ident": "MinusDirectionalMovement",
 		"required": [
 			"function",
 			"symbol",

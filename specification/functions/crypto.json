@@ -1,7 +1,6 @@
 [
 	{
 		"name": "CRYPTO_INTRADAY",
-		"ident": "CryptoIntraday",
 		"required": [
 			"function",
 			"symbol",
@@ -36,7 +35,6 @@
 	},
 	{
 		"name": "DIGITAL_CURRENCY_DAILY",
-		"ident": "DigitalCurrencyDaily",
 		"required": [
 			"function",
 			"symbol",
@@ -58,7 +56,6 @@
 	},
 	{
 		"name": "DIGITAL_CURRENCY_WEEKLY",
-		"ident": "DigitalCurrencyWeekly",
 		"required": [
 			"function",
 			"symbol",
@@ -80,7 +77,6 @@
 	},
 	{
 		"name": "DIGITAL_CURRENCY_MONTHLY",
-		"ident": "DigitalCurrencyMonthly",
 		"required": [
 			"function",
 			"symbol",
