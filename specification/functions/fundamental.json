@@ -38,6 +38,13 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=DIVIDENDS\u0026symbol=IBM\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"ex_dividend_date",
+			"declaration_date",
+			"record_date",
+			"payment_date",
+			"amount"
 		]
 	},
 	{
@@ -53,6 +60,10 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=SPLITS\u0026symbol=IBM\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"effective_date",
+			"split_factor"
 		]
 	},
 	{
@@ -107,6 +118,11 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=SHARES_OUTSTANDING\u0026symbol=MSFT\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"date",
+			"shares_outstanding_diluted",
+			"shares_outstanding_basic"
 		]
 	},
 	{
@@ -148,6 +164,15 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=LISTING_STATUS\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"symbol",
+			"name",
+			"exchange",
+			"assetType",
+			"ipoDate",
+			"delistingDate",
+			"status"
 		]
 	},
 	{
@@ -163,6 +188,14 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=EARNINGS_CALENDAR\u0026horizon=3month\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"symbol",
+			"name",
+			"reportDate",
+			"fiscalDateEnding",
+			"estimate",
+			"currency"
 		]
 	},
 	{
@@ -175,6 +208,15 @@
 		"optional": [],
 		"examples": [
 			"https://www.alphavantage.co/query?function=IPO_CALENDAR\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"symbol",
+			"name",
+			"ipoDate",
+			"priceRangeLow",
+			"priceRangeHigh",
+			"currency",
+			"exchange"
 		]
 	}
 ]

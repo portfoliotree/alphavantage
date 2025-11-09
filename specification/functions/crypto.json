@@ -24,6 +24,14 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=CRYPTO_INTRADAY\u0026symbol=ETH\u0026market=USD\u0026interval=5min\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close",
+			"volume"
 		]
 	},
 	{
@@ -38,6 +46,14 @@
 		"optional": [],
 		"examples": [
 			"https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY\u0026symbol=BTC\u0026market=EUR\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close",
+			"volume"
 		]
 	},
 	{
@@ -52,6 +68,14 @@
 		"optional": [],
 		"examples": [
 			"https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_WEEKLY\u0026symbol=BTC\u0026market=EUR\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close",
+			"volume"
 		]
 	},
 	{
@@ -66,6 +90,14 @@
 		"optional": [],
 		"examples": [
 			"https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_MONTHLY\u0026symbol=BTC\u0026market=EUR\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close",
+			"volume"
 		]
 	}
 ]

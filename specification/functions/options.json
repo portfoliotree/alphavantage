@@ -30,6 +30,28 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS\u0026symbol=IBM\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"contractID",
+			"symbol",
+			"expiration",
+			"strike",
+			"type",
+			"last",
+			"mark",
+			"bid",
+			"bid_size",
+			"ask",
+			"ask_size",
+			"volume",
+			"open_interest",
+			"date",
+			"implied_volatility",
+			"delta",
+			"gamma",
+			"theta",
+			"vega",
+			"rho"
 		]
 	}
 ]

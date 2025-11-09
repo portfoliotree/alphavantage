@@ -38,6 +38,13 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=FX_INTRADAY\u0026from_symbol=EUR\u0026to_symbol=USD\u0026interval=5min\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close"
 		]
 	},
 	{
@@ -55,6 +62,13 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=FX_DAILY\u0026from_symbol=EUR\u0026to_symbol=USD\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close"
 		]
 	},
 	{
@@ -71,6 +85,13 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=FX_WEEKLY\u0026from_symbol=EUR\u0026to_symbol=USD\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close"
 		]
 	},
 	{
@@ -87,6 +108,13 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=FX_MONTHLY\u0026from_symbol=EUR\u0026to_symbol=USD\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close"
 		]
 	}
 ]

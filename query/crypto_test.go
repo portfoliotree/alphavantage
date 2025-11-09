@@ -33,7 +33,7 @@ func TestCryptoIntraday(t *testing.T) {
 		assert.Equal(t, "full", v.Get(query.KeyOutputSize))
 	})
 
-	t.Run("with dataType", func(t *testing.T) {
+	t.Run("with datatype", func(t *testing.T) {
 		q := query.NewCryptoIntraday(apiKeyTestValue, "ETH", "USD", query.IIntervalOption5min).DataTypeCSV()
 
 		err := q.Validate()
@@ -88,7 +88,7 @@ func TestDigitalCurrencyDaily(t *testing.T) {
 		assert.Equal(t, apiKeyTestValue, v.Get(query.KeyAPIKey))
 	})
 
-	t.Run("with dataType", func(t *testing.T) {
+	t.Run("with datatype", func(t *testing.T) {
 		q := query.NewDigitalCurrencyDaily(apiKeyTestValue, "BTC", "EUR").DataTypeCSV()
 
 		err := q.Validate()
@@ -98,7 +98,7 @@ func TestDigitalCurrencyDaily(t *testing.T) {
 		assert.Equal(t, "csv", v.Get(query.KeyDataType))
 	})
 
-	t.Run("invalid dataType", func(t *testing.T) {
+	t.Run("invalid datatype", func(t *testing.T) {
 		q := query.NewDigitalCurrencyDaily(apiKeyTestValue, "BTC", "EUR")
 		q[query.KeyDataType] = []string{"cake"}
 
@@ -141,7 +141,7 @@ func TestDigitalCurrencyWeekly(t *testing.T) {
 		assert.Equal(t, apiKeyTestValue, v.Get(query.KeyAPIKey))
 	})
 
-	t.Run("with dataType", func(t *testing.T) {
+	t.Run("with datatype", func(t *testing.T) {
 		q := query.NewDigitalCurrencyWeekly(apiKeyTestValue, "BTC", "EUR").DataTypeCSV()
 
 		err := q.Validate()
@@ -151,7 +151,7 @@ func TestDigitalCurrencyWeekly(t *testing.T) {
 		assert.Equal(t, "csv", v.Get(query.KeyDataType))
 	})
 
-	t.Run("invalid dataType", func(t *testing.T) {
+	t.Run("invalid datatype", func(t *testing.T) {
 		q := query.NewDigitalCurrencyWeekly(apiKeyTestValue, "BTC", "EUR")
 		q[query.KeyDataType] = []string{"cake"}
 
@@ -165,7 +165,7 @@ func TestDigitalCurrencyWeekly(t *testing.T) {
 		s := q.Encode()
 
 		assert.Contains(t, s, "function=DIGITAL_CURRENCY_WEEKLY")
-		assert.Contains(t, s, "dataType=json")
+		assert.Contains(t, s, "datatype=json")
 	})
 }
 
@@ -183,7 +183,7 @@ func TestDigitalCurrencyMonthly(t *testing.T) {
 		assert.Equal(t, apiKeyTestValue, v.Get(query.KeyAPIKey))
 	})
 
-	t.Run("with dataType", func(t *testing.T) {
+	t.Run("with datatype", func(t *testing.T) {
 		q := query.NewDigitalCurrencyMonthly(apiKeyTestValue, "BTC", "EUR").DataTypeCSV()
 
 		err := q.Validate()
@@ -212,6 +212,6 @@ func TestDigitalCurrencyMonthly(t *testing.T) {
 		assert.Contains(t, s, "function=DIGITAL_CURRENCY_MONTHLY")
 		assert.Contains(t, s, "symbol=BTC")
 		assert.Contains(t, s, "market=EUR")
-		assert.Contains(t, s, "dataType=csv")
+		assert.Contains(t, s, "datatype=csv")
 	})
 }

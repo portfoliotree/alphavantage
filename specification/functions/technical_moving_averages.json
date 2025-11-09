@@ -23,6 +23,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=SMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"SMA"
 		]
 	},
 	{
@@ -49,6 +53,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=EMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"EMA"
 		]
 	},
 	{
@@ -75,6 +83,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=WMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"WMA"
 		]
 	},
 	{
@@ -101,6 +113,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=DEMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"DEMA"
 		]
 	},
 	{
@@ -127,6 +143,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=TEMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"TEMA"
 		]
 	},
 	{
@@ -153,6 +173,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=TRIMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"TRIMA"
 		]
 	},
 	{
@@ -179,6 +203,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=KAMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"KAMA"
 		]
 	},
 	{
@@ -205,6 +233,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=T3\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"T3"
 		]
 	}
 ]

@@ -1,0 +1,692 @@
+[
+	{
+		"ID": "WTI_6498cf9f",
+		"path": "testdata/examples/commodities/WTI_6498cf9f.csv",
+		"fetched": "2025-11-08T18:01:21.963647-08:00",
+		"url": "https://www.alphavantage.co/query?function=WTI\u0026interval=monthly\u0026apikey=demo"
+	},
+	{
+		"ID": "BRENT_44bdfc84",
+		"path": "testdata/examples/commodities/BRENT_44bdfc84.csv",
+		"fetched": "2025-11-08T18:01:22.154652-08:00",
+		"url": "https://www.alphavantage.co/query?function=BRENT\u0026interval=monthly\u0026apikey=demo"
+	},
+	{
+		"ID": "NATURAL_GAS_4be4453d",
+		"path": "testdata/examples/commodities/NATURAL_GAS_4be4453d.csv",
+		"fetched": "2025-11-08T18:01:22.260325-08:00",
+		"url": "https://www.alphavantage.co/query?function=NATURAL_GAS\u0026interval=monthly\u0026apikey=demo"
+	},
+	{
+		"ID": "COPPER_639627b4",
+		"path": "testdata/examples/commodities/COPPER_639627b4.csv",
+		"fetched": "2025-11-08T18:01:22.368266-08:00",
+		"url": "https://www.alphavantage.co/query?function=COPPER\u0026interval=monthly\u0026apikey=demo"
+	},
+	{
+		"ID": "ALUMINUM_85383733",
+		"path": "testdata/examples/commodities/ALUMINUM_85383733.csv",
+		"fetched": "2025-11-08T18:01:22.481779-08:00",
+		"url": "https://www.alphavantage.co/query?function=ALUMINUM\u0026interval=monthly\u0026apikey=demo"
+	},
+	{
+		"ID": "WHEAT_92552a45",
+		"path": "testdata/examples/commodities/WHEAT_92552a45.csv",
+		"fetched": "2025-11-08T18:01:22.589993-08:00",
+		"url": "https://www.alphavantage.co/query?function=WHEAT\u0026interval=monthly\u0026apikey=demo"
+	},
+	{
+		"ID": "CORN_3d3a03fa",
+		"path": "testdata/examples/commodities/CORN_3d3a03fa.csv",
+		"fetched": "2025-11-08T18:01:22.695416-08:00",
+		"url": "https://www.alphavantage.co/query?function=CORN\u0026interval=monthly\u0026apikey=demo"
+	},
+	{
+		"ID": "COTTON_63260621",
+		"path": "testdata/examples/commodities/COTTON_63260621.csv",
+		"fetched": "2025-11-08T18:01:22.801789-08:00",
+		"url": "https://www.alphavantage.co/query?function=COTTON\u0026interval=monthly\u0026apikey=demo"
+	},
+	{
+		"ID": "SUGAR_9675b985",
+		"path": "testdata/examples/commodities/SUGAR_9675b985.csv",
+		"fetched": "2025-11-08T18:01:22.924108-08:00",
+		"url": "https://www.alphavantage.co/query?function=SUGAR\u0026interval=monthly\u0026apikey=demo"
+	},
+	{
+		"ID": "COFFEE_24b082fc",
+		"path": "testdata/examples/commodities/COFFEE_24b082fc.csv",
+		"fetched": "2025-11-08T18:01:23.036619-08:00",
+		"url": "https://www.alphavantage.co/query?function=COFFEE\u0026interval=monthly\u0026apikey=demo"
+	},
+	{
+		"ID": "ALL_COMMODITIES_4033e3d9",
+		"path": "testdata/examples/commodities/ALL_COMMODITIES_4033e3d9.csv",
+		"fetched": "2025-11-08T18:01:23.148179-08:00",
+		"url": "https://www.alphavantage.co/query?function=ALL_COMMODITIES\u0026interval=monthly\u0026apikey=demo"
+	},
+	{
+		"ID": "CRYPTO_INTRADAY_38f15660",
+		"path": "testdata/examples/crypto/CRYPTO_INTRADAY_38f15660.csv",
+		"fetched": "2025-11-08T18:01:23.253851-08:00",
+		"url": "https://www.alphavantage.co/query?function=CRYPTO_INTRADAY\u0026symbol=ETH\u0026market=USD\u0026interval=5min\u0026apikey=demo"
+	},
+	{
+		"ID": "DIGITAL_CURRENCY_DAILY_ffab6e21",
+		"path": "testdata/examples/crypto/DIGITAL_CURRENCY_DAILY_ffab6e21.csv",
+		"fetched": "2025-11-08T18:01:23.399205-08:00",
+		"url": "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY\u0026symbol=BTC\u0026market=EUR\u0026apikey=demo"
+	},
+	{
+		"ID": "DIGITAL_CURRENCY_WEEKLY_b80e3492",
+		"path": "testdata/examples/crypto/DIGITAL_CURRENCY_WEEKLY_b80e3492.csv",
+		"fetched": "2025-11-08T18:01:23.631448-08:00",
+		"url": "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_WEEKLY\u0026symbol=BTC\u0026market=EUR\u0026apikey=demo"
+	},
+	{
+		"ID": "DIGITAL_CURRENCY_MONTHLY_708fbbc6",
+		"path": "testdata/examples/crypto/DIGITAL_CURRENCY_MONTHLY_708fbbc6.csv",
+		"fetched": "2025-11-08T18:01:23.738058-08:00",
+		"url": "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_MONTHLY\u0026symbol=BTC\u0026market=EUR\u0026apikey=demo"
+	},
+	{
+		"ID": "DX_51079af1",
+		"path": "testdata/examples/technical_directional/DX_51079af1.csv",
+		"fetched": "2025-11-08T18:01:23.837737-08:00",
+		"url": "https://www.alphavantage.co/query?function=DX\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "ADX_a8d5fbcc",
+		"path": "testdata/examples/technical_directional/ADX_a8d5fbcc.csv",
+		"fetched": "2025-11-08T18:01:24.253025-08:00",
+		"url": "https://www.alphavantage.co/query?function=ADX\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "ADXR_bc985409",
+		"path": "testdata/examples/technical_directional/ADXR_bc985409.csv",
+		"fetched": "2025-11-08T18:01:24.73902-08:00",
+		"url": "https://www.alphavantage.co/query?function=ADXR\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "MINUS_DI_c854c442",
+		"path": "testdata/examples/technical_directional/MINUS_DI_c854c442.csv",
+		"fetched": "2025-11-08T18:01:25.10323-08:00",
+		"url": "https://www.alphavantage.co/query?function=MINUS_DI\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "PLUS_DI_993eebda",
+		"path": "testdata/examples/technical_directional/PLUS_DI_993eebda.csv",
+		"fetched": "2025-11-08T18:01:25.514603-08:00",
+		"url": "https://www.alphavantage.co/query?function=PLUS_DI\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "MINUS_DM_225feb25",
+		"path": "testdata/examples/technical_directional/MINUS_DM_225feb25.csv",
+		"fetched": "2025-11-08T18:01:25.995256-08:00",
+		"url": "https://www.alphavantage.co/query?function=MINUS_DM\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "PLUS_DM_e0682566",
+		"path": "testdata/examples/technical_directional/PLUS_DM_e0682566.csv",
+		"fetched": "2025-11-08T18:01:26.352239-08:00",
+		"url": "https://www.alphavantage.co/query?function=PLUS_DM\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "AROON_de4ed20e",
+		"path": "testdata/examples/technical_directional/AROON_de4ed20e.csv",
+		"fetched": "2025-11-08T18:01:26.672403-08:00",
+		"url": "https://www.alphavantage.co/query?function=AROON\u0026symbol=IBM\u0026interval=daily\u0026time_period=14\u0026apikey=demo"
+	},
+	{
+		"ID": "AROONOSC_9945ac9d",
+		"path": "testdata/examples/technical_directional/AROONOSC_9945ac9d.csv",
+		"fetched": "2025-11-08T18:01:27.048864-08:00",
+		"url": "https://www.alphavantage.co/query?function=AROONOSC\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "WILLR_6d7a9722",
+		"path": "testdata/examples/technical_momentum/WILLR_6d7a9722.csv",
+		"fetched": "2025-11-08T18:01:27.41177-08:00",
+		"url": "https://www.alphavantage.co/query?function=WILLR\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "APO_87e8859c",
+		"path": "testdata/examples/technical_momentum/APO_87e8859c.csv",
+		"fetched": "2025-11-08T18:01:27.758134-08:00",
+		"url": "https://www.alphavantage.co/query?function=APO\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+	},
+	{
+		"ID": "PPO_7bbc8407",
+		"path": "testdata/examples/technical_momentum/PPO_7bbc8407.csv",
+		"fetched": "2025-11-08T18:01:28.06896-08:00",
+		"url": "https://www.alphavantage.co/query?function=PPO\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+	},
+	{
+		"ID": "MOM_4be2b205",
+		"path": "testdata/examples/technical_momentum/MOM_4be2b205.csv",
+		"fetched": "2025-11-08T18:01:28.372089-08:00",
+		"url": "https://www.alphavantage.co/query?function=MOM\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "BOP_088a5081",
+		"path": "testdata/examples/technical_momentum/BOP_088a5081.json",
+		"fetched": "2025-11-08T18:01:28.672254-08:00",
+		"url": "https://www.alphavantage.co/query?function=BOP\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+	},
+	{
+		"ID": "CCI_dd423e9c",
+		"path": "testdata/examples/technical_momentum/CCI_dd423e9c.csv",
+		"fetched": "2025-11-08T18:01:28.828044-08:00",
+		"url": "https://www.alphavantage.co/query?function=CCI\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "CMO_b6a98564",
+		"path": "testdata/examples/technical_momentum/CMO_b6a98564.csv",
+		"fetched": "2025-11-08T18:01:29.150284-08:00",
+		"url": "https://www.alphavantage.co/query?function=CMO\u0026symbol=IBM\u0026interval=weekly\u0026series_type=close\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "ROC_9ffc04fa",
+		"path": "testdata/examples/technical_momentum/ROC_9ffc04fa.csv",
+		"fetched": "2025-11-08T18:01:29.506434-08:00",
+		"url": "https://www.alphavantage.co/query?function=ROC\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "ROCR_c9cd207d",
+		"path": "testdata/examples/technical_momentum/ROCR_c9cd207d.csv",
+		"fetched": "2025-11-08T18:01:29.792988-08:00",
+		"url": "https://www.alphavantage.co/query?function=ROCR\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "BBANDS_9bd4a9ab",
+		"path": "testdata/examples/technical_volatility/BBANDS_9bd4a9ab.csv",
+		"fetched": "2025-11-08T18:01:30.174905-08:00",
+		"url": "https://www.alphavantage.co/query?function=BBANDS\u0026symbol=IBM\u0026interval=weekly\u0026time_period=5\u0026series_type=close\u0026nbdevup=3\u0026nbdevdn=3\u0026apikey=demo"
+	},
+	{
+		"ID": "TRANGE_61f61d8e",
+		"path": "testdata/examples/technical_volatility/TRANGE_61f61d8e.csv",
+		"fetched": "2025-11-08T18:01:30.564866-08:00",
+		"url": "https://www.alphavantage.co/query?function=TRANGE\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+	},
+	{
+		"ID": "ATR_4cc3ee79",
+		"path": "testdata/examples/technical_volatility/ATR_4cc3ee79.csv",
+		"fetched": "2025-11-08T18:01:30.925172-08:00",
+		"url": "https://www.alphavantage.co/query?function=ATR\u0026symbol=IBM\u0026interval=daily\u0026time_period=14\u0026apikey=demo"
+	},
+	{
+		"ID": "NATR_26008ea8",
+		"path": "testdata/examples/technical_volatility/NATR_26008ea8.csv",
+		"fetched": "2025-11-08T18:01:31.351095-08:00",
+		"url": "https://www.alphavantage.co/query?function=NATR\u0026symbol=IBM\u0026interval=weekly\u0026time_period=14\u0026apikey=demo"
+	},
+	{
+		"ID": "SAR_c1dff5a5",
+		"path": "testdata/examples/technical_volatility/SAR_c1dff5a5.csv",
+		"fetched": "2025-11-08T18:01:31.648568-08:00",
+		"url": "https://www.alphavantage.co/query?function=SAR\u0026symbol=IBM\u0026interval=weekly\u0026acceleration=0.05\u0026maximum=0.25\u0026apikey=demo"
+	},
+	{
+		"ID": "ULTOSC_b91aa1db",
+		"path": "testdata/examples/technical_volatility/ULTOSC_b91aa1db.csv",
+		"fetched": "2025-11-08T18:01:31.925033-08:00",
+		"url": "https://www.alphavantage.co/query?function=ULTOSC\u0026symbol=IBM\u0026interval=daily\u0026timeperiod1=8\u0026apikey=demo"
+	},
+	{
+		"ID": "REAL_GDP_73a04ece",
+		"path": "testdata/examples/economic/REAL_GDP_73a04ece.csv",
+		"fetched": "2025-11-08T18:01:32.297685-08:00",
+		"url": "https://www.alphavantage.co/query?function=REAL_GDP\u0026interval=annual\u0026apikey=demo"
+	},
+	{
+		"ID": "REAL_GDP_PER_CAPITA_57884c33",
+		"path": "testdata/examples/economic/REAL_GDP_PER_CAPITA_57884c33.csv",
+		"fetched": "2025-11-08T18:01:32.404556-08:00",
+		"url": "https://www.alphavantage.co/query?function=REAL_GDP_PER_CAPITA\u0026apikey=demo"
+	},
+	{
+		"ID": "TREASURY_YIELD_a4d134a9",
+		"path": "testdata/examples/economic/TREASURY_YIELD_a4d134a9.csv",
+		"fetched": "2025-11-08T18:01:32.509374-08:00",
+		"url": "https://www.alphavantage.co/query?function=TREASURY_YIELD\u0026interval=monthly\u0026maturity=10year\u0026apikey=demo"
+	},
+	{
+		"ID": "FEDERAL_FUNDS_RATE_e4372b7a",
+		"path": "testdata/examples/economic/FEDERAL_FUNDS_RATE_e4372b7a.csv",
+		"fetched": "2025-11-08T18:01:32.620626-08:00",
+		"url": "https://www.alphavantage.co/query?function=FEDERAL_FUNDS_RATE\u0026interval=monthly\u0026apikey=demo"
+	},
+	{
+		"ID": "CPI_453fbf7c",
+		"path": "testdata/examples/economic/CPI_453fbf7c.csv",
+		"fetched": "2025-11-08T18:01:32.803995-08:00",
+		"url": "https://www.alphavantage.co/query?function=CPI\u0026interval=monthly\u0026apikey=demo"
+	},
+	{
+		"ID": "INFLATION_ae098c06",
+		"path": "testdata/examples/economic/INFLATION_ae098c06.csv",
+		"fetched": "2025-11-08T18:01:32.92268-08:00",
+		"url": "https://www.alphavantage.co/query?function=INFLATION\u0026apikey=demo"
+	},
+	{
+		"ID": "RETAIL_SALES_c609adfe",
+		"path": "testdata/examples/economic/RETAIL_SALES_c609adfe.csv",
+		"fetched": "2025-11-08T18:01:33.025337-08:00",
+		"url": "https://www.alphavantage.co/query?function=RETAIL_SALES\u0026apikey=demo"
+	},
+	{
+		"ID": "DURABLES_e4cfe1f5",
+		"path": "testdata/examples/economic/DURABLES_e4cfe1f5.csv",
+		"fetched": "2025-11-08T18:01:33.136467-08:00",
+		"url": "https://www.alphavantage.co/query?function=DURABLES\u0026apikey=demo"
+	},
+	{
+		"ID": "UNEMPLOYMENT_a0671528",
+		"path": "testdata/examples/economic/UNEMPLOYMENT_a0671528.csv",
+		"fetched": "2025-11-08T18:01:33.248369-08:00",
+		"url": "https://www.alphavantage.co/query?function=UNEMPLOYMENT\u0026apikey=demo"
+	},
+	{
+		"ID": "NONFARM_PAYROLL_cf8e3bcd",
+		"path": "testdata/examples/economic/NONFARM_PAYROLL_cf8e3bcd.csv",
+		"fetched": "2025-11-08T18:01:33.366454-08:00",
+		"url": "https://www.alphavantage.co/query?function=NONFARM_PAYROLL\u0026apikey=demo"
+	},
+	{
+		"ID": "NEWS_SENTIMENT_37784e1e",
+		"path": "testdata/examples/intelligence/NEWS_SENTIMENT_37784e1e.json",
+		"fetched": "2025-11-08T18:01:33.478033-08:00",
+		"url": "https://www.alphavantage.co/query?function=NEWS_SENTIMENT\u0026tickers=AAPL\u0026apikey=demo"
+	},
+	{
+		"ID": "EARNINGS_CALL_TRANSCRIPT_58c49486",
+		"path": "testdata/examples/intelligence/EARNINGS_CALL_TRANSCRIPT_58c49486.json",
+		"fetched": "2025-11-08T18:01:33.653236-08:00",
+		"url": "https://www.alphavantage.co/query?function=EARNINGS_CALL_TRANSCRIPT\u0026symbol=IBM\u0026quarter=2024Q1\u0026apikey=demo"
+	},
+	{
+		"ID": "TOP_GAINERS_LOSERS_bbd20350",
+		"path": "testdata/examples/intelligence/TOP_GAINERS_LOSERS_bbd20350.json",
+		"fetched": "2025-11-08T18:01:33.821601-08:00",
+		"url": "https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS\u0026apikey=demo"
+	},
+	{
+		"ID": "INSIDER_TRANSACTIONS_65985270",
+		"path": "testdata/examples/intelligence/INSIDER_TRANSACTIONS_65985270.json",
+		"fetched": "2025-11-08T18:01:33.921652-08:00",
+		"url": "https://www.alphavantage.co/query?function=INSIDER_TRANSACTIONS\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "ANALYTICS_FIXED_WINDOW_89ad6522",
+		"path": "testdata/examples/intelligence/ANALYTICS_FIXED_WINDOW_89ad6522.json",
+		"fetched": "2025-11-08T18:01:34.355287-08:00",
+		"url": "https://www.alphavantage.co/query?function=ANALYTICS_FIXED_WINDOW\u0026SYMBOLS=AAPL,MSFT,IBM\u0026RANGE=2023-07-01\u0026RANGE=2023-08-31\u0026INTERVAL=DAILY\u0026OHLC=close\u0026CALCULATIONS=MEAN,STDDEV,CORRELATION\u0026apikey=demo"
+	},
+	{
+		"ID": "ANALYTICS_SLIDING_WINDOW_5a09754f",
+		"path": "testdata/examples/intelligence/ANALYTICS_SLIDING_WINDOW_5a09754f.json",
+		"fetched": "2025-11-08T18:01:34.719501-08:00",
+		"url": "https://www.alphavantage.co/query?function=ANALYTICS_SLIDING_WINDOW\u0026SYMBOLS=AAPL,IBM\u0026RANGE=2month\u0026INTERVAL=DAILY\u0026OHLC=close\u0026WINDOW_SIZE=20\u0026CALCULATIONS=MEAN,STDDEV(annualized=True)\u0026apikey=demo"
+	},
+	{
+		"ID": "MACD_19e73cc7",
+		"path": "testdata/examples/technical_macd_stoch/MACD_19e73cc7.csv",
+		"fetched": "2025-11-08T18:01:38.200255-08:00",
+		"url": "https://www.alphavantage.co/query?function=MACD\u0026symbol=IBM\u0026interval=daily\u0026series_type=open\u0026apikey=demo"
+	},
+	{
+		"ID": "MACDEXT_84eb70e4",
+		"path": "testdata/examples/technical_macd_stoch/MACDEXT_84eb70e4.csv",
+		"fetched": "2025-11-08T18:01:38.762988-08:00",
+		"url": "https://www.alphavantage.co/query?function=MACDEXT\u0026symbol=IBM\u0026interval=daily\u0026series_type=open\u0026apikey=demo"
+	},
+	{
+		"ID": "STOCH_18a572fd",
+		"path": "testdata/examples/technical_macd_stoch/STOCH_18a572fd.csv",
+		"fetched": "2025-11-08T18:01:39.357928-08:00",
+		"url": "https://www.alphavantage.co/query?function=STOCH\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+	},
+	{
+		"ID": "STOCHF_aae33090",
+		"path": "testdata/examples/technical_macd_stoch/STOCHF_aae33090.csv",
+		"fetched": "2025-11-08T18:01:39.758388-08:00",
+		"url": "https://www.alphavantage.co/query?function=STOCHF\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+	},
+	{
+		"ID": "RSI_fbad53b2",
+		"path": "testdata/examples/technical_macd_stoch/RSI_fbad53b2.csv",
+		"fetched": "2025-11-08T18:01:40.176333-08:00",
+		"url": "https://www.alphavantage.co/query?function=RSI\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+	},
+	{
+		"ID": "STOCHRSI_87df549e",
+		"path": "testdata/examples/technical_macd_stoch/STOCHRSI_87df549e.csv",
+		"fetched": "2025-11-08T18:01:40.552239-08:00",
+		"url": "https://www.alphavantage.co/query?function=STOCHRSI\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026series_type=close\u0026fastkperiod=6\u0026fastdmatype=1\u0026apikey=demo"
+	},
+	{
+		"ID": "SMA_2e3849d5",
+		"path": "testdata/examples/technical_moving_averages/SMA_2e3849d5.csv",
+		"fetched": "2025-11-08T18:01:40.946527-08:00",
+		"url": "https://www.alphavantage.co/query?function=SMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+	},
+	{
+		"ID": "EMA_725a3e7b",
+		"path": "testdata/examples/technical_moving_averages/EMA_725a3e7b.csv",
+		"fetched": "2025-11-08T18:01:41.29029-08:00",
+		"url": "https://www.alphavantage.co/query?function=EMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+	},
+	{
+		"ID": "WMA_b6c190fa",
+		"path": "testdata/examples/technical_moving_averages/WMA_b6c190fa.csv",
+		"fetched": "2025-11-08T18:01:41.556642-08:00",
+		"url": "https://www.alphavantage.co/query?function=WMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+	},
+	{
+		"ID": "DEMA_42b33e8d",
+		"path": "testdata/examples/technical_moving_averages/DEMA_42b33e8d.csv",
+		"fetched": "2025-11-08T18:01:41.98631-08:00",
+		"url": "https://www.alphavantage.co/query?function=DEMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+	},
+	{
+		"ID": "TEMA_c7d8425e",
+		"path": "testdata/examples/technical_moving_averages/TEMA_c7d8425e.csv",
+		"fetched": "2025-11-08T18:01:42.360841-08:00",
+		"url": "https://www.alphavantage.co/query?function=TEMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+	},
+	{
+		"ID": "TRIMA_44737774",
+		"path": "testdata/examples/technical_moving_averages/TRIMA_44737774.csv",
+		"fetched": "2025-11-08T18:01:42.701859-08:00",
+		"url": "https://www.alphavantage.co/query?function=TRIMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+	},
+	{
+		"ID": "KAMA_b92e803d",
+		"path": "testdata/examples/technical_moving_averages/KAMA_b92e803d.csv",
+		"fetched": "2025-11-08T18:01:43.05916-08:00",
+		"url": "https://www.alphavantage.co/query?function=KAMA\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+	},
+	{
+		"ID": "T3_8ad10afc",
+		"path": "testdata/examples/technical_moving_averages/T3_8ad10afc.csv",
+		"fetched": "2025-11-08T18:01:43.416306-08:00",
+		"url": "https://www.alphavantage.co/query?function=T3\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+	},
+	{
+		"ID": "MIDPOINT_c735d994",
+		"path": "testdata/examples/technical_price/MIDPOINT_c735d994.csv",
+		"fetched": "2025-11-08T18:01:43.829107-08:00",
+		"url": "https://www.alphavantage.co/query?function=MIDPOINT\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026series_type=close\u0026apikey=demo"
+	},
+	{
+		"ID": "MIDPRICE_00f6d973",
+		"path": "testdata/examples/technical_price/MIDPRICE_00f6d973.csv",
+		"fetched": "2025-11-08T18:01:44.26195-08:00",
+		"url": "https://www.alphavantage.co/query?function=MIDPRICE\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "CURRENCY_EXCHANGE_RATE_82423f0b",
+		"path": "testdata/examples/forex/CURRENCY_EXCHANGE_RATE_82423f0b.json",
+		"fetched": "2025-11-08T18:01:44.74193-08:00",
+		"url": "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE\u0026from_currency=USD\u0026to_currency=JPY\u0026apikey=demo"
+	},
+	{
+		"ID": "FX_INTRADAY_f0be5c32",
+		"path": "testdata/examples/forex/FX_INTRADAY_f0be5c32.csv",
+		"fetched": "2025-11-08T18:01:44.843333-08:00",
+		"url": "https://www.alphavantage.co/query?function=FX_INTRADAY\u0026from_symbol=EUR\u0026to_symbol=USD\u0026interval=5min\u0026apikey=demo"
+	},
+	{
+		"ID": "FX_DAILY_b7946c44",
+		"path": "testdata/examples/forex/FX_DAILY_b7946c44.csv",
+		"fetched": "2025-11-08T18:01:44.961074-08:00",
+		"url": "https://www.alphavantage.co/query?function=FX_DAILY\u0026from_symbol=EUR\u0026to_symbol=USD\u0026apikey=demo"
+	},
+	{
+		"ID": "FX_WEEKLY_e2a3f5ad",
+		"path": "testdata/examples/forex/FX_WEEKLY_e2a3f5ad.csv",
+		"fetched": "2025-11-08T18:01:45.059875-08:00",
+		"url": "https://www.alphavantage.co/query?function=FX_WEEKLY\u0026from_symbol=EUR\u0026to_symbol=USD\u0026apikey=demo"
+	},
+	{
+		"ID": "FX_MONTHLY_63bfd9fd",
+		"path": "testdata/examples/forex/FX_MONTHLY_63bfd9fd.csv",
+		"fetched": "2025-11-08T18:01:45.796431-08:00",
+		"url": "https://www.alphavantage.co/query?function=FX_MONTHLY\u0026from_symbol=EUR\u0026to_symbol=USD\u0026apikey=demo"
+	},
+	{
+		"ID": "MFI_648317da",
+		"path": "testdata/examples/technical_volume/MFI_648317da.csv",
+		"fetched": "2025-11-08T18:01:45.915713-08:00",
+		"url": "https://www.alphavantage.co/query?function=MFI\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "TRIX_5d057c38",
+		"path": "testdata/examples/technical_volume/TRIX_5d057c38.csv",
+		"fetched": "2025-11-08T18:01:46.237861-08:00",
+		"url": "https://www.alphavantage.co/query?function=TRIX\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026time_period=10\u0026apikey=demo"
+	},
+	{
+		"ID": "AD_207c5d92",
+		"path": "testdata/examples/technical_volume/AD_207c5d92.csv",
+		"fetched": "2025-11-08T18:01:46.678613-08:00",
+		"url": "https://www.alphavantage.co/query?function=AD\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+	},
+	{
+		"ID": "ADOSC_2df56d05",
+		"path": "testdata/examples/technical_volume/ADOSC_2df56d05.csv",
+		"fetched": "2025-11-08T18:01:47.102366-08:00",
+		"url": "https://www.alphavantage.co/query?function=ADOSC\u0026symbol=IBM\u0026interval=daily\u0026fastperiod=5\u0026apikey=demo"
+	},
+	{
+		"ID": "OBV_454e2ac4",
+		"path": "testdata/examples/technical_volume/OBV_454e2ac4.csv",
+		"fetched": "2025-11-08T18:01:47.456391-08:00",
+		"url": "https://www.alphavantage.co/query?function=OBV\u0026symbol=IBM\u0026interval=weekly\u0026apikey=demo"
+	},
+	{
+		"ID": "MAMA_f93f21b3",
+		"path": "testdata/examples/technical_special_ma/MAMA_f93f21b3.csv",
+		"fetched": "2025-11-08T18:01:47.820545-08:00",
+		"url": "https://www.alphavantage.co/query?function=MAMA\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+	},
+	{
+		"ID": "VWAP_2cb5b135",
+		"path": "testdata/examples/technical_special_ma/VWAP_2cb5b135.csv",
+		"fetched": "2025-11-08T18:01:48.221185-08:00",
+		"url": "https://www.alphavantage.co/query?function=VWAP\u0026symbol=IBM\u0026interval=15min\u0026apikey=demo"
+	},
+	{
+		"ID": "OVERVIEW_b1e86153",
+		"path": "testdata/examples/fundamental/OVERVIEW_b1e86153.json",
+		"fetched": "2025-11-08T18:01:48.415512-08:00",
+		"url": "https://www.alphavantage.co/query?function=OVERVIEW\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "ETF_PROFILE_5811666e",
+		"path": "testdata/examples/fundamental/ETF_PROFILE_5811666e.json",
+		"fetched": "2025-11-08T18:01:48.566717-08:00",
+		"url": "https://www.alphavantage.co/query?function=ETF_PROFILE\u0026symbol=QQQ\u0026apikey=demo"
+	},
+	{
+		"ID": "DIVIDENDS_5b9f5d9f",
+		"path": "testdata/examples/fundamental/DIVIDENDS_5b9f5d9f.csv",
+		"fetched": "2025-11-08T18:01:48.675502-08:00",
+		"url": "https://www.alphavantage.co/query?function=DIVIDENDS\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "SPLITS_358e2618",
+		"path": "testdata/examples/fundamental/SPLITS_358e2618.csv",
+		"fetched": "2025-11-08T18:01:48.77919-08:00",
+		"url": "https://www.alphavantage.co/query?function=SPLITS\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "INCOME_STATEMENT_947bd231",
+		"path": "testdata/examples/fundamental/INCOME_STATEMENT_947bd231.json",
+		"fetched": "2025-11-08T18:01:48.878808-08:00",
+		"url": "https://www.alphavantage.co/query?function=INCOME_STATEMENT\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "BALANCE_SHEET_54fef0fd",
+		"path": "testdata/examples/fundamental/BALANCE_SHEET_54fef0fd.json",
+		"fetched": "2025-11-08T18:01:49.052641-08:00",
+		"url": "https://www.alphavantage.co/query?function=BALANCE_SHEET\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "CASH_FLOW_d685b915",
+		"path": "testdata/examples/fundamental/CASH_FLOW_d685b915.json",
+		"fetched": "2025-11-08T18:01:49.296866-08:00",
+		"url": "https://www.alphavantage.co/query?function=CASH_FLOW\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "SHARES_OUTSTANDING_696752e2",
+		"path": "testdata/examples/fundamental/SHARES_OUTSTANDING_696752e2.csv",
+		"fetched": "2025-11-08T18:01:49.46773-08:00",
+		"url": "https://www.alphavantage.co/query?function=SHARES_OUTSTANDING\u0026symbol=MSFT\u0026apikey=demo"
+	},
+	{
+		"ID": "EARNINGS_d56c999e",
+		"path": "testdata/examples/fundamental/EARNINGS_d56c999e.json",
+		"fetched": "2025-11-08T18:01:49.568906-08:00",
+		"url": "https://www.alphavantage.co/query?function=EARNINGS\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "EARNINGS_ESTIMATES_4d82a3f3",
+		"path": "testdata/examples/fundamental/EARNINGS_ESTIMATES_4d82a3f3.json",
+		"fetched": "2025-11-08T18:01:49.675708-08:00",
+		"url": "https://www.alphavantage.co/query?function=EARNINGS_ESTIMATES\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "LISTING_STATUS_42ba3c24",
+		"path": "testdata/examples/fundamental/LISTING_STATUS_42ba3c24.csv",
+		"fetched": "2025-11-08T18:01:49.786568-08:00",
+		"url": "https://www.alphavantage.co/query?function=LISTING_STATUS\u0026apikey=demo"
+	},
+	{
+		"ID": "EARNINGS_CALENDAR_c674ae28",
+		"path": "testdata/examples/fundamental/EARNINGS_CALENDAR_c674ae28.csv",
+		"fetched": "2025-11-08T18:01:50.102201-08:00",
+		"url": "https://www.alphavantage.co/query?function=EARNINGS_CALENDAR\u0026horizon=3month\u0026apikey=demo"
+	},
+	{
+		"ID": "IPO_CALENDAR_bed45bed",
+		"path": "testdata/examples/fundamental/IPO_CALENDAR_bed45bed.csv",
+		"fetched": "2025-11-08T18:01:50.369284-08:00",
+		"url": "https://www.alphavantage.co/query?function=IPO_CALENDAR\u0026apikey=demo"
+	},
+	{
+		"ID": "REALTIME_OPTIONS_e1db0de5",
+		"path": "testdata/examples/options/REALTIME_OPTIONS_e1db0de5.json",
+		"fetched": "2025-11-08T18:01:50.473694-08:00",
+		"url": "https://www.alphavantage.co/query?function=REALTIME_OPTIONS\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "HISTORICAL_OPTIONS_6c0b1a36",
+		"path": "testdata/examples/options/HISTORICAL_OPTIONS_6c0b1a36.csv",
+		"fetched": "2025-11-08T18:01:50.573024-08:00",
+		"url": "https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "HT_TRENDLINE_459bf2f7",
+		"path": "testdata/examples/technical_hilbert/HT_TRENDLINE_459bf2f7.csv",
+		"fetched": "2025-11-08T18:01:50.739493-08:00",
+		"url": "https://www.alphavantage.co/query?function=HT_TRENDLINE\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+	},
+	{
+		"ID": "HT_SINE_015dabd4",
+		"path": "testdata/examples/technical_hilbert/HT_SINE_015dabd4.csv",
+		"fetched": "2025-11-08T18:01:51.011054-08:00",
+		"url": "https://www.alphavantage.co/query?function=HT_SINE\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+	},
+	{
+		"ID": "HT_TRENDMODE_90313721",
+		"path": "testdata/examples/technical_hilbert/HT_TRENDMODE_90313721.csv",
+		"fetched": "2025-11-08T18:01:51.411861-08:00",
+		"url": "https://www.alphavantage.co/query?function=HT_TRENDMODE\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+	},
+	{
+		"ID": "HT_DCPERIOD_1f51b571",
+		"path": "testdata/examples/technical_hilbert/HT_DCPERIOD_1f51b571.csv",
+		"fetched": "2025-11-08T18:01:51.759357-08:00",
+		"url": "https://www.alphavantage.co/query?function=HT_DCPERIOD\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+	},
+	{
+		"ID": "HT_DCPHASE_7072d4d1",
+		"path": "testdata/examples/technical_hilbert/HT_DCPHASE_7072d4d1.csv",
+		"fetched": "2025-11-08T18:01:52.161816-08:00",
+		"url": "https://www.alphavantage.co/query?function=HT_DCPHASE\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+	},
+	{
+		"ID": "HT_PHASOR_5030e26f",
+		"path": "testdata/examples/technical_hilbert/HT_PHASOR_5030e26f.csv",
+		"fetched": "2025-11-08T18:01:52.536882-08:00",
+		"url": "https://www.alphavantage.co/query?function=HT_PHASOR\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+	},
+	{
+		"ID": "TIME_SERIES_INTRADAY_3dbdcdc7",
+		"path": "testdata/examples/time_series/TIME_SERIES_INTRADAY_3dbdcdc7.csv",
+		"fetched": "2025-11-08T18:01:52.916494-08:00",
+		"url": "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY\u0026symbol=IBM\u0026interval=5min\u0026apikey=demo"
+	},
+	{
+		"ID": "TIME_SERIES_DAILY_42a08190",
+		"path": "testdata/examples/time_series/TIME_SERIES_DAILY_42a08190.csv",
+		"fetched": "2025-11-08T18:01:53.250715-08:00",
+		"url": "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "TIME_SERIES_DAILY_ADJUSTED_572d0539",
+		"path": "testdata/examples/time_series/TIME_SERIES_DAILY_ADJUSTED_572d0539.csv",
+		"fetched": "2025-11-08T18:01:53.377564-08:00",
+		"url": "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "TIME_SERIES_WEEKLY_74eb54d6",
+		"path": "testdata/examples/time_series/TIME_SERIES_WEEKLY_74eb54d6.csv",
+		"fetched": "2025-11-08T18:01:53.759287-08:00",
+		"url": "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "TIME_SERIES_WEEKLY_ADJUSTED_9cd0a0b1",
+		"path": "testdata/examples/time_series/TIME_SERIES_WEEKLY_ADJUSTED_9cd0a0b1.csv",
+		"fetched": "2025-11-08T18:01:54.067896-08:00",
+		"url": "https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "TIME_SERIES_MONTHLY_3ced87e9",
+		"path": "testdata/examples/time_series/TIME_SERIES_MONTHLY_3ced87e9.csv",
+		"fetched": "2025-11-08T18:01:54.550268-08:00",
+		"url": "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "TIME_SERIES_MONTHLY_ADJUSTED_62a3844d",
+		"path": "testdata/examples/time_series/TIME_SERIES_MONTHLY_ADJUSTED_62a3844d.csv",
+		"fetched": "2025-11-08T18:01:54.675657-08:00",
+		"url": "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "REALTIME_BULK_QUOTES_505ed5cc",
+		"path": "testdata/examples/time_series/REALTIME_BULK_QUOTES_505ed5cc.json",
+		"fetched": "2025-11-08T18:01:54.805685-08:00",
+		"url": "https://www.alphavantage.co/query?function=REALTIME_BULK_QUOTES\u0026symbol=MSFT,AAPL,IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "SYMBOL_SEARCH_c3e00cd4",
+		"path": "testdata/examples/time_series/SYMBOL_SEARCH_c3e00cd4.csv",
+		"fetched": "2025-11-08T18:01:54.907137-08:00",
+		"url": "https://www.alphavantage.co/query?function=SYMBOL_SEARCH\u0026keywords=tesco\u0026apikey=demo"
+	},
+	{
+		"ID": "MARKET_STATUS_b3880d61",
+		"path": "testdata/examples/time_series/MARKET_STATUS_b3880d61.json",
+		"fetched": "2025-11-08T18:01:55.007898-08:00",
+		"url": "https://www.alphavantage.co/query?function=MARKET_STATUS\u0026apikey=demo"
+	},
+	{
+		"ID": "GLOBAL_QUOTE_db7544f0",
+		"path": "testdata/examples/time_series/GLOBAL_QUOTE_db7544f0.csv",
+		"fetched": "2025-11-08T18:01:55.106191-08:00",
+		"url": "https://www.alphavantage.co/query?function=GLOBAL_QUOTE\u0026symbol=IBM\u0026apikey=demo"
+	}
+]

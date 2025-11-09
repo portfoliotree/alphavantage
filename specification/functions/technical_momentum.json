@@ -21,6 +21,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=WILLR\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"WILLR"
 		]
 	},
 	{
@@ -48,6 +52,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=APO\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"APO"
 		]
 	},
 	{
@@ -75,6 +83,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=PPO\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"PPO"
 		]
 	},
 	{
@@ -100,6 +112,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=MOM\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"MOM"
 		]
 	},
 	{
@@ -147,6 +163,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=CCI\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"CCI"
 		]
 	},
 	{
@@ -172,6 +192,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=CMO\u0026symbol=IBM\u0026interval=weekly\u0026series_type=close\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"CMO"
 		]
 	},
 	{
@@ -197,6 +221,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=ROC\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"ROC"
 		]
 	},
 	{
@@ -222,6 +250,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=ROCR\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"ROCR"
 		]
 	}
 ]

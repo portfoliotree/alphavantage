@@ -21,6 +21,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=MFI\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"MFI"
 		]
 	},
 	{
@@ -46,6 +50,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=TRIX\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026time_period=10\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"TRIX"
 		]
 	},
 	{
@@ -69,6 +77,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=AD\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"Chaikin A/D"
 		]
 	},
 	{
@@ -94,6 +106,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=ADOSC\u0026symbol=IBM\u0026interval=daily\u0026fastperiod=5\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"ADOSC"
 		]
 	},
 	{
@@ -117,6 +133,10 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=OBV\u0026symbol=IBM\u0026interval=weekly\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"time",
+			"OBV"
 		]
 	}
 ]

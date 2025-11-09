@@ -26,6 +26,14 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY\u0026symbol=IBM\u0026interval=5min\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close",
+			"volume"
 		]
 	},
 	{
@@ -42,6 +50,14 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY\u0026symbol=IBM\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close",
+			"volume"
 		]
 	},
 	{
@@ -58,6 +74,17 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED\u0026symbol=IBM\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close",
+			"adjusted_close",
+			"volume",
+			"dividend_amount",
+			"split_coefficient"
 		]
 	},
 	{
@@ -73,6 +100,14 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY\u0026symbol=IBM\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close",
+			"volume"
 		]
 	},
 	{
@@ -88,6 +123,16 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED\u0026symbol=IBM\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close",
+			"adjusted close",
+			"volume",
+			"dividend amount"
 		]
 	},
 	{
@@ -103,6 +148,14 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY\u0026symbol=IBM\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close",
+			"volume"
 		]
 	},
 	{
@@ -118,6 +171,16 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED\u0026symbol=IBM\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"timestamp",
+			"open",
+			"high",
+			"low",
+			"close",
+			"adjusted close",
+			"volume",
+			"dividend amount"
 		]
 	},
 	{
@@ -148,6 +211,17 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=SYMBOL_SEARCH\u0026keywords=tesco\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"symbol",
+			"name",
+			"type",
+			"region",
+			"marketOpen",
+			"marketClose",
+			"timezone",
+			"currency",
+			"matchScore"
 		]
 	},
 	{
@@ -175,6 +249,18 @@
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=GLOBAL_QUOTE\u0026symbol=IBM\u0026apikey=demo"
+		],
+		"csv_columns": [
+			"symbol",
+			"open",
+			"high",
+			"low",
+			"price",
+			"volume",
+			"latestDay",
+			"previousClose",
+			"change",
+			"changePercent"
 		]
 	}
 ]
