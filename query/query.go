@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"net/url"
 	"time"
+
+	"github.com/portfoliotree/alphavantage/specification"
 )
 
 //goland:noinspection SpellCheckingInspection
 const (
 	KeyOutputSize = `outputsize`
-	KeyDataType   = `dataType`
+	KeyDataType   = specification.QueryKeyDataType
 	KeyAPIKey     = `apikey`
 	KeyFunction   = `function`
 	KeyInterval   = `interval`
