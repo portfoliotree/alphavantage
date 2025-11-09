@@ -1,4 +1,4 @@
-package specification
+package specification_test
 
 import (
 	"encoding/json"
@@ -10,6 +10,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+
+	"github.com/portfoliotree/alphavantage/specification"
 )
 
 // TestJSON just formats the files and makes sure they have valid JSON
@@ -50,7 +52,7 @@ func TestCompoundWords(t *testing.T) {
 func TestQueryParameters(t *testing.T) {
 	buf, err := os.ReadFile("query_parameters.json")
 	require.NoError(t, err)
-	var data []QueryParameter
+	var data []specification.QueryParameter
 	require.NoError(t, json.Unmarshal(buf, &data))
 
 	for _, param := range data {
@@ -62,7 +64,8 @@ func TestQueryParameters(t *testing.T) {
 	}
 }
 
-func validateQueryParameterType(t *testing.T, param QueryParameter) {
+func validateQueryParameterType(t *testing.T, param specification.QueryParameter) {
+	t.Helper()
 	switch param.Type {
 	case "bool":
 		require.Empty(t, param.ValuesURL)
@@ -88,9 +91,14 @@ func validateQueryParameterType(t *testing.T, param QueryParameter) {
 }
 
 func TestFunctions(t *testing.T) {
+	apikey, hasAPIKey := os.LookupEnv("ALPHA_VANTAGE_TOKEN")
+	hasAPIKey = hasAPIKey && apikey != ""
+
+	exampleDir := filepath.FromSlash("testdata/examples")
+
 	buf, err := os.ReadFile("query_parameters.json")
 	require.NoError(t, err, "failed to read query_parameters.json")
-	var queryParameters []QueryParameter
+	var queryParameters []specification.QueryParameter
 	require.NoError(t, json.Unmarshal(buf, &queryParameters), "failed to parse query_parameters.json")
 
 	filePaths, err := filepath.Glob(filepath.FromSlash("functions/*.json"))
@@ -98,9 +106,10 @@ func TestFunctions(t *testing.T) {
 	for _, filePath := range filePaths {
 		baseFileName := strings.TrimSuffix(filepath.Base(filePath), ".json")
 		t.Run(baseFileName, func(t *testing.T) {
+			t.Parallel()
 			buf, err := os.ReadFile(filePath)
 			require.NoError(t, err)
-			var functions []Function
+			var functions []specification.Function
 			require.NoError(t, json.Unmarshal(buf, &functions))
 
 			for _, fn := range functions {
@@ -112,14 +121,22 @@ func TestFunctions(t *testing.T) {
 					testExampleURLs(t, fn)
 				})
 			}
+
+			t.Run("fetch_examples", func(t *testing.T) {
+				if !hasAPIKey {
+					t.Skip("skipping test because env var ALPHA_VANTAGE_TOKEN is not set")
+				}
+				_ = os.MkdirAll(filepath.Join(exampleDir, baseFileName), 0744)
+				require.NoError(t, specification.FetchCSVExamples(t.Context(), filepath.Join(exampleDir, baseFileName), apikey, functions))
+			})
 		})
 	}
 }
 
-func allQueryParamsSpecified(t *testing.T, fn Function, queryParameters []QueryParameter, names ...string) {
+func allQueryParamsSpecified(t *testing.T, fn specification.Function, queryParameters []specification.QueryParameter, names ...string) {
 	t.Helper()
 	for _, param := range names {
-		index := slices.IndexFunc(queryParameters, func(parameter QueryParameter) bool {
+		index := slices.IndexFunc(queryParameters, func(parameter specification.QueryParameter) bool {
 			return parameter.Name == param
 		})
 		if index < 0 {
@@ -128,12 +145,12 @@ func allQueryParamsSpecified(t *testing.T, fn Function, queryParameters []QueryP
 	}
 }
 
-func enumValuesSubset(t *testing.T, fn Function, queryParameters []QueryParameter) {
+func enumValuesSubset(t *testing.T, fn specification.Function, queryParameters []specification.QueryParameter) {
 	if len(fn.EnumSubset) == 0 {
 		return
 	}
 	for key, values := range fn.EnumSubset {
-		index := slices.IndexFunc(queryParameters, func(parameter QueryParameter) bool {
+		index := slices.IndexFunc(queryParameters, func(parameter specification.QueryParameter) bool {
 			return parameter.Name == key
 		})
 		if index < 0 {
@@ -169,7 +186,8 @@ func enumValuesSubset(t *testing.T, fn Function, queryParameters []QueryParamete
 	}
 }
 
-func testExampleURLs(t *testing.T, fn Function) {
+func testExampleURLs(t *testing.T, fn specification.Function) {
+	t.Helper()
 	for _, example := range fn.Examples {
 		u, err := url.Parse(example)
 		require.NoError(t, err)

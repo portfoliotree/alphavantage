@@ -1,0 +1,6 @@
+symbol,name,type,region,marketOpen,marketClose,timezone,currency,matchScore
+TSCO.LON,Tesco PLC,Equity,United Kingdom,08:00,16:30,UTC+01,GBX,0.7273
+TSCDF,Tesco plc,Equity,United States,09:30,16:00,UTC-04,USD,0.7143
+TSCDY,Tesco plc,Equity,United States,09:30,16:00,UTC-04,USD,0.7143
+TCO2.FRK,TESCO PLC ADR/1 LS-05,Equity,Frankfurt,08:00,20:00,UTC+02,EUR,0.5455
+TCO0.FRK,TESCO PLC LS-0633333,Equity,Frankfurt,08:00,20:00,UTC+02,EUR,0.5455

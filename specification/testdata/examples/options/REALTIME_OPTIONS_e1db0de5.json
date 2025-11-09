@@ -1,0 +1,70 @@
+{
+    "endpoint": "Realtime Options",
+    "message": "This is a premium endpoint. ***THE SAMPLE DATA SCHEMA BELOW IS ARTIFICIAL AND FOR ILLUSTRATION PURPOSES ONLY***. To access the actual data, please subscribe to either the 600 requests per minute or the 1200 requests per minute premium plan at https://www.alphavantage.co/premium/ if you would like to access realtime US options data for personal non-professional use. For professional/commercial use, please contact support at support@alphavantage.co.",
+    "data": [
+        {
+            "contractID": "XXYYZZ999999C00020000",
+            "symbol": "XXYYZZ",
+            "expiration": "2099-99-99",
+            "strike": "20.00",
+            "type": "call",
+            "last": "100.00",
+            "mark": "100.10",
+            "bid": "100.05",
+            "bid_size": "100",
+            "ask": "100.15",
+            "ask_size": "100",
+            "volume": "100",
+            "open_interest": "100",
+            "date": "2049-99-99"
+        },
+        {
+            "contractID": "XXYYZZ999999P00020000",
+            "symbol": "XXYYZZ",
+            "expiration": "2099-99-99",
+            "strike": "20.00",
+            "type": "put",
+            "last": "100.00",
+            "mark": "100.10",
+            "bid": "100.05",
+            "bid_size": "100",
+            "ask": "100.15",
+            "ask_size": "100",
+            "volume": "100",
+            "open_interest": "100",
+            "date": "2049-99-99"
+        },
+        {
+            "contractID": "XXYYZZ999999C00030000",
+            "symbol": "XXYYZZ",
+            "expiration": "2099-99-99",
+            "strike": "30.00",
+            "type": "call",
+            "last": "100.00",
+            "mark": "100.10",
+            "bid": "100.05",
+            "bid_size": "100",
+            "ask": "100.15",
+            "ask_size": "100",
+            "volume": "100",
+            "open_interest": "100",
+            "date": "2049-99-99"
+        },
+        {
+            "contractID": "XXYYZZ999999P00030000",
+            "symbol": "XXYYZZ",
+            "expiration": "2099-99-99",
+            "strike": "30.00",
+            "type": "put",
+            "last": "100.00",
+            "mark": "100.10",
+            "bid": "100.05",
+            "bid_size": "100",
+            "ask": "100.15",
+            "ask_size": "100",
+            "volume": "100",
+            "open_interest": "100",
+            "date": "2049-99-99"
+        }
+    ]
+}
