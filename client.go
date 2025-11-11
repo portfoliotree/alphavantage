@@ -28,6 +28,8 @@ import (
 	"golang.org/x/time/rate"
 )
 
+//go:generate go run ./cmd/av-generate
+
 const (
 	envVarPrefix = "ALPHA_VANTAGE_"
 

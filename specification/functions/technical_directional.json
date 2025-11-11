@@ -23,8 +23,14 @@
 			"https://www.alphavantage.co/query?function=DX\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"time",
-			"DX"
+			{
+				"name": "time",
+				"type": "string"
+			},
+			{
+				"name": "DX",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -51,8 +57,14 @@
 			"https://www.alphavantage.co/query?function=ADX\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"time",
-			"ADX"
+			{
+				"name": "time",
+				"type": "string"
+			},
+			{
+				"name": "ADX",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -79,8 +91,14 @@
 			"https://www.alphavantage.co/query?function=ADXR\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"time",
-			"ADXR"
+			{
+				"name": "time",
+				"type": "string"
+			},
+			{
+				"name": "ADXR",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -107,8 +125,14 @@
 			"https://www.alphavantage.co/query?function=MINUS_DI\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"time",
-			"MINUS_DI"
+			{
+				"name": "time",
+				"type": "string"
+			},
+			{
+				"name": "MINUS_DI",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -135,8 +159,14 @@
 			"https://www.alphavantage.co/query?function=PLUS_DI\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"time",
-			"PLUS_DI"
+			{
+				"name": "time",
+				"type": "string"
+			},
+			{
+				"name": "PLUS_DI",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -163,8 +193,14 @@
 			"https://www.alphavantage.co/query?function=MINUS_DM\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"time",
-			"MINUS_DM"
+			{
+				"name": "time",
+				"type": "string"
+			},
+			{
+				"name": "MINUS_DM",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -191,8 +227,14 @@
 			"https://www.alphavantage.co/query?function=PLUS_DM\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"time",
-			"PLUS_DM"
+			{
+				"name": "time",
+				"type": "string"
+			},
+			{
+				"name": "PLUS_DM",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -219,9 +261,18 @@
 			"https://www.alphavantage.co/query?function=AROON\u0026symbol=IBM\u0026interval=daily\u0026time_period=14\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"time",
-			"Aroon Down",
-			"Aroon Up"
+			{
+				"name": "time",
+				"type": "string"
+			},
+			{
+				"name": "Aroon Down",
+				"type": "string"
+			},
+			{
+				"name": "Aroon Up",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -248,8 +299,14 @@
 			"https://www.alphavantage.co/query?function=AROONOSC\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"time",
-			"AROONOSC"
+			{
+				"name": "time",
+				"type": "string"
+			},
+			{
+				"name": "AROONOSC",
+				"type": "string"
+			}
 		]
 	}
 ]

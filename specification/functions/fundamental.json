@@ -37,11 +37,26 @@
 			"https://www.alphavantage.co/query?function=DIVIDENDS\u0026symbol=IBM\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"ex_dividend_date",
-			"declaration_date",
-			"record_date",
-			"payment_date",
-			"amount"
+			{
+				"name": "ex_dividend_date",
+				"type": "string"
+			},
+			{
+				"name": "declaration_date",
+				"type": "string"
+			},
+			{
+				"name": "record_date",
+				"type": "string"
+			},
+			{
+				"name": "payment_date",
+				"type": "string"
+			},
+			{
+				"name": "amount",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -58,8 +73,14 @@
 			"https://www.alphavantage.co/query?function=SPLITS\u0026symbol=IBM\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"effective_date",
-			"split_factor"
+			{
+				"name": "effective_date",
+				"type": "string"
+			},
+			{
+				"name": "split_factor",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -112,9 +133,18 @@
 			"https://www.alphavantage.co/query?function=SHARES_OUTSTANDING\u0026symbol=MSFT\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"date",
-			"shares_outstanding_diluted",
-			"shares_outstanding_basic"
+			{
+				"name": "date",
+				"type": "string"
+			},
+			{
+				"name": "shares_outstanding_diluted",
+				"type": "string"
+			},
+			{
+				"name": "shares_outstanding_basic",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -155,13 +185,34 @@
 			"https://www.alphavantage.co/query?function=LISTING_STATUS\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"symbol",
-			"name",
-			"exchange",
-			"assetType",
-			"ipoDate",
-			"delistingDate",
-			"status"
+			{
+				"name": "symbol",
+				"type": "string"
+			},
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "exchange",
+				"type": "string"
+			},
+			{
+				"name": "assetType",
+				"type": "string"
+			},
+			{
+				"name": "ipoDate",
+				"type": "string"
+			},
+			{
+				"name": "delistingDate",
+				"type": "string"
+			},
+			{
+				"name": "status",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -178,12 +229,30 @@
 			"https://www.alphavantage.co/query?function=EARNINGS_CALENDAR\u0026horizon=3month\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"symbol",
-			"name",
-			"reportDate",
-			"fiscalDateEnding",
-			"estimate",
-			"currency"
+			{
+				"name": "symbol",
+				"type": "string"
+			},
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "reportDate",
+				"type": "string"
+			},
+			{
+				"name": "fiscalDateEnding",
+				"type": "string"
+			},
+			{
+				"name": "estimate",
+				"type": "string"
+			},
+			{
+				"name": "currency",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -197,13 +266,34 @@
 			"https://www.alphavantage.co/query?function=IPO_CALENDAR\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"symbol",
-			"name",
-			"ipoDate",
-			"priceRangeLow",
-			"priceRangeHigh",
-			"currency",
-			"exchange"
+			{
+				"name": "symbol",
+				"type": "string"
+			},
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "ipoDate",
+				"type": "string"
+			},
+			{
+				"name": "priceRangeLow",
+				"type": "string"
+			},
+			{
+				"name": "priceRangeHigh",
+				"type": "string"
+			},
+			{
+				"name": "currency",
+				"type": "string"
+			},
+			{
+				"name": "exchange",
+				"type": "string"
+			}
 		]
 	}
 ]

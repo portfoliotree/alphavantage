@@ -180,8 +180,15 @@ func TestCSVColumns(t *testing.T) {
 						firstLine, err := r.Read()
 						require.NoError(t, err)
 
-						if !assert.Equal(t, fn.CSVColumns, firstLine) && len(fn.CSVColumns) == 0 {
-							functions[fi].CSVColumns = firstLine
+						var columnNames []string
+						for _, n := range fn.CSVColumns {
+							columnNames = append(columnNames, n.Name)
+						}
+
+						if !assert.Equal(t, columnNames, firstLine) && len(fn.CSVColumns) == 0 {
+							for _, name := range firstLine {
+								functions[fi].CSVColumns = append(functions[fi].CSVColumns, specification.CSVColumn{Name: name, Type: "string"})
+							}
 							columnsSet = true
 						}
 					})

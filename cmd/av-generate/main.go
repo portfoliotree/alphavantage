@@ -127,8 +127,9 @@ func generateFile(pkgName, outFileName, baseFileName string, functions []specifi
 			file.Decls = append(file.Decls, fnDecl)
 		}
 
+		getIdent := "Get" + goIdent
 		file.Decls = append(file.Decls, &ast.FuncDecl{
-			Name: ast.NewIdent("Get" + goIdent),
+			Name: ast.NewIdent(getIdent),
 			Recv: &ast.FieldList{
 				List: []*ast.Field{
 					{Names: []*ast.Ident{ast.NewIdent("client")}, Type: &ast.StarExpr{X: ast.NewIdent("Client")}},
@@ -239,6 +240,7 @@ func generateFile(pkgName, outFileName, baseFileName string, functions []specifi
 			continue
 		}
 
+		getFuncRows := "Get" + goIdent + "CSVRows"
 		file.Decls = append(file.Decls, &ast.GenDecl{
 			Tok: token.TYPE,
 			Specs: []ast.Spec{
@@ -250,7 +252,7 @@ func generateFile(pkgName, outFileName, baseFileName string, functions []specifi
 				},
 			},
 		}, &ast.FuncDecl{
-			Name: ast.NewIdent("Get" + goIdent + "CSVRows"),
+			Name: ast.NewIdent(getFuncRows),
 			Recv: &ast.FieldList{
 				List: []*ast.Field{
 					{Names: []*ast.Ident{ast.NewIdent("client")}, Type: &ast.StarExpr{X: ast.NewIdent("Client")}},
@@ -570,11 +572,11 @@ func csvFields(baseFileName string, fn specification.Function, goIdentifiers map
 		return &ast.FieldList{
 			List: []*ast.Field{
 				{
-					Names: []*ast.Ident{ast.NewIdent(goIdentifiers[fn.CSVColumns[0]][0])},
+					Names: []*ast.Ident{ast.NewIdent(goIdentifiers[fn.CSVColumns[0].Name][0])},
 					Type:  ast.NewIdent("string"),
 					Tag: &ast.BasicLit{
 						Kind:  token.STRING,
-						Value: "`" + fmt.Sprintf(`column-name:%q`, fn.CSVColumns[0]) + "`",
+						Value: "`" + fmt.Sprintf(`column-name:%q`, fn.CSVColumns[0].Name) + "`",
 					},
 				},
 				{
@@ -582,28 +584,52 @@ func csvFields(baseFileName string, fn specification.Function, goIdentifiers map
 					Type:  ast.NewIdent("string"),
 					Tag: &ast.BasicLit{
 						Kind:  token.STRING,
-						Value: "`" + fmt.Sprintf(`column-name:%q`, fn.CSVColumns[1]) + "`",
+						Value: "`" + fmt.Sprintf(`column-name:%q`, fn.CSVColumns[1].Name) + "`",
 					},
 				},
 			},
 		}
 	}
 
-	switch fn.Name {
-	default:
-		fields := ast.FieldList{}
-		for _, col := range fn.CSVColumns {
-			fields.List = append(fields.List, &ast.Field{
-				Names: []*ast.Ident{ast.NewIdent(goIdentifiers[col][0])},
-				Type:  ast.NewIdent("string"),
-				Tag: &ast.BasicLit{
-					Kind:  token.STRING,
-					Value: "`" + fmt.Sprintf(`column-name:%q`, col) + "`",
-				},
-			})
+	fields := ast.FieldList{}
+	for _, col := range fn.CSVColumns {
+		fieldName := col.Name
+		if fieldName == fn.Name {
+			fieldName = "Value"
+		} else {
+			ns, ok := goIdentifiers[fieldName]
+			if ok {
+				fieldName = ns[0]
+			}
 		}
-		return &fields
+		var (
+			fieldType ast.Expr
+			tag       string
+		)
+		switch col.Type {
+		case "string", "float64", "int":
+			fieldType = ast.Expr(ast.NewIdent(col.Type))
+			tag = "`" + fmt.Sprintf(`column-name:%q`, col.Name) + "`"
+		case "time":
+			fieldType = newSel("time", "Time")
+			if col.Format != "" {
+				tag = "`" + fmt.Sprintf(`column-name:%q time-layout:%q`, col.Name, col.Format) + "`"
+			}
+
+		default:
+			panic(fmt.Sprintf("unsupported column type %q for function %q", col.Type, fn.Name))
+		}
+
+		fields.List = append(fields.List, &ast.Field{
+			Names: []*ast.Ident{ast.NewIdent(fieldName)},
+			Type:  fieldType,
+			Tag: &ast.BasicLit{
+				Kind:  token.STRING,
+				Value: tag,
+			},
+		})
 	}
+	return &fields
 }
 
 func generateCLIFile(functionFiles map[string][]specification.Function, goIdentifiers map[string][]string, queryParams []specification.QueryParameter) error {
@@ -1311,11 +1337,8 @@ func generateCLITestData(functionFiles map[string][]specification.Function) erro
 
 			for _, key := range keys {
 				values := query[key]
-				// Convert underscore to hyphen in flag names
 				flagName := strings.Replace(key, "_", "-", -1)
-				// Handle multi-value parameters by joining with commas
-				// This is necessary because pflag's StringVar only keeps the last value
-				// when a flag is specified multiple times
+				flagName = strings.ToLower(flagName)
 				if len(values) > 1 {
 					args = append(args, fmt.Sprintf("--%s=%s", flagName, strings.Join(values, ",")))
 				} else if len(values) == 1 {

@@ -57,13 +57,19 @@ type File struct {
 	Functions []Function `json:"functions"`
 }
 
+type CSVColumn struct {
+	Name   string `json:"name"`
+	Type   string `json:"type"`
+	Format string `json:"format,omitempty"`
+}
+
 type Function struct {
 	Name       string              `json:"name"`
 	Required   []string            `json:"required"`
 	Optional   []string            `json:"optional"`
 	EnumSubset map[string][]string `json:"enum_subset,omitempty"`
 	Examples   []string            `json:"examples"`
-	CSVColumns []string            `json:"csv_columns,omitempty"`
+	CSVColumns []CSVColumn         `json:"csv_columns,omitempty"`
 }
 
 func (fn Function) HasDatatypeParameter() bool {

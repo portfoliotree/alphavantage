@@ -211,33 +211,6 @@ BAB,Invesco Taxable Municipal Bond ETF,ETF,United States,09:30,16:00,UTC-04,USD,
 	// Processed 2 results
 }
 
-// ExampleClient_DoQuotesRequest_parseCSV demonstrates fetching real data and parsing it.
-func ExampleClient_DoQuotesRequest_parseCSV() {
-	apiKey := cmp.Or(os.Getenv(alphavantage.TokenEnvironmentVariableName), apiKeyTestValue)
-	client := alphavantage.NewClient(apiKey, alphavantage.PremiumPlan75)
-
-	// This example shows the pattern but doesn't make a real API call
-	// ctx := context.Background()
-	// result, err := client.DoQuotesRequest(ctx, "IBM", alphavantage.TimeSeriesDaily)
-	// if err != nil {
-	//     fmt.Printf("Error: %v\n", err)
-	//     return
-	// }
-	// defer result.Close()
-	//
-	// var prices []StockPrice
-	// err = alphavantage.ParseCSV(result, &prices, time.UTC)
-	// if err != nil {
-	//     fmt.Printf("Parse error: %v\n", err)
-	//     return
-	// }
-	//
-	// fmt.Printf("Fetched %d daily prices for IBM\n", len(prices))
-
-	fmt.Printf("Client ready for CSV parsing: %t\n", client != nil)
-	// Output: Client ready for CSV parsing: true
-}
-
 // ExampleClient demonstrates how to create a new AlphaVantage client.
 func ExampleClient() {
 	// Get API key from environment variable
@@ -289,20 +262,20 @@ func TestTimeSeriesIntraday(t *testing.T) {
 	assert.Len(t, result, 100)
 
 	// Verify first quote details
-	assert.Equal(t, "2020-08-21 19:40:00", result[0].TimeStamp)
-	assert.Equal(t, "123.1700", result[0].Open)
-	assert.Equal(t, "123.1700", result[0].High)
-	assert.Equal(t, "123.1700", result[0].Low)
-	assert.Equal(t, "123.1700", result[0].Close)
-	assert.Equal(t, "825", result[0].Volume)
+	assert.Equal(t, "2020-08-21 19:40:00 +0000 UTC", result[0].TimeStamp.String())
+	assert.Equal(t, 123.1700, result[0].Open)
+	assert.Equal(t, 123.1700, result[0].High)
+	assert.Equal(t, 123.1700, result[0].Low)
+	assert.Equal(t, 123.1700, result[0].Close)
+	assert.Equal(t, 825, result[0].Volume)
 
 	// Verify last quote details (from previous day)
-	assert.Equal(t, "2020-08-20 17:10:00", result[99].TimeStamp)
-	assert.Equal(t, "123.1500", result[99].Open)
-	assert.Equal(t, "123.1500", result[99].High)
-	assert.Equal(t, "123.1500", result[99].Low)
-	assert.Equal(t, "123.1500", result[99].Close)
-	assert.Equal(t, "2916", result[99].Volume)
+	assert.Equal(t, "2020-08-20 17:10:00 +0000 UTC", result[99].TimeStamp.String())
+	assert.Equal(t, 123.1500, result[99].Open)
+	assert.Equal(t, 123.1500, result[99].High)
+	assert.Equal(t, 123.1500, result[99].Low)
+	assert.Equal(t, 123.1500, result[99].Close)
+	assert.Equal(t, 2916, result[99].Volume)
 }
 
 func TestClient_CompanyOverview(t *testing.T) {

@@ -30,26 +30,86 @@
 			"https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS\u0026symbol=IBM\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"contractID",
-			"symbol",
-			"expiration",
-			"strike",
-			"type",
-			"last",
-			"mark",
-			"bid",
-			"bid_size",
-			"ask",
-			"ask_size",
-			"volume",
-			"open_interest",
-			"date",
-			"implied_volatility",
-			"delta",
-			"gamma",
-			"theta",
-			"vega",
-			"rho"
+			{
+				"name": "contractID",
+				"type": "string"
+			},
+			{
+				"name": "symbol",
+				"type": "string"
+			},
+			{
+				"name": "expiration",
+				"type": "string"
+			},
+			{
+				"name": "strike",
+				"type": "string"
+			},
+			{
+				"name": "type",
+				"type": "string"
+			},
+			{
+				"name": "last",
+				"type": "string"
+			},
+			{
+				"name": "mark",
+				"type": "string"
+			},
+			{
+				"name": "bid",
+				"type": "string"
+			},
+			{
+				"name": "bid_size",
+				"type": "string"
+			},
+			{
+				"name": "ask",
+				"type": "string"
+			},
+			{
+				"name": "ask_size",
+				"type": "string"
+			},
+			{
+				"name": "volume",
+				"type": "string"
+			},
+			{
+				"name": "open_interest",
+				"type": "string"
+			},
+			{
+				"name": "date",
+				"type": "string"
+			},
+			{
+				"name": "implied_volatility",
+				"type": "string"
+			},
+			{
+				"name": "delta",
+				"type": "string"
+			},
+			{
+				"name": "gamma",
+				"type": "string"
+			},
+			{
+				"name": "theta",
+				"type": "string"
+			},
+			{
+				"name": "vega",
+				"type": "string"
+			},
+			{
+				"name": "rho",
+				"type": "string"
+			}
 		]
 	}
 ]

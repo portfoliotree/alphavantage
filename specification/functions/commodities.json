@@ -20,8 +20,14 @@
 			"https://www.alphavantage.co/query?function=WTI\u0026interval=monthly\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"value"
+			{
+				"name": "timestamp",
+				"type": "string"
+			},
+			{
+				"name": "value",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -45,8 +51,14 @@
 			"https://www.alphavantage.co/query?function=BRENT\u0026interval=monthly\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"value"
+			{
+				"name": "timestamp",
+				"type": "string"
+			},
+			{
+				"name": "value",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -70,8 +82,14 @@
 			"https://www.alphavantage.co/query?function=NATURAL_GAS\u0026interval=monthly\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"value"
+			{
+				"name": "timestamp",
+				"type": "string"
+			},
+			{
+				"name": "value",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -95,8 +113,14 @@
 			"https://www.alphavantage.co/query?function=COPPER\u0026interval=monthly\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"value"
+			{
+				"name": "timestamp",
+				"type": "string"
+			},
+			{
+				"name": "value",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -122,8 +146,14 @@
 			"https://www.alphavantage.co/query?function=ALUMINUM\u0026interval=monthly\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"value"
+			{
+				"name": "timestamp",
+				"type": "string"
+			},
+			{
+				"name": "value",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -147,8 +177,14 @@
 			"https://www.alphavantage.co/query?function=WHEAT\u0026interval=monthly\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"value"
+			{
+				"name": "timestamp",
+				"type": "string"
+			},
+			{
+				"name": "value",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -172,8 +208,14 @@
 			"https://www.alphavantage.co/query?function=CORN\u0026interval=monthly\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"value"
+			{
+				"name": "timestamp",
+				"type": "string"
+			},
+			{
+				"name": "value",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -197,8 +239,14 @@
 			"https://www.alphavantage.co/query?function=COTTON\u0026interval=monthly\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"value"
+			{
+				"name": "timestamp",
+				"type": "string"
+			},
+			{
+				"name": "value",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -222,8 +270,14 @@
 			"https://www.alphavantage.co/query?function=SUGAR\u0026interval=monthly\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"value"
+			{
+				"name": "timestamp",
+				"type": "string"
+			},
+			{
+				"name": "value",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -247,8 +301,14 @@
 			"https://www.alphavantage.co/query?function=COFFEE\u0026interval=monthly\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"value"
+			{
+				"name": "timestamp",
+				"type": "string"
+			},
+			{
+				"name": "value",
+				"type": "string"
+			}
 		]
 	},
 	{
@@ -274,8 +334,14 @@
 			"https://www.alphavantage.co/query?function=ALL_COMMODITIES\u0026interval=monthly\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"value"
+			{
+				"name": "timestamp",
+				"type": "string"
+			},
+			{
+				"name": "value",
+				"type": "string"
+			}
 		]
 	}
 ]

@@ -27,12 +27,31 @@
 			"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY\u0026symbol=IBM\u0026interval=5min\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"open",
-			"high",
-			"low",
-			"close",
-			"volume"
+			{
+				"name": "timestamp",
+				"type": "time",
+				"format": "2006-01-02 15:04:05"
+			},
+			{
+				"name": "open",
+				"type": "float64"
+			},
+			{
+				"name": "high",
+				"type": "float64"
+			},
+			{
+				"name": "low",
+				"type": "float64"
+			},
+			{
+				"name": "close",
+				"type": "float64"
+			},
+			{
+				"name": "volume",
+				"type": "int"
+			}
 		]
 	},
 	{
@@ -50,12 +69,31 @@
 			"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY\u0026symbol=IBM\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"open",
-			"high",
-			"low",
-			"close",
-			"volume"
+			{
+				"name": "timestamp",
+				"type": "time",
+				"format": "2006-01-02"
+			},
+			{
+				"name": "open",
+				"type": "float64"
+			},
+			{
+				"name": "high",
+				"type": "float64"
+			},
+			{
+				"name": "low",
+				"type": "float64"
+			},
+			{
+				"name": "close",
+				"type": "float64"
+			},
+			{
+				"name": "volume",
+				"type": "int"
+			}
 		]
 	},
 	{
@@ -73,15 +111,43 @@
 			"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED\u0026symbol=IBM\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"open",
-			"high",
-			"low",
-			"close",
-			"adjusted_close",
-			"volume",
-			"dividend_amount",
-			"split_coefficient"
+			{
+				"name": "timestamp",
+				"type": "time",
+				"format": "2006-01-02"
+			},
+			{
+				"name": "open",
+				"type": "float64"
+			},
+			{
+				"name": "high",
+				"type": "float64"
+			},
+			{
+				"name": "low",
+				"type": "float64"
+			},
+			{
+				"name": "close",
+				"type": "float64"
+			},
+			{
+				"name": "adjusted_close",
+				"type": "float64"
+			},
+			{
+				"name": "volume",
+				"type": "int"
+			},
+			{
+				"name": "dividend_amount",
+				"type": "float64"
+			},
+			{
+				"name": "split_coefficient",
+				"type": "float64"
+			}
 		]
 	},
 	{
@@ -98,12 +164,31 @@
 			"https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY\u0026symbol=IBM\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"open",
-			"high",
-			"low",
-			"close",
-			"volume"
+			{
+				"name": "timestamp",
+				"type": "time",
+				"format": "2006-01-02"
+			},
+			{
+				"name": "open",
+				"type": "float64"
+			},
+			{
+				"name": "high",
+				"type": "float64"
+			},
+			{
+				"name": "low",
+				"type": "float64"
+			},
+			{
+				"name": "close",
+				"type": "float64"
+			},
+			{
+				"name": "volume",
+				"type": "int"
+			}
 		]
 	},
 	{
@@ -120,14 +205,39 @@
 			"https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY_ADJUSTED\u0026symbol=IBM\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"open",
-			"high",
-			"low",
-			"close",
-			"adjusted close",
-			"volume",
-			"dividend amount"
+			{
+				"name": "timestamp",
+				"type": "time",
+				"format": "2006-01-02"
+			},
+			{
+				"name": "open",
+				"type": "float64"
+			},
+			{
+				"name": "high",
+				"type": "float64"
+			},
+			{
+				"name": "low",
+				"type": "float64"
+			},
+			{
+				"name": "close",
+				"type": "float64"
+			},
+			{
+				"name": "adjusted close",
+				"type": "float64"
+			},
+			{
+				"name": "volume",
+				"type": "int"
+			},
+			{
+				"name": "dividend amount",
+				"type": "float64"
+			}
 		]
 	},
 	{
@@ -144,12 +254,31 @@
 			"https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY\u0026symbol=IBM\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"open",
-			"high",
-			"low",
-			"close",
-			"volume"
+			{
+				"name": "timestamp",
+				"type": "time",
+				"format": "2006-01-02"
+			},
+			{
+				"name": "open",
+				"type": "float64"
+			},
+			{
+				"name": "high",
+				"type": "float64"
+			},
+			{
+				"name": "low",
+				"type": "float64"
+			},
+			{
+				"name": "close",
+				"type": "float64"
+			},
+			{
+				"name": "volume",
+				"type": "int"
+			}
 		]
 	},
 	{
@@ -166,14 +295,39 @@
 			"https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED\u0026symbol=IBM\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"timestamp",
-			"open",
-			"high",
-			"low",
-			"close",
-			"adjusted close",
-			"volume",
-			"dividend amount"
+			{
+				"name": "timestamp",
+				"type": "time",
+				"format": "2006-01-02"
+			},
+			{
+				"name": "open",
+				"type": "float64"
+			},
+			{
+				"name": "high",
+				"type": "float64"
+			},
+			{
+				"name": "low",
+				"type": "float64"
+			},
+			{
+				"name": "close",
+				"type": "float64"
+			},
+			{
+				"name": "adjusted close",
+				"type": "float64"
+			},
+			{
+				"name": "volume",
+				"type": "int"
+			},
+			{
+				"name": "dividend amount",
+				"type": "float64"
+			}
 		]
 	},
 	{
@@ -204,15 +358,42 @@
 			"https://www.alphavantage.co/query?function=SYMBOL_SEARCH\u0026keywords=tesco\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"symbol",
-			"name",
-			"type",
-			"region",
-			"marketOpen",
-			"marketClose",
-			"timezone",
-			"currency",
-			"matchScore"
+			{
+				"name": "symbol",
+				"type": "string"
+			},
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "type",
+				"type": "string"
+			},
+			{
+				"name": "region",
+				"type": "string"
+			},
+			{
+				"name": "marketOpen",
+				"type": "string"
+			},
+			{
+				"name": "marketClose",
+				"type": "string"
+			},
+			{
+				"name": "timezone",
+				"type": "string"
+			},
+			{
+				"name": "currency",
+				"type": "string"
+			},
+			{
+				"name": "matchScore",
+				"type": "float64"
+			}
 		]
 	},
 	{
@@ -240,16 +421,46 @@
 			"https://www.alphavantage.co/query?function=GLOBAL_QUOTE\u0026symbol=IBM\u0026apikey=demo"
 		],
 		"csv_columns": [
-			"symbol",
-			"open",
-			"high",
-			"low",
-			"price",
-			"volume",
-			"latestDay",
-			"previousClose",
-			"change",
-			"changePercent"
+			{
+				"name": "symbol",
+				"type": "string"
+			},
+			{
+				"name": "open",
+				"type": "string"
+			},
+			{
+				"name": "high",
+				"type": "string"
+			},
+			{
+				"name": "low",
+				"type": "string"
+			},
+			{
+				"name": "price",
+				"type": "string"
+			},
+			{
+				"name": "volume",
+				"type": "string"
+			},
+			{
+				"name": "latestDay",
+				"type": "string"
+			},
+			{
+				"name": "previousClose",
+				"type": "string"
+			},
+			{
+				"name": "change",
+				"type": "string"
+			},
+			{
+				"name": "changePercent",
+				"type": "string"
+			}
 		]
 	}
 ]

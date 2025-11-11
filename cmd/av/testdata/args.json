@@ -52,23 +52,23 @@
     "name": "ANALYTICS_FIXED_WINDOW_89ad6522",
     "args": [
       "ANALYTICS_FIXED_WINDOW",
-      "--CALCULATIONS=MEAN,STDDEV,CORRELATION",
-      "--INTERVAL=DAILY",
-      "--OHLC=close",
-      "--RANGE=2023-07-01,2023-08-31",
-      "--SYMBOLS=AAPL,MSFT,IBM"
+      "--calculations=MEAN,STDDEV,CORRELATION",
+      "--interval=DAILY",
+      "--ohlc=close",
+      "--range=2023-07-01,2023-08-31",
+      "--symbols=AAPL,MSFT,IBM"
     ]
   },
   {
     "name": "ANALYTICS_SLIDING_WINDOW_5a09754f",
     "args": [
       "ANALYTICS_SLIDING_WINDOW",
-      "--CALCULATIONS=MEAN,STDDEV(annualized=True)",
-      "--INTERVAL=DAILY",
-      "--OHLC=close",
-      "--RANGE=2month",
-      "--SYMBOLS=AAPL,IBM",
-      "--WINDOW-SIZE=20"
+      "--calculations=MEAN,STDDEV(annualized=True)",
+      "--interval=DAILY",
+      "--ohlc=close",
+      "--range=2month",
+      "--symbols=AAPL,IBM",
+      "--window-size=20"
     ]
   },
   {
