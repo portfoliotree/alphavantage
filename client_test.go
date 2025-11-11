@@ -214,7 +214,7 @@ BAB,Invesco Taxable Municipal Bond ETF,ETF,United States,09:30,16:00,UTC-04,USD,
 // ExampleClient demonstrates how to create a new AlphaVantage client.
 func ExampleClient() {
 	// Get API key from environment variable
-	apiKey := cmp.Or(os.Getenv(alphavantage.TokenEnvironmentVariableName), apiKeyTestValue)
+	apiKey := cmp.Or(os.Getenv(alphavantage.APIKeyEnvironmentVariableName), apiKeyTestValue)
 
 	client := alphavantage.NewClient(apiKey, alphavantage.PremiumPlan75)
 	fmt.Printf("Client created: %t\n", client != nil)

@@ -33,9 +33,9 @@ import (
 const (
 	envVarPrefix = "ALPHA_VANTAGE_"
 
-	// TokenEnvironmentVariableName is the standard environment variable
+	// APIKeyEnvironmentVariableName is the standard environment variable
 	// name for storing the AlphaVantage API key.
-	TokenEnvironmentVariableName = envVarPrefix + "TOKEN"
+	APIKeyEnvironmentVariableName = envVarPrefix + "API_KEY"
 
 	// APIURLEnvironmentVariableName is the standard environment variable
 	// name for overriding the AlphaVantage API URL.

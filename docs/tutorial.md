@@ -4,26 +4,36 @@ This tutorial will walk you through using the AlphaVantage Go client library to 
 
 ## Prerequisites
 
-- A recent Go SDK installed
-- An AlphaVantage API key (free tier available at https://www.alphavantage.co)
+- Go 1.24 or later installed
+- An AlphaVantage API key (free tier available at https://www.alphavantage.co/support/#api-key)
 
 ## Installation
 
-Install the package:
+### Installing the Go Library
+
+Add the library to your project:
 
 ```bash
 go get github.com/portfoliotree/alphavantage
 ```
 
-Or install the CLI tool:
+### Installing the CLI Tool
+
+Install the command-line tool globally:
 
 ```bash
 go install github.com/portfoliotree/alphavantage/cmd/av@latest
 ```
 
+Verify the installation:
+
+```bash
+av help
+```
+
 ## Setting up Authentication
 
-First, get your API key from AlphaVantage and set it as an environment variable:
+Get your API key from AlphaVantage and set it as an environment variable:
 
 ```bash
 export ALPHA_VANTAGE_TOKEN="your-api-key-here"
@@ -31,33 +41,166 @@ export ALPHA_VANTAGE_TOKEN="your-api-key-here"
 
 ## Your First Request - Getting a Stock Quote
 
-Let's start with getting the latest quote for a stock.
+Let's start by getting the latest quote for a stock using the Go library.
 
-**Example:** [tutorial_example_use_client_test.go](tutorial_example_use_client_test.go)
+### Example 1: Latest Stock Quote
 
-The basic pattern is:
-1. Create a client with your API key
-2. Call the appropriate method with a context and symbol
-3. Process the returned CSV data
-4. Always close the response when done
+See [examples/getting_started/01_stock_quote.go](examples/getting_started/01_stock_quote.go) for a complete runnable example.
+
+**Key concepts:**
+
+1. **Create a client** with `NewClient(apiKey, ratePlan)`
+2. **Build a query** using `QueryGlobalQuote()`
+3. **Get parsed results** with `GetGlobalQuoteCSVRows()`
+4. **Always handle errors** - API calls can fail
+5. **Use a context** for timeout and cancellation support
+
+### Example 2: Historical Stock Prices
+
+Let's fetch daily historical prices.
+
+See [examples/getting_started/02_historical_prices.go](examples/getting_started/02_historical_prices.go) for a complete runnable example.
+
+**Note:** The response is automatically parsed into `[]TimeSeriesDailyRow` with typed fields like `Timestamp` (time.Time), `Open` (float64), etc.
+
+### Example 3: Using the Query Builder
+
+Queries support a fluent builder pattern for optional parameters.
+
+See [examples/getting_started/03_query_builder.go](examples/getting_started/03_query_builder.go) for a complete runnable example.
 
 ## Using the CLI Tool
 
-The CLI tool makes it easy to fetch data without writing Go code:
+The CLI provides quick access to all 92 API functions without writing Go code.
+
+### Getting a Quote
 
 ```bash
-# Get latest quote
-av global-quote IBM
-
-# Get daily time series data
-av quotes --function=TIME_SERIES_DAILY IBM
-
-# Search for symbols
-av symbol-search "International Business"
+av GLOBAL_QUOTE --symbol=IBM
 ```
 
-## Next Steps
+This creates a CSV file with the quote data.
 
-- Learn about [time series data](how-to-guides.md#time-series-data)
-- Explore [company fundamentals](how-to-guides.md#fundamental-data)
-- Check the [API reference](https://pkg.go.dev/github.com/portfoliotree/alphavantage) for all available methods
+### Getting Daily Prices
+
+```bash
+# Get daily prices (compact - last 100 days)
+av TIME_SERIES_DAILY --symbol=AAPL --outputsize=compact
+
+# Get full history (20+ years)
+av TIME_SERIES_DAILY --symbol=AAPL --outputsize=full
+```
+
+### Getting Intraday Data
+
+```bash
+# 5-minute intervals
+av TIME_SERIES_INTRADAY --symbol=MSFT --interval=5min
+
+# Specific month
+av TIME_SERIES_INTRADAY --symbol=MSFT --interval=15min --month=2024-01
+```
+
+### Searching for Symbols
+
+```bash
+av SYMBOL_SEARCH --keywords="Apple Inc"
+```
+
+### Getting Help
+
+```bash
+# List all available functions
+av help
+
+# Get help for a specific function
+av TIME_SERIES_DAILY --help
+```
+
+## Understanding Rate Limits
+
+AlphaVantage enforces rate limits based on your subscription tier:
+
+| Plan | Requests per Minute |
+|------|---------------------|
+| Free | 5 |
+| Premium | 15, 30, 75, 120, 300, 600, or 1200 |
+
+Specify your plan when creating the client:
+
+```go
+// Premium tiers
+client := alphavantage.NewClient(apiKey, alphavantage.PremiumPlan75)
+client := alphavantage.NewClient(apiKey, alphavantage.PremiumPlan120)
+```
+
+The client **automatically handles rate limiting** - you don't need to add delays or throttling yourself.
+
+## Response Types
+
+### CSV Responses (Recommended)
+
+Most functions return CSV data that's automatically parsed into typed structs:
+
+```go
+// Time series returns []TimeSeriesDailyRow
+rows, err := client.GetTimeSeriesDailyCSVRows(ctx, query)
+
+// Each row has typed fields
+for _, row := range rows {
+	fmt.Printf("Date: %s, Close: %.2f\n",
+		row.Timestamp.Format("2006-01-02"),
+		row.Close)
+}
+```
+
+### JSON Responses
+
+Some functions (like company overview) return JSON:
+
+```go
+query := alphavantage.QueryOverview(client.APIKey, "IBM")
+resp, err := client.GetOverview(ctx, query)
+if err != nil {
+	log.Fatal(err)
+}
+defer resp.Body.Close()
+
+var overview struct {
+	Symbol      string `json:"Symbol"`
+	Name        string `json:"Name"`
+	Description string `json:"Description"`
+	Sector      string `json:"Sector"`
+	// ... more fields
+}
+
+err = json.NewDecoder(resp.Body).Decode(&overview)
+fmt.Printf("%s - %s\n", overview.Symbol, overview.Name)
+```
+
+### Manual CSV Control
+
+You can also choose between CSV and JSON for most endpoints:
+
+```go
+// Force CSV format
+query := alphavantage.QueryGlobalQuote(client.APIKey, "IBM").DataTypeCSV()
+
+// Force JSON format
+query := alphavantage.QueryGlobalQuote(client.APIKey, "IBM").DataTypeJSON()
+```
+
+## Common Patterns
+
+### Error Handling
+
+Always check errors - API calls can fail for many reasons:
+
+```go
+rows, err := client.GetTimeSeriesDailyCSVRows(ctx, query)
+if err != nil {
+	// Handle the error appropriately
+	log.Printf("Failed to fetch data: %v", err)
+	return
+}
+```

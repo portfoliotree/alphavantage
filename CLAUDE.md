@@ -6,22 +6,48 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is an unofficial Go client library and CLI for the AlphaVantage REST API (https://www.alphavantage.co). The project provides both a Go package for programmatic access and a command-line tool called `av` for fetching financial data.
 
+**Version**: v0.4.x - Complete API rewrite with comprehensive coverage
+
 **Development Philosophy**: This project follows Test-Driven Development (TDD) principles where each new feature starts with a failing test, followed by minimal implementation to make it pass, then refactoring for quality.
 
-## Development Goals
+## API Coverage
 
-### Current API Coverage Gaps
-Based on AlphaVantage's full API, this package is missing:
-- Economic Indicators (GDP, CPI, unemployment, etc.)
-- Technical Indicators (SMA, EMA, RSI, etc.)
-- Forex (FX) data
-- Cryptocurrency data
-- Commodities data
-- Quote endpoint (GLOBAL_QUOTE)
-- Weekly/Monthly adjusted time series
-- News & Sentiment data
-- Earnings data (statements, calendar)
-- Market status endpoint
+**Complete Coverage**: This library supports **all AlphaVantage API functions** across 9 categories:
+
+- ✅ Core Stock APIs (11 functions) - TIME_SERIES_*, GLOBAL_QUOTE, MARKET_STATUS, etc.
+- ✅ Fundamental Data (12 functions) - OVERVIEW, INCOME_STATEMENT, BALANCE_SHEET, EARNINGS, etc.
+- ✅ Technical Indicators (56 functions) - SMA, EMA, RSI, MACD, BBANDS, etc.
+- ✅ Economic Indicators (10 functions) - REAL_GDP, UNEMPLOYMENT, CPI, INFLATION, etc.
+- ✅ Forex Data (5 functions) - CURRENCY_EXCHANGE_RATE, FX_DAILY, FX_INTRADAY, etc.
+- ✅ Cryptocurrency (4 functions) - CRYPTO_INTRADAY, DIGITAL_CURRENCY_DAILY, etc.
+- ✅ Commodities (10 functions) - WTI, BRENT, NATURAL_GAS, COPPER, WHEAT, etc.
+- ✅ Intelligence & Analytics (6 functions) - NEWS_SENTIMENT, TOP_GAINERS_LOSERS, INSIDER_TRANSACTIONS, etc.
+- ✅ Options Data (2 functions) - REALTIME_OPTIONS, HISTORICAL_OPTIONS
+
+See [specification/README.md](specification/README.md) for complete function list.
+
+## Code Generation
+
+**Important**: Most client code is **auto-generated** from JSON specifications.
+
+### Code Generation Architecture
+- Specifications: `specification/functions/*.json` and `specification/query_parameters.json`
+- Generator: `cmd/generate/main.go` uses `go/ast` to generate code
+- Generated files: `*.go` files in root package (time_series.go, fundamental.go, etc.)
+- CLI handlers: `cmd/av/functions.go`
+
+### Regenerating Code
+```bash
+go generate ./...
+```
+
+### Adding New API Functions
+1. Add specification to `specification/functions/*.json`
+2. Add identifiers to `specification/identifiers.json`
+3. Run `go generate ./...`
+4. Add test data to `specification/testdata/examples/`
+
+## Development Philosophy
 
 ### TDD Implementation Strategy
 1. **Red**: Write a failing test that describes the desired functionality
@@ -30,14 +56,47 @@ Based on AlphaVantage's full API, this package is missing:
 
 ### Documentation Standards
 Following [Diataxis](http://diataxis.fr) principles:
-- **Tutorials**: Step-by-step learning-oriented guides
-- **How-to Guides**: Problem-solving oriented directions
-- **Reference**: Information-oriented API documentation
-- **Explanation**: Understanding-oriented discussions
+- **Tutorials**: Step-by-step learning-oriented guides (docs/tutorial.md)
+- **How-to Guides**: Problem-solving oriented directions (docs/how-to-guides.md)
+- **Reference**: Information-oriented API documentation (pkg.go.dev)
+- **Explanation**: Understanding-oriented discussions (docs/explanation.md)
+- **Examples**: Runnable code examples (docs/examples/)
+
+## Navigating Documentation
+
+### For Learning (New Users)
+**Start here**: [docs/tutorial.md](docs/tutorial.md)
+- Step-by-step introduction to the library
+- Basic examples with explanations
+- Links to runnable code in `docs/examples/`
+
+### For Solving Problems (Developers)
+**Start here**: [docs/how-to-guides.md](docs/how-to-guides.md)
+- Task-oriented guides for common scenarios
+- References to runnable examples for each task
+- Quick reference for all API categories
+
+### For Understanding Design (Contributors)
+**Start here**: [docs/explanation.md](docs/explanation.md)
+- Why query builder pattern?
+- Why CSV over JSON?
+- Code generation philosophy using go/ast
+- Architecture decisions and trade-offs
+
+### For API Reference
+- Complete API docs: https://pkg.go.dev/github.com/portfoliotree/alphavantage
+- Function catalog: [specification/README.md](specification/README.md)
+- Runnable examples: [docs/examples/README.md](docs/examples/README.md)
+
+### For Migration from v0.3
+**Start here**: [docs/migration-guide.md](docs/migration-guide.md)
 
 ## Build and Test Commands
 
 ```bash
+# Regenerate code from specifications
+go generate ./...
+
 # Build the project
 go build -v ./...
 
@@ -47,47 +106,80 @@ go test -v ./...
 # Run only unit tests
 go test -v -short ./...
 
-# Run integration tests (requires ALPHA_VANTAGE_TOKEN)
-go test -v -run Integration ./...
-
-# Run CLI tests with scripttest
-go test -v ./cmd/av
-
 # Install the CLI tool
 go install github.com/portfoliotree/alphavantage/cmd/av@latest
-
-# Build the CLI locally
-go build -o av ./cmd/av
 ```
 
 ## Core Architecture
 
+### Code Generation System
+
+**Critical**: Do NOT manually edit generated files. Always edit specifications and regenerate.
+
+#### Specification Files
+```
+specification/
+├── functions/              # API function specs (one file per category)
+│   ├── time_series.json   # Stock time series APIs
+│   ├── fundamental.json   # Fundamental data APIs
+│   ├── technical_*.json   # Technical indicators (8 files)
+│   └── ...
+├── query_parameters.json  # Shared query parameters
+├── identifiers.json       # Go identifier mappings
+└── testdata/examples/     # Cached API responses for testing
+```
+
+#### Generated Files
+- **Client methods**: `time_series.go`, `fundamental.go`, `technical_*.go`, etc. (in root package)
+- **Query types**: Type-safe query builders for each API function
+- **Response structs**: CSV row types with `column-name` tags
+- **CLI handlers**: `cmd/av/functions.go` with all 92 commands
+
+#### Code Generator
+- **Location**: `cmd/generate/main.go`
+- **Uses**: `go/ast` package to build Abstract Syntax Trees
+- **Output**: Formatted Go code with proper imports and documentation
+
+#### How Code Generation Works
+1. **Read** JSON specifications from `specification/`
+2. **Build** Go AST nodes for structs, functions, methods
+3. **Format** using `go/format` for idiomatic code
+4. **Write** to target files
+
+**Example**: Adding a new API function never requires writing Go code manually - just add JSON spec and regenerate.
+
 ### Client Structure
-- `Client` struct in `client.go` is the main HTTP client with rate limiting (5 requests per minute)
-- Uses `golang.org/x/time/rate` for API rate limiting
-- Supports custom HTTP client and limiter interfaces for testability
-- Error handling propagates original API error messages to end users
+- `Client` struct in `client.go` with automatic rate limiting
+- Uses `golang.org/x/time/rate` for API throttling
+- Supports all rate limit tiers: Free (5/min) through Premium (1200/min)
+- Error handling propagates original API error messages
 
-### API Endpoints
-The library is organized by API endpoint types:
+### Query Builder Pattern
+Every API function has a typed query builder:
 
-- **Time Series Data** (`global_quote.go`): Stock quotes with functions like `TIME_SERIES_DAILY`, `TIME_SERIES_MONTHLY`
-- **Company Data** (`overview.go`): Company overview information
-- **Listing Status** (`listing_status.go`): Stock listing and delisting status
-- **Symbol Search** (`symbol_search.go`): Search for stock symbols
+```go
+// Build query with type-safe methods
+query := alphavantage.QueryTimeSeriesDaily(client.APIKey, "IBM").
+    OutputSizeFull().
+    DataTypeCSV()
+
+// Execute and get typed results
+rows, err := client.GetTimeSeriesDailyCSVRows(ctx, query)
+```
+
+**Implementation**: Query types are `url.Values` with type-safe methods added by code generation.
 
 ### Response Handling
-- Most responses return `io.ReadCloser` for CSV data streaming
-- Company overview uses JSON parsing to `CompanyOverview` struct
-- Row iterator pattern in `io.go` for processing CSV responses line by line
-- Error responses from API are parsed and propagated with original messages
+- **CSV responses**: Automatically parsed into typed structs (e.g., `[]TimeSeriesDailyRow`)
+- **JSON responses**: Return `io.ReadCloser` for manual decoding
+- **Streaming**: `ParseCSVRows` iterator for memory-efficient processing
+- **Error detection**: Automatic detection of API error responses
 
 ### CLI Tool
-- Located in `cmd/av/main.go`
-- Uses `pflag` library for POSIX-compliant command-line flags
-- Supports commands: `quotes`, `listing-status`, `symbol-search`, `help`
-- Uses `ALPHA_VANTAGE_TOKEN` environment variable for authentication
-- Outputs data to CSV files or stdout
+- **Function-based commands**: `av TIME_SERIES_DAILY --symbol=IBM`
+- **Coverage**: All 92 API functions available as commands
+- **Generation**: Auto-generated from same specifications as Go client
+- **Authentication**: Uses `ALPHA_VANTAGE_TOKEN` environment variable
 
 ## Authentication
 

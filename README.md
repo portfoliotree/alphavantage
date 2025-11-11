@@ -3,131 +3,152 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/portfoliotree/alphavantage.svg)](https://pkg.go.dev/github.com/portfoliotree/alphavantage)
 [![Test](https://github.com/portfoliotree/alphavantage/actions/workflows/ci.yml/badge.svg)](https://github.com/portfoliotree/alphavantage/actions/workflows/ci.yml)
 
-This is an unofficial REST API wrapper for https://www.alphavantage.co
+An unofficial Go client library and CLI for the [AlphaVantage](https://www.alphavantage.co) financial data API.
+
+**Comprehensive API coverage** - Supports all current (Nov. 2025) AlphaVantage API functions including stocks, forex, crypto, technical indicators, economic data, commodities, and more. See [specification/README.md](specification/README.md) for complete API function coverage.
 
 ## Documentation
-
-This project follows the [Diataxis](https://diataxis.fr/) documentation framework:
 
 - **[Tutorial](docs/tutorial.md)** - Get started with your first API calls
 - **[How-to Guides](docs/how-to-guides.md)** - Solve specific problems and tasks
 - **[API Reference](https://pkg.go.dev/github.com/portfoliotree/alphavantage)** - Complete Go API documentation
 - **[Explanation](docs/explanation.md)** - Understand the design and architecture
+- **[Migration Guide](docs/migration-guide.md)** - Upgrade from v0.3 to v0.4
 
 ## Quick Start
 
 ### Installation
 
-1. Ensure you have a [recent version of Go](https://go.dev/doc/devel/release) installed.
-2. Execute `go install github.com/portfoliotree/alphavantage/cmd/av@latest`
-3. Check to see if it installed by executing `av help`
+#### Go Library
+
+```bash
+go get github.com/portfoliotree/alphavantage
+```
+
+#### CLI Tool
+
+```bash
+go install github.com/portfoliotree/alphavantage/cmd/av@latest
+```
+
+Verify installation:
+```bash
+av help
+```
 
 ### Authentication
 
-Set an environment variable `ALPHA_VANTAGE_TOKEN` with your token.
+Set your AlphaVantage API key as an environment variable:
 
-
-### Commands
-
-#### `global-quote`
-
-Fetches latest price and volume information for equity symbols and writes the CSV result to a file.
-
-- Given `av` is installed and the environment variable `ALPHA_VANTAGE_TOKEN` is set
-- When you run `av global-quote IBM` and it succeeds
-- Then you will see a file "IBM_quote.csv" in your current directory
-
-#### `quotes`
-
-Fetches time series data for given symbols and writes the CSV result to a file.
-
-- Given `av` is installed and the environment variable `ALPHA_VANTAGE_TOKEN` is set
-- When you run `av quotes --function=TIME_SERIES_MONTHLY IBM` and it succeeds
-- Then you will see a file "IBM.csv" in your current directory
-
-The `--function` may have any of the values: TIME_SERIES_INTRADAY, TIME_SERIES_DAILY, TIME_SERIES_DAILY_ADJUSTED, TIME_SERIES_WEEKLY, TIME_SERIES_WEEKLY_ADJUSTED, TIME_SERIES_MONTHLY, TIME_SERIES_MONTHLY_ADJUSTED.
-
-#### `listing-status`
-
-Fetches listing status and writes the result to a CSV file.
-
-- Given `av` is installed and the environment variable `ALPHA_VANTAGE_TOKEN` is set
-- When you run `av listing-status --listed=false` and it succeeds
-- Then you will see a file "listing_status_false.csv" in your current directory
-
-#### `symbol-search`
-
-Queries the search endpoint and writes the output to stdout (standard out not a file).
-
-- Given `av` is installed and the environment variable `ALPHA_VANTAGE_TOKEN` is set
-- When you run `av symbol-search 'VMware'` and it succeeds
-- Then you will see the result printed to standard out formatted as CSV.
-
-#### `help`
-
-Documents the above commands.
-
-The output looks something like this.
-```
-av - An AlphaVantage CLI in Go
-
-Global Flags:
-      --token string   api authentication token
-
-Commands:
-  global-quote
-	Fetch latest price and volume information for equity.
-	https://www.alphavantage.co/documentation/#latestprice
-  listing-status
-	Fetch listing & de-listing status.
-	https://www.alphavantage.co/documentation/#listing-status
-  quotes
-	Fetch time series stock quotes.
-	https://www.alphavantage.co/documentation/#time-series-data
-  symbol-search
-	Writes symbol search results to stdout.
-	https://www.alphavantage.co/documentation/#symbolsearch
-
+```bash
+export ALPHA_VANTAGE_TOKEN="your-api-key-here"
 ```
 
+Get a free API key at https://www.alphavantage.co/support/#api-key
 
-## Supported Endpoints
+## Usage Example
 
-**All functions are supported by `github.com/portfoliotree/alphavantage/query`** but only a subset of query functions are currently supported by the `alphavantage.Client`. Make an Issue or PR if you'd like to add more support to the `Client`.
+### Go Library
 
-### Supported by `github.com/portfoliotree/alphavantage.Client`
+```go
+package main
 
-#### [Core Stock APIs](https://www.alphavantage.co/documentation/#fundamentals)
+import (
+    "context"
+    "fmt"
+    "github.com/portfoliotree/alphavantage"
+)
 
-- [x] TIME_SERIES_INTRADAY
-- [x] TIME_SERIES_DAILY
-- [x] TIME_SERIES_DAILY_ADJUSTED
-- [x] TIME_SERIES_WEEKLY
-- [x] TIME_SERIES_WEEKLY_ADJUSTED
-- [x] TIME_SERIES_MONTHLY
-- [x] TIME_SERIES_MONTHLY_ADJUSTED
-- [x] Quote (GLOBAL_QUOTE)
-- [x] Search Endpoint
+func main() {
+    // Create client with your API key and rate limit plan
+    client := alphavantage.NewClient("your-api-key", alphavantage.PremiumPlan75)
+    ctx := context.Background()
 
-#### [Fundamental Data](https://www.alphavantage.co/documentation/#fx)
+    // Get daily stock prices with query builder
+    query := alphavantage.QueryTimeSeriesDaily(client.APIKey, "IBM")
+    rows, err := client.GetTimeSeriesDailyCSVRows(ctx, query)
+    if err != nil {
+        panic(err)
+    }
 
-- [x] Company Overview
-- [ ] Income Statement
-- [ ] Balance Sheet
-- [ ] Cashflow
-- [ ] Earnings
-- [x] Listing & Delisting Status
-- [ ] Earnings Calendar
-- [ ] IPO Calendar
+    // Print recent closing prices (data already parsed into typed structs)
+    for _, row := range rows[:5] {
+        fmt.Printf("%s: $%.2f\n", row.Timestamp.Format("2006-01-02"), row.Close)
+    }
+}
+```
 
-#### [Digital & Crypto Currencies](https://www.alphavantage.co/documentation/#digital-currency)
+See [cmd/example/main.go](cmd/example/main.go) and [docs/tutorial.md](docs/tutorial.md) for more examples.
 
-None implemented.
+### CLI Tool
 
-#### [Economic Indicators](https://www.alphavantage.co/documentation/#fx)
+```bash
+export ALPHA_VANTAGE_API_KEY="your-api-key"
 
-None implemented (I generally just use FRED directly).
+# Get stock quote
+av GLOBAL_QUOTE --symbol=IBM
 
-#### [Technical Indicators](https://www.alphavantage.co/documentation/#technical-indicators)
+# Get daily time series data
+av TIME_SERIES_DAILY --symbol=AAPL --outputsize=compact
 
-None implemented.
+# Technical indicator (RSI)
+av RSI --symbol=IBM --interval=daily --time-period=14 --series-type=close
+
+# Economic data
+av REAL_GDP --interval=annual
+
+# Get help for any function
+av TIME_SERIES_INTRADAY --help
+```
+
+See [docs/how-to-guides.md](docs/how-to-guides.md) for comprehensive CLI usage examples.
+
+## Contributing
+
+Contributions are welcome! Please:
+
+1. **Report bugs** via GitHub Issues
+2. **Suggest features** via GitHub Issues
+3. **Submit pull requests** with tests
+4. Follow the [TDD](https://en.wikipedia.org/wiki/Test-driven_development) workflow
+
+This project follows [Diataxis](https://diataxis.fr) for documentation structure.
+
+## Development
+
+### Building from Source
+
+```bash
+git clone https://github.com/portfoliotree/alphavantage.git
+cd alphavantage
+go mod download
+```
+
+### Running Tests
+
+```bash
+# Unit tests
+go test ./...
+
+# All tests (requires ALPHA_VANTAGE_TOKEN)
+export ALPHA_VANTAGE_TOKEN="your-api-key"
+go test ./...
+```
+
+### Code Generation
+
+This project uses code generation for client methods and CLI commands:
+
+```bash
+go generate ./...
+```
+
+See [docs/explanation.md](docs/explanation.md) for details on the code generation architecture.
+
+## License
+
+This project is provided as-is under the MIT License. See [LICENSE](LICENSE) for details.
+
+---
+
+**Note**: This is an unofficial library and is not affiliated with AlphaVantage.

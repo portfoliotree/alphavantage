@@ -14,7 +14,7 @@ func main() {
 		apikey            = "demo"
 		perMinuteRequests = int(alphavantage.PremiumPlan75)
 	)
-	if t, ok := os.LookupEnv(alphavantage.TokenEnvironmentVariableName); ok {
+	if t, ok := os.LookupEnv(alphavantage.APIKeyEnvironmentVariableName); ok {
 		apikey = t
 	}
 	if val, ok := os.LookupEnv(alphavantage.RequestsPerMinuteEnvironmentVariableName); ok {
