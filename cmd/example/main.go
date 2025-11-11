@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	client := alphavantage.NewClient("", alphavantage.PremiumPlan75)
+	client := alphavantage.NewClient()
 
 	ctx := context.Background()
 	query := alphavantage.QueryTimeSeriesDaily(client.APIKey, "AAPL")

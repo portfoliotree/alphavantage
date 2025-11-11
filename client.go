@@ -17,6 +17,7 @@ import (
 	"fmt"
 	"io"
 	"iter"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"os"
@@ -55,9 +56,7 @@ type Client struct {
 	// Limiter controls the rate at which API requests are made.
 	// The default limiter allows 5 requests per minute to comply with
 	// free tier limits.
-	Limiter interface {
-		Wait(ctx context.Context) error
-	}
+	Limiter Waiter
 
 	// Client is the HTTP client used for making requests.
 	// Defaults to http.DefaultClient.
@@ -67,28 +66,56 @@ type Client struct {
 
 	// APIKey is the AlphaVantage API key used for authentication.
 	APIKey string
+
+	BaseURL url.URL
+}
+
+type Waiter interface {
+	Wait(ctx context.Context) error
 }
 
 // NewClient creates a new AlphaVantage client with the specified API key.
 // The client will use environment variable ALPHA_VANTAGE_URL if set, otherwise defaults
 // to https://www.alphavantage.co.
-func NewClient(apiKey string, reqPerMin RequestsPerMinute) *Client {
+func NewClient() *Client {
+	var limit Waiter = nil
+	if val, ok := os.LookupEnv(RequestsPerMinuteEnvironmentVariableName); ok {
+		n, err := strconv.Atoi(val)
+		if err != nil {
+			slog.Error("failed to parse requests per minute environment variable while setting up alphavantage client",
+				slog.String("message", ""),
+				slog.String("error", err.Error()),
+			)
+		} else {
+			limit = rate.NewLimiter(RequestsPerMinute(n).Limit(), n)
+		}
+	}
+	var baseURL url.URL
+	if bu, err := url.Parse(cmp.Or(os.Getenv(APIURLEnvironmentVariableName), "https://www.alphavantage.co")); err != nil {
+		bu, _ = url.Parse("https://www.alphavantage.co")
+		baseURL = *bu
+		slog.Error("failed to parse api URL for alphavantage client",
+			slog.String("error", err.Error()),
+		)
+	} else {
+		baseURL = *bu
+	}
+
 	return &Client{
 		Client:  http.DefaultClient,
-		Limiter: rate.NewLimiter(reqPerMin.Limit(), 5),
-		APIKey:  cmp.Or(apiKey, os.Getenv("ALPHA_VANTAGE_TOKEN"), "demo"),
+		Limiter: limit,
+		APIKey:  cmp.Or(os.Getenv(APIKeyEnvironmentVariableName), os.Getenv("ALPHA_VANTAGE_TOKEN"), "demo"),
+		BaseURL: baseURL,
 	}
 }
 
 func (client *Client) newRequest(ctx context.Context, values url.Values) (*http.Request, error) {
-	baseURL := cmp.Or(os.Getenv(APIURLEnvironmentVariableName), "https://www.alphavantage.co")
-	apiURL, err := url.Parse(baseURL)
-	if err != nil {
-		return nil, fmt.Errorf("invalid API URL: %w", err)
+	apiURL := url.URL{
+		Scheme:   cmp.Or(client.BaseURL.Scheme, "http"),
+		Host:     cmp.Or(client.BaseURL.Host, "www.alphavantage.co"),
+		Path:     "/query",
+		RawQuery: values.Encode(),
 	}
-	apiURL.Path = "/query"
-	apiURL.RawQuery = values.Encode()
-
 	return http.NewRequestWithContext(ctx,
 		http.MethodGet,
 		apiURL.String(),

@@ -10,22 +10,6 @@ import (
 )
 
 func main() {
-	var (
-		apikey            = "demo"
-		perMinuteRequests = int(alphavantage.PremiumPlan75)
-	)
-	if t, ok := os.LookupEnv(alphavantage.APIKeyEnvironmentVariableName); ok {
-		apikey = t
-	}
-	if val, ok := os.LookupEnv(alphavantage.RequestsPerMinuteEnvironmentVariableName); ok {
-		n, err := alphavantage.NewRequestsPerMinute(val)
-		if err != nil {
-			_, _ = fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
-		}
-		perMinuteRequests = int(n)
-	}
-
 	var cmd string
 	if len(os.Args) > 1 {
 		cmd = os.Args[1]
@@ -42,7 +26,7 @@ func main() {
 		}
 		fmt.Println(info.Main.Version)
 	default:
-		client := alphavantage.NewClient(apikey, alphavantage.RequestsPerMinute(perMinuteRequests))
+		client := alphavantage.NewClient()
 
 		err := RunFunction(client, cmd, os.Args[1:], os.Stdout)
 		if err != nil {

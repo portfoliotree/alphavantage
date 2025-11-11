@@ -81,7 +81,7 @@ func TestClient_GlobalQuote_Integration(t *testing.T) {
 		t.Skip("ALPHA_VANTAGE_TOKEN not set, skipping integration test")
 	}
 
-	client := NewClient(token, PremiumPlan75)
+	client := NewClient()
 	ctx := context.Background()
 
 	res, err := client.GetGlobalQuote(ctx, QueryGlobalQuote(token, "IBM"))

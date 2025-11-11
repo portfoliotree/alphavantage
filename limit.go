@@ -3,7 +3,6 @@ package alphavantage
 import (
 	"cmp"
 	"fmt"
-	"strconv"
 	"time"
 
 	"golang.org/x/time/rate"
@@ -29,10 +28,6 @@ func (plan RequestsPerMinute) Limit() rate.Limit {
 	return rate.Every(time.Minute / time.Duration(cmp.Or(plan, 1)))
 }
 
-func NewRequestsPerMinute(s string) (RequestsPerMinute, error) {
-	n, err := strconv.Atoi(s)
-	if err != nil {
-		return 0, fmt.Errorf("failed to parse rate limit %q: %w", s, err)
-	}
-	return RequestsPerMinute(n), nil
+func (plan RequestsPerMinute) Limiter() *rate.Limiter {
+	return rate.NewLimiter(plan.Limit(), int(plan))
 }

@@ -41,10 +41,18 @@ av help
 Set your AlphaVantage API key as an environment variable:
 
 ```bash
+export ALPHA_VANTAGE_API_KEY="your-api-key-here"
+# or use the legacy variable name
 export ALPHA_VANTAGE_TOKEN="your-api-key-here"
 ```
 
 Get a free API key at https://www.alphavantage.co/support/#api-key
+
+Optionally configure rate limiting:
+
+```bash
+export ALPHA_VANTAGE_REQUEST_PER_MINUTE=75  # For premium plans
+```
 
 ## Usage Example
 
@@ -60,8 +68,8 @@ import (
 )
 
 func main() {
-    // Create client with your API key and rate limit plan
-    client := alphavantage.NewClient("your-api-key", alphavantage.PremiumPlan75)
+    // Create client - loads API key from ALPHA_VANTAGE_API_KEY env var
+    client := alphavantage.NewClient()
     ctx := context.Background()
 
     // Get daily stock prices with query builder

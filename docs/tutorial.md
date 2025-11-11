@@ -36,8 +36,12 @@ av help
 Get your API key from AlphaVantage and set it as an environment variable:
 
 ```bash
+export ALPHA_VANTAGE_API_KEY="your-api-key-here"
+# or use the legacy variable name
 export ALPHA_VANTAGE_TOKEN="your-api-key-here"
 ```
+
+The `NewClient()` function automatically loads your API key from these environment variables.
 
 ## Your First Request - Getting a Stock Quote
 
@@ -49,7 +53,7 @@ See [examples/getting_started/01_stock_quote.go](examples/getting_started/01_sto
 
 **Key concepts:**
 
-1. **Create a client** with `NewClient(apiKey, ratePlan)`
+1. **Create a client** with `NewClient()`
 2. **Build a query** using `QueryGlobalQuote()`
 3. **Get parsed results** with `GetGlobalQuoteCSVRows()`
 4. **Always handle errors** - API calls can fail
@@ -119,22 +123,29 @@ av TIME_SERIES_DAILY --help
 
 ## Understanding Rate Limits
 
-AlphaVantage enforces rate limits based on your subscription tier:
+AlphaVantage enforces rate limits based on your subscription tier.
 
-| Plan | Requests per Minute |
-|------|---------------------|
-| Free | 5 |
-| Premium | 15, 30, 75, 120, 300, 600, or 1200 |
+**Free Tier**: The free tier has a limit of 25 requests per day. This is too restrictive for automatic rate limiting - you should implement application-level logic to stay under this limit.
 
-Specify your plan when creating the client:
+**Premium Tiers**: 75, 150, 300, 600, or 1200 requests per minute
+
+Configure rate limiting via environment variable or by setting the limiter directly:
 
 ```go
-// Premium tiers
-client := alphavantage.NewClient(apiKey, alphavantage.PremiumPlan75)
-client := alphavantage.NewClient(apiKey, alphavantage.PremiumPlan120)
+// Option 1: Configure via environment variable
+// export ALPHA_VANTAGE_REQUEST_PER_MINUTE=75
+client := alphavantage.NewClient()
+
+// Option 2: Set limiter directly on client
+client := alphavantage.NewClient()
+client.Limiter = alphavantage.PremiumPlan75.Limiter()
+
+// Option 3: Set manually without limiter (no automatic rate limiting)
+client := alphavantage.NewClient()
+client.Limiter = nil  // No automatic rate limiting
 ```
 
-The client **automatically handles rate limiting** - you don't need to add delays or throttling yourself.
+When a limiter is configured, the client **automatically handles rate limiting** - you don't need to add delays or throttling yourself.
 
 ## Response Types
 

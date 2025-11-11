@@ -659,11 +659,15 @@ if err != nil {
 
 ### Handling rate limit errors
 
-If you exceed rate limits, the client will wait automatically. If you see errors:
+If you exceed rate limits, the client will wait automatically (when a limiter is configured). If you see errors:
 
 ```go
-// Make sure you specified the correct plan
-client := alphavantage.NewClient(apiKey, alphavantage.FreePlan)
+// Make sure you configured the correct rate limit
+client := alphavantage.NewClient()
+client.Limiter = alphavantage.PremiumPlan75.Limiter()
+
+// Or via environment variable:
+// export ALPHA_VANTAGE_REQUEST_PER_MINUTE=75
 
 // Add a longer timeout if needed
 ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)

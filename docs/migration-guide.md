@@ -46,7 +46,8 @@ resp, err := client.DoGlobalQuoteRequest(ctx, "IBM")
 ```go
 import "github.com/portfoliotree/alphavantage"
 
-client := alphavantage.NewClient(apiKey, alphavantage.FreePlan)
+// Create client - loads API key from ALPHA_VANTAGE_API_KEY env var
+client := alphavantage.NewClient()
 
 // Time series with query builder
 query := alphavantage.QueryTimeSeriesDaily(client.APIKey, "IBM")
@@ -70,17 +71,29 @@ client := alphavantage.NewClient(apiKey)
 
 **v0.4.x:**
 ```go
-// Specify rate limit plan
-client := alphavantage.NewClient(apiKey, alphavantage.FreePlan)      // 5 req/min
-client := alphavantage.NewClient(apiKey, alphavantage.PremiumPlan75) // 75 req/min
+// NewClient() loads from environment variables
+client := alphavantage.NewClient()
+
+// Configure rate limiting (optional for premium plans)
+client.Limiter = alphavantage.PremiumPlan75.Limiter()
+
+// Or via environment variable:
+// export ALPHA_VANTAGE_REQUEST_PER_MINUTE=75
 ```
 
-Available rate limit plans:
+**Environment Variables:**
+- `ALPHA_VANTAGE_API_KEY` or `ALPHA_VANTAGE_TOKEN` - Your API key
+- `ALPHA_VANTAGE_REQUEST_PER_MINUTE` - Rate limit (optional)
+- `ALPHA_VANTAGE_URL` - Custom API URL (optional)
+
+**Available Rate Limit Plans:**
 - `PremiumPlan75` - 75 requests per minute
-- `PremiumPlan159` - 120 requests per minute
+- `PremiumPlan150` - 150 requests per minute
 - `PremiumPlan300` - 300 requests per minute
 - `PremiumPlan600` - 600 requests per minute
 - `PremiumPlan1200` - 1200 requests per minute
+
+**Note:** Free tier (25 requests/day) is too restrictive for automatic rate limiting. Implement application-level logic to stay under this limit.
 
 ## Detailed Method Migration
 

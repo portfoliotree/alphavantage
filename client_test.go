@@ -2,7 +2,6 @@ package alphavantage_test
 
 import (
 	"bytes"
-	"cmp"
 	"context"
 	_ "embed"
 	"fmt"
@@ -209,16 +208,6 @@ BAB,Invesco Taxable Municipal Bond ETF,ETF,United States,09:30,16:00,UTC-04,USD,
 	// Output: Symbol: BA, Match: 1.0
 	// Symbol: BAB, Match: 0.8
 	// Processed 2 results
-}
-
-// ExampleClient demonstrates how to create a new AlphaVantage client.
-func ExampleClient() {
-	// Get API key from environment variable
-	apiKey := cmp.Or(os.Getenv(alphavantage.APIKeyEnvironmentVariableName), apiKeyTestValue)
-
-	client := alphavantage.NewClient(apiKey, alphavantage.PremiumPlan75)
-	fmt.Printf("Client created: %t\n", client != nil)
-	// Output: Client created: true
 }
 
 //go:embed testdata/intraday_5min_IBM.csv
