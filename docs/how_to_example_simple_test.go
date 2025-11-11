@@ -12,8 +12,8 @@ import (
 // as shown in the how-to guide.
 func ExampleClient_DoQuotesRequest() {
 	// Get API key from environment variable
-	apiKey := cmp.Or(os.Getenv(alphavantage.StandardTokenEnvironmentVariableName), "demo")
-	client := alphavantage.NewClient(apiKey)
+	apiKey := cmp.Or(os.Getenv(alphavantage.TokenEnvironmentVariableName), "demo")
+	client := alphavantage.NewClient(apiKey, alphavantage.PremiumPlan75)
 
 	// The pattern for fetching daily stock prices:
 	// ctx := context.Background()
@@ -31,8 +31,8 @@ func ExampleClient_DoQuotesRequest() {
 // ExampleClient_DoQuotesRequest_adjusted demonstrates how to get adjusted prices
 // with dividends and splits.
 func ExampleClient_DoQuotesRequest_adjusted() {
-	apiKey := cmp.Or(os.Getenv(alphavantage.StandardTokenEnvironmentVariableName), "demo")
-	client := alphavantage.NewClient(apiKey)
+	apiKey := cmp.Or(os.Getenv(alphavantage.TokenEnvironmentVariableName), "demo")
+	client := alphavantage.NewClient(apiKey, alphavantage.PremiumPlan75)
 
 	// Use adjusted functions for split/dividend-adjusted data:
 	// result, err := client.DoQuotesRequest(ctx, "AAPL", alphavantage.TimeSeriesDailyAdjusted)
@@ -44,8 +44,8 @@ func ExampleClient_DoQuotesRequest_adjusted() {
 // ExampleClient_DoQuotesRequest_weekly demonstrates how to fetch weekly
 // or monthly data.
 func ExampleClient_DoQuotesRequest_weekly() {
-	apiKey := cmp.Or(os.Getenv(alphavantage.StandardTokenEnvironmentVariableName), "demo")
-	_ = alphavantage.NewClient(apiKey)
+	apiKey := cmp.Or(os.Getenv(alphavantage.TokenEnvironmentVariableName), "demo")
+	_ = alphavantage.NewClient(apiKey, alphavantage.PremiumPlan75)
 
 	// Available time series functions:
 	functions := []alphavantage.QuoteFunction{

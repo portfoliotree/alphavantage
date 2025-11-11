@@ -75,6 +75,68 @@ func (client *Client) DoSymbolSearchRequest(ctx context.Context, keywords string
 	return rc, nil
 }
 
+// Quotes fetches time series data for the specified symbol and function.
+// It parses the CSV response into a slice of Quote structs with dates in the given location.
+// The location parameter is used for parsing timestamps; use time.UTC for UTC times.
+func (client *Client) Quotes(ctx context.Context, symbol string, function QuoteFunction, location *time.Location) ([]Quote, error) {
+	rc, err := client.DoQuotesRequest(ctx, symbol, function)
+	if err != nil {
+		return nil, err
+	}
+	defer closeAndIgnoreError(rc)
+
+	switch function {
+	case TimeSeriesIntraday:
+		list, err := ParseIntraDayQuotes(rc, location)
+		if err != nil {
+			return nil, err
+		}
+		return convertElements(list, func(q IntraDayQuote) Quote { return Quote(q) }), nil
+	default:
+		quotes, err := ParseQuotes(rc, location)
+		if err != nil {
+			return nil, err
+		}
+		return quotes, nil
+	}
+}
+
+// Deprecated: use DoQuotesRequest instead. This method will be removed before 2023.
+func (client *Client) QuotesRequest(ctx context.Context, symbol string, function QuoteFunction, fn func(r io.Reader) error) error {
+	rc, err := client.DoQuotesRequest(ctx, symbol, function)
+	if err != nil {
+		return err
+	}
+	defer closeAndIgnoreError(rc)
+	return fn(rc)
+}
+
+// DoQuotesRequest fetches time series data for the specified symbol and function.
+// It returns the raw CSV response as an io.ReadCloser that must be closed by the caller.
+// This method provides direct access to the CSV data without parsing.
+func (client *Client) DoQuotesRequest(ctx context.Context, symbol string, function QuoteFunction) (io.ReadCloser, error) {
+	err := function.Validate()
+	if err != nil {
+		return nil, err
+	}
+	req, err := client.newRequest(ctx, url.Values{
+		"datatype":   []string{"csv"},
+		"outputsize": []string{"full"},
+		"function":   []string{string(function)},
+		"symbol":     []string{symbol},
+		"apikey":     []string{client.APIKey},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	return checkError(res.Body)
+}
+
 func ParseSymbolSearchQuery(r io.Reader) ([]SymbolSearchResult, error) {
 	var list []SymbolSearchResult
 	return list, ParseCSV(r, &list, nil)

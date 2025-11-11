@@ -115,7 +115,7 @@ func TestClient_ETFProfile(t *testing.T) {
 			waitCallCount++
 			return nil
 		}),
-	}).ETFProfile(ctx, "SPY")
+	}).ETFProfile(ctx, alphavantage.QueryETFProfile(apiKeyTestValue, "SPY"))
 	require.NoError(t, err)
 
 	assert.Equal(t, "ETF_PROFILE", avReq.URL.Query().Get("function"))
@@ -213,8 +213,8 @@ BAB,Invesco Taxable Municipal Bond ETF,ETF,United States,09:30,16:00,UTC-04,USD,
 
 // ExampleClient_DoQuotesRequest_parseCSV demonstrates fetching real data and parsing it.
 func ExampleClient_DoQuotesRequest_parseCSV() {
-	apiKey := cmp.Or(os.Getenv(alphavantage.StandardTokenEnvironmentVariableName), apiKeyTestValue)
-	client := alphavantage.NewClient(apiKey)
+	apiKey := cmp.Or(os.Getenv(alphavantage.TokenEnvironmentVariableName), apiKeyTestValue)
+	client := alphavantage.NewClient(apiKey, alphavantage.PremiumPlan75)
 
 	// This example shows the pattern but doesn't make a real API call
 	// ctx := context.Background()
@@ -241,9 +241,9 @@ func ExampleClient_DoQuotesRequest_parseCSV() {
 // ExampleClient demonstrates how to create a new AlphaVantage client.
 func ExampleClient() {
 	// Get API key from environment variable
-	apiKey := cmp.Or(os.Getenv(alphavantage.StandardTokenEnvironmentVariableName), apiKeyTestValue)
+	apiKey := cmp.Or(os.Getenv(alphavantage.TokenEnvironmentVariableName), apiKeyTestValue)
 
-	client := alphavantage.NewClient(apiKey)
+	client := alphavantage.NewClient(apiKey, alphavantage.PremiumPlan75)
 	fmt.Printf("Client created: %t\n", client != nil)
 	// Output: Client created: true
 }
@@ -527,9 +527,10 @@ func TestClient_CompanyOverview(t *testing.T) {
 			waitCallCount++
 			return nil
 		}),
-	}).CompanyOverview(ctx, "IBM")
+	}).CompanyOverview(ctx, alphavantage.QueryOverview(apiKeyTestValue, "IBM"))
 	require.NoError(t, err)
 
+	require.NotNil(t, avReq)
 	assert.Equal(t, "OVERVIEW", avReq.URL.Query().Get("function"))
 	assert.Equal(t, "IBM", avReq.URL.Query().Get("symbol"))
 

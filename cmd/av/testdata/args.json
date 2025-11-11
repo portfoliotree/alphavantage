@@ -1,0 +1,941 @@
+[
+  {
+    "name": "ADOSC_2df56d05",
+    "args": [
+      "ADOSC",
+      "--fastperiod=5",
+      "--interval=daily",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "ADXR_bc985409",
+    "args": [
+      "ADXR",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "ADX_a8d5fbcc",
+    "args": [
+      "ADX",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "AD_207c5d92",
+    "args": [
+      "AD",
+      "--interval=daily",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "ALL_COMMODITIES_4033e3d9",
+    "args": [
+      "ALL_COMMODITIES",
+      "--interval=monthly"
+    ]
+  },
+  {
+    "name": "ALUMINUM_85383733",
+    "args": [
+      "ALUMINUM",
+      "--interval=monthly"
+    ]
+  },
+  {
+    "name": "ANALYTICS_FIXED_WINDOW_89ad6522",
+    "args": [
+      "ANALYTICS_FIXED_WINDOW",
+      "--CALCULATIONS=MEAN,STDDEV,CORRELATION",
+      "--INTERVAL=DAILY",
+      "--OHLC=close",
+      "--RANGE=2023-07-01,2023-08-31",
+      "--SYMBOLS=AAPL,MSFT,IBM"
+    ]
+  },
+  {
+    "name": "ANALYTICS_SLIDING_WINDOW_5a09754f",
+    "args": [
+      "ANALYTICS_SLIDING_WINDOW",
+      "--CALCULATIONS=MEAN,STDDEV(annualized=True)",
+      "--INTERVAL=DAILY",
+      "--OHLC=close",
+      "--RANGE=2month",
+      "--SYMBOLS=AAPL,IBM",
+      "--WINDOW-SIZE=20"
+    ]
+  },
+  {
+    "name": "APO_87e8859c",
+    "args": [
+      "APO",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "AROONOSC_9945ac9d",
+    "args": [
+      "AROONOSC",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "AROON_de4ed20e",
+    "args": [
+      "AROON",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--time-period=14"
+    ]
+  },
+  {
+    "name": "ATR_4cc3ee79",
+    "args": [
+      "ATR",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--time-period=14"
+    ]
+  },
+  {
+    "name": "BALANCE_SHEET_54fef0fd",
+    "args": [
+      "BALANCE_SHEET",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "BBANDS_9bd4a9ab",
+    "args": [
+      "BBANDS",
+      "--interval=weekly",
+      "--nbdevdn=3",
+      "--nbdevup=3",
+      "--series-type=close",
+      "--symbol=IBM",
+      "--time-period=5"
+    ]
+  },
+  {
+    "name": "BOP_088a5081",
+    "args": [
+      "BOP",
+      "--interval=daily",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "BRENT_44bdfc84",
+    "args": [
+      "BRENT",
+      "--interval=monthly"
+    ]
+  },
+  {
+    "name": "CASH_FLOW_d685b915",
+    "args": [
+      "CASH_FLOW",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "CCI_dd423e9c",
+    "args": [
+      "CCI",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "CMO_b6a98564",
+    "args": [
+      "CMO",
+      "--interval=weekly",
+      "--series-type=close",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "COFFEE_24b082fc",
+    "args": [
+      "COFFEE",
+      "--interval=monthly"
+    ]
+  },
+  {
+    "name": "COPPER_639627b4",
+    "args": [
+      "COPPER",
+      "--interval=monthly"
+    ]
+  },
+  {
+    "name": "CORN_3d3a03fa",
+    "args": [
+      "CORN",
+      "--interval=monthly"
+    ]
+  },
+  {
+    "name": "COTTON_63260621",
+    "args": [
+      "COTTON",
+      "--interval=monthly"
+    ]
+  },
+  {
+    "name": "CPI_453fbf7c",
+    "args": [
+      "CPI",
+      "--interval=monthly"
+    ]
+  },
+  {
+    "name": "CRYPTO_INTRADAY_38f15660",
+    "args": [
+      "CRYPTO_INTRADAY",
+      "--interval=5min",
+      "--market=USD",
+      "--symbol=ETH"
+    ]
+  },
+  {
+    "name": "CURRENCY_EXCHANGE_RATE_82423f0b",
+    "args": [
+      "CURRENCY_EXCHANGE_RATE",
+      "--from-currency=USD",
+      "--to-currency=JPY"
+    ]
+  },
+  {
+    "name": "DEMA_42b33e8d",
+    "args": [
+      "DEMA",
+      "--interval=weekly",
+      "--series-type=open",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "DIGITAL_CURRENCY_DAILY_ffab6e21",
+    "args": [
+      "DIGITAL_CURRENCY_DAILY",
+      "--market=EUR",
+      "--symbol=BTC"
+    ]
+  },
+  {
+    "name": "DIGITAL_CURRENCY_MONTHLY_708fbbc6",
+    "args": [
+      "DIGITAL_CURRENCY_MONTHLY",
+      "--market=EUR",
+      "--symbol=BTC"
+    ]
+  },
+  {
+    "name": "DIGITAL_CURRENCY_WEEKLY_b80e3492",
+    "args": [
+      "DIGITAL_CURRENCY_WEEKLY",
+      "--market=EUR",
+      "--symbol=BTC"
+    ]
+  },
+  {
+    "name": "DIVIDENDS_5b9f5d9f",
+    "args": [
+      "DIVIDENDS",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "DURABLES_e4cfe1f5",
+    "args": [
+      "DURABLES"
+    ]
+  },
+  {
+    "name": "DX_51079af1",
+    "args": [
+      "DX",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "EARNINGS_CALENDAR_c674ae28",
+    "args": [
+      "EARNINGS_CALENDAR",
+      "--horizon=3month"
+    ]
+  },
+  {
+    "name": "EARNINGS_CALL_TRANSCRIPT_58c49486",
+    "args": [
+      "EARNINGS_CALL_TRANSCRIPT",
+      "--quarter=2024Q1",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "EARNINGS_ESTIMATES_4d82a3f3",
+    "args": [
+      "EARNINGS_ESTIMATES",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "EARNINGS_d56c999e",
+    "args": [
+      "EARNINGS",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "EMA_725a3e7b",
+    "args": [
+      "EMA",
+      "--interval=weekly",
+      "--series-type=open",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "ETF_PROFILE_5811666e",
+    "args": [
+      "ETF_PROFILE",
+      "--symbol=QQQ"
+    ]
+  },
+  {
+    "name": "FEDERAL_FUNDS_RATE_e4372b7a",
+    "args": [
+      "FEDERAL_FUNDS_RATE",
+      "--interval=monthly"
+    ]
+  },
+  {
+    "name": "FX_DAILY_b7946c44",
+    "args": [
+      "FX_DAILY",
+      "--from-symbol=EUR",
+      "--to-symbol=USD"
+    ]
+  },
+  {
+    "name": "FX_INTRADAY_f0be5c32",
+    "args": [
+      "FX_INTRADAY",
+      "--from-symbol=EUR",
+      "--interval=5min",
+      "--to-symbol=USD"
+    ]
+  },
+  {
+    "name": "FX_MONTHLY_63bfd9fd",
+    "args": [
+      "FX_MONTHLY",
+      "--from-symbol=EUR",
+      "--to-symbol=USD"
+    ]
+  },
+  {
+    "name": "FX_WEEKLY_e2a3f5ad",
+    "args": [
+      "FX_WEEKLY",
+      "--from-symbol=EUR",
+      "--to-symbol=USD"
+    ]
+  },
+  {
+    "name": "GLOBAL_QUOTE_db7544f0",
+    "args": [
+      "GLOBAL_QUOTE",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "HISTORICAL_OPTIONS_6c0b1a36",
+    "args": [
+      "HISTORICAL_OPTIONS",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "HT_DCPERIOD_1f51b571",
+    "args": [
+      "HT_DCPERIOD",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "HT_DCPHASE_7072d4d1",
+    "args": [
+      "HT_DCPHASE",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "HT_PHASOR_5030e26f",
+    "args": [
+      "HT_PHASOR",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "HT_SINE_015dabd4",
+    "args": [
+      "HT_SINE",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "HT_TRENDLINE_459bf2f7",
+    "args": [
+      "HT_TRENDLINE",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "HT_TRENDMODE_90313721",
+    "args": [
+      "HT_TRENDMODE",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "INCOME_STATEMENT_947bd231",
+    "args": [
+      "INCOME_STATEMENT",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "INFLATION_ae098c06",
+    "args": [
+      "INFLATION"
+    ]
+  },
+  {
+    "name": "INSIDER_TRANSACTIONS_65985270",
+    "args": [
+      "INSIDER_TRANSACTIONS",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "IPO_CALENDAR_bed45bed",
+    "args": [
+      "IPO_CALENDAR"
+    ]
+  },
+  {
+    "name": "KAMA_b92e803d",
+    "args": [
+      "KAMA",
+      "--interval=weekly",
+      "--series-type=open",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "LISTING_STATUS_42ba3c24",
+    "args": [
+      "LISTING_STATUS"
+    ]
+  },
+  {
+    "name": "MACDEXT_84eb70e4",
+    "args": [
+      "MACDEXT",
+      "--interval=daily",
+      "--series-type=open",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "MACD_19e73cc7",
+    "args": [
+      "MACD",
+      "--interval=daily",
+      "--series-type=open",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "MAMA_f93f21b3",
+    "args": [
+      "MAMA",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "MARKET_STATUS_b3880d61",
+    "args": [
+      "MARKET_STATUS"
+    ]
+  },
+  {
+    "name": "MFI_648317da",
+    "args": [
+      "MFI",
+      "--interval=weekly",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "MIDPOINT_c735d994",
+    "args": [
+      "MIDPOINT",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "MIDPRICE_00f6d973",
+    "args": [
+      "MIDPRICE",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "MINUS_DI_c854c442",
+    "args": [
+      "MINUS_DI",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "MINUS_DM_225feb25",
+    "args": [
+      "MINUS_DM",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "MOM_4be2b205",
+    "args": [
+      "MOM",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "NATR_26008ea8",
+    "args": [
+      "NATR",
+      "--interval=weekly",
+      "--symbol=IBM",
+      "--time-period=14"
+    ]
+  },
+  {
+    "name": "NATURAL_GAS_4be4453d",
+    "args": [
+      "NATURAL_GAS",
+      "--interval=monthly"
+    ]
+  },
+  {
+    "name": "NEWS_SENTIMENT_37784e1e",
+    "args": [
+      "NEWS_SENTIMENT",
+      "--tickers=AAPL"
+    ]
+  },
+  {
+    "name": "NONFARM_PAYROLL_cf8e3bcd",
+    "args": [
+      "NONFARM_PAYROLL"
+    ]
+  },
+  {
+    "name": "OBV_454e2ac4",
+    "args": [
+      "OBV",
+      "--interval=weekly",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "OVERVIEW_b1e86153",
+    "args": [
+      "OVERVIEW",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "PLUS_DI_993eebda",
+    "args": [
+      "PLUS_DI",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "PLUS_DM_e0682566",
+    "args": [
+      "PLUS_DM",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "PPO_7bbc8407",
+    "args": [
+      "PPO",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "REALTIME_BULK_QUOTES_505ed5cc",
+    "args": [
+      "REALTIME_BULK_QUOTES",
+      "--symbol=MSFT,AAPL,IBM"
+    ]
+  },
+  {
+    "name": "REALTIME_OPTIONS_e1db0de5",
+    "args": [
+      "REALTIME_OPTIONS",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "REAL_GDP_73a04ece",
+    "args": [
+      "REAL_GDP",
+      "--interval=annual"
+    ]
+  },
+  {
+    "name": "REAL_GDP_PER_CAPITA_57884c33",
+    "args": [
+      "REAL_GDP_PER_CAPITA"
+    ]
+  },
+  {
+    "name": "RETAIL_SALES_c609adfe",
+    "args": [
+      "RETAIL_SALES"
+    ]
+  },
+  {
+    "name": "ROCR_c9cd207d",
+    "args": [
+      "ROCR",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "ROC_9ffc04fa",
+    "args": [
+      "ROC",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "RSI_fbad53b2",
+    "args": [
+      "RSI",
+      "--interval=weekly",
+      "--series-type=open",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "SAR_c1dff5a5",
+    "args": [
+      "SAR",
+      "--acceleration=0.05",
+      "--interval=weekly",
+      "--maximum=0.25",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "SHARES_OUTSTANDING_696752e2",
+    "args": [
+      "SHARES_OUTSTANDING",
+      "--symbol=MSFT"
+    ]
+  },
+  {
+    "name": "SMA_2e3849d5",
+    "args": [
+      "SMA",
+      "--interval=weekly",
+      "--series-type=open",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "SPLITS_358e2618",
+    "args": [
+      "SPLITS",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "STOCHF_aae33090",
+    "args": [
+      "STOCHF",
+      "--interval=daily",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "STOCHRSI_87df549e",
+    "args": [
+      "STOCHRSI",
+      "--fastdmatype=1",
+      "--fastkperiod=6",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "STOCH_18a572fd",
+    "args": [
+      "STOCH",
+      "--interval=daily",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "SUGAR_9675b985",
+    "args": [
+      "SUGAR",
+      "--interval=monthly"
+    ]
+  },
+  {
+    "name": "SYMBOL_SEARCH_c3e00cd4",
+    "args": [
+      "SYMBOL_SEARCH",
+      "--keywords=tesco"
+    ]
+  },
+  {
+    "name": "T3_8ad10afc",
+    "args": [
+      "T3",
+      "--interval=weekly",
+      "--series-type=open",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "TEMA_c7d8425e",
+    "args": [
+      "TEMA",
+      "--interval=weekly",
+      "--series-type=open",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "TIME_SERIES_DAILY_42a08190",
+    "args": [
+      "TIME_SERIES_DAILY",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "TIME_SERIES_DAILY_ADJUSTED_572d0539",
+    "args": [
+      "TIME_SERIES_DAILY_ADJUSTED",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "TIME_SERIES_INTRADAY_3dbdcdc7",
+    "args": [
+      "TIME_SERIES_INTRADAY",
+      "--interval=5min",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "TIME_SERIES_MONTHLY_3ced87e9",
+    "args": [
+      "TIME_SERIES_MONTHLY",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "TIME_SERIES_MONTHLY_ADJUSTED_62a3844d",
+    "args": [
+      "TIME_SERIES_MONTHLY_ADJUSTED",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "TIME_SERIES_WEEKLY_74eb54d6",
+    "args": [
+      "TIME_SERIES_WEEKLY",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "TIME_SERIES_WEEKLY_ADJUSTED_9cd0a0b1",
+    "args": [
+      "TIME_SERIES_WEEKLY_ADJUSTED",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "TOP_GAINERS_LOSERS_bbd20350",
+    "args": [
+      "TOP_GAINERS_LOSERS"
+    ]
+  },
+  {
+    "name": "TRANGE_61f61d8e",
+    "args": [
+      "TRANGE",
+      "--interval=daily",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "TREASURY_YIELD_a4d134a9",
+    "args": [
+      "TREASURY_YIELD",
+      "--interval=monthly",
+      "--maturity=10year"
+    ]
+  },
+  {
+    "name": "TRIMA_44737774",
+    "args": [
+      "TRIMA",
+      "--interval=weekly",
+      "--series-type=open",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "TRIX_5d057c38",
+    "args": [
+      "TRIX",
+      "--interval=daily",
+      "--series-type=close",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "ULTOSC_b91aa1db",
+    "args": [
+      "ULTOSC",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--timeperiod1=8"
+    ]
+  },
+  {
+    "name": "UNEMPLOYMENT_a0671528",
+    "args": [
+      "UNEMPLOYMENT"
+    ]
+  },
+  {
+    "name": "VWAP_2cb5b135",
+    "args": [
+      "VWAP",
+      "--interval=15min",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "WHEAT_92552a45",
+    "args": [
+      "WHEAT",
+      "--interval=monthly"
+    ]
+  },
+  {
+    "name": "WILLR_6d7a9722",
+    "args": [
+      "WILLR",
+      "--interval=daily",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "WMA_b6c190fa",
+    "args": [
+      "WMA",
+      "--interval=weekly",
+      "--series-type=open",
+      "--symbol=IBM",
+      "--time-period=10"
+    ]
+  },
+  {
+    "name": "WTI_6498cf9f",
+    "args": [
+      "WTI",
+      "--interval=monthly"
+    ]
+  }
+]

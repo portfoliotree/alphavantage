@@ -29,9 +29,19 @@ import (
 )
 
 const (
-	// StandardTokenEnvironmentVariableName is the standard environment variable
+	envVarPrefix = "ALPHA_VANTAGE_"
+
+	// TokenEnvironmentVariableName is the standard environment variable
 	// name for storing the AlphaVantage API key.
-	StandardTokenEnvironmentVariableName = "ALPHA_VANTAGE_TOKEN"
+	TokenEnvironmentVariableName = envVarPrefix + "TOKEN"
+
+	// APIURLEnvironmentVariableName is the standard environment variable
+	// name for overriding the AlphaVantage API URL.
+	APIURLEnvironmentVariableName = envVarPrefix + "URL"
+
+	// RequestsPerMinuteEnvironmentVariableName is the number of requests per minute
+	// the API rate limiter should be configured to permit.
+	RequestsPerMinuteEnvironmentVariableName = envVarPrefix + "REQUEST_PER_MINUTE"
 )
 
 // DefaultDateFormat is the RFC 3339 date format used for parsing dates.
@@ -60,23 +70,26 @@ type Client struct {
 // NewClient creates a new AlphaVantage client with the specified API key.
 // The client will use environment variable ALPHA_VANTAGE_URL if set, otherwise defaults
 // to https://www.alphavantage.co.
-func NewClient(apiKey string, plan PremiumPlan) *Client {
+func NewClient(apiKey string, reqPerMin RequestsPerMinute) *Client {
 	return &Client{
 		Client:  http.DefaultClient,
-		Limiter: rate.NewLimiter(plan.Limit(), 5),
+		Limiter: rate.NewLimiter(reqPerMin.Limit(), 5),
 		APIKey:  cmp.Or(apiKey, os.Getenv("ALPHA_VANTAGE_TOKEN"), "demo"),
 	}
 }
 
 func (client *Client) newRequest(ctx context.Context, values url.Values) (*http.Request, error) {
+	baseURL := cmp.Or(os.Getenv(APIURLEnvironmentVariableName), "https://www.alphavantage.co")
+	apiURL, err := url.Parse(baseURL)
+	if err != nil {
+		return nil, fmt.Errorf("invalid API URL: %w", err)
+	}
+	apiURL.Path = "/query"
+	apiURL.RawQuery = values.Encode()
+
 	return http.NewRequestWithContext(ctx,
 		http.MethodGet,
-		(&url.URL{
-			Scheme:   "https",
-			Host:     "www.alphavantage.co",
-			Path:     "/query",
-			RawQuery: values.Encode(),
-		}).String(),
+		apiURL.String(),
 		nil,
 	)
 }
