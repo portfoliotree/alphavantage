@@ -27,27 +27,28 @@
 		"csv_columns": [
 			{
 				"name": "timestamp",
-				"type": "string"
+				"type": "time",
+				"format": "2006-01-02 15:04:05"
 			},
 			{
 				"name": "open",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "high",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "low",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "close",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "volume",
-				"type": "string"
+				"type": "int"
 			}
 		]
 	},
@@ -66,27 +67,28 @@
 		"csv_columns": [
 			{
 				"name": "timestamp",
-				"type": "string"
+				"type": "time",
+				"format": "2006-01-02"
 			},
 			{
 				"name": "open",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "high",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "low",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "close",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "volume",
-				"type": "string"
+				"type": "int"
 			}
 		]
 	},
@@ -105,27 +107,28 @@
 		"csv_columns": [
 			{
 				"name": "timestamp",
-				"type": "string"
+				"type": "time",
+				"format": "2006-01-02"
 			},
 			{
 				"name": "open",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "high",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "low",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "close",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "volume",
-				"type": "string"
+				"type": "int"
 			}
 		]
 	},
@@ -144,27 +147,28 @@
 		"csv_columns": [
 			{
 				"name": "timestamp",
-				"type": "string"
+				"type": "time",
+				"format": "2006-01-02"
 			},
 			{
 				"name": "open",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "high",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "low",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "close",
-				"type": "string"
+				"type": "float64"
 			},
 			{
 				"name": "volume",
-				"type": "string"
+				"type": "int"
 			}
 		]
 	}

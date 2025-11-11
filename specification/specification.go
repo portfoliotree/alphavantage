@@ -75,3 +75,10 @@ type Function struct {
 func (fn Function) HasDatatypeParameter() bool {
 	return slices.Contains(fn.Optional, QueryKeyDataType) || slices.Contains(fn.Required, QueryKeyDataType)
 }
+
+type IndexEntree struct {
+	ID      string `json:"ID"`
+	Path    string `json:"path"`
+	Fetched string `json:"fetched"`
+	URL     string `json:"url"`
+}

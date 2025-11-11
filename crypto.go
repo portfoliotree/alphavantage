@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 type CryptoIntradayQuery url.Values
@@ -50,12 +51,12 @@ func (client *Client) GetCryptoIntraday(ctx context.Context, q CryptoIntradayQue
 }
 
 type CryptoIntradayRow struct {
-	TimeStamp string `column-name:"timestamp"`
-	Open      string `column-name:"open"`
-	High      string `column-name:"high"`
-	Low       string `column-name:"low"`
-	Close     string `column-name:"close"`
-	Volume    string `column-name:"volume"`
+	TimeStamp time.Time `column-name:"timestamp" time-layout:"2006-01-02 15:04:05"`
+	Open      float64   `column-name:"open"`
+	High      float64   `column-name:"high"`
+	Low       float64   `column-name:"low"`
+	Close     float64   `column-name:"close"`
+	Volume    int       `column-name:"volume"`
 }
 
 func (client *Client) GetCryptoIntradayCSVRows(ctx context.Context, q CryptoIntradayQuery) ([]CryptoIntradayRow, error) {
@@ -90,6 +91,29 @@ func (client *Client) GetDigitalCurrencyDaily(ctx context.Context, q DigitalCurr
 	return res, nil
 }
 
+type DigitalCurrencyDailyRow struct {
+	TimeStamp time.Time `column-name:"timestamp" time-layout:"2006-01-02"`
+	Open      float64   `column-name:"open"`
+	High      float64   `column-name:"high"`
+	Low       float64   `column-name:"low"`
+	Close     float64   `column-name:"close"`
+	Volume    int       `column-name:"volume"`
+}
+
+func (client *Client) GetDigitalCurrencyDailyCSVRows(ctx context.Context, q DigitalCurrencyDailyQuery) ([]DigitalCurrencyDailyRow, error) {
+	res, err := client.GetDigitalCurrencyDaily(ctx, q)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+	var rows []DigitalCurrencyDailyRow
+	err = ParseCSV(res.Body, &rows, nil)
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
+}
+
 type DigitalCurrencyMonthlyQuery url.Values
 
 func QueryDigitalCurrencyMonthly(apiKey, symbol, market string) DigitalCurrencyMonthlyQuery {
@@ -107,6 +131,29 @@ func (client *Client) GetDigitalCurrencyMonthly(ctx context.Context, q DigitalCu
 	return res, nil
 }
 
+type DigitalCurrencyMonthlyRow struct {
+	TimeStamp time.Time `column-name:"timestamp" time-layout:"2006-01-02"`
+	Open      float64   `column-name:"open"`
+	High      float64   `column-name:"high"`
+	Low       float64   `column-name:"low"`
+	Close     float64   `column-name:"close"`
+	Volume    int       `column-name:"volume"`
+}
+
+func (client *Client) GetDigitalCurrencyMonthlyCSVRows(ctx context.Context, q DigitalCurrencyMonthlyQuery) ([]DigitalCurrencyMonthlyRow, error) {
+	res, err := client.GetDigitalCurrencyMonthly(ctx, q)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+	var rows []DigitalCurrencyMonthlyRow
+	err = ParseCSV(res.Body, &rows, nil)
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
+}
+
 type DigitalCurrencyWeeklyQuery url.Values
 
 func QueryDigitalCurrencyWeekly(apiKey, symbol, market string) DigitalCurrencyWeeklyQuery {
@@ -122,4 +169,27 @@ func (client *Client) GetDigitalCurrencyWeekly(ctx context.Context, q DigitalCur
 		return nil, err
 	}
 	return res, nil
+}
+
+type DigitalCurrencyWeeklyRow struct {
+	TimeStamp time.Time `column-name:"timestamp" time-layout:"2006-01-02"`
+	Open      float64   `column-name:"open"`
+	High      float64   `column-name:"high"`
+	Low       float64   `column-name:"low"`
+	Close     float64   `column-name:"close"`
+	Volume    int       `column-name:"volume"`
+}
+
+func (client *Client) GetDigitalCurrencyWeeklyCSVRows(ctx context.Context, q DigitalCurrencyWeeklyQuery) ([]DigitalCurrencyWeeklyRow, error) {
+	res, err := client.GetDigitalCurrencyWeekly(ctx, q)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+	var rows []DigitalCurrencyWeeklyRow
+	err = ParseCSV(res.Body, &rows, nil)
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
 }

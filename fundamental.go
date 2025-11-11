@@ -153,6 +153,29 @@ func (client *Client) GetEarningsCalendar(ctx context.Context, q EarningsCalenda
 	return res, nil
 }
 
+type EarningsCalendarRow struct {
+	Symbol           string `column-name:"symbol"`
+	Name             string `column-name:"name"`
+	ReportDate       string `column-name:"reportDate"`
+	FiscalDateEnding string `column-name:"fiscalDateEnding"`
+	Estimate         string `column-name:"estimate"`
+	Currency         string `column-name:"currency"`
+}
+
+func (client *Client) GetEarningsCalendarCSVRows(ctx context.Context, q EarningsCalendarQuery) ([]EarningsCalendarRow, error) {
+	res, err := client.GetEarningsCalendar(ctx, q)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+	var rows []EarningsCalendarRow
+	err = ParseCSV(res.Body, &rows, nil)
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
+}
+
 type EarningsEstimatesQuery url.Values
 
 func QueryEarningsEstimates(apiKey, symbol string) EarningsEstimatesQuery {
@@ -185,6 +208,30 @@ func (client *Client) GetIPOCalendar(ctx context.Context, q IPOCalendarQuery) (*
 		return nil, err
 	}
 	return res, nil
+}
+
+type IPOCalendarRow struct {
+	Symbol         string `column-name:"symbol"`
+	Name           string `column-name:"name"`
+	IPODate        string `column-name:"ipoDate"`
+	PriceRangeLow  string `column-name:"priceRangeLow"`
+	PriceRangeHigh string `column-name:"priceRangeHigh"`
+	Currency       string `column-name:"currency"`
+	Exchange       string `column-name:"exchange"`
+}
+
+func (client *Client) GetIPOCalendarCSVRows(ctx context.Context, q IPOCalendarQuery) ([]IPOCalendarRow, error) {
+	res, err := client.GetIPOCalendar(ctx, q)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+	var rows []IPOCalendarRow
+	err = ParseCSV(res.Body, &rows, nil)
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
 }
 
 type IncomeStatementQuery url.Values
@@ -235,6 +282,30 @@ func (client *Client) GetListingStatus(ctx context.Context, q ListingStatusQuery
 		return nil, err
 	}
 	return res, nil
+}
+
+type ListingStatusRow struct {
+	Symbol        string `column-name:"symbol"`
+	Name          string `column-name:"name"`
+	Exchange      string `column-name:"exchange"`
+	AssetType     string `column-name:"assetType"`
+	IPODate       string `column-name:"ipoDate"`
+	DelistingDate string `column-name:"delistingDate"`
+	Status        string `column-name:"status"`
+}
+
+func (client *Client) GetListingStatusCSVRows(ctx context.Context, q ListingStatusQuery) ([]ListingStatusRow, error) {
+	res, err := client.GetListingStatus(ctx, q)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+	var rows []ListingStatusRow
+	err = ParseCSV(res.Body, &rows, nil)
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
 }
 
 type OverviewQuery url.Values
