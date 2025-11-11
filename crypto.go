@@ -56,7 +56,7 @@ type CryptoIntradayRow struct {
 	High      float64   `column-name:"high"`
 	Low       float64   `column-name:"low"`
 	Close     float64   `column-name:"close"`
-	Volume    int       `column-name:"volume"`
+	Volume    float64   `column-name:"volume"`
 }
 
 func (client *Client) GetCryptoIntradayCSVRows(ctx context.Context, q CryptoIntradayQuery) ([]CryptoIntradayRow, error) {
@@ -97,7 +97,7 @@ type DigitalCurrencyDailyRow struct {
 	High      float64   `column-name:"high"`
 	Low       float64   `column-name:"low"`
 	Close     float64   `column-name:"close"`
-	Volume    int       `column-name:"volume"`
+	Volume    float64   `column-name:"volume"`
 }
 
 func (client *Client) GetDigitalCurrencyDailyCSVRows(ctx context.Context, q DigitalCurrencyDailyQuery) ([]DigitalCurrencyDailyRow, error) {
@@ -137,7 +137,7 @@ type DigitalCurrencyMonthlyRow struct {
 	High      float64   `column-name:"high"`
 	Low       float64   `column-name:"low"`
 	Close     float64   `column-name:"close"`
-	Volume    int       `column-name:"volume"`
+	Volume    float64   `column-name:"volume"`
 }
 
 func (client *Client) GetDigitalCurrencyMonthlyCSVRows(ctx context.Context, q DigitalCurrencyMonthlyQuery) ([]DigitalCurrencyMonthlyRow, error) {
@@ -177,7 +177,7 @@ type DigitalCurrencyWeeklyRow struct {
 	High      float64   `column-name:"high"`
 	Low       float64   `column-name:"low"`
 	Close     float64   `column-name:"close"`
-	Volume    int       `column-name:"volume"`
+	Volume    float64   `column-name:"volume"`
 }
 
 func (client *Client) GetDigitalCurrencyWeeklyCSVRows(ctx context.Context, q DigitalCurrencyWeeklyQuery) ([]DigitalCurrencyWeeklyRow, error) {
