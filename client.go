@@ -111,7 +111,7 @@ func NewClient() *Client {
 
 func (client *Client) newRequest(ctx context.Context, values url.Values) (*http.Request, error) {
 	apiURL := url.URL{
-		Scheme:   cmp.Or(client.BaseURL.Scheme, "http"),
+		Scheme:   cmp.Or(client.BaseURL.Scheme, "https"),
 		Host:     cmp.Or(client.BaseURL.Host, "www.alphavantage.co"),
 		Path:     "/query",
 		RawQuery: values.Encode(),
