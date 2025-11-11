@@ -35,7 +35,7 @@ func (wf waitFunc) Wait(ctx context.Context) error {
 func TestParse(t *testing.T) {
 	t.Run("nil data", func(t *testing.T) {
 		assert.Panics(t, func() {
-			_ = alphavantage.ParseCSV(bytes.NewReader(nil), (*[]alphavantage.Quote)(nil), nil)
+			_ = alphavantage.ParseCSV(bytes.NewReader(nil), (*[]alphavantage.TimeSeriesDailyQuery)(nil), nil)
 		})
 	})
 
@@ -248,63 +248,6 @@ func ExampleClient() {
 	// Output: Client created: true
 }
 
-// ExampleQuoteFunction_Validate demonstrates how to validate QuoteFunction constants.
-func ExampleQuoteFunction_Validate() {
-	// Valid function
-	err := alphavantage.TimeSeriesDaily.Validate()
-	fmt.Printf("Daily function is valid: %t\n", err == nil)
-
-	// Valid weekly function
-	err = alphavantage.TimeSeriesWeekly.Validate()
-	fmt.Printf("Weekly function is valid: %t\n", err == nil)
-
-	// Invalid function
-	invalidFunction := alphavantage.QuoteFunction("INVALID_FUNCTION")
-	err = invalidFunction.Validate()
-	fmt.Printf("Invalid function rejected: %t\n", err != nil)
-
-	// Output: Daily function is valid: true
-	// Weekly function is valid: true
-	// Invalid function rejected: true
-}
-
-//go:embed testdata/monthly_IBM.csv
-var monthlyIBM []byte
-
-func TestQuotes(t *testing.T) {
-	ctx := context.Background()
-
-	var avReq *http.Request
-
-	waitCallCount := 0
-
-	quotes, err := (&alphavantage.Client{
-		Client: doerFunc(func(request *http.Request) (*http.Response, error) {
-			avReq = request
-			return &http.Response{
-				Body:       io.NopCloser(bytes.NewReader(monthlyIBM)),
-				StatusCode: http.StatusOK,
-			}, nil
-		}),
-		APIKey: apiKeyTestValue,
-		Limiter: waitFunc(func(ctx context.Context) error {
-			waitCallCount++
-			return nil
-		}),
-	}).Quotes(ctx, "IBM", alphavantage.TimeSeriesMonthly, nil)
-
-	require.NoError(t, err)
-	assert.Len(t, quotes, 260)
-	assert.Equal(t, "www.alphavantage.co", avReq.Host)
-	assert.Equal(t, "https", avReq.URL.Scheme)
-	assert.Equal(t, "/query", avReq.URL.Path)
-	assert.Equal(t, "TIME_SERIES_MONTHLY", avReq.URL.Query().Get("function"))
-	assert.Equal(t, "IBM", avReq.URL.Query().Get("symbol"))
-	assert.Equal(t, apiKeyTestValue, avReq.URL.Query().Get("apikey"))
-	assert.Equal(t, "csv", avReq.URL.Query().Get("datatype"))
-	assert.Equal(t, 1, waitCallCount)
-}
-
 //go:embed testdata/intraday_5min_IBM.csv
 var intradayIBM []byte
 
@@ -360,138 +303,6 @@ func TestTimeSeriesIntraday(t *testing.T) {
 	assert.Equal(t, "123.1500", result[99].Low)
 	assert.Equal(t, "123.1500", result[99].Close)
 	assert.Equal(t, "2916", result[99].Volume)
-}
-
-func TestService_ParseQueryResponse(t *testing.T) {
-	t.Run("valid data", func(t *testing.T) {
-		const responseText = `timestamp,open,high,low,close,volume
-2020-08-21,13.2600,13.3200,13.1500,13.2500,751279
-2020-08-20,13.4700,13.4750,13.2200,13.3800,854559
-2020-08-19,13.5700,13.7100,13.4700,13.5000,521089
-2020-08-18,13.8100,13.8700,13.5400,13.5700,571445
-`
-
-		_, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)), nil)
-		require.NoError(t, err)
-	})
-
-	t.Run("intra-day", func(t *testing.T) {
-		const responseText = `timestamp,open,high,low,close,volume
-2020-08-21 19:40:00,123.1700,123.1700,123.1700,123.1700,825
-2020-08-21 19:20:00,123.2000,123.2000,123.2000,123.2000,200
-2020-08-21 18:50:00,123.1700,123.1700,123.1700,123.1700,115
-2020-08-21 17:30:00,123.0200,123.0200,123.0200,123.0200,200`
-		_, err := alphavantage.ParseIntraDayQuotes(bytes.NewReader([]byte(responseText)), nil)
-		require.NoError(t, err)
-	})
-
-	t.Run("unexpected column", func(t *testing.T) {
-		const responseText = `timestamp,open,high,low,close,volume,unexpected
-2020-08-21 19:40:00,123.1700,123.1700,123.1700,123.1700,825,123456789
-2020-08-21 19:20:00,123.2000,123.2000,123.2000,123.2000,200,123456789
-2020-08-21 18:50:00,123.1700,123.1700,123.1700,123.1700,115,123456789
-2020-08-21 17:30:00,123.0200,123.0200,123.0200,123.0200,200,123456789`
-		_, err := alphavantage.ParseIntraDayQuotes(bytes.NewReader([]byte(responseText)), nil)
-		require.NoError(t, err)
-	})
-
-	t.Run("split_coefficient", func(t *testing.T) {
-		const responseText = `timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient
-2020-08-31,444.6100,500.1400,440.1100,498.3200,498.3200,115847020,0.0000,5.0000
-`
-
-		quotes, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)), nil)
-		require.NoError(t, err)
-		assert.Len(t, quotes, 1)
-		assert.Equal(t, 5.0, quotes[0].SplitCoefficient)
-	})
-
-	t.Run("dividend", func(t *testing.T) {
-		const responseText = `timestamp,open,high,low,close,adjusted_close,volume,dividend_amount,split_coefficient
-2020-08-31,444.6100,500.1400,440.1100,498.3200,498.3200,115847020,4.20,5.0000
-`
-
-		quotes, err := alphavantage.ParseQuotes(bytes.NewReader([]byte(responseText)), nil)
-		require.NoError(t, err)
-		assert.Len(t, quotes, 1)
-		assert.Equal(t, 4.20, quotes[0].DividendAmount)
-	})
-}
-
-func TestClient_ListingStatus_listed(t *testing.T) {
-	f, err := os.Open(filepath.FromSlash("testdata/listing_status.csv"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer func() {
-		_ = f.Close()
-	}()
-
-	ctx := context.Background()
-
-	var (
-		avReq         *http.Request
-		waitCallCount = 0
-	)
-
-	results, err := (&alphavantage.Client{
-		Client: doerFunc(func(request *http.Request) (*http.Response, error) {
-			avReq = request
-			return &http.Response{
-				Body:       io.NopCloser(f),
-				StatusCode: http.StatusOK,
-			}, nil
-		}),
-		APIKey: apiKeyTestValue,
-		Limiter: waitFunc(func(ctx context.Context) error {
-			waitCallCount++
-			return nil
-		}),
-	}).ListingStatus(ctx, true)
-	require.NoError(t, err)
-	assert.Len(t, results, 8)
-
-	assert.Equal(t, "www.alphavantage.co", avReq.Host)
-	assert.Equal(t, "https", avReq.URL.Scheme)
-	assert.Equal(t, "/query", avReq.URL.Path)
-	assert.Equal(t, "LISTING_STATUS", avReq.URL.Query().Get("function"))
-	assert.Equal(t, "active", avReq.URL.Query().Get("state"))
-	assert.Equal(t, apiKeyTestValue, avReq.URL.Query().Get("apikey"))
-	assert.Equal(t, 1, waitCallCount)
-}
-
-func TestClient_ListingStatus_delisted(t *testing.T) {
-	f, err := os.Open(filepath.FromSlash("testdata/listing_status.csv"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer func() {
-		_ = f.Close()
-	}()
-
-	ctx := context.Background()
-
-	var (
-		avReq         *http.Request
-		waitCallCount = 0
-	)
-
-	_, err = (&alphavantage.Client{
-		Client: doerFunc(func(request *http.Request) (*http.Response, error) {
-			avReq = request
-			return &http.Response{
-				Body:       io.NopCloser(f),
-				StatusCode: http.StatusOK,
-			}, nil
-		}),
-		APIKey: apiKeyTestValue,
-		Limiter: waitFunc(func(ctx context.Context) error {
-			waitCallCount++
-			return nil
-		}),
-	}).ListingStatus(ctx, false)
-	require.NoError(t, err)
-	assert.Equal(t, "delisted", avReq.URL.Query().Get("state"))
 }
 
 func TestClient_CompanyOverview(t *testing.T) {
@@ -636,43 +447,4 @@ func TestSearch(t *testing.T) {
 	assert.Equal(t, apiKeyTestValue, avReq.URL.Query().Get("apikey"))
 	assert.Equal(t, "csv", avReq.URL.Query().Get("datatype"))
 	assert.Equal(t, 1, waitCallCount)
-}
-
-func TestParseSearchQuery(t *testing.T) {
-	f, err := os.Open(filepath.FromSlash("testdata/search_results.csv"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer func() {
-		_ = f.Close()
-	}()
-
-	results, err := alphavantage.ParseSymbolSearchQuery(f)
-	require.NoError(t, err)
-	assert.Len(t, results, 10)
-
-	assert.Equal(t, []alphavantage.SymbolSearchResult{
-		{
-			Symbol:      "BA",
-			Name:        "Boeing Company",
-			Type:        "Equity",
-			Region:      "United States",
-			MarketOpen:  "09:30",
-			MarketClose: "16:00",
-			TimeZone:    "UTC-04",
-			Currency:    "USD",
-			MatchScore:  1,
-		},
-		{
-			Symbol:      "BAB",
-			Name:        "Invesco Taxable Municipal Bond ETF",
-			Type:        "ETF",
-			Region:      "United States",
-			MarketOpen:  "09:30",
-			MarketClose: "16:00",
-			TimeZone:    "UTC-04",
-			Currency:    "USD",
-			MatchScore:  0.8,
-		},
-	}, results[:2])
 }

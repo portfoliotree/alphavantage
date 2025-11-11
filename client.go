@@ -166,23 +166,6 @@ func checkError(rc io.ReadCloser) (io.ReadCloser, error) {
 
 var typeType = reflect.TypeOf(time.Time{})
 
-// ParseQuotes handles parsing the following "Stock Time Series" functions
-// - TIME_SERIES_DAILY
-// - TIME_SERIES_DAILY_ADJUSTED
-// - TIME_SERIES_MONTHLY
-// - TIME_SERIES_MONTHLY_ADJUSTED
-func ParseQuotes(r io.Reader, location *time.Location) ([]Quote, error) {
-	var list []Quote
-	return list, ParseCSV(r, &list, location)
-}
-
-// ParseIntraDayQuotes handles parsing the following "Stock Time Series" functions
-// - TIME_SERIES_INTRADAY
-func ParseIntraDayQuotes(r io.Reader, location *time.Location) ([]IntraDayQuote, error) {
-	var list []IntraDayQuote
-	return list, ParseCSV(r, &list, location)
-}
-
 func closeAndIgnoreError(c io.Closer) {
 	_ = c.Close()
 }
