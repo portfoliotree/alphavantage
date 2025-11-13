@@ -13,6 +13,7 @@ type BalanceSheetQuery url.Values
 func QueryBalanceSheet(apiKey, symbol string) BalanceSheetQuery {
 	return BalanceSheetQuery{"function": []string{"BALANCE_SHEET"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (client *Client) GetBalanceSheet(ctx context.Context, q BalanceSheetQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -30,6 +31,7 @@ type CashFlowQuery url.Values
 func QueryCashFlow(apiKey, symbol string) CashFlowQuery {
 	return CashFlowQuery{"function": []string{"CASH_FLOW"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (client *Client) GetCashFlow(ctx context.Context, q CashFlowQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -47,18 +49,22 @@ type DividendsQuery url.Values
 func QueryDividends(apiKey, symbol string) DividendsQuery {
 	return DividendsQuery{"function": []string{"DIVIDENDS"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (query DividendsQuery) DataTypeCSV() DividendsQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query DividendsQuery) DataTypeJSON() DividendsQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query DividendsQuery) DataType(value string) DividendsQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetDividends(ctx context.Context, q DividendsQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -99,6 +105,7 @@ type ETFProfileQuery url.Values
 func QueryETFProfile(apiKey, symbol string) ETFProfileQuery {
 	return ETFProfileQuery{"function": []string{"ETF_PROFILE"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (client *Client) GetETFProfile(ctx context.Context, q ETFProfileQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -116,6 +123,7 @@ type EarningsQuery url.Values
 func QueryEarnings(apiKey, symbol string) EarningsQuery {
 	return EarningsQuery{"function": []string{"EARNINGS"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (client *Client) GetEarnings(ctx context.Context, q EarningsQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -133,14 +141,17 @@ type EarningsCalendarQuery url.Values
 func QueryEarningsCalendar(apiKey string) EarningsCalendarQuery {
 	return EarningsCalendarQuery{"function": []string{"EARNINGS_CALENDAR"}, "apikey": []string{apiKey}}
 }
+
 func (query EarningsCalendarQuery) Symbol(value string) EarningsCalendarQuery {
 	query["symbol"] = []string{value}
 	return query
 }
+
 func (query EarningsCalendarQuery) Horizon(value string) EarningsCalendarQuery {
 	query["horizon"] = []string{value}
 	return query
 }
+
 func (client *Client) GetEarningsCalendar(ctx context.Context, q EarningsCalendarQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -181,6 +192,7 @@ type EarningsEstimatesQuery url.Values
 func QueryEarningsEstimates(apiKey, symbol string) EarningsEstimatesQuery {
 	return EarningsEstimatesQuery{"function": []string{"EARNINGS_ESTIMATES"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (client *Client) GetEarningsEstimates(ctx context.Context, q EarningsEstimatesQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -198,6 +210,7 @@ type IPOCalendarQuery url.Values
 func QueryIPOCalendar(apiKey string) IPOCalendarQuery {
 	return IPOCalendarQuery{"function": []string{"IPO_CALENDAR"}, "apikey": []string{apiKey}}
 }
+
 func (client *Client) GetIPOCalendar(ctx context.Context, q IPOCalendarQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -239,6 +252,7 @@ type IncomeStatementQuery url.Values
 func QueryIncomeStatement(apiKey, symbol string) IncomeStatementQuery {
 	return IncomeStatementQuery{"function": []string{"INCOME_STATEMENT"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (client *Client) GetIncomeStatement(ctx context.Context, q IncomeStatementQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -256,22 +270,27 @@ type ListingStatusQuery url.Values
 func QueryListingStatus(apiKey string) ListingStatusQuery {
 	return ListingStatusQuery{"function": []string{"LISTING_STATUS"}, "apikey": []string{apiKey}}
 }
+
 func (query ListingStatusQuery) Date(value string) ListingStatusQuery {
 	query["date"] = []string{value}
 	return query
 }
+
 func (query ListingStatusQuery) StateActive() ListingStatusQuery {
 	query["state"] = []string{"active"}
 	return query
 }
+
 func (query ListingStatusQuery) StateDelisted() ListingStatusQuery {
 	query["state"] = []string{"delisted"}
 	return query
 }
+
 func (query ListingStatusQuery) State(value string) ListingStatusQuery {
 	query["state"] = []string{value}
 	return query
 }
+
 func (client *Client) GetListingStatus(ctx context.Context, q ListingStatusQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -313,6 +332,7 @@ type OverviewQuery url.Values
 func QueryOverview(apiKey, symbol string) OverviewQuery {
 	return OverviewQuery{"function": []string{"OVERVIEW"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (client *Client) GetOverview(ctx context.Context, q OverviewQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -330,18 +350,22 @@ type SharesOutstandingQuery url.Values
 func QuerySharesOutstanding(apiKey, symbol string) SharesOutstandingQuery {
 	return SharesOutstandingQuery{"function": []string{"SHARES_OUTSTANDING"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (query SharesOutstandingQuery) DataTypeCSV() SharesOutstandingQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query SharesOutstandingQuery) DataTypeJSON() SharesOutstandingQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query SharesOutstandingQuery) DataType(value string) SharesOutstandingQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetSharesOutstanding(ctx context.Context, q SharesOutstandingQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -380,18 +404,22 @@ type SplitsQuery url.Values
 func QuerySplits(apiKey, symbol string) SplitsQuery {
 	return SplitsQuery{"function": []string{"SPLITS"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (query SplitsQuery) DataTypeCSV() SplitsQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query SplitsQuery) DataTypeJSON() SplitsQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query SplitsQuery) DataType(value string) SplitsQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetSplits(ctx context.Context, q SplitsQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

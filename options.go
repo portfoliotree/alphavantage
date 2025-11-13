@@ -14,22 +14,27 @@ type HistoricalOptionsQuery url.Values
 func QueryHistoricalOptions(apiKey, symbol string) HistoricalOptionsQuery {
 	return HistoricalOptionsQuery{"function": []string{"HISTORICAL_OPTIONS"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (query HistoricalOptionsQuery) Date(value string) HistoricalOptionsQuery {
 	query["date"] = []string{value}
 	return query
 }
+
 func (query HistoricalOptionsQuery) DataTypeCSV() HistoricalOptionsQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query HistoricalOptionsQuery) DataTypeJSON() HistoricalOptionsQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query HistoricalOptionsQuery) DataType(value string) HistoricalOptionsQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetHistoricalOptions(ctx context.Context, q HistoricalOptionsQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -85,26 +90,32 @@ type RealtimeOptionsQuery url.Values
 func QueryRealtimeOptions(apiKey, symbol string) RealtimeOptionsQuery {
 	return RealtimeOptionsQuery{"function": []string{"REALTIME_OPTIONS"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (query RealtimeOptionsQuery) RequireGreeks(value bool) RealtimeOptionsQuery {
 	query["require_greeks"] = []string{strconv.FormatBool(value)}
 	return query
 }
+
 func (query RealtimeOptionsQuery) Contract(value string) RealtimeOptionsQuery {
 	query["contract"] = []string{value}
 	return query
 }
+
 func (query RealtimeOptionsQuery) DataTypeCSV() RealtimeOptionsQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query RealtimeOptionsQuery) DataTypeJSON() RealtimeOptionsQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query RealtimeOptionsQuery) DataType(value string) RealtimeOptionsQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetRealtimeOptions(ctx context.Context, q RealtimeOptionsQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

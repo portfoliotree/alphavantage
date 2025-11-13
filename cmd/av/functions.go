@@ -248,6 +248,7 @@ func RunFunction(client *alphavantage.Client, functionName string, args []string
 		return fmt.Errorf("unknown function: %s", functionName)
 	}
 }
+
 func handleChaikinADLine(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("AD", pflag.ContinueOnError)
 	var symbol string
@@ -289,6 +290,7 @@ func handleChaikinADLine(client *alphavantage.Client, args []string, output io.W
 	}
 	return nil
 }
+
 func handleChaikinADOscillator(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("ADOSC", pflag.ContinueOnError)
 	var symbol string
@@ -340,6 +342,7 @@ func handleChaikinADOscillator(client *alphavantage.Client, args []string, outpu
 	}
 	return nil
 }
+
 func handleAverageDirectionalMovementIndex(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("ADX", pflag.ContinueOnError)
 	var symbol string
@@ -386,6 +389,7 @@ func handleAverageDirectionalMovementIndex(client *alphavantage.Client, args []s
 	}
 	return nil
 }
+
 func handleAverageDirectionalMovementIndexRating(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("ADXR", pflag.ContinueOnError)
 	var symbol string
@@ -432,6 +436,7 @@ func handleAverageDirectionalMovementIndexRating(client *alphavantage.Client, ar
 	}
 	return nil
 }
+
 func handleAllCommodities(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("ALL_COMMODITIES", pflag.ContinueOnError)
 	var interval string
@@ -459,6 +464,7 @@ func handleAllCommodities(client *alphavantage.Client, args []string, output io.
 	}
 	return nil
 }
+
 func handleAluminum(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("ALUMINUM", pflag.ContinueOnError)
 	var interval string
@@ -486,6 +492,7 @@ func handleAluminum(client *alphavantage.Client, args []string, output io.Writer
 	}
 	return nil
 }
+
 func handleAnalyticsFixedWindow(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("ANALYTICS_FIXED_WINDOW", pflag.ContinueOnError)
 	var symbols string
@@ -528,6 +535,7 @@ func handleAnalyticsFixedWindow(client *alphavantage.Client, args []string, outp
 	}
 	return nil
 }
+
 func handleAnalyticsSlidingWindow(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("ANALYTICS_SLIDING_WINDOW", pflag.ContinueOnError)
 	var symbols string
@@ -575,6 +583,7 @@ func handleAnalyticsSlidingWindow(client *alphavantage.Client, args []string, ou
 	}
 	return nil
 }
+
 func handleAbsolutePriceOscillator(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("APO", pflag.ContinueOnError)
 	var symbol string
@@ -636,6 +645,7 @@ func handleAbsolutePriceOscillator(client *alphavantage.Client, args []string, o
 	}
 	return nil
 }
+
 func handleAroon(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("AROON", pflag.ContinueOnError)
 	var symbol string
@@ -682,6 +692,7 @@ func handleAroon(client *alphavantage.Client, args []string, output io.Writer) e
 	}
 	return nil
 }
+
 func handleAroonOsc(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("AROONOSC", pflag.ContinueOnError)
 	var symbol string
@@ -728,6 +739,7 @@ func handleAroonOsc(client *alphavantage.Client, args []string, output io.Writer
 	}
 	return nil
 }
+
 func handleAverageTrueRange(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("ATR", pflag.ContinueOnError)
 	var symbol string
@@ -774,6 +786,7 @@ func handleAverageTrueRange(client *alphavantage.Client, args []string, output i
 	}
 	return nil
 }
+
 func handleBalanceSheet(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("BALANCE_SHEET", pflag.ContinueOnError)
 	var symbol string
@@ -796,6 +809,7 @@ func handleBalanceSheet(client *alphavantage.Client, args []string, output io.Wr
 	}
 	return nil
 }
+
 func handleBollingerBands(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("BBANDS", pflag.ContinueOnError)
 	var symbol string
@@ -862,6 +876,7 @@ func handleBollingerBands(client *alphavantage.Client, args []string, output io.
 	}
 	return nil
 }
+
 func handleBalanceOfPower(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("BOP", pflag.ContinueOnError)
 	var symbol string
@@ -903,6 +918,7 @@ func handleBalanceOfPower(client *alphavantage.Client, args []string, output io.
 	}
 	return nil
 }
+
 func handleBrent(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("BRENT", pflag.ContinueOnError)
 	var interval string
@@ -930,6 +946,7 @@ func handleBrent(client *alphavantage.Client, args []string, output io.Writer) e
 	}
 	return nil
 }
+
 func handleCashFlow(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("CASH_FLOW", pflag.ContinueOnError)
 	var symbol string
@@ -952,6 +969,7 @@ func handleCashFlow(client *alphavantage.Client, args []string, output io.Writer
 	}
 	return nil
 }
+
 func handleCommodityChannelIndex(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("CCI", pflag.ContinueOnError)
 	var symbol string
@@ -998,6 +1016,7 @@ func handleCommodityChannelIndex(client *alphavantage.Client, args []string, out
 	}
 	return nil
 }
+
 func handleChandeMomentumOscillator(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("CMO", pflag.ContinueOnError)
 	var symbol string
@@ -1049,6 +1068,7 @@ func handleChandeMomentumOscillator(client *alphavantage.Client, args []string, 
 	}
 	return nil
 }
+
 func handleCoffee(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("COFFEE", pflag.ContinueOnError)
 	var interval string
@@ -1076,6 +1096,7 @@ func handleCoffee(client *alphavantage.Client, args []string, output io.Writer) 
 	}
 	return nil
 }
+
 func handleCopper(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("COPPER", pflag.ContinueOnError)
 	var interval string
@@ -1103,6 +1124,7 @@ func handleCopper(client *alphavantage.Client, args []string, output io.Writer) 
 	}
 	return nil
 }
+
 func handleCorn(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("CORN", pflag.ContinueOnError)
 	var interval string
@@ -1130,6 +1152,7 @@ func handleCorn(client *alphavantage.Client, args []string, output io.Writer) er
 	}
 	return nil
 }
+
 func handleCotton(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("COTTON", pflag.ContinueOnError)
 	var interval string
@@ -1157,6 +1180,7 @@ func handleCotton(client *alphavantage.Client, args []string, output io.Writer) 
 	}
 	return nil
 }
+
 func handleConsumerPriceIndex(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("CPI", pflag.ContinueOnError)
 	var interval string
@@ -1184,6 +1208,7 @@ func handleConsumerPriceIndex(client *alphavantage.Client, args []string, output
 	}
 	return nil
 }
+
 func handleCryptoIntraday(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("CRYPTO_INTRADAY", pflag.ContinueOnError)
 	var symbol string
@@ -1226,6 +1251,7 @@ func handleCryptoIntraday(client *alphavantage.Client, args []string, output io.
 	}
 	return nil
 }
+
 func handleCurrencyExchangeRate(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("CURRENCY_EXCHANGE_RATE", pflag.ContinueOnError)
 	var fromCurrency string
@@ -1253,6 +1279,7 @@ func handleCurrencyExchangeRate(client *alphavantage.Client, args []string, outp
 	}
 	return nil
 }
+
 func handleDoubleExponentialMovingAverage(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("DEMA", pflag.ContinueOnError)
 	var symbol string
@@ -1304,6 +1331,7 @@ func handleDoubleExponentialMovingAverage(client *alphavantage.Client, args []st
 	}
 	return nil
 }
+
 func handleDigitalCurrencyDaily(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("DIGITAL_CURRENCY_DAILY", pflag.ContinueOnError)
 	var symbol string
@@ -1331,6 +1359,7 @@ func handleDigitalCurrencyDaily(client *alphavantage.Client, args []string, outp
 	}
 	return nil
 }
+
 func handleDigitalCurrencyMonthly(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("DIGITAL_CURRENCY_MONTHLY", pflag.ContinueOnError)
 	var symbol string
@@ -1358,6 +1387,7 @@ func handleDigitalCurrencyMonthly(client *alphavantage.Client, args []string, ou
 	}
 	return nil
 }
+
 func handleDigitalCurrencyWeekly(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("DIGITAL_CURRENCY_WEEKLY", pflag.ContinueOnError)
 	var symbol string
@@ -1385,6 +1415,7 @@ func handleDigitalCurrencyWeekly(client *alphavantage.Client, args []string, out
 	}
 	return nil
 }
+
 func handleDividends(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("DIVIDENDS", pflag.ContinueOnError)
 	var symbol string
@@ -1412,6 +1443,7 @@ func handleDividends(client *alphavantage.Client, args []string, output io.Write
 	}
 	return nil
 }
+
 func handleDurables(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("DURABLES", pflag.ContinueOnError)
 	var dataType string
@@ -1434,6 +1466,7 @@ func handleDurables(client *alphavantage.Client, args []string, output io.Writer
 	}
 	return nil
 }
+
 func handleDirectionalMovementIndex(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("DX", pflag.ContinueOnError)
 	var symbol string
@@ -1480,6 +1513,7 @@ func handleDirectionalMovementIndex(client *alphavantage.Client, args []string, 
 	}
 	return nil
 }
+
 func handleEarnings(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("EARNINGS", pflag.ContinueOnError)
 	var symbol string
@@ -1502,6 +1536,7 @@ func handleEarnings(client *alphavantage.Client, args []string, output io.Writer
 	}
 	return nil
 }
+
 func handleEarningsCalendar(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("EARNINGS_CALENDAR", pflag.ContinueOnError)
 	var symbol string
@@ -1529,6 +1564,7 @@ func handleEarningsCalendar(client *alphavantage.Client, args []string, output i
 	}
 	return nil
 }
+
 func handleEarningsCallTranscript(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("EARNINGS_CALL_TRANSCRIPT", pflag.ContinueOnError)
 	var symbol string
@@ -1556,6 +1592,7 @@ func handleEarningsCallTranscript(client *alphavantage.Client, args []string, ou
 	}
 	return nil
 }
+
 func handleEarningsEstimates(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("EARNINGS_ESTIMATES", pflag.ContinueOnError)
 	var symbol string
@@ -1578,6 +1615,7 @@ func handleEarningsEstimates(client *alphavantage.Client, args []string, output 
 	}
 	return nil
 }
+
 func handleExponentialMovingAverage(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("EMA", pflag.ContinueOnError)
 	var symbol string
@@ -1629,6 +1667,7 @@ func handleExponentialMovingAverage(client *alphavantage.Client, args []string, 
 	}
 	return nil
 }
+
 func handleETFProfile(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("ETF_PROFILE", pflag.ContinueOnError)
 	var symbol string
@@ -1651,6 +1690,7 @@ func handleETFProfile(client *alphavantage.Client, args []string, output io.Writ
 	}
 	return nil
 }
+
 func handleFederalFundsRate(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("FEDERAL_FUNDS_RATE", pflag.ContinueOnError)
 	var interval string
@@ -1678,6 +1718,7 @@ func handleFederalFundsRate(client *alphavantage.Client, args []string, output i
 	}
 	return nil
 }
+
 func handleFXDaily(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("FX_DAILY", pflag.ContinueOnError)
 	var fromSymbol string
@@ -1715,6 +1756,7 @@ func handleFXDaily(client *alphavantage.Client, args []string, output io.Writer)
 	}
 	return nil
 }
+
 func handleFXIntraday(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("FX_INTRADAY", pflag.ContinueOnError)
 	var fromSymbol string
@@ -1757,6 +1799,7 @@ func handleFXIntraday(client *alphavantage.Client, args []string, output io.Writ
 	}
 	return nil
 }
+
 func handleFXMonthly(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("FX_MONTHLY", pflag.ContinueOnError)
 	var fromSymbol string
@@ -1789,6 +1832,7 @@ func handleFXMonthly(client *alphavantage.Client, args []string, output io.Write
 	}
 	return nil
 }
+
 func handleFXWeekly(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("FX_WEEKLY", pflag.ContinueOnError)
 	var fromSymbol string
@@ -1821,6 +1865,7 @@ func handleFXWeekly(client *alphavantage.Client, args []string, output io.Writer
 	}
 	return nil
 }
+
 func handleGlobalQuote(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("GLOBAL_QUOTE", pflag.ContinueOnError)
 	var symbol string
@@ -1848,6 +1893,7 @@ func handleGlobalQuote(client *alphavantage.Client, args []string, output io.Wri
 	}
 	return nil
 }
+
 func handleHistoricalOptions(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("HISTORICAL_OPTIONS", pflag.ContinueOnError)
 	var symbol string
@@ -1880,6 +1926,7 @@ func handleHistoricalOptions(client *alphavantage.Client, args []string, output 
 	}
 	return nil
 }
+
 func handleHilbertTransformDCPeriod(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("HT_DCPERIOD", pflag.ContinueOnError)
 	var symbol string
@@ -1926,6 +1973,7 @@ func handleHilbertTransformDCPeriod(client *alphavantage.Client, args []string, 
 	}
 	return nil
 }
+
 func handleHilbertTransformDCPhase(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("HT_DCPHASE", pflag.ContinueOnError)
 	var symbol string
@@ -1972,6 +2020,7 @@ func handleHilbertTransformDCPhase(client *alphavantage.Client, args []string, o
 	}
 	return nil
 }
+
 func handleHilbertTransformPhasor(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("HT_PHASOR", pflag.ContinueOnError)
 	var symbol string
@@ -2018,6 +2067,7 @@ func handleHilbertTransformPhasor(client *alphavantage.Client, args []string, ou
 	}
 	return nil
 }
+
 func handleHilbertTransformSine(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("HT_SINE", pflag.ContinueOnError)
 	var symbol string
@@ -2064,6 +2114,7 @@ func handleHilbertTransformSine(client *alphavantage.Client, args []string, outp
 	}
 	return nil
 }
+
 func handleHilbertTransformTrendLine(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("HT_TRENDLINE", pflag.ContinueOnError)
 	var symbol string
@@ -2110,6 +2161,7 @@ func handleHilbertTransformTrendLine(client *alphavantage.Client, args []string,
 	}
 	return nil
 }
+
 func handleHilbertTransformTrendMode(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("HT_TRENDMODE", pflag.ContinueOnError)
 	var symbol string
@@ -2156,6 +2208,7 @@ func handleHilbertTransformTrendMode(client *alphavantage.Client, args []string,
 	}
 	return nil
 }
+
 func handleIncomeStatement(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("INCOME_STATEMENT", pflag.ContinueOnError)
 	var symbol string
@@ -2178,6 +2231,7 @@ func handleIncomeStatement(client *alphavantage.Client, args []string, output io
 	}
 	return nil
 }
+
 func handleInflation(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("INFLATION", pflag.ContinueOnError)
 	var dataType string
@@ -2200,6 +2254,7 @@ func handleInflation(client *alphavantage.Client, args []string, output io.Write
 	}
 	return nil
 }
+
 func handleInsiderTransactions(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("INSIDER_TRANSACTIONS", pflag.ContinueOnError)
 	var symbol string
@@ -2222,6 +2277,7 @@ func handleInsiderTransactions(client *alphavantage.Client, args []string, outpu
 	}
 	return nil
 }
+
 func handleIPOCalendar(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("IPO_CALENDAR", pflag.ContinueOnError)
 	if err := flags.Parse(args); err != nil {
@@ -2239,6 +2295,7 @@ func handleIPOCalendar(client *alphavantage.Client, args []string, output io.Wri
 	}
 	return nil
 }
+
 func handleKaufmanAdaptiveMovingAverage(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("KAMA", pflag.ContinueOnError)
 	var symbol string
@@ -2290,6 +2347,7 @@ func handleKaufmanAdaptiveMovingAverage(client *alphavantage.Client, args []stri
 	}
 	return nil
 }
+
 func handleListingStatus(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("LISTING_STATUS", pflag.ContinueOnError)
 	var date string
@@ -2317,6 +2375,7 @@ func handleListingStatus(client *alphavantage.Client, args []string, output io.W
 	}
 	return nil
 }
+
 func handleMovingAverageConvergenceDivergence(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("MACD", pflag.ContinueOnError)
 	var symbol string
@@ -2378,6 +2437,7 @@ func handleMovingAverageConvergenceDivergence(client *alphavantage.Client, args 
 	}
 	return nil
 }
+
 func handleMovingAverageConvergenceDivergenceExt(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("MACDEXT", pflag.ContinueOnError)
 	var symbol string
@@ -2454,6 +2514,7 @@ func handleMovingAverageConvergenceDivergenceExt(client *alphavantage.Client, ar
 	}
 	return nil
 }
+
 func handleMESAAdaptiveMovingAverage(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("MAMA", pflag.ContinueOnError)
 	var symbol string
@@ -2510,6 +2571,7 @@ func handleMESAAdaptiveMovingAverage(client *alphavantage.Client, args []string,
 	}
 	return nil
 }
+
 func handleMarketStatus(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("MARKET_STATUS", pflag.ContinueOnError)
 	if err := flags.Parse(args); err != nil {
@@ -2527,6 +2589,7 @@ func handleMarketStatus(client *alphavantage.Client, args []string, output io.Wr
 	}
 	return nil
 }
+
 func handleMoneyFlowIndex(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("MFI", pflag.ContinueOnError)
 	var symbol string
@@ -2573,6 +2636,7 @@ func handleMoneyFlowIndex(client *alphavantage.Client, args []string, output io.
 	}
 	return nil
 }
+
 func handleMidPoint(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("MIDPOINT", pflag.ContinueOnError)
 	var symbol string
@@ -2624,6 +2688,7 @@ func handleMidPoint(client *alphavantage.Client, args []string, output io.Writer
 	}
 	return nil
 }
+
 func handleMidPrice(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("MIDPRICE", pflag.ContinueOnError)
 	var symbol string
@@ -2670,6 +2735,7 @@ func handleMidPrice(client *alphavantage.Client, args []string, output io.Writer
 	}
 	return nil
 }
+
 func handleMinusDirectionalIndicator(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("MINUS_DI", pflag.ContinueOnError)
 	var symbol string
@@ -2716,6 +2782,7 @@ func handleMinusDirectionalIndicator(client *alphavantage.Client, args []string,
 	}
 	return nil
 }
+
 func handleMinusDirectionalMovement(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("MINUS_DM", pflag.ContinueOnError)
 	var symbol string
@@ -2762,6 +2829,7 @@ func handleMinusDirectionalMovement(client *alphavantage.Client, args []string, 
 	}
 	return nil
 }
+
 func handleMomentum(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("MOM", pflag.ContinueOnError)
 	var symbol string
@@ -2813,6 +2881,7 @@ func handleMomentum(client *alphavantage.Client, args []string, output io.Writer
 	}
 	return nil
 }
+
 func handleNormalizedAverageTrueRange(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("NATR", pflag.ContinueOnError)
 	var symbol string
@@ -2859,6 +2928,7 @@ func handleNormalizedAverageTrueRange(client *alphavantage.Client, args []string
 	}
 	return nil
 }
+
 func handleNaturalGas(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("NATURAL_GAS", pflag.ContinueOnError)
 	var interval string
@@ -2886,6 +2956,7 @@ func handleNaturalGas(client *alphavantage.Client, args []string, output io.Writ
 	}
 	return nil
 }
+
 func handleNewsSentiment(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("NEWS_SENTIMENT", pflag.ContinueOnError)
 	var tickers string
@@ -2941,6 +3012,7 @@ func handleNewsSentiment(client *alphavantage.Client, args []string, output io.W
 	}
 	return nil
 }
+
 func handleNonFarmPayroll(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("NONFARM_PAYROLL", pflag.ContinueOnError)
 	var dataType string
@@ -2963,6 +3035,7 @@ func handleNonFarmPayroll(client *alphavantage.Client, args []string, output io.
 	}
 	return nil
 }
+
 func handleOnBalanceVolume(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("OBV", pflag.ContinueOnError)
 	var symbol string
@@ -3004,6 +3077,7 @@ func handleOnBalanceVolume(client *alphavantage.Client, args []string, output io
 	}
 	return nil
 }
+
 func handleOverview(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("OVERVIEW", pflag.ContinueOnError)
 	var symbol string
@@ -3026,6 +3100,7 @@ func handleOverview(client *alphavantage.Client, args []string, output io.Writer
 	}
 	return nil
 }
+
 func handlePlusDirectionalIndicator(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("PLUS_DI", pflag.ContinueOnError)
 	var symbol string
@@ -3072,6 +3147,7 @@ func handlePlusDirectionalIndicator(client *alphavantage.Client, args []string, 
 	}
 	return nil
 }
+
 func handlePlusDirectionalMovement(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("PLUS_DM", pflag.ContinueOnError)
 	var symbol string
@@ -3118,6 +3194,7 @@ func handlePlusDirectionalMovement(client *alphavantage.Client, args []string, o
 	}
 	return nil
 }
+
 func handlePercentagePriceOscillator(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("PPO", pflag.ContinueOnError)
 	var symbol string
@@ -3179,6 +3256,7 @@ func handlePercentagePriceOscillator(client *alphavantage.Client, args []string,
 	}
 	return nil
 }
+
 func handleRealtimeBulkQuotes(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("REALTIME_BULK_QUOTES", pflag.ContinueOnError)
 	var symbol string
@@ -3206,6 +3284,7 @@ func handleRealtimeBulkQuotes(client *alphavantage.Client, args []string, output
 	}
 	return nil
 }
+
 func handleRealtimeOptions(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("REALTIME_OPTIONS", pflag.ContinueOnError)
 	var symbol string
@@ -3243,6 +3322,7 @@ func handleRealtimeOptions(client *alphavantage.Client, args []string, output io
 	}
 	return nil
 }
+
 func handleRealGDP(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("REAL_GDP", pflag.ContinueOnError)
 	var interval string
@@ -3270,6 +3350,7 @@ func handleRealGDP(client *alphavantage.Client, args []string, output io.Writer)
 	}
 	return nil
 }
+
 func handleRealGDPPerCapita(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("REAL_GDP_PER_CAPITA", pflag.ContinueOnError)
 	var dataType string
@@ -3292,6 +3373,7 @@ func handleRealGDPPerCapita(client *alphavantage.Client, args []string, output i
 	}
 	return nil
 }
+
 func handleRetailSales(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("RETAIL_SALES", pflag.ContinueOnError)
 	var dataType string
@@ -3314,6 +3396,7 @@ func handleRetailSales(client *alphavantage.Client, args []string, output io.Wri
 	}
 	return nil
 }
+
 func handleRateOfChange(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("ROC", pflag.ContinueOnError)
 	var symbol string
@@ -3365,6 +3448,7 @@ func handleRateOfChange(client *alphavantage.Client, args []string, output io.Wr
 	}
 	return nil
 }
+
 func handleRateOfChangeRatio(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("ROCR", pflag.ContinueOnError)
 	var symbol string
@@ -3416,6 +3500,7 @@ func handleRateOfChangeRatio(client *alphavantage.Client, args []string, output 
 	}
 	return nil
 }
+
 func handleRelativeStrengthIndex(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("RSI", pflag.ContinueOnError)
 	var symbol string
@@ -3467,6 +3552,7 @@ func handleRelativeStrengthIndex(client *alphavantage.Client, args []string, out
 	}
 	return nil
 }
+
 func handleSAR(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("SAR", pflag.ContinueOnError)
 	var symbol string
@@ -3518,6 +3604,7 @@ func handleSAR(client *alphavantage.Client, args []string, output io.Writer) err
 	}
 	return nil
 }
+
 func handleSharesOutstanding(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("SHARES_OUTSTANDING", pflag.ContinueOnError)
 	var symbol string
@@ -3545,6 +3632,7 @@ func handleSharesOutstanding(client *alphavantage.Client, args []string, output 
 	}
 	return nil
 }
+
 func handleSimpleMovingAverage(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("SMA", pflag.ContinueOnError)
 	var symbol string
@@ -3596,6 +3684,7 @@ func handleSimpleMovingAverage(client *alphavantage.Client, args []string, outpu
 	}
 	return nil
 }
+
 func handleSplits(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("SPLITS", pflag.ContinueOnError)
 	var symbol string
@@ -3623,6 +3712,7 @@ func handleSplits(client *alphavantage.Client, args []string, output io.Writer) 
 	}
 	return nil
 }
+
 func handleStochasticOscillator(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("STOCH", pflag.ContinueOnError)
 	var symbol string
@@ -3689,6 +3779,7 @@ func handleStochasticOscillator(client *alphavantage.Client, args []string, outp
 	}
 	return nil
 }
+
 func handleStochasticFast(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("STOCHF", pflag.ContinueOnError)
 	var symbol string
@@ -3745,6 +3836,7 @@ func handleStochasticFast(client *alphavantage.Client, args []string, output io.
 	}
 	return nil
 }
+
 func handleStochasticRelativeStrengthIndex(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("STOCHRSI", pflag.ContinueOnError)
 	var symbol string
@@ -3811,6 +3903,7 @@ func handleStochasticRelativeStrengthIndex(client *alphavantage.Client, args []s
 	}
 	return nil
 }
+
 func handleSugar(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("SUGAR", pflag.ContinueOnError)
 	var interval string
@@ -3838,6 +3931,7 @@ func handleSugar(client *alphavantage.Client, args []string, output io.Writer) e
 	}
 	return nil
 }
+
 func handleSymbolSearch(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("SYMBOL_SEARCH", pflag.ContinueOnError)
 	var keywords string
@@ -3865,6 +3959,7 @@ func handleSymbolSearch(client *alphavantage.Client, args []string, output io.Wr
 	}
 	return nil
 }
+
 func handleT3(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("T3", pflag.ContinueOnError)
 	var symbol string
@@ -3916,6 +4011,7 @@ func handleT3(client *alphavantage.Client, args []string, output io.Writer) erro
 	}
 	return nil
 }
+
 func handleTripleExponentialMovingAverage(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TEMA", pflag.ContinueOnError)
 	var symbol string
@@ -3967,6 +4063,7 @@ func handleTripleExponentialMovingAverage(client *alphavantage.Client, args []st
 	}
 	return nil
 }
+
 func handleTimeSeriesDaily(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TIME_SERIES_DAILY", pflag.ContinueOnError)
 	var symbol string
@@ -3999,6 +4096,7 @@ func handleTimeSeriesDaily(client *alphavantage.Client, args []string, output io
 	}
 	return nil
 }
+
 func handleTimeSeriesDailyAdjusted(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TIME_SERIES_DAILY_ADJUSTED", pflag.ContinueOnError)
 	var symbol string
@@ -4031,6 +4129,7 @@ func handleTimeSeriesDailyAdjusted(client *alphavantage.Client, args []string, o
 	}
 	return nil
 }
+
 func handleTimeSeriesIntraday(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TIME_SERIES_INTRADAY", pflag.ContinueOnError)
 	var symbol string
@@ -4087,6 +4186,7 @@ func handleTimeSeriesIntraday(client *alphavantage.Client, args []string, output
 	}
 	return nil
 }
+
 func handleTimeSeriesMonthly(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TIME_SERIES_MONTHLY", pflag.ContinueOnError)
 	var symbol string
@@ -4114,6 +4214,7 @@ func handleTimeSeriesMonthly(client *alphavantage.Client, args []string, output 
 	}
 	return nil
 }
+
 func handleTimeSeriesMonthlyAdjusted(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TIME_SERIES_MONTHLY_ADJUSTED", pflag.ContinueOnError)
 	var symbol string
@@ -4141,6 +4242,7 @@ func handleTimeSeriesMonthlyAdjusted(client *alphavantage.Client, args []string,
 	}
 	return nil
 }
+
 func handleTimeSeriesWeekly(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TIME_SERIES_WEEKLY", pflag.ContinueOnError)
 	var symbol string
@@ -4168,6 +4270,7 @@ func handleTimeSeriesWeekly(client *alphavantage.Client, args []string, output i
 	}
 	return nil
 }
+
 func handleTimeSeriesWeeklyAdjusted(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TIME_SERIES_WEEKLY_ADJUSTED", pflag.ContinueOnError)
 	var symbol string
@@ -4195,6 +4298,7 @@ func handleTimeSeriesWeeklyAdjusted(client *alphavantage.Client, args []string, 
 	}
 	return nil
 }
+
 func handleTopGainersLosers(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TOP_GAINERS_LOSERS", pflag.ContinueOnError)
 	if err := flags.Parse(args); err != nil {
@@ -4212,6 +4316,7 @@ func handleTopGainersLosers(client *alphavantage.Client, args []string, output i
 	}
 	return nil
 }
+
 func handleTrueRange(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TRANGE", pflag.ContinueOnError)
 	var symbol string
@@ -4253,6 +4358,7 @@ func handleTrueRange(client *alphavantage.Client, args []string, output io.Write
 	}
 	return nil
 }
+
 func handleTreasuryYield(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TREASURY_YIELD", pflag.ContinueOnError)
 	var interval string
@@ -4285,6 +4391,7 @@ func handleTreasuryYield(client *alphavantage.Client, args []string, output io.W
 	}
 	return nil
 }
+
 func handleTriangularMovingAverage(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TRIMA", pflag.ContinueOnError)
 	var symbol string
@@ -4336,6 +4443,7 @@ func handleTriangularMovingAverage(client *alphavantage.Client, args []string, o
 	}
 	return nil
 }
+
 func handleOneDayRateOfChangeTripleSmoothExponentialMovingAverage(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TRIX", pflag.ContinueOnError)
 	var symbol string
@@ -4387,6 +4495,7 @@ func handleOneDayRateOfChangeTripleSmoothExponentialMovingAverage(client *alphav
 	}
 	return nil
 }
+
 func handleUltimateOscillator(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("ULTOSC", pflag.ContinueOnError)
 	var symbol string
@@ -4443,6 +4552,7 @@ func handleUltimateOscillator(client *alphavantage.Client, args []string, output
 	}
 	return nil
 }
+
 func handleUnemployment(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("UNEMPLOYMENT", pflag.ContinueOnError)
 	var dataType string
@@ -4465,6 +4575,7 @@ func handleUnemployment(client *alphavantage.Client, args []string, output io.Wr
 	}
 	return nil
 }
+
 func handleVolumeWeightedAveragePrice(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("VWAP", pflag.ContinueOnError)
 	var symbol string
@@ -4506,6 +4617,7 @@ func handleVolumeWeightedAveragePrice(client *alphavantage.Client, args []string
 	}
 	return nil
 }
+
 func handleWheat(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("WHEAT", pflag.ContinueOnError)
 	var interval string
@@ -4533,6 +4645,7 @@ func handleWheat(client *alphavantage.Client, args []string, output io.Writer) e
 	}
 	return nil
 }
+
 func handleWilliamsR(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("WILLR", pflag.ContinueOnError)
 	var symbol string
@@ -4579,6 +4692,7 @@ func handleWilliamsR(client *alphavantage.Client, args []string, output io.Write
 	}
 	return nil
 }
+
 func handleWeightedMovingAverage(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("WMA", pflag.ContinueOnError)
 	var symbol string
@@ -4630,6 +4744,7 @@ func handleWeightedMovingAverage(client *alphavantage.Client, args []string, out
 	}
 	return nil
 }
+
 func handleWestTexasIntermediate(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("WTI", pflag.ContinueOnError)
 	var interval string

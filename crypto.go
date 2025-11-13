@@ -14,30 +14,37 @@ type CryptoIntradayQuery url.Values
 func QueryCryptoIntraday(apiKey, symbol, market, interval string) CryptoIntradayQuery {
 	return CryptoIntradayQuery{"function": []string{"CRYPTO_INTRADAY"}, "symbol": []string{symbol}, "market": []string{market}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query CryptoIntradayQuery) OutputSizeCompact() CryptoIntradayQuery {
 	query["outputsize"] = []string{"compact"}
 	return query
 }
+
 func (query CryptoIntradayQuery) OutputSizeFull() CryptoIntradayQuery {
 	query["outputsize"] = []string{"full"}
 	return query
 }
+
 func (query CryptoIntradayQuery) OutputSize(value string) CryptoIntradayQuery {
 	query["outputsize"] = []string{value}
 	return query
 }
+
 func (query CryptoIntradayQuery) DataTypeCSV() CryptoIntradayQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query CryptoIntradayQuery) DataTypeJSON() CryptoIntradayQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query CryptoIntradayQuery) DataType(value string) CryptoIntradayQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetCryptoIntraday(ctx context.Context, q CryptoIntradayQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -79,6 +86,7 @@ type DigitalCurrencyDailyQuery url.Values
 func QueryDigitalCurrencyDaily(apiKey, symbol, market string) DigitalCurrencyDailyQuery {
 	return DigitalCurrencyDailyQuery{"function": []string{"DIGITAL_CURRENCY_DAILY"}, "symbol": []string{symbol}, "market": []string{market}, "apikey": []string{apiKey}}
 }
+
 func (client *Client) GetDigitalCurrencyDaily(ctx context.Context, q DigitalCurrencyDailyQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -119,6 +127,7 @@ type DigitalCurrencyMonthlyQuery url.Values
 func QueryDigitalCurrencyMonthly(apiKey, symbol, market string) DigitalCurrencyMonthlyQuery {
 	return DigitalCurrencyMonthlyQuery{"function": []string{"DIGITAL_CURRENCY_MONTHLY"}, "symbol": []string{symbol}, "market": []string{market}, "apikey": []string{apiKey}}
 }
+
 func (client *Client) GetDigitalCurrencyMonthly(ctx context.Context, q DigitalCurrencyMonthlyQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -159,6 +168,7 @@ type DigitalCurrencyWeeklyQuery url.Values
 func QueryDigitalCurrencyWeekly(apiKey, symbol, market string) DigitalCurrencyWeeklyQuery {
 	return DigitalCurrencyWeeklyQuery{"function": []string{"DIGITAL_CURRENCY_WEEKLY"}, "symbol": []string{symbol}, "market": []string{market}, "apikey": []string{apiKey}}
 }
+
 func (client *Client) GetDigitalCurrencyWeekly(ctx context.Context, q DigitalCurrencyWeeklyQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

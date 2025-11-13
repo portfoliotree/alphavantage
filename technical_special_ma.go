@@ -14,30 +14,37 @@ type MESAAdaptiveMovingAverageQuery url.Values
 func QueryMESAAdaptiveMovingAverage(apiKey, symbol, interval, seriesType string) MESAAdaptiveMovingAverageQuery {
 	return MESAAdaptiveMovingAverageQuery{"function": []string{"MAMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query MESAAdaptiveMovingAverageQuery) Month(value time.Time) MESAAdaptiveMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query MESAAdaptiveMovingAverageQuery) FastLimit(value string) MESAAdaptiveMovingAverageQuery {
 	query["fastlimit"] = []string{value}
 	return query
 }
+
 func (query MESAAdaptiveMovingAverageQuery) SlowLimit(value string) MESAAdaptiveMovingAverageQuery {
 	query["slowlimit"] = []string{value}
 	return query
 }
+
 func (query MESAAdaptiveMovingAverageQuery) DataTypeCSV() MESAAdaptiveMovingAverageQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query MESAAdaptiveMovingAverageQuery) DataTypeJSON() MESAAdaptiveMovingAverageQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query MESAAdaptiveMovingAverageQuery) DataType(value string) MESAAdaptiveMovingAverageQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetMESAAdaptiveMovingAverage(ctx context.Context, q MESAAdaptiveMovingAverageQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -76,22 +83,27 @@ type VolumeWeightedAveragePriceQuery url.Values
 func QueryVolumeWeightedAveragePrice(apiKey, symbol, interval string) VolumeWeightedAveragePriceQuery {
 	return VolumeWeightedAveragePriceQuery{"function": []string{"VWAP"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query VolumeWeightedAveragePriceQuery) Month(value time.Time) VolumeWeightedAveragePriceQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query VolumeWeightedAveragePriceQuery) DataTypeCSV() VolumeWeightedAveragePriceQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query VolumeWeightedAveragePriceQuery) DataTypeJSON() VolumeWeightedAveragePriceQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query VolumeWeightedAveragePriceQuery) DataType(value string) VolumeWeightedAveragePriceQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetVolumeWeightedAveragePrice(ctx context.Context, q VolumeWeightedAveragePriceQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

@@ -14,26 +14,32 @@ type AverageTrueRangeQuery url.Values
 func QueryAverageTrueRange(apiKey, symbol, interval string) AverageTrueRangeQuery {
 	return AverageTrueRangeQuery{"function": []string{"ATR"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query AverageTrueRangeQuery) Month(value time.Time) AverageTrueRangeQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query AverageTrueRangeQuery) TimePeriod(value string) AverageTrueRangeQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query AverageTrueRangeQuery) DataTypeCSV() AverageTrueRangeQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query AverageTrueRangeQuery) DataTypeJSON() AverageTrueRangeQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query AverageTrueRangeQuery) DataType(value string) AverageTrueRangeQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetAverageTrueRange(ctx context.Context, q AverageTrueRangeQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -71,38 +77,47 @@ type BollingerBandsQuery url.Values
 func QueryBollingerBands(apiKey, symbol, interval, seriesType string) BollingerBandsQuery {
 	return BollingerBandsQuery{"function": []string{"BBANDS"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query BollingerBandsQuery) Month(value time.Time) BollingerBandsQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query BollingerBandsQuery) TimePeriod(value string) BollingerBandsQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query BollingerBandsQuery) UpperBandStandardDeviationMultiplier(value string) BollingerBandsQuery {
 	query["nbdevup"] = []string{value}
 	return query
 }
+
 func (query BollingerBandsQuery) LowerBandStandardDeviationMultiplier(value string) BollingerBandsQuery {
 	query["nbdevdn"] = []string{value}
 	return query
 }
+
 func (query BollingerBandsQuery) MovingAverageType(value string) BollingerBandsQuery {
 	query["matype"] = []string{value}
 	return query
 }
+
 func (query BollingerBandsQuery) DataTypeCSV() BollingerBandsQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query BollingerBandsQuery) DataTypeJSON() BollingerBandsQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query BollingerBandsQuery) DataType(value string) BollingerBandsQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetBollingerBands(ctx context.Context, q BollingerBandsQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -142,26 +157,32 @@ type NormalizedAverageTrueRangeQuery url.Values
 func QueryNormalizedAverageTrueRange(apiKey, symbol, interval string) NormalizedAverageTrueRangeQuery {
 	return NormalizedAverageTrueRangeQuery{"function": []string{"NATR"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query NormalizedAverageTrueRangeQuery) Month(value time.Time) NormalizedAverageTrueRangeQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query NormalizedAverageTrueRangeQuery) TimePeriod(value string) NormalizedAverageTrueRangeQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query NormalizedAverageTrueRangeQuery) DataTypeCSV() NormalizedAverageTrueRangeQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query NormalizedAverageTrueRangeQuery) DataTypeJSON() NormalizedAverageTrueRangeQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query NormalizedAverageTrueRangeQuery) DataType(value string) NormalizedAverageTrueRangeQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetNormalizedAverageTrueRange(ctx context.Context, q NormalizedAverageTrueRangeQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -199,30 +220,37 @@ type SARQuery url.Values
 func QuerySAR(apiKey, symbol, interval string) SARQuery {
 	return SARQuery{"function": []string{"SAR"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query SARQuery) Month(value time.Time) SARQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query SARQuery) Acceleration(value string) SARQuery {
 	query["acceleration"] = []string{value}
 	return query
 }
+
 func (query SARQuery) Maximum(value string) SARQuery {
 	query["maximum"] = []string{value}
 	return query
 }
+
 func (query SARQuery) DataTypeCSV() SARQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query SARQuery) DataTypeJSON() SARQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query SARQuery) DataType(value string) SARQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetSAR(ctx context.Context, q SARQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -260,22 +288,27 @@ type TrueRangeQuery url.Values
 func QueryTrueRange(apiKey, symbol, interval string) TrueRangeQuery {
 	return TrueRangeQuery{"function": []string{"TRANGE"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query TrueRangeQuery) Month(value time.Time) TrueRangeQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query TrueRangeQuery) DataTypeCSV() TrueRangeQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query TrueRangeQuery) DataTypeJSON() TrueRangeQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query TrueRangeQuery) DataType(value string) TrueRangeQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetTrueRange(ctx context.Context, q TrueRangeQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -313,34 +346,42 @@ type UltimateOscillatorQuery url.Values
 func QueryUltimateOscillator(apiKey, symbol, interval string) UltimateOscillatorQuery {
 	return UltimateOscillatorQuery{"function": []string{"ULTOSC"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query UltimateOscillatorQuery) Month(value time.Time) UltimateOscillatorQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query UltimateOscillatorQuery) TimePeriod1(value string) UltimateOscillatorQuery {
 	query["timeperiod1"] = []string{value}
 	return query
 }
+
 func (query UltimateOscillatorQuery) TimePeriod2(value string) UltimateOscillatorQuery {
 	query["timeperiod2"] = []string{value}
 	return query
 }
+
 func (query UltimateOscillatorQuery) TimePeriod3(value string) UltimateOscillatorQuery {
 	query["timeperiod3"] = []string{value}
 	return query
 }
+
 func (query UltimateOscillatorQuery) DataTypeCSV() UltimateOscillatorQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query UltimateOscillatorQuery) DataTypeJSON() UltimateOscillatorQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query UltimateOscillatorQuery) DataType(value string) UltimateOscillatorQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetUltimateOscillator(ctx context.Context, q UltimateOscillatorQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

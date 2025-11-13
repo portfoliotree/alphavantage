@@ -14,22 +14,27 @@ type ChaikinADLineQuery url.Values
 func QueryChaikinADLine(apiKey, symbol, interval string) ChaikinADLineQuery {
 	return ChaikinADLineQuery{"function": []string{"AD"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query ChaikinADLineQuery) Month(value time.Time) ChaikinADLineQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query ChaikinADLineQuery) DataTypeCSV() ChaikinADLineQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query ChaikinADLineQuery) DataTypeJSON() ChaikinADLineQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query ChaikinADLineQuery) DataType(value string) ChaikinADLineQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetChaikinADLine(ctx context.Context, q ChaikinADLineQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -67,30 +72,37 @@ type ChaikinADOscillatorQuery url.Values
 func QueryChaikinADOscillator(apiKey, symbol, interval string) ChaikinADOscillatorQuery {
 	return ChaikinADOscillatorQuery{"function": []string{"ADOSC"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query ChaikinADOscillatorQuery) Month(value time.Time) ChaikinADOscillatorQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query ChaikinADOscillatorQuery) FastPeriod(value string) ChaikinADOscillatorQuery {
 	query["fastperiod"] = []string{value}
 	return query
 }
+
 func (query ChaikinADOscillatorQuery) SlowPeriod(value string) ChaikinADOscillatorQuery {
 	query["slowperiod"] = []string{value}
 	return query
 }
+
 func (query ChaikinADOscillatorQuery) DataTypeCSV() ChaikinADOscillatorQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query ChaikinADOscillatorQuery) DataTypeJSON() ChaikinADOscillatorQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query ChaikinADOscillatorQuery) DataType(value string) ChaikinADOscillatorQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetChaikinADOscillator(ctx context.Context, q ChaikinADOscillatorQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -128,26 +140,32 @@ type MoneyFlowIndexQuery url.Values
 func QueryMoneyFlowIndex(apiKey, symbol, interval string) MoneyFlowIndexQuery {
 	return MoneyFlowIndexQuery{"function": []string{"MFI"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query MoneyFlowIndexQuery) Month(value time.Time) MoneyFlowIndexQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query MoneyFlowIndexQuery) TimePeriod(value string) MoneyFlowIndexQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query MoneyFlowIndexQuery) DataTypeCSV() MoneyFlowIndexQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query MoneyFlowIndexQuery) DataTypeJSON() MoneyFlowIndexQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query MoneyFlowIndexQuery) DataType(value string) MoneyFlowIndexQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetMoneyFlowIndex(ctx context.Context, q MoneyFlowIndexQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -185,22 +203,27 @@ type OnBalanceVolumeQuery url.Values
 func QueryOnBalanceVolume(apiKey, symbol, interval string) OnBalanceVolumeQuery {
 	return OnBalanceVolumeQuery{"function": []string{"OBV"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query OnBalanceVolumeQuery) Month(value time.Time) OnBalanceVolumeQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query OnBalanceVolumeQuery) DataTypeCSV() OnBalanceVolumeQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query OnBalanceVolumeQuery) DataTypeJSON() OnBalanceVolumeQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query OnBalanceVolumeQuery) DataType(value string) OnBalanceVolumeQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetOnBalanceVolume(ctx context.Context, q OnBalanceVolumeQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -238,26 +261,32 @@ type OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery url.Values
 func QueryOneDayRateOfChangeTripleSmoothExponentialMovingAverage(apiKey, symbol, interval, seriesType string) OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
 	return OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery{"function": []string{"TRIX"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) Month(value time.Time) OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) TimePeriod(value string) OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) DataTypeCSV() OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) DataTypeJSON() OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) DataType(value string) OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetOneDayRateOfChangeTripleSmoothExponentialMovingAverage(ctx context.Context, q OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

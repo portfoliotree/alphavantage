@@ -14,34 +14,42 @@ type MovingAverageConvergenceDivergenceQuery url.Values
 func QueryMovingAverageConvergenceDivergence(apiKey, symbol, interval, seriesType string) MovingAverageConvergenceDivergenceQuery {
 	return MovingAverageConvergenceDivergenceQuery{"function": []string{"MACD"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query MovingAverageConvergenceDivergenceQuery) Month(value time.Time) MovingAverageConvergenceDivergenceQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceQuery) FastPeriod(value string) MovingAverageConvergenceDivergenceQuery {
 	query["fastperiod"] = []string{value}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceQuery) SlowPeriod(value string) MovingAverageConvergenceDivergenceQuery {
 	query["slowperiod"] = []string{value}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceQuery) SignalPeriod(value string) MovingAverageConvergenceDivergenceQuery {
 	query["signalperiod"] = []string{value}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceQuery) DataTypeCSV() MovingAverageConvergenceDivergenceQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceQuery) DataTypeJSON() MovingAverageConvergenceDivergenceQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceQuery) DataType(value string) MovingAverageConvergenceDivergenceQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetMovingAverageConvergenceDivergence(ctx context.Context, q MovingAverageConvergenceDivergenceQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -81,46 +89,57 @@ type MovingAverageConvergenceDivergenceExtQuery url.Values
 func QueryMovingAverageConvergenceDivergenceExt(apiKey, symbol, interval, seriesType string) MovingAverageConvergenceDivergenceExtQuery {
 	return MovingAverageConvergenceDivergenceExtQuery{"function": []string{"MACDEXT"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query MovingAverageConvergenceDivergenceExtQuery) Month(value time.Time) MovingAverageConvergenceDivergenceExtQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceExtQuery) FastPeriod(value string) MovingAverageConvergenceDivergenceExtQuery {
 	query["fastperiod"] = []string{value}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceExtQuery) SlowPeriod(value string) MovingAverageConvergenceDivergenceExtQuery {
 	query["slowperiod"] = []string{value}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceExtQuery) SignalPeriod(value string) MovingAverageConvergenceDivergenceExtQuery {
 	query["signalperiod"] = []string{value}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceExtQuery) FastMAType(value string) MovingAverageConvergenceDivergenceExtQuery {
 	query["fastmatype"] = []string{value}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceExtQuery) SlowMAType(value string) MovingAverageConvergenceDivergenceExtQuery {
 	query["slowmatype"] = []string{value}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceExtQuery) SignalMAType(value string) MovingAverageConvergenceDivergenceExtQuery {
 	query["signalmatype"] = []string{value}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceExtQuery) DataTypeCSV() MovingAverageConvergenceDivergenceExtQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceExtQuery) DataTypeJSON() MovingAverageConvergenceDivergenceExtQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query MovingAverageConvergenceDivergenceExtQuery) DataType(value string) MovingAverageConvergenceDivergenceExtQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetMovingAverageConvergenceDivergenceExt(ctx context.Context, q MovingAverageConvergenceDivergenceExtQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -160,26 +179,32 @@ type RelativeStrengthIndexQuery url.Values
 func QueryRelativeStrengthIndex(apiKey, symbol, interval, seriesType string) RelativeStrengthIndexQuery {
 	return RelativeStrengthIndexQuery{"function": []string{"RSI"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query RelativeStrengthIndexQuery) Month(value time.Time) RelativeStrengthIndexQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query RelativeStrengthIndexQuery) TimePeriod(value string) RelativeStrengthIndexQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query RelativeStrengthIndexQuery) DataTypeCSV() RelativeStrengthIndexQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query RelativeStrengthIndexQuery) DataTypeJSON() RelativeStrengthIndexQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query RelativeStrengthIndexQuery) DataType(value string) RelativeStrengthIndexQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetRelativeStrengthIndex(ctx context.Context, q RelativeStrengthIndexQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -217,34 +242,42 @@ type StochasticFastQuery url.Values
 func QueryStochasticFast(apiKey, symbol, interval string) StochasticFastQuery {
 	return StochasticFastQuery{"function": []string{"STOCHF"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query StochasticFastQuery) Month(value time.Time) StochasticFastQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query StochasticFastQuery) FastKPeriod(value string) StochasticFastQuery {
 	query["fastkperiod"] = []string{value}
 	return query
 }
+
 func (query StochasticFastQuery) FastDPeriod(value string) StochasticFastQuery {
 	query["fastdperiod"] = []string{value}
 	return query
 }
+
 func (query StochasticFastQuery) FastDMAType(value string) StochasticFastQuery {
 	query["fastdmatype"] = []string{value}
 	return query
 }
+
 func (query StochasticFastQuery) DataTypeCSV() StochasticFastQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query StochasticFastQuery) DataTypeJSON() StochasticFastQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query StochasticFastQuery) DataType(value string) StochasticFastQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetStochasticFast(ctx context.Context, q StochasticFastQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -283,42 +316,52 @@ type StochasticOscillatorQuery url.Values
 func QueryStochasticOscillator(apiKey, symbol, interval string) StochasticOscillatorQuery {
 	return StochasticOscillatorQuery{"function": []string{"STOCH"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query StochasticOscillatorQuery) Month(value time.Time) StochasticOscillatorQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query StochasticOscillatorQuery) FastKPeriod(value string) StochasticOscillatorQuery {
 	query["fastkperiod"] = []string{value}
 	return query
 }
+
 func (query StochasticOscillatorQuery) SlowKPeriod(value string) StochasticOscillatorQuery {
 	query["slowkperiod"] = []string{value}
 	return query
 }
+
 func (query StochasticOscillatorQuery) SlowDPeriod(value string) StochasticOscillatorQuery {
 	query["slowdperiod"] = []string{value}
 	return query
 }
+
 func (query StochasticOscillatorQuery) SlowKMAType(value string) StochasticOscillatorQuery {
 	query["slowkmatype"] = []string{value}
 	return query
 }
+
 func (query StochasticOscillatorQuery) SlowDMAType(value string) StochasticOscillatorQuery {
 	query["slowdmatype"] = []string{value}
 	return query
 }
+
 func (query StochasticOscillatorQuery) DataTypeCSV() StochasticOscillatorQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query StochasticOscillatorQuery) DataTypeJSON() StochasticOscillatorQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query StochasticOscillatorQuery) DataType(value string) StochasticOscillatorQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetStochasticOscillator(ctx context.Context, q StochasticOscillatorQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -357,38 +400,47 @@ type StochasticRelativeStrengthIndexQuery url.Values
 func QueryStochasticRelativeStrengthIndex(apiKey, symbol, interval, seriesType string) StochasticRelativeStrengthIndexQuery {
 	return StochasticRelativeStrengthIndexQuery{"function": []string{"STOCHRSI"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query StochasticRelativeStrengthIndexQuery) Month(value time.Time) StochasticRelativeStrengthIndexQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query StochasticRelativeStrengthIndexQuery) TimePeriod(value string) StochasticRelativeStrengthIndexQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query StochasticRelativeStrengthIndexQuery) FastKPeriod(value string) StochasticRelativeStrengthIndexQuery {
 	query["fastkperiod"] = []string{value}
 	return query
 }
+
 func (query StochasticRelativeStrengthIndexQuery) FastDPeriod(value string) StochasticRelativeStrengthIndexQuery {
 	query["fastdperiod"] = []string{value}
 	return query
 }
+
 func (query StochasticRelativeStrengthIndexQuery) FastDMAType(value string) StochasticRelativeStrengthIndexQuery {
 	query["fastdmatype"] = []string{value}
 	return query
 }
+
 func (query StochasticRelativeStrengthIndexQuery) DataTypeCSV() StochasticRelativeStrengthIndexQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query StochasticRelativeStrengthIndexQuery) DataTypeJSON() StochasticRelativeStrengthIndexQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query StochasticRelativeStrengthIndexQuery) DataType(value string) StochasticRelativeStrengthIndexQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetStochasticRelativeStrengthIndex(ctx context.Context, q StochasticRelativeStrengthIndexQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

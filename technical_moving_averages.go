@@ -14,26 +14,32 @@ type DoubleExponentialMovingAverageQuery url.Values
 func QueryDoubleExponentialMovingAverage(apiKey, symbol, interval, seriesType string) DoubleExponentialMovingAverageQuery {
 	return DoubleExponentialMovingAverageQuery{"function": []string{"DEMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query DoubleExponentialMovingAverageQuery) Month(value time.Time) DoubleExponentialMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query DoubleExponentialMovingAverageQuery) TimePeriod(value string) DoubleExponentialMovingAverageQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query DoubleExponentialMovingAverageQuery) DataTypeCSV() DoubleExponentialMovingAverageQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query DoubleExponentialMovingAverageQuery) DataTypeJSON() DoubleExponentialMovingAverageQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query DoubleExponentialMovingAverageQuery) DataType(value string) DoubleExponentialMovingAverageQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetDoubleExponentialMovingAverage(ctx context.Context, q DoubleExponentialMovingAverageQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -71,26 +77,32 @@ type ExponentialMovingAverageQuery url.Values
 func QueryExponentialMovingAverage(apiKey, symbol, interval, seriesType string) ExponentialMovingAverageQuery {
 	return ExponentialMovingAverageQuery{"function": []string{"EMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query ExponentialMovingAverageQuery) Month(value time.Time) ExponentialMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query ExponentialMovingAverageQuery) TimePeriod(value string) ExponentialMovingAverageQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query ExponentialMovingAverageQuery) DataTypeCSV() ExponentialMovingAverageQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query ExponentialMovingAverageQuery) DataTypeJSON() ExponentialMovingAverageQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query ExponentialMovingAverageQuery) DataType(value string) ExponentialMovingAverageQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetExponentialMovingAverage(ctx context.Context, q ExponentialMovingAverageQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -128,26 +140,32 @@ type KaufmanAdaptiveMovingAverageQuery url.Values
 func QueryKaufmanAdaptiveMovingAverage(apiKey, symbol, interval, seriesType string) KaufmanAdaptiveMovingAverageQuery {
 	return KaufmanAdaptiveMovingAverageQuery{"function": []string{"KAMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query KaufmanAdaptiveMovingAverageQuery) Month(value time.Time) KaufmanAdaptiveMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query KaufmanAdaptiveMovingAverageQuery) TimePeriod(value string) KaufmanAdaptiveMovingAverageQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query KaufmanAdaptiveMovingAverageQuery) DataTypeCSV() KaufmanAdaptiveMovingAverageQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query KaufmanAdaptiveMovingAverageQuery) DataTypeJSON() KaufmanAdaptiveMovingAverageQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query KaufmanAdaptiveMovingAverageQuery) DataType(value string) KaufmanAdaptiveMovingAverageQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetKaufmanAdaptiveMovingAverage(ctx context.Context, q KaufmanAdaptiveMovingAverageQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -185,26 +203,32 @@ type SimpleMovingAverageQuery url.Values
 func QuerySimpleMovingAverage(apiKey, symbol, interval, seriesType string) SimpleMovingAverageQuery {
 	return SimpleMovingAverageQuery{"function": []string{"SMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query SimpleMovingAverageQuery) Month(value time.Time) SimpleMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query SimpleMovingAverageQuery) TimePeriod(value string) SimpleMovingAverageQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query SimpleMovingAverageQuery) DataTypeCSV() SimpleMovingAverageQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query SimpleMovingAverageQuery) DataTypeJSON() SimpleMovingAverageQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query SimpleMovingAverageQuery) DataType(value string) SimpleMovingAverageQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetSimpleMovingAverage(ctx context.Context, q SimpleMovingAverageQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -242,26 +266,32 @@ type T3Query url.Values
 func QueryT3(apiKey, symbol, interval, seriesType string) T3Query {
 	return T3Query{"function": []string{"T3"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query T3Query) Month(value time.Time) T3Query {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query T3Query) TimePeriod(value string) T3Query {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query T3Query) DataTypeCSV() T3Query {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query T3Query) DataTypeJSON() T3Query {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query T3Query) DataType(value string) T3Query {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetT3(ctx context.Context, q T3Query) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -299,26 +329,32 @@ type TriangularMovingAverageQuery url.Values
 func QueryTriangularMovingAverage(apiKey, symbol, interval, seriesType string) TriangularMovingAverageQuery {
 	return TriangularMovingAverageQuery{"function": []string{"TRIMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query TriangularMovingAverageQuery) Month(value time.Time) TriangularMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query TriangularMovingAverageQuery) TimePeriod(value string) TriangularMovingAverageQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query TriangularMovingAverageQuery) DataTypeCSV() TriangularMovingAverageQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query TriangularMovingAverageQuery) DataTypeJSON() TriangularMovingAverageQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query TriangularMovingAverageQuery) DataType(value string) TriangularMovingAverageQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetTriangularMovingAverage(ctx context.Context, q TriangularMovingAverageQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -356,26 +392,32 @@ type TripleExponentialMovingAverageQuery url.Values
 func QueryTripleExponentialMovingAverage(apiKey, symbol, interval, seriesType string) TripleExponentialMovingAverageQuery {
 	return TripleExponentialMovingAverageQuery{"function": []string{"TEMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query TripleExponentialMovingAverageQuery) Month(value time.Time) TripleExponentialMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query TripleExponentialMovingAverageQuery) TimePeriod(value string) TripleExponentialMovingAverageQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query TripleExponentialMovingAverageQuery) DataTypeCSV() TripleExponentialMovingAverageQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query TripleExponentialMovingAverageQuery) DataTypeJSON() TripleExponentialMovingAverageQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query TripleExponentialMovingAverageQuery) DataType(value string) TripleExponentialMovingAverageQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetTripleExponentialMovingAverage(ctx context.Context, q TripleExponentialMovingAverageQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -413,26 +455,32 @@ type WeightedMovingAverageQuery url.Values
 func QueryWeightedMovingAverage(apiKey, symbol, interval, seriesType string) WeightedMovingAverageQuery {
 	return WeightedMovingAverageQuery{"function": []string{"WMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query WeightedMovingAverageQuery) Month(value time.Time) WeightedMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query WeightedMovingAverageQuery) TimePeriod(value string) WeightedMovingAverageQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query WeightedMovingAverageQuery) DataTypeCSV() WeightedMovingAverageQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query WeightedMovingAverageQuery) DataTypeJSON() WeightedMovingAverageQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query WeightedMovingAverageQuery) DataType(value string) WeightedMovingAverageQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetWeightedMovingAverage(ctx context.Context, q WeightedMovingAverageQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

@@ -14,22 +14,27 @@ type MidPointQuery url.Values
 func QueryMidPoint(apiKey, symbol, interval, timePeriod, seriesType string) MidPointQuery {
 	return MidPointQuery{"function": []string{"MIDPOINT"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query MidPointQuery) Month(value time.Time) MidPointQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query MidPointQuery) DataTypeCSV() MidPointQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query MidPointQuery) DataTypeJSON() MidPointQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query MidPointQuery) DataType(value string) MidPointQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetMidPoint(ctx context.Context, q MidPointQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -67,22 +72,27 @@ type MidPriceQuery url.Values
 func QueryMidPrice(apiKey, symbol, interval, timePeriod string) MidPriceQuery {
 	return MidPriceQuery{"function": []string{"MIDPRICE"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
+
 func (query MidPriceQuery) Month(value time.Time) MidPriceQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query MidPriceQuery) DataTypeCSV() MidPriceQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query MidPriceQuery) DataTypeJSON() MidPriceQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query MidPriceQuery) DataType(value string) MidPriceQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetMidPrice(ctx context.Context, q MidPriceQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

@@ -13,22 +13,27 @@ type AllCommoditiesQuery url.Values
 func QueryAllCommodities(apiKey string) AllCommoditiesQuery {
 	return AllCommoditiesQuery{"function": []string{"ALL_COMMODITIES"}, "apikey": []string{apiKey}}
 }
+
 func (query AllCommoditiesQuery) Interval(value string) AllCommoditiesQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query AllCommoditiesQuery) DataTypeCSV() AllCommoditiesQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query AllCommoditiesQuery) DataTypeJSON() AllCommoditiesQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query AllCommoditiesQuery) DataType(value string) AllCommoditiesQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetAllCommodities(ctx context.Context, q AllCommoditiesQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -66,22 +71,27 @@ type AluminumQuery url.Values
 func QueryAluminum(apiKey string) AluminumQuery {
 	return AluminumQuery{"function": []string{"ALUMINUM"}, "apikey": []string{apiKey}}
 }
+
 func (query AluminumQuery) Interval(value string) AluminumQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query AluminumQuery) DataTypeCSV() AluminumQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query AluminumQuery) DataTypeJSON() AluminumQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query AluminumQuery) DataType(value string) AluminumQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetAluminum(ctx context.Context, q AluminumQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -119,22 +129,27 @@ type BrentQuery url.Values
 func QueryBrent(apiKey string) BrentQuery {
 	return BrentQuery{"function": []string{"BRENT"}, "apikey": []string{apiKey}}
 }
+
 func (query BrentQuery) Interval(value string) BrentQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query BrentQuery) DataTypeCSV() BrentQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query BrentQuery) DataTypeJSON() BrentQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query BrentQuery) DataType(value string) BrentQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetBrent(ctx context.Context, q BrentQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -172,22 +187,27 @@ type CoffeeQuery url.Values
 func QueryCoffee(apiKey string) CoffeeQuery {
 	return CoffeeQuery{"function": []string{"COFFEE"}, "apikey": []string{apiKey}}
 }
+
 func (query CoffeeQuery) Interval(value string) CoffeeQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query CoffeeQuery) DataTypeCSV() CoffeeQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query CoffeeQuery) DataTypeJSON() CoffeeQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query CoffeeQuery) DataType(value string) CoffeeQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetCoffee(ctx context.Context, q CoffeeQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -225,22 +245,27 @@ type CopperQuery url.Values
 func QueryCopper(apiKey string) CopperQuery {
 	return CopperQuery{"function": []string{"COPPER"}, "apikey": []string{apiKey}}
 }
+
 func (query CopperQuery) Interval(value string) CopperQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query CopperQuery) DataTypeCSV() CopperQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query CopperQuery) DataTypeJSON() CopperQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query CopperQuery) DataType(value string) CopperQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetCopper(ctx context.Context, q CopperQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -278,22 +303,27 @@ type CornQuery url.Values
 func QueryCorn(apiKey string) CornQuery {
 	return CornQuery{"function": []string{"CORN"}, "apikey": []string{apiKey}}
 }
+
 func (query CornQuery) Interval(value string) CornQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query CornQuery) DataTypeCSV() CornQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query CornQuery) DataTypeJSON() CornQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query CornQuery) DataType(value string) CornQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetCorn(ctx context.Context, q CornQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -331,22 +361,27 @@ type CottonQuery url.Values
 func QueryCotton(apiKey string) CottonQuery {
 	return CottonQuery{"function": []string{"COTTON"}, "apikey": []string{apiKey}}
 }
+
 func (query CottonQuery) Interval(value string) CottonQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query CottonQuery) DataTypeCSV() CottonQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query CottonQuery) DataTypeJSON() CottonQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query CottonQuery) DataType(value string) CottonQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetCotton(ctx context.Context, q CottonQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -384,22 +419,27 @@ type NaturalGasQuery url.Values
 func QueryNaturalGas(apiKey string) NaturalGasQuery {
 	return NaturalGasQuery{"function": []string{"NATURAL_GAS"}, "apikey": []string{apiKey}}
 }
+
 func (query NaturalGasQuery) Interval(value string) NaturalGasQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query NaturalGasQuery) DataTypeCSV() NaturalGasQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query NaturalGasQuery) DataTypeJSON() NaturalGasQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query NaturalGasQuery) DataType(value string) NaturalGasQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetNaturalGas(ctx context.Context, q NaturalGasQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -437,22 +477,27 @@ type SugarQuery url.Values
 func QuerySugar(apiKey string) SugarQuery {
 	return SugarQuery{"function": []string{"SUGAR"}, "apikey": []string{apiKey}}
 }
+
 func (query SugarQuery) Interval(value string) SugarQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query SugarQuery) DataTypeCSV() SugarQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query SugarQuery) DataTypeJSON() SugarQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query SugarQuery) DataType(value string) SugarQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetSugar(ctx context.Context, q SugarQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -490,22 +535,27 @@ type WestTexasIntermediateQuery url.Values
 func QueryWestTexasIntermediate(apiKey string) WestTexasIntermediateQuery {
 	return WestTexasIntermediateQuery{"function": []string{"WTI"}, "apikey": []string{apiKey}}
 }
+
 func (query WestTexasIntermediateQuery) Interval(value string) WestTexasIntermediateQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query WestTexasIntermediateQuery) DataTypeCSV() WestTexasIntermediateQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query WestTexasIntermediateQuery) DataTypeJSON() WestTexasIntermediateQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query WestTexasIntermediateQuery) DataType(value string) WestTexasIntermediateQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetWestTexasIntermediate(ctx context.Context, q WestTexasIntermediateQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -543,22 +593,27 @@ type WheatQuery url.Values
 func QueryWheat(apiKey string) WheatQuery {
 	return WheatQuery{"function": []string{"WHEAT"}, "apikey": []string{apiKey}}
 }
+
 func (query WheatQuery) Interval(value string) WheatQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query WheatQuery) DataTypeCSV() WheatQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query WheatQuery) DataTypeJSON() WheatQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query WheatQuery) DataType(value string) WheatQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetWheat(ctx context.Context, q WheatQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

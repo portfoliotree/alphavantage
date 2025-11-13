@@ -14,22 +14,27 @@ type HilbertTransformDCPeriodQuery url.Values
 func QueryHilbertTransformDCPeriod(apiKey, symbol, interval, seriesType string) HilbertTransformDCPeriodQuery {
 	return HilbertTransformDCPeriodQuery{"function": []string{"HT_DCPERIOD"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query HilbertTransformDCPeriodQuery) Month(value time.Time) HilbertTransformDCPeriodQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query HilbertTransformDCPeriodQuery) DataTypeCSV() HilbertTransformDCPeriodQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query HilbertTransformDCPeriodQuery) DataTypeJSON() HilbertTransformDCPeriodQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query HilbertTransformDCPeriodQuery) DataType(value string) HilbertTransformDCPeriodQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetHilbertTransformDCPeriod(ctx context.Context, q HilbertTransformDCPeriodQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -67,22 +72,27 @@ type HilbertTransformDCPhaseQuery url.Values
 func QueryHilbertTransformDCPhase(apiKey, symbol, interval, seriesType string) HilbertTransformDCPhaseQuery {
 	return HilbertTransformDCPhaseQuery{"function": []string{"HT_DCPHASE"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query HilbertTransformDCPhaseQuery) Month(value time.Time) HilbertTransformDCPhaseQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query HilbertTransformDCPhaseQuery) DataTypeCSV() HilbertTransformDCPhaseQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query HilbertTransformDCPhaseQuery) DataTypeJSON() HilbertTransformDCPhaseQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query HilbertTransformDCPhaseQuery) DataType(value string) HilbertTransformDCPhaseQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetHilbertTransformDCPhase(ctx context.Context, q HilbertTransformDCPhaseQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -120,22 +130,27 @@ type HilbertTransformPhasorQuery url.Values
 func QueryHilbertTransformPhasor(apiKey, symbol, interval, seriesType string) HilbertTransformPhasorQuery {
 	return HilbertTransformPhasorQuery{"function": []string{"HT_PHASOR"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query HilbertTransformPhasorQuery) Month(value time.Time) HilbertTransformPhasorQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query HilbertTransformPhasorQuery) DataTypeCSV() HilbertTransformPhasorQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query HilbertTransformPhasorQuery) DataTypeJSON() HilbertTransformPhasorQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query HilbertTransformPhasorQuery) DataType(value string) HilbertTransformPhasorQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetHilbertTransformPhasor(ctx context.Context, q HilbertTransformPhasorQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -174,22 +189,27 @@ type HilbertTransformSineQuery url.Values
 func QueryHilbertTransformSine(apiKey, symbol, interval, seriesType string) HilbertTransformSineQuery {
 	return HilbertTransformSineQuery{"function": []string{"HT_SINE"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query HilbertTransformSineQuery) Month(value time.Time) HilbertTransformSineQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query HilbertTransformSineQuery) DataTypeCSV() HilbertTransformSineQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query HilbertTransformSineQuery) DataTypeJSON() HilbertTransformSineQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query HilbertTransformSineQuery) DataType(value string) HilbertTransformSineQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetHilbertTransformSine(ctx context.Context, q HilbertTransformSineQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -228,22 +248,27 @@ type HilbertTransformTrendLineQuery url.Values
 func QueryHilbertTransformTrendLine(apiKey, symbol, interval, seriesType string) HilbertTransformTrendLineQuery {
 	return HilbertTransformTrendLineQuery{"function": []string{"HT_TRENDLINE"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query HilbertTransformTrendLineQuery) Month(value time.Time) HilbertTransformTrendLineQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query HilbertTransformTrendLineQuery) DataTypeCSV() HilbertTransformTrendLineQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query HilbertTransformTrendLineQuery) DataTypeJSON() HilbertTransformTrendLineQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query HilbertTransformTrendLineQuery) DataType(value string) HilbertTransformTrendLineQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetHilbertTransformTrendLine(ctx context.Context, q HilbertTransformTrendLineQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -281,22 +306,27 @@ type HilbertTransformTrendModeQuery url.Values
 func QueryHilbertTransformTrendMode(apiKey, symbol, interval, seriesType string) HilbertTransformTrendModeQuery {
 	return HilbertTransformTrendModeQuery{"function": []string{"HT_TRENDMODE"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query HilbertTransformTrendModeQuery) Month(value time.Time) HilbertTransformTrendModeQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query HilbertTransformTrendModeQuery) DataTypeCSV() HilbertTransformTrendModeQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query HilbertTransformTrendModeQuery) DataTypeJSON() HilbertTransformTrendModeQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query HilbertTransformTrendModeQuery) DataType(value string) HilbertTransformTrendModeQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetHilbertTransformTrendMode(ctx context.Context, q HilbertTransformTrendModeQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

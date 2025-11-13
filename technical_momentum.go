@@ -14,34 +14,42 @@ type AbsolutePriceOscillatorQuery url.Values
 func QueryAbsolutePriceOscillator(apiKey, symbol, interval, seriesType string) AbsolutePriceOscillatorQuery {
 	return AbsolutePriceOscillatorQuery{"function": []string{"APO"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query AbsolutePriceOscillatorQuery) Month(value time.Time) AbsolutePriceOscillatorQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query AbsolutePriceOscillatorQuery) FastPeriod(value string) AbsolutePriceOscillatorQuery {
 	query["fastperiod"] = []string{value}
 	return query
 }
+
 func (query AbsolutePriceOscillatorQuery) SlowPeriod(value string) AbsolutePriceOscillatorQuery {
 	query["slowperiod"] = []string{value}
 	return query
 }
+
 func (query AbsolutePriceOscillatorQuery) MovingAverageType(value string) AbsolutePriceOscillatorQuery {
 	query["matype"] = []string{value}
 	return query
 }
+
 func (query AbsolutePriceOscillatorQuery) DataTypeCSV() AbsolutePriceOscillatorQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query AbsolutePriceOscillatorQuery) DataTypeJSON() AbsolutePriceOscillatorQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query AbsolutePriceOscillatorQuery) DataType(value string) AbsolutePriceOscillatorQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetAbsolutePriceOscillator(ctx context.Context, q AbsolutePriceOscillatorQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -79,22 +87,27 @@ type BalanceOfPowerQuery url.Values
 func QueryBalanceOfPower(apiKey, symbol, interval string) BalanceOfPowerQuery {
 	return BalanceOfPowerQuery{"function": []string{"BOP"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query BalanceOfPowerQuery) Month(value time.Time) BalanceOfPowerQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query BalanceOfPowerQuery) DataTypeCSV() BalanceOfPowerQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query BalanceOfPowerQuery) DataTypeJSON() BalanceOfPowerQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query BalanceOfPowerQuery) DataType(value string) BalanceOfPowerQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetBalanceOfPower(ctx context.Context, q BalanceOfPowerQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -112,26 +125,32 @@ type ChandeMomentumOscillatorQuery url.Values
 func QueryChandeMomentumOscillator(apiKey, symbol, interval, seriesType string) ChandeMomentumOscillatorQuery {
 	return ChandeMomentumOscillatorQuery{"function": []string{"CMO"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query ChandeMomentumOscillatorQuery) Month(value time.Time) ChandeMomentumOscillatorQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query ChandeMomentumOscillatorQuery) TimePeriod(value string) ChandeMomentumOscillatorQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query ChandeMomentumOscillatorQuery) DataTypeCSV() ChandeMomentumOscillatorQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query ChandeMomentumOscillatorQuery) DataTypeJSON() ChandeMomentumOscillatorQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query ChandeMomentumOscillatorQuery) DataType(value string) ChandeMomentumOscillatorQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetChandeMomentumOscillator(ctx context.Context, q ChandeMomentumOscillatorQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -169,26 +188,32 @@ type CommodityChannelIndexQuery url.Values
 func QueryCommodityChannelIndex(apiKey, symbol, interval string) CommodityChannelIndexQuery {
 	return CommodityChannelIndexQuery{"function": []string{"CCI"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query CommodityChannelIndexQuery) Month(value time.Time) CommodityChannelIndexQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query CommodityChannelIndexQuery) TimePeriod(value string) CommodityChannelIndexQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query CommodityChannelIndexQuery) DataTypeCSV() CommodityChannelIndexQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query CommodityChannelIndexQuery) DataTypeJSON() CommodityChannelIndexQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query CommodityChannelIndexQuery) DataType(value string) CommodityChannelIndexQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetCommodityChannelIndex(ctx context.Context, q CommodityChannelIndexQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -226,26 +251,32 @@ type MomentumQuery url.Values
 func QueryMomentum(apiKey, symbol, interval, seriesType string) MomentumQuery {
 	return MomentumQuery{"function": []string{"MOM"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query MomentumQuery) Month(value time.Time) MomentumQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query MomentumQuery) TimePeriod(value string) MomentumQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query MomentumQuery) DataTypeCSV() MomentumQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query MomentumQuery) DataTypeJSON() MomentumQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query MomentumQuery) DataType(value string) MomentumQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetMomentum(ctx context.Context, q MomentumQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -283,34 +314,42 @@ type PercentagePriceOscillatorQuery url.Values
 func QueryPercentagePriceOscillator(apiKey, symbol, interval, seriesType string) PercentagePriceOscillatorQuery {
 	return PercentagePriceOscillatorQuery{"function": []string{"PPO"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query PercentagePriceOscillatorQuery) Month(value time.Time) PercentagePriceOscillatorQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query PercentagePriceOscillatorQuery) FastPeriod(value string) PercentagePriceOscillatorQuery {
 	query["fastperiod"] = []string{value}
 	return query
 }
+
 func (query PercentagePriceOscillatorQuery) SlowPeriod(value string) PercentagePriceOscillatorQuery {
 	query["slowperiod"] = []string{value}
 	return query
 }
+
 func (query PercentagePriceOscillatorQuery) MovingAverageType(value string) PercentagePriceOscillatorQuery {
 	query["matype"] = []string{value}
 	return query
 }
+
 func (query PercentagePriceOscillatorQuery) DataTypeCSV() PercentagePriceOscillatorQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query PercentagePriceOscillatorQuery) DataTypeJSON() PercentagePriceOscillatorQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query PercentagePriceOscillatorQuery) DataType(value string) PercentagePriceOscillatorQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetPercentagePriceOscillator(ctx context.Context, q PercentagePriceOscillatorQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -348,26 +387,32 @@ type RateOfChangeQuery url.Values
 func QueryRateOfChange(apiKey, symbol, interval, seriesType string) RateOfChangeQuery {
 	return RateOfChangeQuery{"function": []string{"ROC"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query RateOfChangeQuery) Month(value time.Time) RateOfChangeQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query RateOfChangeQuery) TimePeriod(value string) RateOfChangeQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query RateOfChangeQuery) DataTypeCSV() RateOfChangeQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query RateOfChangeQuery) DataTypeJSON() RateOfChangeQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query RateOfChangeQuery) DataType(value string) RateOfChangeQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetRateOfChange(ctx context.Context, q RateOfChangeQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -405,26 +450,32 @@ type RateOfChangeRatioQuery url.Values
 func QueryRateOfChangeRatio(apiKey, symbol, interval, seriesType string) RateOfChangeRatioQuery {
 	return RateOfChangeRatioQuery{"function": []string{"ROCR"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
+
 func (query RateOfChangeRatioQuery) Month(value time.Time) RateOfChangeRatioQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query RateOfChangeRatioQuery) TimePeriod(value string) RateOfChangeRatioQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query RateOfChangeRatioQuery) DataTypeCSV() RateOfChangeRatioQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query RateOfChangeRatioQuery) DataTypeJSON() RateOfChangeRatioQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query RateOfChangeRatioQuery) DataType(value string) RateOfChangeRatioQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetRateOfChangeRatio(ctx context.Context, q RateOfChangeRatioQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -462,26 +513,32 @@ type WilliamsRQuery url.Values
 func QueryWilliamsR(apiKey, symbol, interval string) WilliamsRQuery {
 	return WilliamsRQuery{"function": []string{"WILLR"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query WilliamsRQuery) Month(value time.Time) WilliamsRQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query WilliamsRQuery) TimePeriod(value string) WilliamsRQuery {
 	query["time_period"] = []string{value}
 	return query
 }
+
 func (query WilliamsRQuery) DataTypeCSV() WilliamsRQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query WilliamsRQuery) DataTypeJSON() WilliamsRQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query WilliamsRQuery) DataType(value string) WilliamsRQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetWilliamsR(ctx context.Context, q WilliamsRQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

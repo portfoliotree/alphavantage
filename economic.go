@@ -13,22 +13,27 @@ type ConsumerPriceIndexQuery url.Values
 func QueryConsumerPriceIndex(apiKey string) ConsumerPriceIndexQuery {
 	return ConsumerPriceIndexQuery{"function": []string{"CPI"}, "apikey": []string{apiKey}}
 }
+
 func (query ConsumerPriceIndexQuery) Interval(value string) ConsumerPriceIndexQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query ConsumerPriceIndexQuery) DataTypeCSV() ConsumerPriceIndexQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query ConsumerPriceIndexQuery) DataTypeJSON() ConsumerPriceIndexQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query ConsumerPriceIndexQuery) DataType(value string) ConsumerPriceIndexQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetConsumerPriceIndex(ctx context.Context, q ConsumerPriceIndexQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -66,18 +71,22 @@ type DurablesQuery url.Values
 func QueryDurables(apiKey string) DurablesQuery {
 	return DurablesQuery{"function": []string{"DURABLES"}, "apikey": []string{apiKey}}
 }
+
 func (query DurablesQuery) DataTypeCSV() DurablesQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query DurablesQuery) DataTypeJSON() DurablesQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query DurablesQuery) DataType(value string) DurablesQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetDurables(ctx context.Context, q DurablesQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -115,22 +124,27 @@ type FederalFundsRateQuery url.Values
 func QueryFederalFundsRate(apiKey string) FederalFundsRateQuery {
 	return FederalFundsRateQuery{"function": []string{"FEDERAL_FUNDS_RATE"}, "apikey": []string{apiKey}}
 }
+
 func (query FederalFundsRateQuery) Interval(value string) FederalFundsRateQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query FederalFundsRateQuery) DataTypeCSV() FederalFundsRateQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query FederalFundsRateQuery) DataTypeJSON() FederalFundsRateQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query FederalFundsRateQuery) DataType(value string) FederalFundsRateQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetFederalFundsRate(ctx context.Context, q FederalFundsRateQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -168,18 +182,22 @@ type InflationQuery url.Values
 func QueryInflation(apiKey string) InflationQuery {
 	return InflationQuery{"function": []string{"INFLATION"}, "apikey": []string{apiKey}}
 }
+
 func (query InflationQuery) DataTypeCSV() InflationQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query InflationQuery) DataTypeJSON() InflationQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query InflationQuery) DataType(value string) InflationQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetInflation(ctx context.Context, q InflationQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -217,18 +235,22 @@ type NonFarmPayrollQuery url.Values
 func QueryNonFarmPayroll(apiKey string) NonFarmPayrollQuery {
 	return NonFarmPayrollQuery{"function": []string{"NONFARM_PAYROLL"}, "apikey": []string{apiKey}}
 }
+
 func (query NonFarmPayrollQuery) DataTypeCSV() NonFarmPayrollQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query NonFarmPayrollQuery) DataTypeJSON() NonFarmPayrollQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query NonFarmPayrollQuery) DataType(value string) NonFarmPayrollQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetNonFarmPayroll(ctx context.Context, q NonFarmPayrollQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -266,22 +288,27 @@ type RealGDPQuery url.Values
 func QueryRealGDP(apiKey string) RealGDPQuery {
 	return RealGDPQuery{"function": []string{"REAL_GDP"}, "apikey": []string{apiKey}}
 }
+
 func (query RealGDPQuery) Interval(value string) RealGDPQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query RealGDPQuery) DataTypeCSV() RealGDPQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query RealGDPQuery) DataTypeJSON() RealGDPQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query RealGDPQuery) DataType(value string) RealGDPQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetRealGDP(ctx context.Context, q RealGDPQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -319,18 +346,22 @@ type RealGDPPerCapitaQuery url.Values
 func QueryRealGDPPerCapita(apiKey string) RealGDPPerCapitaQuery {
 	return RealGDPPerCapitaQuery{"function": []string{"REAL_GDP_PER_CAPITA"}, "apikey": []string{apiKey}}
 }
+
 func (query RealGDPPerCapitaQuery) DataTypeCSV() RealGDPPerCapitaQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query RealGDPPerCapitaQuery) DataTypeJSON() RealGDPPerCapitaQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query RealGDPPerCapitaQuery) DataType(value string) RealGDPPerCapitaQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetRealGDPPerCapita(ctx context.Context, q RealGDPPerCapitaQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -368,18 +399,22 @@ type RetailSalesQuery url.Values
 func QueryRetailSales(apiKey string) RetailSalesQuery {
 	return RetailSalesQuery{"function": []string{"RETAIL_SALES"}, "apikey": []string{apiKey}}
 }
+
 func (query RetailSalesQuery) DataTypeCSV() RetailSalesQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query RetailSalesQuery) DataTypeJSON() RetailSalesQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query RetailSalesQuery) DataType(value string) RetailSalesQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetRetailSales(ctx context.Context, q RetailSalesQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -417,26 +452,32 @@ type TreasuryYieldQuery url.Values
 func QueryTreasuryYield(apiKey string) TreasuryYieldQuery {
 	return TreasuryYieldQuery{"function": []string{"TREASURY_YIELD"}, "apikey": []string{apiKey}}
 }
+
 func (query TreasuryYieldQuery) Interval(value string) TreasuryYieldQuery {
 	query["interval"] = []string{value}
 	return query
 }
+
 func (query TreasuryYieldQuery) Maturity(value string) TreasuryYieldQuery {
 	query["maturity"] = []string{value}
 	return query
 }
+
 func (query TreasuryYieldQuery) DataTypeCSV() TreasuryYieldQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query TreasuryYieldQuery) DataTypeJSON() TreasuryYieldQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query TreasuryYieldQuery) DataType(value string) TreasuryYieldQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetTreasuryYield(ctx context.Context, q TreasuryYieldQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -474,18 +515,22 @@ type UnemploymentQuery url.Values
 func QueryUnemployment(apiKey string) UnemploymentQuery {
 	return UnemploymentQuery{"function": []string{"UNEMPLOYMENT"}, "apikey": []string{apiKey}}
 }
+
 func (query UnemploymentQuery) DataTypeCSV() UnemploymentQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query UnemploymentQuery) DataTypeJSON() UnemploymentQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query UnemploymentQuery) DataType(value string) UnemploymentQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetUnemployment(ctx context.Context, q UnemploymentQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

@@ -15,18 +15,22 @@ type GlobalQuoteQuery url.Values
 func QueryGlobalQuote(apiKey, symbol string) GlobalQuoteQuery {
 	return GlobalQuoteQuery{"function": []string{"GLOBAL_QUOTE"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (query GlobalQuoteQuery) DataTypeCSV() GlobalQuoteQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query GlobalQuoteQuery) DataTypeJSON() GlobalQuoteQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query GlobalQuoteQuery) DataType(value string) GlobalQuoteQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetGlobalQuote(ctx context.Context, q GlobalQuoteQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -72,6 +76,7 @@ type MarketStatusQuery url.Values
 func QueryMarketStatus(apiKey string) MarketStatusQuery {
 	return MarketStatusQuery{"function": []string{"MARKET_STATUS"}, "apikey": []string{apiKey}}
 }
+
 func (client *Client) GetMarketStatus(ctx context.Context, q MarketStatusQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -89,18 +94,22 @@ type RealtimeBulkQuotesQuery url.Values
 func QueryRealtimeBulkQuotes(apiKey, symbol string) RealtimeBulkQuotesQuery {
 	return RealtimeBulkQuotesQuery{"function": []string{"REALTIME_BULK_QUOTES"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (query RealtimeBulkQuotesQuery) DataTypeCSV() RealtimeBulkQuotesQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query RealtimeBulkQuotesQuery) DataTypeJSON() RealtimeBulkQuotesQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query RealtimeBulkQuotesQuery) DataType(value string) RealtimeBulkQuotesQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetRealtimeBulkQuotes(ctx context.Context, q RealtimeBulkQuotesQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -118,18 +127,22 @@ type SymbolSearchQuery url.Values
 func QuerySymbolSearch(apiKey, keywords string) SymbolSearchQuery {
 	return SymbolSearchQuery{"function": []string{"SYMBOL_SEARCH"}, "keywords": []string{keywords}, "apikey": []string{apiKey}}
 }
+
 func (query SymbolSearchQuery) DataTypeCSV() SymbolSearchQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query SymbolSearchQuery) DataTypeJSON() SymbolSearchQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query SymbolSearchQuery) DataType(value string) SymbolSearchQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetSymbolSearch(ctx context.Context, q SymbolSearchQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -174,30 +187,37 @@ type TimeSeriesDailyQuery url.Values
 func QueryTimeSeriesDaily(apiKey, symbol string) TimeSeriesDailyQuery {
 	return TimeSeriesDailyQuery{"function": []string{"TIME_SERIES_DAILY"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (query TimeSeriesDailyQuery) OutputSizeCompact() TimeSeriesDailyQuery {
 	query["outputsize"] = []string{"compact"}
 	return query
 }
+
 func (query TimeSeriesDailyQuery) OutputSizeFull() TimeSeriesDailyQuery {
 	query["outputsize"] = []string{"full"}
 	return query
 }
+
 func (query TimeSeriesDailyQuery) OutputSize(value string) TimeSeriesDailyQuery {
 	query["outputsize"] = []string{value}
 	return query
 }
+
 func (query TimeSeriesDailyQuery) DataTypeCSV() TimeSeriesDailyQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query TimeSeriesDailyQuery) DataTypeJSON() TimeSeriesDailyQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query TimeSeriesDailyQuery) DataType(value string) TimeSeriesDailyQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetTimeSeriesDaily(ctx context.Context, q TimeSeriesDailyQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -239,30 +259,37 @@ type TimeSeriesDailyAdjustedQuery url.Values
 func QueryTimeSeriesDailyAdjusted(apiKey, symbol string) TimeSeriesDailyAdjustedQuery {
 	return TimeSeriesDailyAdjustedQuery{"function": []string{"TIME_SERIES_DAILY_ADJUSTED"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (query TimeSeriesDailyAdjustedQuery) OutputSizeCompact() TimeSeriesDailyAdjustedQuery {
 	query["outputsize"] = []string{"compact"}
 	return query
 }
+
 func (query TimeSeriesDailyAdjustedQuery) OutputSizeFull() TimeSeriesDailyAdjustedQuery {
 	query["outputsize"] = []string{"full"}
 	return query
 }
+
 func (query TimeSeriesDailyAdjustedQuery) OutputSize(value string) TimeSeriesDailyAdjustedQuery {
 	query["outputsize"] = []string{value}
 	return query
 }
+
 func (query TimeSeriesDailyAdjustedQuery) DataTypeCSV() TimeSeriesDailyAdjustedQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query TimeSeriesDailyAdjustedQuery) DataTypeJSON() TimeSeriesDailyAdjustedQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query TimeSeriesDailyAdjustedQuery) DataType(value string) TimeSeriesDailyAdjustedQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetTimeSeriesDailyAdjusted(ctx context.Context, q TimeSeriesDailyAdjustedQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -307,42 +334,52 @@ type TimeSeriesIntradayQuery url.Values
 func QueryTimeSeriesIntraday(apiKey, symbol, interval string) TimeSeriesIntradayQuery {
 	return TimeSeriesIntradayQuery{"function": []string{"TIME_SERIES_INTRADAY"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query TimeSeriesIntradayQuery) Adjusted(value bool) TimeSeriesIntradayQuery {
 	query["adjusted"] = []string{strconv.FormatBool(value)}
 	return query
 }
+
 func (query TimeSeriesIntradayQuery) ExtendedHours(value bool) TimeSeriesIntradayQuery {
 	query["extended_hours"] = []string{strconv.FormatBool(value)}
 	return query
 }
+
 func (query TimeSeriesIntradayQuery) Month(value time.Time) TimeSeriesIntradayQuery {
 	query["month"] = []string{value.Format("2006-01")}
 	return query
 }
+
 func (query TimeSeriesIntradayQuery) OutputSizeCompact() TimeSeriesIntradayQuery {
 	query["outputsize"] = []string{"compact"}
 	return query
 }
+
 func (query TimeSeriesIntradayQuery) OutputSizeFull() TimeSeriesIntradayQuery {
 	query["outputsize"] = []string{"full"}
 	return query
 }
+
 func (query TimeSeriesIntradayQuery) OutputSize(value string) TimeSeriesIntradayQuery {
 	query["outputsize"] = []string{value}
 	return query
 }
+
 func (query TimeSeriesIntradayQuery) DataTypeCSV() TimeSeriesIntradayQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query TimeSeriesIntradayQuery) DataTypeJSON() TimeSeriesIntradayQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query TimeSeriesIntradayQuery) DataType(value string) TimeSeriesIntradayQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetTimeSeriesIntraday(ctx context.Context, q TimeSeriesIntradayQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -384,18 +421,22 @@ type TimeSeriesMonthlyQuery url.Values
 func QueryTimeSeriesMonthly(apiKey, symbol string) TimeSeriesMonthlyQuery {
 	return TimeSeriesMonthlyQuery{"function": []string{"TIME_SERIES_MONTHLY"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (query TimeSeriesMonthlyQuery) DataTypeCSV() TimeSeriesMonthlyQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query TimeSeriesMonthlyQuery) DataTypeJSON() TimeSeriesMonthlyQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query TimeSeriesMonthlyQuery) DataType(value string) TimeSeriesMonthlyQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetTimeSeriesMonthly(ctx context.Context, q TimeSeriesMonthlyQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -437,18 +478,22 @@ type TimeSeriesMonthlyAdjustedQuery url.Values
 func QueryTimeSeriesMonthlyAdjusted(apiKey, symbol string) TimeSeriesMonthlyAdjustedQuery {
 	return TimeSeriesMonthlyAdjustedQuery{"function": []string{"TIME_SERIES_MONTHLY_ADJUSTED"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (query TimeSeriesMonthlyAdjustedQuery) DataTypeCSV() TimeSeriesMonthlyAdjustedQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query TimeSeriesMonthlyAdjustedQuery) DataTypeJSON() TimeSeriesMonthlyAdjustedQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query TimeSeriesMonthlyAdjustedQuery) DataType(value string) TimeSeriesMonthlyAdjustedQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetTimeSeriesMonthlyAdjusted(ctx context.Context, q TimeSeriesMonthlyAdjustedQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -492,18 +537,22 @@ type TimeSeriesWeeklyQuery url.Values
 func QueryTimeSeriesWeekly(apiKey, symbol string) TimeSeriesWeeklyQuery {
 	return TimeSeriesWeeklyQuery{"function": []string{"TIME_SERIES_WEEKLY"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (query TimeSeriesWeeklyQuery) DataTypeCSV() TimeSeriesWeeklyQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query TimeSeriesWeeklyQuery) DataTypeJSON() TimeSeriesWeeklyQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query TimeSeriesWeeklyQuery) DataType(value string) TimeSeriesWeeklyQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetTimeSeriesWeekly(ctx context.Context, q TimeSeriesWeeklyQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -545,18 +594,22 @@ type TimeSeriesWeeklyAdjustedQuery url.Values
 func QueryTimeSeriesWeeklyAdjusted(apiKey, symbol string) TimeSeriesWeeklyAdjustedQuery {
 	return TimeSeriesWeeklyAdjustedQuery{"function": []string{"TIME_SERIES_WEEKLY_ADJUSTED"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
+
 func (query TimeSeriesWeeklyAdjustedQuery) DataTypeCSV() TimeSeriesWeeklyAdjustedQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query TimeSeriesWeeklyAdjustedQuery) DataTypeJSON() TimeSeriesWeeklyAdjustedQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query TimeSeriesWeeklyAdjustedQuery) DataType(value string) TimeSeriesWeeklyAdjustedQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetTimeSeriesWeeklyAdjusted(ctx context.Context, q TimeSeriesWeeklyAdjustedQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {

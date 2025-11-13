@@ -314,13 +314,7 @@ func generateFile(pkgName, outFileName, baseFileName string, functions []specifi
 		importsDecl.Specs = append(importsDecl.Specs, &ast.ImportSpec{Path: &ast.BasicLit{Kind: token.STRING, Value: strconv.Quote(im)}})
 	}
 
-	var buf bytes.Buffer
-	buf.WriteString(generateComment + "\n\n")
-	if err := format.Node(&buf, token.NewFileSet(), &file); err != nil {
-		return err
-	}
-
-	return os.WriteFile(outFileName, buf.Bytes(), 0644)
+	return formatGo(&file, outFileName)
 }
 
 func generateGetCSVRowsBody(fn specification.Function, goIdent, rowTypeIdent string) *ast.BlockStmt {
@@ -793,13 +787,7 @@ func generateCLIFile(functionFiles map[string][]specification.Function, goIdenti
 		}, file.Decls...)
 	}
 
-	var buf bytes.Buffer
-	buf.WriteString(generateComment + "\n\n")
-	if err := format.Node(&buf, token.NewFileSet(), file); err != nil {
-		return fmt.Errorf("failed to format generated CLI code: %w", err)
-	}
-
-	return os.WriteFile(filepath.FromSlash("cmd/av/functions.go"), buf.Bytes(), 0644)
+	return formatGo(file, "cmd/av/functions.go")
 }
 
 func generateHandlerFunction(fn specification.Function, goIdentifiers map[string][]string, queryParams []specification.QueryParameter) (*ast.FuncDecl, []string, error) {
@@ -1557,12 +1545,15 @@ func generateCSVTests(functionFiles map[string][]specification.Function, goIdent
 		}
 	}
 
+	return formatGo(&file, "csv_test.go")
+}
+
+func formatGo(node *ast.File, fileName string) error {
 	var buf bytes.Buffer
 	buf.WriteString(generateComment + "\n\n")
-	if err := format.Node(&buf, token.NewFileSet(), &file); err != nil {
+	if err := format.Node(&buf, token.NewFileSet(), node); err != nil {
 		return err
 	}
-
-	outFile := filepath.FromSlash("csv_test.go")
-	return os.WriteFile(outFile, buf.Bytes(), 0644)
+	result := bytes.ReplaceAll(buf.Bytes(), []byte("}\nfunc"), []byte("}\n\nfunc"))
+	return os.WriteFile(filepath.FromSlash(fileName), result, 0644)
 }

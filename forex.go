@@ -13,6 +13,7 @@ type CurrencyExchangeRateQuery url.Values
 func QueryCurrencyExchangeRate(apiKey, fromCurrency, toCurrency string) CurrencyExchangeRateQuery {
 	return CurrencyExchangeRateQuery{"function": []string{"CURRENCY_EXCHANGE_RATE"}, "from_currency": []string{fromCurrency}, "to_currency": []string{toCurrency}, "apikey": []string{apiKey}}
 }
+
 func (client *Client) GetCurrencyExchangeRate(ctx context.Context, q CurrencyExchangeRateQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -30,30 +31,37 @@ type FXDailyQuery url.Values
 func QueryFXDaily(apiKey, fromSymbol, toSymbol string) FXDailyQuery {
 	return FXDailyQuery{"function": []string{"FX_DAILY"}, "from_symbol": []string{fromSymbol}, "to_symbol": []string{toSymbol}, "apikey": []string{apiKey}}
 }
+
 func (query FXDailyQuery) OutputSizeCompact() FXDailyQuery {
 	query["outputsize"] = []string{"compact"}
 	return query
 }
+
 func (query FXDailyQuery) OutputSizeFull() FXDailyQuery {
 	query["outputsize"] = []string{"full"}
 	return query
 }
+
 func (query FXDailyQuery) OutputSize(value string) FXDailyQuery {
 	query["outputsize"] = []string{value}
 	return query
 }
+
 func (query FXDailyQuery) DataTypeCSV() FXDailyQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query FXDailyQuery) DataTypeJSON() FXDailyQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query FXDailyQuery) DataType(value string) FXDailyQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetFXDaily(ctx context.Context, q FXDailyQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -94,30 +102,37 @@ type FXIntradayQuery url.Values
 func QueryFXIntraday(apiKey, fromSymbol, toSymbol, interval string) FXIntradayQuery {
 	return FXIntradayQuery{"function": []string{"FX_INTRADAY"}, "from_symbol": []string{fromSymbol}, "to_symbol": []string{toSymbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
 }
+
 func (query FXIntradayQuery) OutputSizeCompact() FXIntradayQuery {
 	query["outputsize"] = []string{"compact"}
 	return query
 }
+
 func (query FXIntradayQuery) OutputSizeFull() FXIntradayQuery {
 	query["outputsize"] = []string{"full"}
 	return query
 }
+
 func (query FXIntradayQuery) OutputSize(value string) FXIntradayQuery {
 	query["outputsize"] = []string{value}
 	return query
 }
+
 func (query FXIntradayQuery) DataTypeCSV() FXIntradayQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query FXIntradayQuery) DataTypeJSON() FXIntradayQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query FXIntradayQuery) DataType(value string) FXIntradayQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetFXIntraday(ctx context.Context, q FXIntradayQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -158,18 +173,22 @@ type FXMonthlyQuery url.Values
 func QueryFXMonthly(apiKey, fromSymbol, toSymbol string) FXMonthlyQuery {
 	return FXMonthlyQuery{"function": []string{"FX_MONTHLY"}, "from_symbol": []string{fromSymbol}, "to_symbol": []string{toSymbol}, "apikey": []string{apiKey}}
 }
+
 func (query FXMonthlyQuery) DataTypeCSV() FXMonthlyQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query FXMonthlyQuery) DataTypeJSON() FXMonthlyQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query FXMonthlyQuery) DataType(value string) FXMonthlyQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetFXMonthly(ctx context.Context, q FXMonthlyQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
@@ -210,18 +229,22 @@ type FXWeeklyQuery url.Values
 func QueryFXWeekly(apiKey, fromSymbol, toSymbol string) FXWeeklyQuery {
 	return FXWeeklyQuery{"function": []string{"FX_WEEKLY"}, "from_symbol": []string{fromSymbol}, "to_symbol": []string{toSymbol}, "apikey": []string{apiKey}}
 }
+
 func (query FXWeeklyQuery) DataTypeCSV() FXWeeklyQuery {
 	query["datatype"] = []string{"csv"}
 	return query
 }
+
 func (query FXWeeklyQuery) DataTypeJSON() FXWeeklyQuery {
 	query["datatype"] = []string{"json"}
 	return query
 }
+
 func (query FXWeeklyQuery) DataType(value string) FXWeeklyQuery {
 	query["datatype"] = []string{value}
 	return query
 }
+
 func (client *Client) GetFXWeekly(ctx context.Context, q FXWeeklyQuery) (*http.Response, error) {
 	req, err := client.newRequest(ctx, url.Values(q))
 	if err != nil {
