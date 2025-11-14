@@ -46,7 +46,7 @@ func (query MESAAdaptiveMovingAverageQuery) DataType(value string) MESAAdaptiveM
 }
 
 func (client *Client) GetMESAAdaptiveMovingAverage(ctx context.Context, q MESAAdaptiveMovingAverageQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func (query VolumeWeightedAveragePriceQuery) DataType(value string) VolumeWeight
 }
 
 func (client *Client) GetVolumeWeightedAveragePrice(ctx context.Context, q VolumeWeightedAveragePriceQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

@@ -36,7 +36,7 @@ func (query HilbertTransformDCPeriodQuery) DataType(value string) HilbertTransfo
 }
 
 func (client *Client) GetHilbertTransformDCPeriod(ctx context.Context, q HilbertTransformDCPeriodQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +94,7 @@ func (query HilbertTransformDCPhaseQuery) DataType(value string) HilbertTransfor
 }
 
 func (client *Client) GetHilbertTransformDCPhase(ctx context.Context, q HilbertTransformDCPhaseQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +152,7 @@ func (query HilbertTransformPhasorQuery) DataType(value string) HilbertTransform
 }
 
 func (client *Client) GetHilbertTransformPhasor(ctx context.Context, q HilbertTransformPhasorQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -211,7 +211,7 @@ func (query HilbertTransformSineQuery) DataType(value string) HilbertTransformSi
 }
 
 func (client *Client) GetHilbertTransformSine(ctx context.Context, q HilbertTransformSineQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -270,7 +270,7 @@ func (query HilbertTransformTrendLineQuery) DataType(value string) HilbertTransf
 }
 
 func (client *Client) GetHilbertTransformTrendLine(ctx context.Context, q HilbertTransformTrendLineQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -328,7 +328,7 @@ func (query HilbertTransformTrendModeQuery) DataType(value string) HilbertTransf
 }
 
 func (client *Client) GetHilbertTransformTrendMode(ctx context.Context, q HilbertTransformTrendModeQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

@@ -35,7 +35,7 @@ func (query ConsumerPriceIndexQuery) DataType(value string) ConsumerPriceIndexQu
 }
 
 func (client *Client) GetConsumerPriceIndex(ctx context.Context, q ConsumerPriceIndexQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,7 @@ func (query DurablesQuery) DataType(value string) DurablesQuery {
 }
 
 func (client *Client) GetDurables(ctx context.Context, q DurablesQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -146,7 +146,7 @@ func (query FederalFundsRateQuery) DataType(value string) FederalFundsRateQuery 
 }
 
 func (client *Client) GetFederalFundsRate(ctx context.Context, q FederalFundsRateQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -199,7 +199,7 @@ func (query InflationQuery) DataType(value string) InflationQuery {
 }
 
 func (client *Client) GetInflation(ctx context.Context, q InflationQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -252,7 +252,7 @@ func (query NonFarmPayrollQuery) DataType(value string) NonFarmPayrollQuery {
 }
 
 func (client *Client) GetNonFarmPayroll(ctx context.Context, q NonFarmPayrollQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -310,7 +310,7 @@ func (query RealGDPQuery) DataType(value string) RealGDPQuery {
 }
 
 func (client *Client) GetRealGDP(ctx context.Context, q RealGDPQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -363,7 +363,7 @@ func (query RealGDPPerCapitaQuery) DataType(value string) RealGDPPerCapitaQuery 
 }
 
 func (client *Client) GetRealGDPPerCapita(ctx context.Context, q RealGDPPerCapitaQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -416,7 +416,7 @@ func (query RetailSalesQuery) DataType(value string) RetailSalesQuery {
 }
 
 func (client *Client) GetRetailSales(ctx context.Context, q RetailSalesQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -479,7 +479,7 @@ func (query TreasuryYieldQuery) DataType(value string) TreasuryYieldQuery {
 }
 
 func (client *Client) GetTreasuryYield(ctx context.Context, q TreasuryYieldQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -532,7 +532,7 @@ func (query UnemploymentQuery) DataType(value string) UnemploymentQuery {
 }
 
 func (client *Client) GetUnemployment(ctx context.Context, q UnemploymentQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

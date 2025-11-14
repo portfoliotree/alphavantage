@@ -41,7 +41,7 @@ func (query AroonQuery) DataType(value string) AroonQuery {
 }
 
 func (client *Client) GetAroon(ctx context.Context, q AroonQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func (query AroonOscQuery) DataType(value string) AroonOscQuery {
 }
 
 func (client *Client) GetAroonOsc(ctx context.Context, q AroonOscQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -168,7 +168,7 @@ func (query AverageDirectionalMovementIndexQuery) DataType(value string) Average
 }
 
 func (client *Client) GetAverageDirectionalMovementIndex(ctx context.Context, q AverageDirectionalMovementIndexQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +231,7 @@ func (query AverageDirectionalMovementIndexRatingQuery) DataType(value string) A
 }
 
 func (client *Client) GetAverageDirectionalMovementIndexRating(ctx context.Context, q AverageDirectionalMovementIndexRatingQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -294,7 +294,7 @@ func (query DirectionalMovementIndexQuery) DataType(value string) DirectionalMov
 }
 
 func (client *Client) GetDirectionalMovementIndex(ctx context.Context, q DirectionalMovementIndexQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -357,7 +357,7 @@ func (query MinusDirectionalIndicatorQuery) DataType(value string) MinusDirectio
 }
 
 func (client *Client) GetMinusDirectionalIndicator(ctx context.Context, q MinusDirectionalIndicatorQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -420,7 +420,7 @@ func (query MinusDirectionalMovementQuery) DataType(value string) MinusDirection
 }
 
 func (client *Client) GetMinusDirectionalMovement(ctx context.Context, q MinusDirectionalMovementQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -483,7 +483,7 @@ func (query PlusDirectionalIndicatorQuery) DataType(value string) PlusDirectiona
 }
 
 func (client *Client) GetPlusDirectionalIndicator(ctx context.Context, q PlusDirectionalIndicatorQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -546,7 +546,7 @@ func (query PlusDirectionalMovementQuery) DataType(value string) PlusDirectional
 }
 
 func (client *Client) GetPlusDirectionalMovement(ctx context.Context, q PlusDirectionalMovementQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

@@ -51,7 +51,7 @@ func (query MovingAverageConvergenceDivergenceQuery) DataType(value string) Movi
 }
 
 func (client *Client) GetMovingAverageConvergenceDivergence(ctx context.Context, q MovingAverageConvergenceDivergenceQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -141,7 +141,7 @@ func (query MovingAverageConvergenceDivergenceExtQuery) DataType(value string) M
 }
 
 func (client *Client) GetMovingAverageConvergenceDivergenceExt(ctx context.Context, q MovingAverageConvergenceDivergenceExtQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -206,7 +206,7 @@ func (query RelativeStrengthIndexQuery) DataType(value string) RelativeStrengthI
 }
 
 func (client *Client) GetRelativeStrengthIndex(ctx context.Context, q RelativeStrengthIndexQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -279,7 +279,7 @@ func (query StochasticFastQuery) DataType(value string) StochasticFastQuery {
 }
 
 func (client *Client) GetStochasticFast(ctx context.Context, q StochasticFastQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -363,7 +363,7 @@ func (query StochasticOscillatorQuery) DataType(value string) StochasticOscillat
 }
 
 func (client *Client) GetStochasticOscillator(ctx context.Context, q StochasticOscillatorQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -442,7 +442,7 @@ func (query StochasticRelativeStrengthIndexQuery) DataType(value string) Stochas
 }
 
 func (client *Client) GetStochasticRelativeStrengthIndex(ctx context.Context, q StochasticRelativeStrengthIndexQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

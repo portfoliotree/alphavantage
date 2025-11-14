@@ -80,7 +80,7 @@ type CompanyOverview struct {
 // It returns detailed company data including financial metrics, sector information,
 // and key statistics as a CompanyOverview struct.
 func (client *Client) CompanyOverview(ctx context.Context, q OverviewQuery) (CompanyOverview, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return CompanyOverview{}, fmt.Errorf("failed to create listing status request: %w", err)
 	}

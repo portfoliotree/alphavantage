@@ -41,7 +41,7 @@ func (query AverageTrueRangeQuery) DataType(value string) AverageTrueRangeQuery 
 }
 
 func (client *Client) GetAverageTrueRange(ctx context.Context, q AverageTrueRangeQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +119,7 @@ func (query BollingerBandsQuery) DataType(value string) BollingerBandsQuery {
 }
 
 func (client *Client) GetBollingerBands(ctx context.Context, q BollingerBandsQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -184,7 +184,7 @@ func (query NormalizedAverageTrueRangeQuery) DataType(value string) NormalizedAv
 }
 
 func (client *Client) GetNormalizedAverageTrueRange(ctx context.Context, q NormalizedAverageTrueRangeQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -252,7 +252,7 @@ func (query SARQuery) DataType(value string) SARQuery {
 }
 
 func (client *Client) GetSAR(ctx context.Context, q SARQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -310,7 +310,7 @@ func (query TrueRangeQuery) DataType(value string) TrueRangeQuery {
 }
 
 func (client *Client) GetTrueRange(ctx context.Context, q TrueRangeQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -383,7 +383,7 @@ func (query UltimateOscillatorQuery) DataType(value string) UltimateOscillatorQu
 }
 
 func (client *Client) GetUltimateOscillator(ctx context.Context, q UltimateOscillatorQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

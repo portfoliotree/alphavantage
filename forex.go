@@ -15,7 +15,7 @@ func QueryCurrencyExchangeRate(apiKey, fromCurrency, toCurrency string) Currency
 }
 
 func (client *Client) GetCurrencyExchangeRate(ctx context.Context, q CurrencyExchangeRateQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +63,7 @@ func (query FXDailyQuery) DataType(value string) FXDailyQuery {
 }
 
 func (client *Client) GetFXDaily(ctx context.Context, q FXDailyQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +134,7 @@ func (query FXIntradayQuery) DataType(value string) FXIntradayQuery {
 }
 
 func (client *Client) GetFXIntraday(ctx context.Context, q FXIntradayQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -190,7 +190,7 @@ func (query FXMonthlyQuery) DataType(value string) FXMonthlyQuery {
 }
 
 func (client *Client) GetFXMonthly(ctx context.Context, q FXMonthlyQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -246,7 +246,7 @@ func (query FXWeeklyQuery) DataType(value string) FXWeeklyQuery {
 }
 
 func (client *Client) GetFXWeekly(ctx context.Context, q FXWeeklyQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

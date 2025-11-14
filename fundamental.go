@@ -15,7 +15,7 @@ func QueryBalanceSheet(apiKey, symbol string) BalanceSheetQuery {
 }
 
 func (client *Client) GetBalanceSheet(ctx context.Context, q BalanceSheetQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +33,7 @@ func QueryCashFlow(apiKey, symbol string) CashFlowQuery {
 }
 
 func (client *Client) GetCashFlow(ctx context.Context, q CashFlowQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +66,7 @@ func (query DividendsQuery) DataType(value string) DividendsQuery {
 }
 
 func (client *Client) GetDividends(ctx context.Context, q DividendsQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +107,7 @@ func QueryETFProfile(apiKey, symbol string) ETFProfileQuery {
 }
 
 func (client *Client) GetETFProfile(ctx context.Context, q ETFProfileQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +125,7 @@ func QueryEarnings(apiKey, symbol string) EarningsQuery {
 }
 
 func (client *Client) GetEarnings(ctx context.Context, q EarningsQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +153,7 @@ func (query EarningsCalendarQuery) Horizon(value string) EarningsCalendarQuery {
 }
 
 func (client *Client) GetEarningsCalendar(ctx context.Context, q EarningsCalendarQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -194,7 +194,7 @@ func QueryEarningsEstimates(apiKey, symbol string) EarningsEstimatesQuery {
 }
 
 func (client *Client) GetEarningsEstimates(ctx context.Context, q EarningsEstimatesQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +212,7 @@ func QueryIPOCalendar(apiKey string) IPOCalendarQuery {
 }
 
 func (client *Client) GetIPOCalendar(ctx context.Context, q IPOCalendarQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -254,7 +254,7 @@ func QueryIncomeStatement(apiKey, symbol string) IncomeStatementQuery {
 }
 
 func (client *Client) GetIncomeStatement(ctx context.Context, q IncomeStatementQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -292,7 +292,7 @@ func (query ListingStatusQuery) State(value string) ListingStatusQuery {
 }
 
 func (client *Client) GetListingStatus(ctx context.Context, q ListingStatusQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -334,7 +334,7 @@ func QueryOverview(apiKey, symbol string) OverviewQuery {
 }
 
 func (client *Client) GetOverview(ctx context.Context, q OverviewQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -367,7 +367,7 @@ func (query SharesOutstandingQuery) DataType(value string) SharesOutstandingQuer
 }
 
 func (client *Client) GetSharesOutstanding(ctx context.Context, q SharesOutstandingQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -421,7 +421,7 @@ func (query SplitsQuery) DataType(value string) SplitsQuery {
 }
 
 func (client *Client) GetSplits(ctx context.Context, q SplitsQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

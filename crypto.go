@@ -46,7 +46,7 @@ func (query CryptoIntradayQuery) DataType(value string) CryptoIntradayQuery {
 }
 
 func (client *Client) GetCryptoIntraday(ctx context.Context, q CryptoIntradayQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,7 @@ func QueryDigitalCurrencyDaily(apiKey, symbol, market string) DigitalCurrencyDai
 }
 
 func (client *Client) GetDigitalCurrencyDaily(ctx context.Context, q DigitalCurrencyDailyQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func QueryDigitalCurrencyMonthly(apiKey, symbol, market string) DigitalCurrencyM
 }
 
 func (client *Client) GetDigitalCurrencyMonthly(ctx context.Context, q DigitalCurrencyMonthlyQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -170,7 +170,7 @@ func QueryDigitalCurrencyWeekly(apiKey, symbol, market string) DigitalCurrencyWe
 }
 
 func (client *Client) GetDigitalCurrencyWeekly(ctx context.Context, q DigitalCurrencyWeeklyQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

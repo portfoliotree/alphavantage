@@ -35,7 +35,7 @@ func (query AllCommoditiesQuery) DataType(value string) AllCommoditiesQuery {
 }
 
 func (client *Client) GetAllCommodities(ctx context.Context, q AllCommoditiesQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +93,7 @@ func (query AluminumQuery) DataType(value string) AluminumQuery {
 }
 
 func (client *Client) GetAluminum(ctx context.Context, q AluminumQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -151,7 +151,7 @@ func (query BrentQuery) DataType(value string) BrentQuery {
 }
 
 func (client *Client) GetBrent(ctx context.Context, q BrentQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -209,7 +209,7 @@ func (query CoffeeQuery) DataType(value string) CoffeeQuery {
 }
 
 func (client *Client) GetCoffee(ctx context.Context, q CoffeeQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -267,7 +267,7 @@ func (query CopperQuery) DataType(value string) CopperQuery {
 }
 
 func (client *Client) GetCopper(ctx context.Context, q CopperQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -325,7 +325,7 @@ func (query CornQuery) DataType(value string) CornQuery {
 }
 
 func (client *Client) GetCorn(ctx context.Context, q CornQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -383,7 +383,7 @@ func (query CottonQuery) DataType(value string) CottonQuery {
 }
 
 func (client *Client) GetCotton(ctx context.Context, q CottonQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -441,7 +441,7 @@ func (query NaturalGasQuery) DataType(value string) NaturalGasQuery {
 }
 
 func (client *Client) GetNaturalGas(ctx context.Context, q NaturalGasQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -499,7 +499,7 @@ func (query SugarQuery) DataType(value string) SugarQuery {
 }
 
 func (client *Client) GetSugar(ctx context.Context, q SugarQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -557,7 +557,7 @@ func (query WestTexasIntermediateQuery) DataType(value string) WestTexasIntermed
 }
 
 func (client *Client) GetWestTexasIntermediate(ctx context.Context, q WestTexasIntermediateQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -615,7 +615,7 @@ func (query WheatQuery) DataType(value string) WheatQuery {
 }
 
 func (client *Client) GetWheat(ctx context.Context, q WheatQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

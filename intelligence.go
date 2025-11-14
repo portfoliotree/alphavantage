@@ -41,7 +41,7 @@ func (query AnalyticsFixedWindowQuery) OHLC(value string) AnalyticsFixedWindowQu
 }
 
 func (client *Client) GetAnalyticsFixedWindow(ctx context.Context, q AnalyticsFixedWindowQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -84,7 +84,7 @@ func (query AnalyticsSlidingWindowQuery) OHLC(value string) AnalyticsSlidingWind
 }
 
 func (client *Client) GetAnalyticsSlidingWindow(ctx context.Context, q AnalyticsSlidingWindowQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func QueryEarningsCallTranscript(apiKey, symbol, quarter string) EarningsCallTra
 }
 
 func (client *Client) GetEarningsCallTranscript(ctx context.Context, q EarningsCallTranscriptQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func QueryInsiderTransactions(apiKey, symbol string) InsiderTransactionsQuery {
 }
 
 func (client *Client) GetInsiderTransactions(ctx context.Context, q InsiderTransactionsQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -168,7 +168,7 @@ func (query NewsSentimentQuery) Limit(value string) NewsSentimentQuery {
 }
 
 func (client *Client) GetNewsSentiment(ctx context.Context, q NewsSentimentQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -186,7 +186,7 @@ func QueryTopGainersLosers(apiKey string) TopGainersLosersQuery {
 }
 
 func (client *Client) GetTopGainersLosers(ctx context.Context, q TopGainersLosersQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

@@ -36,7 +36,7 @@ func (query MidPointQuery) DataType(value string) MidPointQuery {
 }
 
 func (client *Client) GetMidPoint(ctx context.Context, q MidPointQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +94,7 @@ func (query MidPriceQuery) DataType(value string) MidPriceQuery {
 }
 
 func (client *Client) GetMidPrice(ctx context.Context, q MidPriceQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

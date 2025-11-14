@@ -41,7 +41,7 @@ func (query DoubleExponentialMovingAverageQuery) DataType(value string) DoubleEx
 }
 
 func (client *Client) GetDoubleExponentialMovingAverage(ctx context.Context, q DoubleExponentialMovingAverageQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +104,7 @@ func (query ExponentialMovingAverageQuery) DataType(value string) ExponentialMov
 }
 
 func (client *Client) GetExponentialMovingAverage(ctx context.Context, q ExponentialMovingAverageQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +167,7 @@ func (query KaufmanAdaptiveMovingAverageQuery) DataType(value string) KaufmanAda
 }
 
 func (client *Client) GetKaufmanAdaptiveMovingAverage(ctx context.Context, q KaufmanAdaptiveMovingAverageQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -230,7 +230,7 @@ func (query SimpleMovingAverageQuery) DataType(value string) SimpleMovingAverage
 }
 
 func (client *Client) GetSimpleMovingAverage(ctx context.Context, q SimpleMovingAverageQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -293,7 +293,7 @@ func (query T3Query) DataType(value string) T3Query {
 }
 
 func (client *Client) GetT3(ctx context.Context, q T3Query) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -356,7 +356,7 @@ func (query TriangularMovingAverageQuery) DataType(value string) TriangularMovin
 }
 
 func (client *Client) GetTriangularMovingAverage(ctx context.Context, q TriangularMovingAverageQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -419,7 +419,7 @@ func (query TripleExponentialMovingAverageQuery) DataType(value string) TripleEx
 }
 
 func (client *Client) GetTripleExponentialMovingAverage(ctx context.Context, q TripleExponentialMovingAverageQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -482,7 +482,7 @@ func (query WeightedMovingAverageQuery) DataType(value string) WeightedMovingAve
 }
 
 func (client *Client) GetWeightedMovingAverage(ctx context.Context, q WeightedMovingAverageQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

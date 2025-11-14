@@ -51,7 +51,7 @@ func (query AbsolutePriceOscillatorQuery) DataType(value string) AbsolutePriceOs
 }
 
 func (client *Client) GetAbsolutePriceOscillator(ctx context.Context, q AbsolutePriceOscillatorQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (query BalanceOfPowerQuery) DataType(value string) BalanceOfPowerQuery {
 }
 
 func (client *Client) GetBalanceOfPower(ctx context.Context, q BalanceOfPowerQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +152,7 @@ func (query ChandeMomentumOscillatorQuery) DataType(value string) ChandeMomentum
 }
 
 func (client *Client) GetChandeMomentumOscillator(ctx context.Context, q ChandeMomentumOscillatorQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -215,7 +215,7 @@ func (query CommodityChannelIndexQuery) DataType(value string) CommodityChannelI
 }
 
 func (client *Client) GetCommodityChannelIndex(ctx context.Context, q CommodityChannelIndexQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -278,7 +278,7 @@ func (query MomentumQuery) DataType(value string) MomentumQuery {
 }
 
 func (client *Client) GetMomentum(ctx context.Context, q MomentumQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -351,7 +351,7 @@ func (query PercentagePriceOscillatorQuery) DataType(value string) PercentagePri
 }
 
 func (client *Client) GetPercentagePriceOscillator(ctx context.Context, q PercentagePriceOscillatorQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -414,7 +414,7 @@ func (query RateOfChangeQuery) DataType(value string) RateOfChangeQuery {
 }
 
 func (client *Client) GetRateOfChange(ctx context.Context, q RateOfChangeQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -477,7 +477,7 @@ func (query RateOfChangeRatioQuery) DataType(value string) RateOfChangeRatioQuer
 }
 
 func (client *Client) GetRateOfChangeRatio(ctx context.Context, q RateOfChangeRatioQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -540,7 +540,7 @@ func (query WilliamsRQuery) DataType(value string) WilliamsRQuery {
 }
 
 func (client *Client) GetWilliamsR(ctx context.Context, q WilliamsRQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

@@ -36,7 +36,7 @@ func (query ChaikinADLineQuery) DataType(value string) ChaikinADLineQuery {
 }
 
 func (client *Client) GetChaikinADLine(ctx context.Context, q ChaikinADLineQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +104,7 @@ func (query ChaikinADOscillatorQuery) DataType(value string) ChaikinADOscillator
 }
 
 func (client *Client) GetChaikinADOscillator(ctx context.Context, q ChaikinADOscillatorQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +167,7 @@ func (query MoneyFlowIndexQuery) DataType(value string) MoneyFlowIndexQuery {
 }
 
 func (client *Client) GetMoneyFlowIndex(ctx context.Context, q MoneyFlowIndexQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -225,7 +225,7 @@ func (query OnBalanceVolumeQuery) DataType(value string) OnBalanceVolumeQuery {
 }
 
 func (client *Client) GetOnBalanceVolume(ctx context.Context, q OnBalanceVolumeQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -288,7 +288,7 @@ func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) DataTyp
 }
 
 func (client *Client) GetOneDayRateOfChangeTripleSmoothExponentialMovingAverage(ctx context.Context, q OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

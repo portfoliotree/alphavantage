@@ -32,7 +32,7 @@ type ETFHolding struct {
 }
 
 func (client *Client) ETFProfile(ctx context.Context, q ETFProfileQuery) (ETFProfile, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return ETFProfile{}, fmt.Errorf("failed to create ETF profile request: %w", err)
 	}

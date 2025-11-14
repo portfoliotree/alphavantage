@@ -36,7 +36,7 @@ func (query HistoricalOptionsQuery) DataType(value string) HistoricalOptionsQuer
 }
 
 func (client *Client) GetHistoricalOptions(ctx context.Context, q HistoricalOptionsQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +117,7 @@ func (query RealtimeOptionsQuery) DataType(value string) RealtimeOptionsQuery {
 }
 
 func (client *Client) GetRealtimeOptions(ctx context.Context, q RealtimeOptionsQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}

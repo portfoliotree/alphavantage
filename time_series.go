@@ -32,7 +32,7 @@ func (query GlobalQuoteQuery) DataType(value string) GlobalQuoteQuery {
 }
 
 func (client *Client) GetGlobalQuote(ctx context.Context, q GlobalQuoteQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func QueryMarketStatus(apiKey string) MarketStatusQuery {
 }
 
 func (client *Client) GetMarketStatus(ctx context.Context, q MarketStatusQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +111,7 @@ func (query RealtimeBulkQuotesQuery) DataType(value string) RealtimeBulkQuotesQu
 }
 
 func (client *Client) GetRealtimeBulkQuotes(ctx context.Context, q RealtimeBulkQuotesQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +144,7 @@ func (query SymbolSearchQuery) DataType(value string) SymbolSearchQuery {
 }
 
 func (client *Client) GetSymbolSearch(ctx context.Context, q SymbolSearchQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -219,7 +219,7 @@ func (query TimeSeriesDailyQuery) DataType(value string) TimeSeriesDailyQuery {
 }
 
 func (client *Client) GetTimeSeriesDaily(ctx context.Context, q TimeSeriesDailyQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -291,7 +291,7 @@ func (query TimeSeriesDailyAdjustedQuery) DataType(value string) TimeSeriesDaily
 }
 
 func (client *Client) GetTimeSeriesDailyAdjusted(ctx context.Context, q TimeSeriesDailyAdjustedQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -381,7 +381,7 @@ func (query TimeSeriesIntradayQuery) DataType(value string) TimeSeriesIntradayQu
 }
 
 func (client *Client) GetTimeSeriesIntraday(ctx context.Context, q TimeSeriesIntradayQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -438,7 +438,7 @@ func (query TimeSeriesMonthlyQuery) DataType(value string) TimeSeriesMonthlyQuer
 }
 
 func (client *Client) GetTimeSeriesMonthly(ctx context.Context, q TimeSeriesMonthlyQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -495,7 +495,7 @@ func (query TimeSeriesMonthlyAdjustedQuery) DataType(value string) TimeSeriesMon
 }
 
 func (client *Client) GetTimeSeriesMonthlyAdjusted(ctx context.Context, q TimeSeriesMonthlyAdjustedQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -554,7 +554,7 @@ func (query TimeSeriesWeeklyQuery) DataType(value string) TimeSeriesWeeklyQuery 
 }
 
 func (client *Client) GetTimeSeriesWeekly(ctx context.Context, q TimeSeriesWeeklyQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
@@ -611,7 +611,7 @@ func (query TimeSeriesWeeklyAdjustedQuery) DataType(value string) TimeSeriesWeek
 }
 
 func (client *Client) GetTimeSeriesWeeklyAdjusted(ctx context.Context, q TimeSeriesWeeklyAdjustedQuery) (*http.Response, error) {
-	req, err := client.newRequest(ctx, url.Values(q))
+	req, err := client.QueryRequest(ctx, url.Values(q))
 	if err != nil {
 		return nil, err
 	}
