@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 	"time"
@@ -66,7 +67,7 @@ func (client *Client) GetAroonCSVRows(ctx context.Context, q AroonQuery) ([]Aroo
 	}
 	defer res.Body.Close()
 	var rows []AroonRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +130,7 @@ func (client *Client) GetAroonOscCSVRows(ctx context.Context, q AroonOscQuery) (
 	}
 	defer res.Body.Close()
 	var rows []AroonOscRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +193,7 @@ func (client *Client) GetAverageDirectionalMovementIndexCSVRows(ctx context.Cont
 	}
 	defer res.Body.Close()
 	var rows []AverageDirectionalMovementIndexRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -255,7 +256,7 @@ func (client *Client) GetAverageDirectionalMovementIndexRatingCSVRows(ctx contex
 	}
 	defer res.Body.Close()
 	var rows []AverageDirectionalMovementIndexRatingRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -318,7 +319,7 @@ func (client *Client) GetDirectionalMovementIndexCSVRows(ctx context.Context, q 
 	}
 	defer res.Body.Close()
 	var rows []DirectionalMovementIndexRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -381,7 +382,7 @@ func (client *Client) GetMinusDirectionalIndicatorCSVRows(ctx context.Context, q
 	}
 	defer res.Body.Close()
 	var rows []MinusDirectionalIndicatorRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -444,7 +445,7 @@ func (client *Client) GetMinusDirectionalMovementCSVRows(ctx context.Context, q 
 	}
 	defer res.Body.Close()
 	var rows []MinusDirectionalMovementRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -507,7 +508,7 @@ func (client *Client) GetPlusDirectionalIndicatorCSVRows(ctx context.Context, q 
 	}
 	defer res.Body.Close()
 	var rows []PlusDirectionalIndicatorRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -570,7 +571,7 @@ func (client *Client) GetPlusDirectionalMovementCSVRows(ctx context.Context, q P
 	}
 	defer res.Body.Close()
 	var rows []PlusDirectionalMovementRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

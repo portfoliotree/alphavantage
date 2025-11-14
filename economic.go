@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 )
@@ -59,7 +60,7 @@ func (client *Client) GetConsumerPriceIndexCSVRows(ctx context.Context, q Consum
 	}
 	defer res.Body.Close()
 	var rows []ConsumerPriceIndexRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +113,7 @@ func (client *Client) GetDurablesCSVRows(ctx context.Context, q DurablesQuery) (
 	}
 	defer res.Body.Close()
 	var rows []DurablesRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -170,7 +171,7 @@ func (client *Client) GetFederalFundsRateCSVRows(ctx context.Context, q FederalF
 	}
 	defer res.Body.Close()
 	var rows []FederalFundsRateRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -223,7 +224,7 @@ func (client *Client) GetInflationCSVRows(ctx context.Context, q InflationQuery)
 	}
 	defer res.Body.Close()
 	var rows []InflationRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -276,7 +277,7 @@ func (client *Client) GetNonFarmPayrollCSVRows(ctx context.Context, q NonFarmPay
 	}
 	defer res.Body.Close()
 	var rows []NonFarmPayrollRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -334,7 +335,7 @@ func (client *Client) GetRealGDPCSVRows(ctx context.Context, q RealGDPQuery) ([]
 	}
 	defer res.Body.Close()
 	var rows []RealGDPRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -387,7 +388,7 @@ func (client *Client) GetRealGDPPerCapitaCSVRows(ctx context.Context, q RealGDPP
 	}
 	defer res.Body.Close()
 	var rows []RealGDPPerCapitaRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -440,7 +441,7 @@ func (client *Client) GetRetailSalesCSVRows(ctx context.Context, q RetailSalesQu
 	}
 	defer res.Body.Close()
 	var rows []RetailSalesRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -503,7 +504,7 @@ func (client *Client) GetTreasuryYieldCSVRows(ctx context.Context, q TreasuryYie
 	}
 	defer res.Body.Close()
 	var rows []TreasuryYieldRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -556,7 +557,7 @@ func (client *Client) GetUnemploymentCSVRows(ctx context.Context, q Unemployment
 	}
 	defer res.Body.Close()
 	var rows []UnemploymentRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

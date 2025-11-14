@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 	"time"
@@ -60,7 +61,7 @@ func (client *Client) GetHilbertTransformDCPeriodCSVRows(ctx context.Context, q 
 	}
 	defer res.Body.Close()
 	var rows []HilbertTransformDCPeriodRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +119,7 @@ func (client *Client) GetHilbertTransformDCPhaseCSVRows(ctx context.Context, q H
 	}
 	defer res.Body.Close()
 	var rows []HilbertTransformDCPhaseRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +178,7 @@ func (client *Client) GetHilbertTransformPhasorCSVRows(ctx context.Context, q Hi
 	}
 	defer res.Body.Close()
 	var rows []HilbertTransformPhasorRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -236,7 +237,7 @@ func (client *Client) GetHilbertTransformSineCSVRows(ctx context.Context, q Hilb
 	}
 	defer res.Body.Close()
 	var rows []HilbertTransformSineRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -294,7 +295,7 @@ func (client *Client) GetHilbertTransformTrendLineCSVRows(ctx context.Context, q
 	}
 	defer res.Body.Close()
 	var rows []HilbertTransformTrendLineRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -352,7 +353,7 @@ func (client *Client) GetHilbertTransformTrendModeCSVRows(ctx context.Context, q
 	}
 	defer res.Body.Close()
 	var rows []HilbertTransformTrendModeRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

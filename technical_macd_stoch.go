@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 	"time"
@@ -77,7 +78,7 @@ func (client *Client) GetMovingAverageConvergenceDivergenceCSVRows(ctx context.C
 	}
 	defer res.Body.Close()
 	var rows []MovingAverageConvergenceDivergenceRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +168,7 @@ func (client *Client) GetMovingAverageConvergenceDivergenceExtCSVRows(ctx contex
 	}
 	defer res.Body.Close()
 	var rows []MovingAverageConvergenceDivergenceExtRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -230,7 +231,7 @@ func (client *Client) GetRelativeStrengthIndexCSVRows(ctx context.Context, q Rel
 	}
 	defer res.Body.Close()
 	var rows []RelativeStrengthIndexRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -304,7 +305,7 @@ func (client *Client) GetStochasticFastCSVRows(ctx context.Context, q Stochastic
 	}
 	defer res.Body.Close()
 	var rows []StochasticFastRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -388,7 +389,7 @@ func (client *Client) GetStochasticOscillatorCSVRows(ctx context.Context, q Stoc
 	}
 	defer res.Body.Close()
 	var rows []StochasticOscillatorRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -467,7 +468,7 @@ func (client *Client) GetStochasticRelativeStrengthIndexCSVRows(ctx context.Cont
 	}
 	defer res.Body.Close()
 	var rows []StochasticRelativeStrengthIndexRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

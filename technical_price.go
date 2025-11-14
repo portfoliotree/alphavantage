@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 	"time"
@@ -60,7 +61,7 @@ func (client *Client) GetMidPointCSVRows(ctx context.Context, q MidPointQuery) (
 	}
 	defer res.Body.Close()
 	var rows []MidPointRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +119,7 @@ func (client *Client) GetMidPriceCSVRows(ctx context.Context, q MidPriceQuery) (
 	}
 	defer res.Body.Close()
 	var rows []MidPriceRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

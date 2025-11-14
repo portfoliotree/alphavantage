@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 )
@@ -59,7 +60,7 @@ func (client *Client) GetAllCommoditiesCSVRows(ctx context.Context, q AllCommodi
 	}
 	defer res.Body.Close()
 	var rows []AllCommoditiesRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +118,7 @@ func (client *Client) GetAluminumCSVRows(ctx context.Context, q AluminumQuery) (
 	}
 	defer res.Body.Close()
 	var rows []AluminumRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +176,7 @@ func (client *Client) GetBrentCSVRows(ctx context.Context, q BrentQuery) ([]Bren
 	}
 	defer res.Body.Close()
 	var rows []BrentRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -233,7 +234,7 @@ func (client *Client) GetCoffeeCSVRows(ctx context.Context, q CoffeeQuery) ([]Co
 	}
 	defer res.Body.Close()
 	var rows []CoffeeRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -291,7 +292,7 @@ func (client *Client) GetCopperCSVRows(ctx context.Context, q CopperQuery) ([]Co
 	}
 	defer res.Body.Close()
 	var rows []CopperRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -349,7 +350,7 @@ func (client *Client) GetCornCSVRows(ctx context.Context, q CornQuery) ([]CornRo
 	}
 	defer res.Body.Close()
 	var rows []CornRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -407,7 +408,7 @@ func (client *Client) GetCottonCSVRows(ctx context.Context, q CottonQuery) ([]Co
 	}
 	defer res.Body.Close()
 	var rows []CottonRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -465,7 +466,7 @@ func (client *Client) GetNaturalGasCSVRows(ctx context.Context, q NaturalGasQuer
 	}
 	defer res.Body.Close()
 	var rows []NaturalGasRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -523,7 +524,7 @@ func (client *Client) GetSugarCSVRows(ctx context.Context, q SugarQuery) ([]Suga
 	}
 	defer res.Body.Close()
 	var rows []SugarRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -581,7 +582,7 @@ func (client *Client) GetWestTexasIntermediateCSVRows(ctx context.Context, q Wes
 	}
 	defer res.Body.Close()
 	var rows []WestTexasIntermediateRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -639,7 +640,7 @@ func (client *Client) GetWheatCSVRows(ctx context.Context, q WheatQuery) ([]Whea
 	}
 	defer res.Body.Close()
 	var rows []WheatRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 	"time"
@@ -65,7 +66,7 @@ func (client *Client) GetDoubleExponentialMovingAverageCSVRows(ctx context.Conte
 	}
 	defer res.Body.Close()
 	var rows []DoubleExponentialMovingAverageRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +129,7 @@ func (client *Client) GetExponentialMovingAverageCSVRows(ctx context.Context, q 
 	}
 	defer res.Body.Close()
 	var rows []ExponentialMovingAverageRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +192,7 @@ func (client *Client) GetKaufmanAdaptiveMovingAverageCSVRows(ctx context.Context
 	}
 	defer res.Body.Close()
 	var rows []KaufmanAdaptiveMovingAverageRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -254,7 +255,7 @@ func (client *Client) GetSimpleMovingAverageCSVRows(ctx context.Context, q Simpl
 	}
 	defer res.Body.Close()
 	var rows []SimpleMovingAverageRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -317,7 +318,7 @@ func (client *Client) GetT3CSVRows(ctx context.Context, q T3Query) ([]T3Row, err
 	}
 	defer res.Body.Close()
 	var rows []T3Row
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -380,7 +381,7 @@ func (client *Client) GetTriangularMovingAverageCSVRows(ctx context.Context, q T
 	}
 	defer res.Body.Close()
 	var rows []TriangularMovingAverageRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -443,7 +444,7 @@ func (client *Client) GetTripleExponentialMovingAverageCSVRows(ctx context.Conte
 	}
 	defer res.Body.Close()
 	var rows []TripleExponentialMovingAverageRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -506,7 +507,7 @@ func (client *Client) GetWeightedMovingAverageCSVRows(ctx context.Context, q Wei
 	}
 	defer res.Body.Close()
 	var rows []WeightedMovingAverageRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

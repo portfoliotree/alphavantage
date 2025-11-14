@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 	"time"
@@ -71,7 +72,7 @@ func (client *Client) GetMESAAdaptiveMovingAverageCSVRows(ctx context.Context, q
 	}
 	defer res.Body.Close()
 	var rows []MESAAdaptiveMovingAverageRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +130,7 @@ func (client *Client) GetVolumeWeightedAveragePriceCSVRows(ctx context.Context, 
 	}
 	defer res.Body.Close()
 	var rows []VolumeWeightedAveragePriceRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

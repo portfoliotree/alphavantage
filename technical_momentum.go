@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 	"time"
@@ -75,7 +76,7 @@ func (client *Client) GetAbsolutePriceOscillatorCSVRows(ctx context.Context, q A
 	}
 	defer res.Body.Close()
 	var rows []AbsolutePriceOscillatorRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +177,7 @@ func (client *Client) GetChandeMomentumOscillatorCSVRows(ctx context.Context, q 
 	}
 	defer res.Body.Close()
 	var rows []ChandeMomentumOscillatorRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -239,7 +240,7 @@ func (client *Client) GetCommodityChannelIndexCSVRows(ctx context.Context, q Com
 	}
 	defer res.Body.Close()
 	var rows []CommodityChannelIndexRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -302,7 +303,7 @@ func (client *Client) GetMomentumCSVRows(ctx context.Context, q MomentumQuery) (
 	}
 	defer res.Body.Close()
 	var rows []MomentumRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -375,7 +376,7 @@ func (client *Client) GetPercentagePriceOscillatorCSVRows(ctx context.Context, q
 	}
 	defer res.Body.Close()
 	var rows []PercentagePriceOscillatorRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -438,7 +439,7 @@ func (client *Client) GetRateOfChangeCSVRows(ctx context.Context, q RateOfChange
 	}
 	defer res.Body.Close()
 	var rows []RateOfChangeRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -501,7 +502,7 @@ func (client *Client) GetRateOfChangeRatioCSVRows(ctx context.Context, q RateOfC
 	}
 	defer res.Body.Close()
 	var rows []RateOfChangeRatioRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -564,7 +565,7 @@ func (client *Client) GetWilliamsRCSVRows(ctx context.Context, q WilliamsRQuery)
 	}
 	defer res.Body.Close()
 	var rows []WilliamsRRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

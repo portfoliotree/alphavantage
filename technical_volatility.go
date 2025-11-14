@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 	"time"
@@ -65,7 +66,7 @@ func (client *Client) GetAverageTrueRangeCSVRows(ctx context.Context, q AverageT
 	}
 	defer res.Body.Close()
 	var rows []AverageTrueRangeRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -145,7 +146,7 @@ func (client *Client) GetBollingerBandsCSVRows(ctx context.Context, q BollingerB
 	}
 	defer res.Body.Close()
 	var rows []BollingerBandsRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -208,7 +209,7 @@ func (client *Client) GetNormalizedAverageTrueRangeCSVRows(ctx context.Context, 
 	}
 	defer res.Body.Close()
 	var rows []NormalizedAverageTrueRangeRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -276,7 +277,7 @@ func (client *Client) GetSARCSVRows(ctx context.Context, q SARQuery) ([]SARRow, 
 	}
 	defer res.Body.Close()
 	var rows []SARRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -334,7 +335,7 @@ func (client *Client) GetTrueRangeCSVRows(ctx context.Context, q TrueRangeQuery)
 	}
 	defer res.Body.Close()
 	var rows []TrueRangeRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -407,7 +408,7 @@ func (client *Client) GetUltimateOscillatorCSVRows(ctx context.Context, q Ultima
 	}
 	defer res.Body.Close()
 	var rows []UltimateOscillatorRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

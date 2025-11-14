@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -78,7 +79,7 @@ func (client *Client) GetHistoricalOptionsCSVRows(ctx context.Context, q Histori
 	}
 	defer res.Body.Close()
 	var rows []HistoricalOptionsRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

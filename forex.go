@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 )
@@ -90,7 +91,7 @@ func (client *Client) GetFXDailyCSVRows(ctx context.Context, q FXDailyQuery) ([]
 	}
 	defer res.Body.Close()
 	var rows []FXDailyRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +162,7 @@ func (client *Client) GetFXIntradayCSVRows(ctx context.Context, q FXIntradayQuer
 	}
 	defer res.Body.Close()
 	var rows []FXIntradayRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -217,7 +218,7 @@ func (client *Client) GetFXMonthlyCSVRows(ctx context.Context, q FXMonthlyQuery)
 	}
 	defer res.Body.Close()
 	var rows []FXMonthlyRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -273,7 +274,7 @@ func (client *Client) GetFXWeeklyCSVRows(ctx context.Context, q FXWeeklyQuery) (
 	}
 	defer res.Body.Close()
 	var rows []FXWeeklyRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 	"time"
@@ -60,7 +61,7 @@ func (client *Client) GetChaikinADLineCSVRows(ctx context.Context, q ChaikinADLi
 	}
 	defer res.Body.Close()
 	var rows []ChaikinADLineRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +129,7 @@ func (client *Client) GetChaikinADOscillatorCSVRows(ctx context.Context, q Chaik
 	}
 	defer res.Body.Close()
 	var rows []ChaikinADOscillatorRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +192,7 @@ func (client *Client) GetMoneyFlowIndexCSVRows(ctx context.Context, q MoneyFlowI
 	}
 	defer res.Body.Close()
 	var rows []MoneyFlowIndexRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -249,7 +250,7 @@ func (client *Client) GetOnBalanceVolumeCSVRows(ctx context.Context, q OnBalance
 	}
 	defer res.Body.Close()
 	var rows []OnBalanceVolumeRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -312,7 +313,7 @@ func (client *Client) GetOneDayRateOfChangeTripleSmoothExponentialMovingAverageC
 	}
 	defer res.Body.Close()
 	var rows []OneDayRateOfChangeTripleSmoothExponentialMovingAverageRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

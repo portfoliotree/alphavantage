@@ -102,17 +102,6 @@ func main() {
 	}
 }
 
-func addTimeForColumnType(functions []specification.Function, imports []string) []string {
-	for _, fn := range functions {
-		for _, col := range fn.CSVColumns {
-			if col.Type == "time" {
-				return append(imports, "time")
-			}
-		}
-	}
-	return imports
-}
-
 func generateFile(pkgName, outFileName, baseFileName string, functions []specification.Function, goIdentifiers map[string][]string, queryParams []specification.QueryParameter) error {
 	file := ast.File{
 		Name: ast.NewIdent(pkgName),
@@ -156,116 +145,19 @@ func generateFile(pkgName, outFileName, baseFileName string, functions []specifi
 		}
 
 		getIdent := "Get" + goIdent
-		file.Decls = append(file.Decls, &ast.FuncDecl{
-			Name: ast.NewIdent(getIdent),
-			Recv: &ast.FieldList{
-				List: []*ast.Field{
-					{Names: []*ast.Ident{ast.NewIdent("client")}, Type: &ast.StarExpr{X: ast.NewIdent("Client")}},
-				},
-			},
-			Type: &ast.FuncType{
-				Params: &ast.FieldList{
-					List: []*ast.Field{
-						{Names: []*ast.Ident{ast.NewIdent("ctx")}, Type: newSel("context", "Context")},
-						{Names: []*ast.Ident{ast.NewIdent("q")}, Type: ast.NewIdent(queryTypeIdent)},
-					},
-				},
-				Results: &ast.FieldList{
-					List: []*ast.Field{
-						{Type: &ast.StarExpr{
-							X: newSel("http", "Response"),
-						}},
-						{Type: ast.NewIdent("error")},
-					},
-				},
-			},
-			Body: &ast.BlockStmt{
-				List: []ast.Stmt{
-					&ast.AssignStmt{
-						Lhs: []ast.Expr{
-							ast.NewIdent("req"),
-							ast.NewIdent("err"),
-						},
-						Tok: token.DEFINE,
-						Rhs: []ast.Expr{
-							&ast.CallExpr{
-								Fun: newSel("client", "newRequest"),
-								Args: []ast.Expr{
-									ast.NewIdent("ctx"),
-									&ast.CallExpr{
-										Fun:  newSel("url", "Values"),
-										Args: []ast.Expr{ast.NewIdent("q")},
-									},
-								},
-							},
-						},
-					},
-					&ast.IfStmt{
-						Cond: &ast.BinaryExpr{
-							X:  ast.NewIdent("err"),
-							Op: token.NEQ,
-							Y:  ast.NewIdent("nil"),
-						},
-						Body: &ast.BlockStmt{
-							List: []ast.Stmt{
-								&ast.ReturnStmt{
-									Results: []ast.Expr{
-										ast.NewIdent("nil"),
-										ast.NewIdent("err"),
-									},
-								},
-							},
-						},
-					},
-					&ast.AssignStmt{
-						Lhs: []ast.Expr{
-							ast.NewIdent("res"),
-							ast.NewIdent("err"),
-						},
-						Tok: token.DEFINE,
-						Rhs: []ast.Expr{
-							&ast.CallExpr{
-								Fun: newSel("client", "Do"),
-								Args: []ast.Expr{
-									ast.NewIdent("req"),
-								},
-							},
-						},
-					},
-					&ast.IfStmt{
-						Cond: &ast.BinaryExpr{
-							X:  ast.NewIdent("err"),
-							Op: token.NEQ,
-							Y:  ast.NewIdent("nil"),
-						},
-						Body: &ast.BlockStmt{
-							List: []ast.Stmt{
-								&ast.ReturnStmt{
-									Results: []ast.Expr{
-										ast.NewIdent("nil"),
-										ast.NewIdent("err"),
-									},
-								},
-							},
-						},
-					},
-					&ast.ReturnStmt{
-						Results: []ast.Expr{
-							ast.NewIdent("res"),
-							ast.NewIdent("nil"),
-						},
-					},
-				},
-			},
-		})
+		file.Decls = append(file.Decls, getMethod(queryTypeIdent, getIdent))
 
-		imports = append(imports, "context", "net/http")
 		slices.Sort(imports)
+		imports = append(imports, "context", "net/http")
 		imports = slices.Compact(imports)
 
 		if len(fn.CSVColumns) == 0 {
 			continue
 		}
+
+		imports = append(imports, "github.com/portfoliotree/alphavantage/response")
+		slices.Sort(imports)
+		imports = slices.Compact(imports)
 
 		getFuncRows := "Get" + goIdent + "CSVRows"
 		file.Decls = append(file.Decls, &ast.GenDecl{
@@ -317,6 +209,92 @@ func generateFile(pkgName, outFileName, baseFileName string, functions []specifi
 	return formatGo(&file, outFileName)
 }
 
+func getMethod(queryTypeIdent, getIdent string) *ast.FuncDecl {
+	return &ast.FuncDecl{
+		Name: ast.NewIdent(getIdent),
+		Recv: &ast.FieldList{
+			List: []*ast.Field{
+				{Names: []*ast.Ident{ast.NewIdent("client")}, Type: &ast.StarExpr{X: ast.NewIdent("Client")}},
+			},
+		},
+		Type: &ast.FuncType{
+			Params: &ast.FieldList{
+				List: []*ast.Field{
+					{Names: []*ast.Ident{ast.NewIdent("ctx")}, Type: newSel("context", "Context")},
+					{Names: []*ast.Ident{ast.NewIdent("q")}, Type: ast.NewIdent(queryTypeIdent)},
+				},
+			},
+			Results: &ast.FieldList{
+				List: []*ast.Field{
+					{Type: &ast.StarExpr{
+						X: newSel("http", "Response"),
+					}},
+					{Type: ast.NewIdent("error")},
+				},
+			},
+		},
+		Body: &ast.BlockStmt{
+			List: []ast.Stmt{
+				&ast.AssignStmt{
+					Lhs: idExprList("req", "err"),
+					Tok: token.DEFINE,
+					Rhs: []ast.Expr{
+						&ast.CallExpr{
+							Fun: newSel("client", "QueryRequest"),
+							Args: []ast.Expr{
+								ast.NewIdent("ctx"),
+								&ast.CallExpr{
+									Fun:  newSel("url", "Values"),
+									Args: []ast.Expr{ast.NewIdent("q")},
+								},
+							},
+						},
+					},
+				},
+				&ast.IfStmt{
+					Cond: &ast.BinaryExpr{
+						X:  ast.NewIdent("err"),
+						Op: token.NEQ,
+						Y:  ast.NewIdent("nil"),
+					},
+					Body: &ast.BlockStmt{
+						List: []ast.Stmt{
+							&ast.ReturnStmt{Results: idExprList("nil", "err")},
+						},
+					},
+				},
+				&ast.AssignStmt{
+					Lhs: idExprList("res", "err"),
+					Tok: token.DEFINE,
+					Rhs: []ast.Expr{
+						&ast.CallExpr{
+							Fun: newSel("client", "Do"),
+							Args: []ast.Expr{
+								ast.NewIdent("req"),
+							},
+						},
+					},
+				},
+				&ast.IfStmt{
+					Cond: &ast.BinaryExpr{
+						X:  ast.NewIdent("err"),
+						Op: token.NEQ,
+						Y:  ast.NewIdent("nil"),
+					},
+					Body: &ast.BlockStmt{
+						List: []ast.Stmt{
+							&ast.ReturnStmt{
+								Results: idExprList("nil", "err"),
+							},
+						},
+					},
+				},
+				&ast.ReturnStmt{Results: idExprList("res", "nil")},
+			},
+		},
+	}
+}
+
 func generateGetCSVRowsBody(fn specification.Function, goIdent, rowTypeIdent string) *ast.BlockStmt {
 	var list []ast.Stmt
 
@@ -329,22 +307,17 @@ func generateGetCSVRowsBody(fn specification.Function, goIdent, rowTypeIdent str
 		})
 	}
 
-	list = append(list, &ast.AssignStmt{
-		Lhs: []ast.Expr{
-			ast.NewIdent("res"),
-			ast.NewIdent("err"),
-		},
-		Tok: token.DEFINE,
-		Rhs: []ast.Expr{
-			&ast.CallExpr{
-				Fun: newSel("client", "Get"+goIdent),
-				Args: []ast.Expr{
-					ast.NewIdent("ctx"),
-					ast.NewIdent("q"),
+	list = append(list,
+		&ast.AssignStmt{
+			Lhs: idExprList("res", "err"),
+			Tok: token.DEFINE,
+			Rhs: []ast.Expr{
+				&ast.CallExpr{
+					Fun:  newSel("client", "Get"+goIdent),
+					Args: idExprList("ctx", "q"),
 				},
 			},
 		},
-	},
 		&ast.IfStmt{
 			Cond: &ast.BinaryExpr{
 				X:  ast.NewIdent("err"),
@@ -385,13 +358,11 @@ func generateGetCSVRowsBody(fn specification.Function, goIdent, rowTypeIdent str
 			},
 		},
 		&ast.AssignStmt{
-			Lhs: []ast.Expr{
-				ast.NewIdent("err"),
-			},
+			Lhs: idExprList("err"),
 			Tok: token.ASSIGN,
 			Rhs: []ast.Expr{
 				&ast.CallExpr{
-					Fun: ast.NewIdent("ParseCSV"),
+					Fun: newSel("response", "ParseCSV"),
 					Args: []ast.Expr{
 						newSel("res", "Body"),
 						&ast.UnaryExpr{
@@ -412,20 +383,12 @@ func generateGetCSVRowsBody(fn specification.Function, goIdent, rowTypeIdent str
 			Body: &ast.BlockStmt{
 				List: []ast.Stmt{
 					&ast.ReturnStmt{
-						Results: []ast.Expr{
-							ast.NewIdent("nil"),
-							ast.NewIdent("err"),
-						},
+						Results: idExprList("nil", "err"),
 					},
 				},
 			},
 		},
-		&ast.ReturnStmt{
-			Results: []ast.Expr{
-				ast.NewIdent("rows"),
-				ast.NewIdent("nil"),
-			},
-		})
+		&ast.ReturnStmt{Results: idExprList("rows", "nil")})
 
 	return &ast.BlockStmt{
 		List: list,
@@ -687,12 +650,8 @@ func generateCLIFile(functionFiles map[string][]specification.Function, goIdenti
 					&ast.ReturnStmt{
 						Results: []ast.Expr{
 							&ast.CallExpr{
-								Fun: ast.NewIdent("handle" + goIdentifiers[fn.Name][0]),
-								Args: []ast.Expr{
-									ast.NewIdent("client"),
-									ast.NewIdent("args"),
-									ast.NewIdent("output"),
-								},
+								Fun:  ast.NewIdent("handle" + goIdentifiers[fn.Name][0]),
+								Args: idExprList("client", "args", "output"),
 							},
 						},
 					},
@@ -1069,7 +1028,7 @@ func generateHandlerFunction(fn specification.Function, goIdentifiers map[string
 			}
 			innerStmts = []ast.Stmt{
 				&ast.AssignStmt{
-					Lhs: []ast.Expr{ast.NewIdent("query")},
+					Lhs: idExprList("query"),
 					Tok: token.ASSIGN,
 					Rhs: []ast.Expr{
 						&ast.CallExpr{
@@ -1129,7 +1088,7 @@ func generateHandlerFunction(fn specification.Function, goIdentifiers map[string
 					},
 				},
 				&ast.AssignStmt{
-					Lhs: []ast.Expr{ast.NewIdent("query")},
+					Lhs: idExprList("query"),
 					Tok: token.ASSIGN,
 					Rhs: []ast.Expr{
 						&ast.CallExpr{
@@ -1182,11 +1141,8 @@ func generateHandlerFunction(fn specification.Function, goIdentifiers map[string
 		Tok: token.DEFINE,
 		Rhs: []ast.Expr{
 			&ast.CallExpr{
-				Fun: newSel("client", "Get"+goIdent),
-				Args: []ast.Expr{
-					ast.NewIdent("ctx"),
-					ast.NewIdent("query"),
-				},
+				Fun:  newSel("client", "Get"+goIdent),
+				Args: idExprList("ctx", "query"),
 			},
 		},
 	})
@@ -1226,7 +1182,7 @@ func generateHandlerFunction(fn specification.Function, goIdentifiers map[string
 	imports = append(imports, "io")
 	body = append(body, &ast.IfStmt{
 		Init: &ast.AssignStmt{
-			Lhs: []ast.Expr{ast.NewIdent("_"), ast.NewIdent("err")},
+			Lhs: idExprList("_", "err"),
 			Tok: token.DEFINE,
 			Rhs: []ast.Expr{
 				&ast.CallExpr{
@@ -1398,32 +1354,9 @@ func generateCLITestData(functionFiles map[string][]specification.Function) erro
 	return nil
 }
 
-func newField(tp ast.Expr, ident ...string) *ast.Field {
-	var names []*ast.Ident
-	for _, name := range ident {
-		names = append(names, ast.NewIdent(name))
-	}
-	return &ast.Field{Names: names, Type: tp}
-}
-
-func newSel(x, sel string) *ast.SelectorExpr {
-	return &ast.SelectorExpr{
-		X:   ast.NewIdent(x),
-		Sel: ast.NewIdent(sel),
-	}
-}
-
-func newSet[T comparable](keys ...T) map[T]struct{} {
-	m := make(map[T]struct{}, len(keys))
-	for _, key := range keys {
-		m[key] = struct{}{}
-	}
-	return m
-}
-
 func generateCSVTests(functionFiles map[string][]specification.Function, goIdentifiers map[string][]string, indexEntrees []specification.IndexEntree) error {
 	file := ast.File{
-		Name: ast.NewIdent(pkgName),
+		Name: ast.NewIdent("response_test"),
 	}
 	importsDecl := &ast.GenDecl{
 		Tok:   token.IMPORT,
@@ -1436,11 +1369,14 @@ func generateCSVTests(functionFiles map[string][]specification.Function, goIdent
 		"testing",
 		"os",
 		"path/filepath",
-		"github.com/stretchr/testify/require",
 	}
 
 	slices.Sort(imports)
 	imports = slices.Compact(imports)
+	imports = append(imports,
+		"github.com/stretchr/testify/require",
+		"github.com/portfoliotree/alphavantage",
+		"github.com/portfoliotree/alphavantage/response")
 	for _, im := range imports {
 		importsDecl.Specs = append(importsDecl.Specs, &ast.ImportSpec{Path: &ast.BasicLit{Kind: token.STRING, Value: strconv.Quote(im)}})
 	}
@@ -1493,15 +1429,7 @@ func generateCSVTests(functionFiles map[string][]specification.Function, goIdent
 											},
 										}},
 									},
-									&ast.ExprStmt{
-										X: &ast.CallExpr{
-											Fun: newSel("require", "NoError"),
-											Args: []ast.Expr{
-												ast.NewIdent("t"),
-												ast.NewIdent("err"),
-											},
-										},
-									},
+									&ast.ExprStmt{X: requireNoError()},
 									&ast.DeclStmt{
 										Decl: &ast.GenDecl{
 											Tok: token.VAR,
@@ -1509,7 +1437,7 @@ func generateCSVTests(functionFiles map[string][]specification.Function, goIdent
 												&ast.ValueSpec{
 													Names: []*ast.Ident{ast.NewIdent("rows")},
 													Type: &ast.ArrayType{
-														Elt: ast.NewIdent(goIdentifiers[fn.Name][0] + "Row"),
+														Elt: newSel("alphavantage", goIdentifiers[fn.Name][0]+"Row"),
 													},
 												},
 											},
@@ -1519,7 +1447,7 @@ func generateCSVTests(functionFiles map[string][]specification.Function, goIdent
 										Lhs: []ast.Expr{ast.NewIdent("err")},
 										Tok: token.ASSIGN,
 										Rhs: []ast.Expr{&ast.CallExpr{
-											Fun: ast.NewIdent("ParseCSV"),
+											Fun: newSel("response", "ParseCSV"),
 											Args: []ast.Expr{
 												&ast.CallExpr{Fun: newSel("bytes", "NewReader"), Args: []ast.Expr{ast.NewIdent("buf")}},
 												&ast.UnaryExpr{Op: token.AND, X: ast.NewIdent("rows")},
@@ -1527,15 +1455,7 @@ func generateCSVTests(functionFiles map[string][]specification.Function, goIdent
 											},
 										}},
 									},
-									&ast.ExprStmt{
-										X: &ast.CallExpr{
-											Fun: newSel("require", "NoError"),
-											Args: []ast.Expr{
-												ast.NewIdent("t"),
-												ast.NewIdent("err"),
-											},
-										},
-									},
+									&ast.ExprStmt{X: requireNoError()},
 								},
 							},
 						},
@@ -1545,7 +1465,58 @@ func generateCSVTests(functionFiles map[string][]specification.Function, goIdent
 		}
 	}
 
-	return formatGo(&file, "csv_test.go")
+	return formatGo(&file, "response/csv_test.go")
+}
+
+func idExprList(ids ...string) []ast.Expr {
+	list := make([]ast.Expr, 0, len(ids))
+	for _, id := range ids {
+		list = append(list, ast.NewIdent(id))
+	}
+	return list
+}
+
+func addTimeForColumnType(functions []specification.Function, imports []string) []string {
+	for _, fn := range functions {
+		for _, col := range fn.CSVColumns {
+			if col.Type == "time" {
+				return append(imports, "time")
+			}
+		}
+	}
+	return imports
+}
+func newField(tp ast.Expr, ident ...string) *ast.Field {
+	var names []*ast.Ident
+	for _, name := range ident {
+		names = append(names, ast.NewIdent(name))
+	}
+	return &ast.Field{Names: names, Type: tp}
+}
+
+func newSel(x, sel string) *ast.SelectorExpr {
+	return &ast.SelectorExpr{
+		X:   ast.NewIdent(x),
+		Sel: ast.NewIdent(sel),
+	}
+}
+
+func newSet[T comparable](keys ...T) map[T]struct{} {
+	m := make(map[T]struct{}, len(keys))
+	for _, key := range keys {
+		m[key] = struct{}{}
+	}
+	return m
+}
+
+func requireNoError() *ast.CallExpr {
+	return &ast.CallExpr{
+		Fun: newSel("require", "NoError"),
+		Args: []ast.Expr{
+			ast.NewIdent("t"),
+			ast.NewIdent("err"),
+		},
+	}
 }
 
 func formatGo(node *ast.File, fileName string) error {

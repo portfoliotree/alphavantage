@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 )
@@ -93,7 +94,7 @@ func (client *Client) GetDividendsCSVRows(ctx context.Context, q DividendsQuery)
 	}
 	defer res.Body.Close()
 	var rows []DividendsRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +181,7 @@ func (client *Client) GetEarningsCalendarCSVRows(ctx context.Context, q Earnings
 	}
 	defer res.Body.Close()
 	var rows []EarningsCalendarRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -240,7 +241,7 @@ func (client *Client) GetIPOCalendarCSVRows(ctx context.Context, q IPOCalendarQu
 	}
 	defer res.Body.Close()
 	var rows []IPOCalendarRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -320,7 +321,7 @@ func (client *Client) GetListingStatusCSVRows(ctx context.Context, q ListingStat
 	}
 	defer res.Body.Close()
 	var rows []ListingStatusRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -392,7 +393,7 @@ func (client *Client) GetSharesOutstandingCSVRows(ctx context.Context, q SharesO
 	}
 	defer res.Body.Close()
 	var rows []SharesOutstandingRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -445,7 +446,7 @@ func (client *Client) GetSplitsCSVRows(ctx context.Context, q SplitsQuery) ([]Sp
 	}
 	defer res.Body.Close()
 	var rows []SplitsRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}

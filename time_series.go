@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/response"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -64,7 +65,7 @@ func (client *Client) GetGlobalQuoteCSVRows(ctx context.Context, q GlobalQuoteQu
 	}
 	defer res.Body.Close()
 	var rows []GlobalQuoteRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +176,7 @@ func (client *Client) GetSymbolSearchCSVRows(ctx context.Context, q SymbolSearch
 	}
 	defer res.Body.Close()
 	var rows []SymbolSearchRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -247,7 +248,7 @@ func (client *Client) GetTimeSeriesDailyCSVRows(ctx context.Context, q TimeSerie
 	}
 	defer res.Body.Close()
 	var rows []TimeSeriesDailyRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -322,7 +323,7 @@ func (client *Client) GetTimeSeriesDailyAdjustedCSVRows(ctx context.Context, q T
 	}
 	defer res.Body.Close()
 	var rows []TimeSeriesDailyAdjustedRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -409,7 +410,7 @@ func (client *Client) GetTimeSeriesIntradayCSVRows(ctx context.Context, q TimeSe
 	}
 	defer res.Body.Close()
 	var rows []TimeSeriesIntradayRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -466,7 +467,7 @@ func (client *Client) GetTimeSeriesMonthlyCSVRows(ctx context.Context, q TimeSer
 	}
 	defer res.Body.Close()
 	var rows []TimeSeriesMonthlyRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -525,7 +526,7 @@ func (client *Client) GetTimeSeriesMonthlyAdjustedCSVRows(ctx context.Context, q
 	}
 	defer res.Body.Close()
 	var rows []TimeSeriesMonthlyAdjustedRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -582,7 +583,7 @@ func (client *Client) GetTimeSeriesWeeklyCSVRows(ctx context.Context, q TimeSeri
 	}
 	defer res.Body.Close()
 	var rows []TimeSeriesWeeklyRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -641,7 +642,7 @@ func (client *Client) GetTimeSeriesWeeklyAdjustedCSVRows(ctx context.Context, q 
 	}
 	defer res.Body.Close()
 	var rows []TimeSeriesWeeklyAdjustedRow
-	err = ParseCSV(res.Body, &rows, nil)
+	err = response.ParseCSV(res.Body, &rows, nil)
 	if err != nil {
 		return nil, err
 	}
