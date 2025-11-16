@@ -99,13 +99,20 @@ func ParseCSV[T any](r io.Reader, data *[]T, location *time.Location) error {
 		panic(fmt.Errorf("data must not be nil"))
 	}
 	var err error
-	for row := range ParseCSVRows[T](r, location, func(e error) bool {
+	for row := range ParseCSVRows[T](ensureReadCloser(r), location, func(e error) bool {
 		err = e
 		return false
 	}) {
 		*data = append(*data, row)
 	}
 	return err
+}
+
+func ensureReadCloser(r io.Reader) io.ReadCloser {
+	if rc, ok := r.(io.ReadCloser); ok {
+		return rc
+	}
+	return io.NopCloser(r)
 }
 
 // ParseCSVRows returns an iterator that parses CSV data row by row into structs.
@@ -127,7 +134,9 @@ func ParseCSV[T any](r io.Reader, data *[]T, location *time.Location) error {
 //	    fmt.Printf("Price: %+v\n", price)
 //	}
 func ParseCSVRows[T any](r io.Reader, location *time.Location, handleErr func(error) bool) iter.Seq[T] {
+	rc := ensureReadCloser(r)
 	return func(yield func(T) bool) {
+		defer func() { _ = rc.Close() }()
 		if location == nil {
 			location = time.UTC
 		}
