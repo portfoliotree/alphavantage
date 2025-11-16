@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 )
@@ -15,16 +15,8 @@ func QueryCurrencyExchangeRate(apiKey, fromCurrency, toCurrency string) Currency
 	return CurrencyExchangeRateQuery{"function": []string{"CURRENCY_EXCHANGE_RATE"}, "from_currency": []string{fromCurrency}, "to_currency": []string{toCurrency}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetCurrencyExchangeRate(ctx context.Context, q CurrencyExchangeRateQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q CurrencyExchangeRateQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type FXDailyQuery url.Values
@@ -63,16 +55,8 @@ func (query FXDailyQuery) DataType(value string) FXDailyQuery {
 	return query
 }
 
-func (client *Client) GetFXDaily(ctx context.Context, q FXDailyQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q FXDailyQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type FXDailyRow struct {
@@ -83,19 +67,9 @@ type FXDailyRow struct {
 	Close     string `column-name:"close"`
 }
 
-func (client *Client) GetFXDailyCSVRows(ctx context.Context, q FXDailyQuery) ([]FXDailyRow, error) {
+func (q FXDailyQuery) CSVRows(ctx context.Context, client Doer) ([]FXDailyRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetFXDaily(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []FXDailyRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type FXIntradayQuery url.Values
@@ -134,16 +108,8 @@ func (query FXIntradayQuery) DataType(value string) FXIntradayQuery {
 	return query
 }
 
-func (client *Client) GetFXIntraday(ctx context.Context, q FXIntradayQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q FXIntradayQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type FXIntradayRow struct {
@@ -154,19 +120,9 @@ type FXIntradayRow struct {
 	Close     string `column-name:"close"`
 }
 
-func (client *Client) GetFXIntradayCSVRows(ctx context.Context, q FXIntradayQuery) ([]FXIntradayRow, error) {
+func (q FXIntradayQuery) CSVRows(ctx context.Context, client Doer) ([]FXIntradayRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetFXIntraday(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []FXIntradayRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type FXMonthlyQuery url.Values
@@ -190,16 +146,8 @@ func (query FXMonthlyQuery) DataType(value string) FXMonthlyQuery {
 	return query
 }
 
-func (client *Client) GetFXMonthly(ctx context.Context, q FXMonthlyQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q FXMonthlyQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type FXMonthlyRow struct {
@@ -210,19 +158,9 @@ type FXMonthlyRow struct {
 	Close     string `column-name:"close"`
 }
 
-func (client *Client) GetFXMonthlyCSVRows(ctx context.Context, q FXMonthlyQuery) ([]FXMonthlyRow, error) {
+func (q FXMonthlyQuery) CSVRows(ctx context.Context, client Doer) ([]FXMonthlyRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetFXMonthly(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []FXMonthlyRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type FXWeeklyQuery url.Values
@@ -246,16 +184,8 @@ func (query FXWeeklyQuery) DataType(value string) FXWeeklyQuery {
 	return query
 }
 
-func (client *Client) GetFXWeekly(ctx context.Context, q FXWeeklyQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q FXWeeklyQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type FXWeeklyRow struct {
@@ -266,17 +196,7 @@ type FXWeeklyRow struct {
 	Close     string `column-name:"close"`
 }
 
-func (client *Client) GetFXWeeklyCSVRows(ctx context.Context, q FXWeeklyQuery) ([]FXWeeklyRow, error) {
+func (q FXWeeklyQuery) CSVRows(ctx context.Context, client Doer) ([]FXWeeklyRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetFXWeekly(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []FXWeeklyRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

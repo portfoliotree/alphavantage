@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 	"time"
@@ -36,16 +36,8 @@ func (query HilbertTransformDCPeriodQuery) DataType(value string) HilbertTransfo
 	return query
 }
 
-func (client *Client) GetHilbertTransformDCPeriod(ctx context.Context, q HilbertTransformDCPeriodQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q HilbertTransformDCPeriodQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type HilbertTransformDCPeriodRow struct {
@@ -53,19 +45,9 @@ type HilbertTransformDCPeriodRow struct {
 	Value string `column-name:"DCPERIOD"`
 }
 
-func (client *Client) GetHilbertTransformDCPeriodCSVRows(ctx context.Context, q HilbertTransformDCPeriodQuery) ([]HilbertTransformDCPeriodRow, error) {
+func (q HilbertTransformDCPeriodQuery) CSVRows(ctx context.Context, client Doer) ([]HilbertTransformDCPeriodRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetHilbertTransformDCPeriod(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []HilbertTransformDCPeriodRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type HilbertTransformDCPhaseQuery url.Values
@@ -94,16 +76,8 @@ func (query HilbertTransformDCPhaseQuery) DataType(value string) HilbertTransfor
 	return query
 }
 
-func (client *Client) GetHilbertTransformDCPhase(ctx context.Context, q HilbertTransformDCPhaseQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q HilbertTransformDCPhaseQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type HilbertTransformDCPhaseRow struct {
@@ -111,19 +85,9 @@ type HilbertTransformDCPhaseRow struct {
 	Value string `column-name:"HT_DCPHASE"`
 }
 
-func (client *Client) GetHilbertTransformDCPhaseCSVRows(ctx context.Context, q HilbertTransformDCPhaseQuery) ([]HilbertTransformDCPhaseRow, error) {
+func (q HilbertTransformDCPhaseQuery) CSVRows(ctx context.Context, client Doer) ([]HilbertTransformDCPhaseRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetHilbertTransformDCPhase(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []HilbertTransformDCPhaseRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type HilbertTransformPhasorQuery url.Values
@@ -152,16 +116,8 @@ func (query HilbertTransformPhasorQuery) DataType(value string) HilbertTransform
 	return query
 }
 
-func (client *Client) GetHilbertTransformPhasor(ctx context.Context, q HilbertTransformPhasorQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q HilbertTransformPhasorQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type HilbertTransformPhasorRow struct {
@@ -170,19 +126,9 @@ type HilbertTransformPhasorRow struct {
 	Quadrature string `column-name:"QUADRATURE"`
 }
 
-func (client *Client) GetHilbertTransformPhasorCSVRows(ctx context.Context, q HilbertTransformPhasorQuery) ([]HilbertTransformPhasorRow, error) {
+func (q HilbertTransformPhasorQuery) CSVRows(ctx context.Context, client Doer) ([]HilbertTransformPhasorRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetHilbertTransformPhasor(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []HilbertTransformPhasorRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type HilbertTransformSineQuery url.Values
@@ -211,16 +157,8 @@ func (query HilbertTransformSineQuery) DataType(value string) HilbertTransformSi
 	return query
 }
 
-func (client *Client) GetHilbertTransformSine(ctx context.Context, q HilbertTransformSineQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q HilbertTransformSineQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type HilbertTransformSineRow struct {
@@ -229,19 +167,9 @@ type HilbertTransformSineRow struct {
 	Sine     string `column-name:"SINE"`
 }
 
-func (client *Client) GetHilbertTransformSineCSVRows(ctx context.Context, q HilbertTransformSineQuery) ([]HilbertTransformSineRow, error) {
+func (q HilbertTransformSineQuery) CSVRows(ctx context.Context, client Doer) ([]HilbertTransformSineRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetHilbertTransformSine(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []HilbertTransformSineRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type HilbertTransformTrendLineQuery url.Values
@@ -270,16 +198,8 @@ func (query HilbertTransformTrendLineQuery) DataType(value string) HilbertTransf
 	return query
 }
 
-func (client *Client) GetHilbertTransformTrendLine(ctx context.Context, q HilbertTransformTrendLineQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q HilbertTransformTrendLineQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type HilbertTransformTrendLineRow struct {
@@ -287,19 +207,9 @@ type HilbertTransformTrendLineRow struct {
 	Value string `column-name:"HT_TRENDLINE"`
 }
 
-func (client *Client) GetHilbertTransformTrendLineCSVRows(ctx context.Context, q HilbertTransformTrendLineQuery) ([]HilbertTransformTrendLineRow, error) {
+func (q HilbertTransformTrendLineQuery) CSVRows(ctx context.Context, client Doer) ([]HilbertTransformTrendLineRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetHilbertTransformTrendLine(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []HilbertTransformTrendLineRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type HilbertTransformTrendModeQuery url.Values
@@ -328,16 +238,8 @@ func (query HilbertTransformTrendModeQuery) DataType(value string) HilbertTransf
 	return query
 }
 
-func (client *Client) GetHilbertTransformTrendMode(ctx context.Context, q HilbertTransformTrendModeQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q HilbertTransformTrendModeQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type HilbertTransformTrendModeRow struct {
@@ -345,17 +247,7 @@ type HilbertTransformTrendModeRow struct {
 	Value string `column-name:"TRENDMODE"`
 }
 
-func (client *Client) GetHilbertTransformTrendModeCSVRows(ctx context.Context, q HilbertTransformTrendModeQuery) ([]HilbertTransformTrendModeRow, error) {
+func (q HilbertTransformTrendModeQuery) CSVRows(ctx context.Context, client Doer) ([]HilbertTransformTrendModeRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetHilbertTransformTrendMode(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []HilbertTransformTrendModeRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

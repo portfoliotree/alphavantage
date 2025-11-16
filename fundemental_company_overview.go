@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 )
 
 // CompanyOverview contains comprehensive company information and financial metrics
@@ -146,7 +146,7 @@ func (c *CompanyOverview) UnmarshalJSON(in []byte) error {
 			if v == "0000-00-00" {
 				continue
 			}
-			t, err := time.ParseInLocation(response.DefaultDateFormat, v, time.UTC)
+			t, err := time.ParseInLocation(api.DefaultDateFormat, v, time.UTC)
 			if err != nil {
 				return err
 			}

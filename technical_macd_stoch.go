@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 	"time"
@@ -51,16 +51,8 @@ func (query MovingAverageConvergenceDivergenceQuery) DataType(value string) Movi
 	return query
 }
 
-func (client *Client) GetMovingAverageConvergenceDivergence(ctx context.Context, q MovingAverageConvergenceDivergenceQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q MovingAverageConvergenceDivergenceQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type MovingAverageConvergenceDivergenceRow struct {
@@ -70,19 +62,9 @@ type MovingAverageConvergenceDivergenceRow struct {
 	MACDSignal string `column-name:"MACD_Signal"`
 }
 
-func (client *Client) GetMovingAverageConvergenceDivergenceCSVRows(ctx context.Context, q MovingAverageConvergenceDivergenceQuery) ([]MovingAverageConvergenceDivergenceRow, error) {
+func (q MovingAverageConvergenceDivergenceQuery) CSVRows(ctx context.Context, client Doer) ([]MovingAverageConvergenceDivergenceRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetMovingAverageConvergenceDivergence(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []MovingAverageConvergenceDivergenceRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type MovingAverageConvergenceDivergenceExtQuery url.Values
@@ -141,16 +123,8 @@ func (query MovingAverageConvergenceDivergenceExtQuery) DataType(value string) M
 	return query
 }
 
-func (client *Client) GetMovingAverageConvergenceDivergenceExt(ctx context.Context, q MovingAverageConvergenceDivergenceExtQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q MovingAverageConvergenceDivergenceExtQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type MovingAverageConvergenceDivergenceExtRow struct {
@@ -160,19 +134,9 @@ type MovingAverageConvergenceDivergenceExtRow struct {
 	MACDSignal                         string `column-name:"MACD_Signal"`
 }
 
-func (client *Client) GetMovingAverageConvergenceDivergenceExtCSVRows(ctx context.Context, q MovingAverageConvergenceDivergenceExtQuery) ([]MovingAverageConvergenceDivergenceExtRow, error) {
+func (q MovingAverageConvergenceDivergenceExtQuery) CSVRows(ctx context.Context, client Doer) ([]MovingAverageConvergenceDivergenceExtRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetMovingAverageConvergenceDivergenceExt(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []MovingAverageConvergenceDivergenceExtRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type RelativeStrengthIndexQuery url.Values
@@ -206,16 +170,8 @@ func (query RelativeStrengthIndexQuery) DataType(value string) RelativeStrengthI
 	return query
 }
 
-func (client *Client) GetRelativeStrengthIndex(ctx context.Context, q RelativeStrengthIndexQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q RelativeStrengthIndexQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type RelativeStrengthIndexRow struct {
@@ -223,19 +179,9 @@ type RelativeStrengthIndexRow struct {
 	Value string `column-name:"RSI"`
 }
 
-func (client *Client) GetRelativeStrengthIndexCSVRows(ctx context.Context, q RelativeStrengthIndexQuery) ([]RelativeStrengthIndexRow, error) {
+func (q RelativeStrengthIndexQuery) CSVRows(ctx context.Context, client Doer) ([]RelativeStrengthIndexRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetRelativeStrengthIndex(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []RelativeStrengthIndexRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type StochasticFastQuery url.Values
@@ -279,16 +225,8 @@ func (query StochasticFastQuery) DataType(value string) StochasticFastQuery {
 	return query
 }
 
-func (client *Client) GetStochasticFast(ctx context.Context, q StochasticFastQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q StochasticFastQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type StochasticFastRow struct {
@@ -297,19 +235,9 @@ type StochasticFastRow struct {
 	FastK string `column-name:"FastK"`
 }
 
-func (client *Client) GetStochasticFastCSVRows(ctx context.Context, q StochasticFastQuery) ([]StochasticFastRow, error) {
+func (q StochasticFastQuery) CSVRows(ctx context.Context, client Doer) ([]StochasticFastRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetStochasticFast(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []StochasticFastRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type StochasticOscillatorQuery url.Values
@@ -363,16 +291,8 @@ func (query StochasticOscillatorQuery) DataType(value string) StochasticOscillat
 	return query
 }
 
-func (client *Client) GetStochasticOscillator(ctx context.Context, q StochasticOscillatorQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q StochasticOscillatorQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type StochasticOscillatorRow struct {
@@ -381,19 +301,9 @@ type StochasticOscillatorRow struct {
 	SlowK string `column-name:"SlowK"`
 }
 
-func (client *Client) GetStochasticOscillatorCSVRows(ctx context.Context, q StochasticOscillatorQuery) ([]StochasticOscillatorRow, error) {
+func (q StochasticOscillatorQuery) CSVRows(ctx context.Context, client Doer) ([]StochasticOscillatorRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetStochasticOscillator(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []StochasticOscillatorRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type StochasticRelativeStrengthIndexQuery url.Values
@@ -442,16 +352,8 @@ func (query StochasticRelativeStrengthIndexQuery) DataType(value string) Stochas
 	return query
 }
 
-func (client *Client) GetStochasticRelativeStrengthIndex(ctx context.Context, q StochasticRelativeStrengthIndexQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q StochasticRelativeStrengthIndexQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type StochasticRelativeStrengthIndexRow struct {
@@ -460,17 +362,7 @@ type StochasticRelativeStrengthIndexRow struct {
 	FastK string `column-name:"FastK"`
 }
 
-func (client *Client) GetStochasticRelativeStrengthIndexCSVRows(ctx context.Context, q StochasticRelativeStrengthIndexQuery) ([]StochasticRelativeStrengthIndexRow, error) {
+func (q StochasticRelativeStrengthIndexQuery) CSVRows(ctx context.Context, client Doer) ([]StochasticRelativeStrengthIndexRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetStochasticRelativeStrengthIndex(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []StochasticRelativeStrengthIndexRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

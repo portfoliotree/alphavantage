@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 )
@@ -35,16 +35,8 @@ func (query AllCommoditiesQuery) DataType(value string) AllCommoditiesQuery {
 	return query
 }
 
-func (client *Client) GetAllCommodities(ctx context.Context, q AllCommoditiesQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q AllCommoditiesQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type AllCommoditiesRow struct {
@@ -52,19 +44,9 @@ type AllCommoditiesRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetAllCommoditiesCSVRows(ctx context.Context, q AllCommoditiesQuery) ([]AllCommoditiesRow, error) {
+func (q AllCommoditiesQuery) CSVRows(ctx context.Context, client Doer) ([]AllCommoditiesRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetAllCommodities(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []AllCommoditiesRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type AluminumQuery url.Values
@@ -93,16 +75,8 @@ func (query AluminumQuery) DataType(value string) AluminumQuery {
 	return query
 }
 
-func (client *Client) GetAluminum(ctx context.Context, q AluminumQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q AluminumQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type AluminumRow struct {
@@ -110,19 +84,9 @@ type AluminumRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetAluminumCSVRows(ctx context.Context, q AluminumQuery) ([]AluminumRow, error) {
+func (q AluminumQuery) CSVRows(ctx context.Context, client Doer) ([]AluminumRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetAluminum(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []AluminumRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type BrentQuery url.Values
@@ -151,16 +115,8 @@ func (query BrentQuery) DataType(value string) BrentQuery {
 	return query
 }
 
-func (client *Client) GetBrent(ctx context.Context, q BrentQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q BrentQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type BrentRow struct {
@@ -168,19 +124,9 @@ type BrentRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetBrentCSVRows(ctx context.Context, q BrentQuery) ([]BrentRow, error) {
+func (q BrentQuery) CSVRows(ctx context.Context, client Doer) ([]BrentRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetBrent(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []BrentRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type CoffeeQuery url.Values
@@ -209,16 +155,8 @@ func (query CoffeeQuery) DataType(value string) CoffeeQuery {
 	return query
 }
 
-func (client *Client) GetCoffee(ctx context.Context, q CoffeeQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q CoffeeQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type CoffeeRow struct {
@@ -226,19 +164,9 @@ type CoffeeRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetCoffeeCSVRows(ctx context.Context, q CoffeeQuery) ([]CoffeeRow, error) {
+func (q CoffeeQuery) CSVRows(ctx context.Context, client Doer) ([]CoffeeRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetCoffee(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []CoffeeRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type CopperQuery url.Values
@@ -267,16 +195,8 @@ func (query CopperQuery) DataType(value string) CopperQuery {
 	return query
 }
 
-func (client *Client) GetCopper(ctx context.Context, q CopperQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q CopperQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type CopperRow struct {
@@ -284,19 +204,9 @@ type CopperRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetCopperCSVRows(ctx context.Context, q CopperQuery) ([]CopperRow, error) {
+func (q CopperQuery) CSVRows(ctx context.Context, client Doer) ([]CopperRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetCopper(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []CopperRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type CornQuery url.Values
@@ -325,16 +235,8 @@ func (query CornQuery) DataType(value string) CornQuery {
 	return query
 }
 
-func (client *Client) GetCorn(ctx context.Context, q CornQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q CornQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type CornRow struct {
@@ -342,19 +244,9 @@ type CornRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetCornCSVRows(ctx context.Context, q CornQuery) ([]CornRow, error) {
+func (q CornQuery) CSVRows(ctx context.Context, client Doer) ([]CornRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetCorn(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []CornRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type CottonQuery url.Values
@@ -383,16 +275,8 @@ func (query CottonQuery) DataType(value string) CottonQuery {
 	return query
 }
 
-func (client *Client) GetCotton(ctx context.Context, q CottonQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q CottonQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type CottonRow struct {
@@ -400,19 +284,9 @@ type CottonRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetCottonCSVRows(ctx context.Context, q CottonQuery) ([]CottonRow, error) {
+func (q CottonQuery) CSVRows(ctx context.Context, client Doer) ([]CottonRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetCotton(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []CottonRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type NaturalGasQuery url.Values
@@ -441,16 +315,8 @@ func (query NaturalGasQuery) DataType(value string) NaturalGasQuery {
 	return query
 }
 
-func (client *Client) GetNaturalGas(ctx context.Context, q NaturalGasQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q NaturalGasQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type NaturalGasRow struct {
@@ -458,19 +324,9 @@ type NaturalGasRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetNaturalGasCSVRows(ctx context.Context, q NaturalGasQuery) ([]NaturalGasRow, error) {
+func (q NaturalGasQuery) CSVRows(ctx context.Context, client Doer) ([]NaturalGasRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetNaturalGas(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []NaturalGasRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type SugarQuery url.Values
@@ -499,16 +355,8 @@ func (query SugarQuery) DataType(value string) SugarQuery {
 	return query
 }
 
-func (client *Client) GetSugar(ctx context.Context, q SugarQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q SugarQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type SugarRow struct {
@@ -516,19 +364,9 @@ type SugarRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetSugarCSVRows(ctx context.Context, q SugarQuery) ([]SugarRow, error) {
+func (q SugarQuery) CSVRows(ctx context.Context, client Doer) ([]SugarRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetSugar(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []SugarRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type WestTexasIntermediateQuery url.Values
@@ -557,16 +395,8 @@ func (query WestTexasIntermediateQuery) DataType(value string) WestTexasIntermed
 	return query
 }
 
-func (client *Client) GetWestTexasIntermediate(ctx context.Context, q WestTexasIntermediateQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q WestTexasIntermediateQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type WestTexasIntermediateRow struct {
@@ -574,19 +404,9 @@ type WestTexasIntermediateRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetWestTexasIntermediateCSVRows(ctx context.Context, q WestTexasIntermediateQuery) ([]WestTexasIntermediateRow, error) {
+func (q WestTexasIntermediateQuery) CSVRows(ctx context.Context, client Doer) ([]WestTexasIntermediateRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetWestTexasIntermediate(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []WestTexasIntermediateRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type WheatQuery url.Values
@@ -615,16 +435,8 @@ func (query WheatQuery) DataType(value string) WheatQuery {
 	return query
 }
 
-func (client *Client) GetWheat(ctx context.Context, q WheatQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q WheatQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type WheatRow struct {
@@ -632,17 +444,7 @@ type WheatRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetWheatCSVRows(ctx context.Context, q WheatQuery) ([]WheatRow, error) {
+func (q WheatQuery) CSVRows(ctx context.Context, client Doer) ([]WheatRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetWheat(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []WheatRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 	"time"
@@ -36,16 +36,8 @@ func (query MidPointQuery) DataType(value string) MidPointQuery {
 	return query
 }
 
-func (client *Client) GetMidPoint(ctx context.Context, q MidPointQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q MidPointQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type MidPointRow struct {
@@ -53,19 +45,9 @@ type MidPointRow struct {
 	Value string `column-name:"MIDPOINT"`
 }
 
-func (client *Client) GetMidPointCSVRows(ctx context.Context, q MidPointQuery) ([]MidPointRow, error) {
+func (q MidPointQuery) CSVRows(ctx context.Context, client Doer) ([]MidPointRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetMidPoint(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []MidPointRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type MidPriceQuery url.Values
@@ -94,16 +76,8 @@ func (query MidPriceQuery) DataType(value string) MidPriceQuery {
 	return query
 }
 
-func (client *Client) GetMidPrice(ctx context.Context, q MidPriceQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q MidPriceQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type MidPriceRow struct {
@@ -111,17 +85,7 @@ type MidPriceRow struct {
 	Value string `column-name:"MIDPRICE"`
 }
 
-func (client *Client) GetMidPriceCSVRows(ctx context.Context, q MidPriceQuery) ([]MidPriceRow, error) {
+func (q MidPriceQuery) CSVRows(ctx context.Context, client Doer) ([]MidPriceRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetMidPrice(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []MidPriceRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

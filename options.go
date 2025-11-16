@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -36,16 +36,8 @@ func (query HistoricalOptionsQuery) DataType(value string) HistoricalOptionsQuer
 	return query
 }
 
-func (client *Client) GetHistoricalOptions(ctx context.Context, q HistoricalOptionsQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q HistoricalOptionsQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type HistoricalOptionsRow struct {
@@ -71,19 +63,9 @@ type HistoricalOptionsRow struct {
 	RHO               string `column-name:"rho"`
 }
 
-func (client *Client) GetHistoricalOptionsCSVRows(ctx context.Context, q HistoricalOptionsQuery) ([]HistoricalOptionsRow, error) {
+func (q HistoricalOptionsQuery) CSVRows(ctx context.Context, client Doer) ([]HistoricalOptionsRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetHistoricalOptions(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []HistoricalOptionsRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type RealtimeOptionsQuery url.Values
@@ -117,14 +99,6 @@ func (query RealtimeOptionsQuery) DataType(value string) RealtimeOptionsQuery {
 	return query
 }
 
-func (client *Client) GetRealtimeOptions(ctx context.Context, q RealtimeOptionsQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q RealtimeOptionsQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }

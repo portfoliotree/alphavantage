@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -32,16 +32,8 @@ func (query GlobalQuoteQuery) DataType(value string) GlobalQuoteQuery {
 	return query
 }
 
-func (client *Client) GetGlobalQuote(ctx context.Context, q GlobalQuoteQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q GlobalQuoteQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type GlobalQuoteRow struct {
@@ -57,19 +49,9 @@ type GlobalQuoteRow struct {
 	ChangePercent string `column-name:"changePercent"`
 }
 
-func (client *Client) GetGlobalQuoteCSVRows(ctx context.Context, q GlobalQuoteQuery) ([]GlobalQuoteRow, error) {
+func (q GlobalQuoteQuery) CSVRows(ctx context.Context, client Doer) ([]GlobalQuoteRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetGlobalQuote(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []GlobalQuoteRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type MarketStatusQuery url.Values
@@ -78,16 +60,8 @@ func QueryMarketStatus(apiKey string) MarketStatusQuery {
 	return MarketStatusQuery{"function": []string{"MARKET_STATUS"}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetMarketStatus(ctx context.Context, q MarketStatusQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q MarketStatusQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type RealtimeBulkQuotesQuery url.Values
@@ -111,16 +85,8 @@ func (query RealtimeBulkQuotesQuery) DataType(value string) RealtimeBulkQuotesQu
 	return query
 }
 
-func (client *Client) GetRealtimeBulkQuotes(ctx context.Context, q RealtimeBulkQuotesQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q RealtimeBulkQuotesQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type SymbolSearchQuery url.Values
@@ -144,16 +110,8 @@ func (query SymbolSearchQuery) DataType(value string) SymbolSearchQuery {
 	return query
 }
 
-func (client *Client) GetSymbolSearch(ctx context.Context, q SymbolSearchQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q SymbolSearchQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type SymbolSearchRow struct {
@@ -168,19 +126,9 @@ type SymbolSearchRow struct {
 	MatchScore  float64 `column-name:"matchScore"`
 }
 
-func (client *Client) GetSymbolSearchCSVRows(ctx context.Context, q SymbolSearchQuery) ([]SymbolSearchRow, error) {
+func (q SymbolSearchQuery) CSVRows(ctx context.Context, client Doer) ([]SymbolSearchRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetSymbolSearch(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []SymbolSearchRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type TimeSeriesDailyQuery url.Values
@@ -219,16 +167,8 @@ func (query TimeSeriesDailyQuery) DataType(value string) TimeSeriesDailyQuery {
 	return query
 }
 
-func (client *Client) GetTimeSeriesDaily(ctx context.Context, q TimeSeriesDailyQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q TimeSeriesDailyQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type TimeSeriesDailyRow struct {
@@ -240,19 +180,9 @@ type TimeSeriesDailyRow struct {
 	Volume    int       `column-name:"volume"`
 }
 
-func (client *Client) GetTimeSeriesDailyCSVRows(ctx context.Context, q TimeSeriesDailyQuery) ([]TimeSeriesDailyRow, error) {
+func (q TimeSeriesDailyQuery) CSVRows(ctx context.Context, client Doer) ([]TimeSeriesDailyRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetTimeSeriesDaily(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []TimeSeriesDailyRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type TimeSeriesDailyAdjustedQuery url.Values
@@ -291,16 +221,8 @@ func (query TimeSeriesDailyAdjustedQuery) DataType(value string) TimeSeriesDaily
 	return query
 }
 
-func (client *Client) GetTimeSeriesDailyAdjusted(ctx context.Context, q TimeSeriesDailyAdjustedQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q TimeSeriesDailyAdjustedQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type TimeSeriesDailyAdjustedRow struct {
@@ -315,19 +237,9 @@ type TimeSeriesDailyAdjustedRow struct {
 	SplitCoefficient float64   `column-name:"split_coefficient"`
 }
 
-func (client *Client) GetTimeSeriesDailyAdjustedCSVRows(ctx context.Context, q TimeSeriesDailyAdjustedQuery) ([]TimeSeriesDailyAdjustedRow, error) {
+func (q TimeSeriesDailyAdjustedQuery) CSVRows(ctx context.Context, client Doer) ([]TimeSeriesDailyAdjustedRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetTimeSeriesDailyAdjusted(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []TimeSeriesDailyAdjustedRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type TimeSeriesIntradayQuery url.Values
@@ -381,16 +293,8 @@ func (query TimeSeriesIntradayQuery) DataType(value string) TimeSeriesIntradayQu
 	return query
 }
 
-func (client *Client) GetTimeSeriesIntraday(ctx context.Context, q TimeSeriesIntradayQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q TimeSeriesIntradayQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type TimeSeriesIntradayRow struct {
@@ -402,19 +306,9 @@ type TimeSeriesIntradayRow struct {
 	Volume    int       `column-name:"volume"`
 }
 
-func (client *Client) GetTimeSeriesIntradayCSVRows(ctx context.Context, q TimeSeriesIntradayQuery) ([]TimeSeriesIntradayRow, error) {
+func (q TimeSeriesIntradayQuery) CSVRows(ctx context.Context, client Doer) ([]TimeSeriesIntradayRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetTimeSeriesIntraday(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []TimeSeriesIntradayRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type TimeSeriesMonthlyQuery url.Values
@@ -438,16 +332,8 @@ func (query TimeSeriesMonthlyQuery) DataType(value string) TimeSeriesMonthlyQuer
 	return query
 }
 
-func (client *Client) GetTimeSeriesMonthly(ctx context.Context, q TimeSeriesMonthlyQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q TimeSeriesMonthlyQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type TimeSeriesMonthlyRow struct {
@@ -459,19 +345,9 @@ type TimeSeriesMonthlyRow struct {
 	Volume    int       `column-name:"volume"`
 }
 
-func (client *Client) GetTimeSeriesMonthlyCSVRows(ctx context.Context, q TimeSeriesMonthlyQuery) ([]TimeSeriesMonthlyRow, error) {
+func (q TimeSeriesMonthlyQuery) CSVRows(ctx context.Context, client Doer) ([]TimeSeriesMonthlyRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetTimeSeriesMonthly(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []TimeSeriesMonthlyRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type TimeSeriesMonthlyAdjustedQuery url.Values
@@ -495,16 +371,8 @@ func (query TimeSeriesMonthlyAdjustedQuery) DataType(value string) TimeSeriesMon
 	return query
 }
 
-func (client *Client) GetTimeSeriesMonthlyAdjusted(ctx context.Context, q TimeSeriesMonthlyAdjustedQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q TimeSeriesMonthlyAdjustedQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type TimeSeriesMonthlyAdjustedRow struct {
@@ -518,19 +386,9 @@ type TimeSeriesMonthlyAdjustedRow struct {
 	DividendAmount float64   `column-name:"dividend amount"`
 }
 
-func (client *Client) GetTimeSeriesMonthlyAdjustedCSVRows(ctx context.Context, q TimeSeriesMonthlyAdjustedQuery) ([]TimeSeriesMonthlyAdjustedRow, error) {
+func (q TimeSeriesMonthlyAdjustedQuery) CSVRows(ctx context.Context, client Doer) ([]TimeSeriesMonthlyAdjustedRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetTimeSeriesMonthlyAdjusted(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []TimeSeriesMonthlyAdjustedRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type TimeSeriesWeeklyQuery url.Values
@@ -554,16 +412,8 @@ func (query TimeSeriesWeeklyQuery) DataType(value string) TimeSeriesWeeklyQuery 
 	return query
 }
 
-func (client *Client) GetTimeSeriesWeekly(ctx context.Context, q TimeSeriesWeeklyQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q TimeSeriesWeeklyQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type TimeSeriesWeeklyRow struct {
@@ -575,19 +425,9 @@ type TimeSeriesWeeklyRow struct {
 	Volume    int       `column-name:"volume"`
 }
 
-func (client *Client) GetTimeSeriesWeeklyCSVRows(ctx context.Context, q TimeSeriesWeeklyQuery) ([]TimeSeriesWeeklyRow, error) {
+func (q TimeSeriesWeeklyQuery) CSVRows(ctx context.Context, client Doer) ([]TimeSeriesWeeklyRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetTimeSeriesWeekly(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []TimeSeriesWeeklyRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type TimeSeriesWeeklyAdjustedQuery url.Values
@@ -611,16 +451,8 @@ func (query TimeSeriesWeeklyAdjustedQuery) DataType(value string) TimeSeriesWeek
 	return query
 }
 
-func (client *Client) GetTimeSeriesWeeklyAdjusted(ctx context.Context, q TimeSeriesWeeklyAdjustedQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q TimeSeriesWeeklyAdjustedQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type TimeSeriesWeeklyAdjustedRow struct {
@@ -634,17 +466,7 @@ type TimeSeriesWeeklyAdjustedRow struct {
 	DividendAmount float64   `column-name:"dividend amount"`
 }
 
-func (client *Client) GetTimeSeriesWeeklyAdjustedCSVRows(ctx context.Context, q TimeSeriesWeeklyAdjustedQuery) ([]TimeSeriesWeeklyAdjustedRow, error) {
+func (q TimeSeriesWeeklyAdjustedQuery) CSVRows(ctx context.Context, client Doer) ([]TimeSeriesWeeklyAdjustedRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetTimeSeriesWeeklyAdjusted(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []TimeSeriesWeeklyAdjustedRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

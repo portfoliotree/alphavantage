@@ -1,14 +1,16 @@
-package response
+package api
 
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"encoding/csv"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"iter"
+	"net/http"
 	"reflect"
 	"strconv"
 	"strings"
@@ -237,4 +239,28 @@ func ParseCSVRows[T any](r io.Reader, location *time.Location, handleErr func(er
 			}
 		}
 	}
+}
+
+type DoWither[T any] interface {
+	DoWith(ctx context.Context, client Doer) (resp *http.Response, err error)
+	CSVRows(ctx context.Context, client Doer) ([]T, error)
+}
+
+// RequestCSVRows must not call CSVRows on q. It is intended to be used in implementations of CSVRows.
+func RequestCSVRows[Row any, Query DoWither[Row]](ctx context.Context, client Doer, q Query) ([]Row, error) {
+	res, err := q.DoWith(ctx, client)
+	if err != nil {
+		return nil, err
+	}
+	defer closeAndIgnoreError(res.Body)
+	var rows []Row
+	err = ParseCSV(res.Body, &rows, nil)
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
+}
+
+func closeAndIgnoreError(c io.Closer) {
+	_ = c.Close()
 }

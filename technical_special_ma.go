@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 	"time"
@@ -46,16 +46,8 @@ func (query MESAAdaptiveMovingAverageQuery) DataType(value string) MESAAdaptiveM
 	return query
 }
 
-func (client *Client) GetMESAAdaptiveMovingAverage(ctx context.Context, q MESAAdaptiveMovingAverageQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q MESAAdaptiveMovingAverageQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type MESAAdaptiveMovingAverageRow struct {
@@ -64,19 +56,9 @@ type MESAAdaptiveMovingAverageRow struct {
 	Value string `column-name:"MAMA"`
 }
 
-func (client *Client) GetMESAAdaptiveMovingAverageCSVRows(ctx context.Context, q MESAAdaptiveMovingAverageQuery) ([]MESAAdaptiveMovingAverageRow, error) {
+func (q MESAAdaptiveMovingAverageQuery) CSVRows(ctx context.Context, client Doer) ([]MESAAdaptiveMovingAverageRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetMESAAdaptiveMovingAverage(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []MESAAdaptiveMovingAverageRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type VolumeWeightedAveragePriceQuery url.Values
@@ -105,16 +87,8 @@ func (query VolumeWeightedAveragePriceQuery) DataType(value string) VolumeWeight
 	return query
 }
 
-func (client *Client) GetVolumeWeightedAveragePrice(ctx context.Context, q VolumeWeightedAveragePriceQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q VolumeWeightedAveragePriceQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type VolumeWeightedAveragePriceRow struct {
@@ -122,17 +96,7 @@ type VolumeWeightedAveragePriceRow struct {
 	Value string `column-name:"VWAP"`
 }
 
-func (client *Client) GetVolumeWeightedAveragePriceCSVRows(ctx context.Context, q VolumeWeightedAveragePriceQuery) ([]VolumeWeightedAveragePriceRow, error) {
+func (q VolumeWeightedAveragePriceQuery) CSVRows(ctx context.Context, client Doer) ([]VolumeWeightedAveragePriceRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetVolumeWeightedAveragePrice(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []VolumeWeightedAveragePriceRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

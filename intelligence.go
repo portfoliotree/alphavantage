@@ -4,6 +4,7 @@ package alphavantage
 
 import (
 	"context"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 	"time"
@@ -40,16 +41,8 @@ func (query AnalyticsFixedWindowQuery) OHLC(value string) AnalyticsFixedWindowQu
 	return query
 }
 
-func (client *Client) GetAnalyticsFixedWindow(ctx context.Context, q AnalyticsFixedWindowQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q AnalyticsFixedWindowQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type AnalyticsSlidingWindowQuery url.Values
@@ -83,16 +76,8 @@ func (query AnalyticsSlidingWindowQuery) OHLC(value string) AnalyticsSlidingWind
 	return query
 }
 
-func (client *Client) GetAnalyticsSlidingWindow(ctx context.Context, q AnalyticsSlidingWindowQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q AnalyticsSlidingWindowQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type EarningsCallTranscriptQuery url.Values
@@ -101,16 +86,8 @@ func QueryEarningsCallTranscript(apiKey, symbol, quarter string) EarningsCallTra
 	return EarningsCallTranscriptQuery{"function": []string{"EARNINGS_CALL_TRANSCRIPT"}, "symbol": []string{symbol}, "quarter": []string{quarter}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetEarningsCallTranscript(ctx context.Context, q EarningsCallTranscriptQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q EarningsCallTranscriptQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type InsiderTransactionsQuery url.Values
@@ -119,16 +96,8 @@ func QueryInsiderTransactions(apiKey, symbol string) InsiderTransactionsQuery {
 	return InsiderTransactionsQuery{"function": []string{"INSIDER_TRANSACTIONS"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetInsiderTransactions(ctx context.Context, q InsiderTransactionsQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q InsiderTransactionsQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type NewsSentimentQuery url.Values
@@ -167,16 +136,8 @@ func (query NewsSentimentQuery) Limit(value string) NewsSentimentQuery {
 	return query
 }
 
-func (client *Client) GetNewsSentiment(ctx context.Context, q NewsSentimentQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q NewsSentimentQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type TopGainersLosersQuery url.Values
@@ -185,14 +146,6 @@ func QueryTopGainersLosers(apiKey string) TopGainersLosersQuery {
 	return TopGainersLosersQuery{"function": []string{"TOP_GAINERS_LOSERS"}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetTopGainersLosers(ctx context.Context, q TopGainersLosersQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q TopGainersLosersQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }

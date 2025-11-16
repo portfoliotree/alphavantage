@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 	"time"
@@ -41,16 +41,8 @@ func (query DoubleExponentialMovingAverageQuery) DataType(value string) DoubleEx
 	return query
 }
 
-func (client *Client) GetDoubleExponentialMovingAverage(ctx context.Context, q DoubleExponentialMovingAverageQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q DoubleExponentialMovingAverageQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type DoubleExponentialMovingAverageRow struct {
@@ -58,19 +50,9 @@ type DoubleExponentialMovingAverageRow struct {
 	Value string `column-name:"DEMA"`
 }
 
-func (client *Client) GetDoubleExponentialMovingAverageCSVRows(ctx context.Context, q DoubleExponentialMovingAverageQuery) ([]DoubleExponentialMovingAverageRow, error) {
+func (q DoubleExponentialMovingAverageQuery) CSVRows(ctx context.Context, client Doer) ([]DoubleExponentialMovingAverageRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetDoubleExponentialMovingAverage(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []DoubleExponentialMovingAverageRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type ExponentialMovingAverageQuery url.Values
@@ -104,16 +86,8 @@ func (query ExponentialMovingAverageQuery) DataType(value string) ExponentialMov
 	return query
 }
 
-func (client *Client) GetExponentialMovingAverage(ctx context.Context, q ExponentialMovingAverageQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q ExponentialMovingAverageQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type ExponentialMovingAverageRow struct {
@@ -121,19 +95,9 @@ type ExponentialMovingAverageRow struct {
 	Value string `column-name:"EMA"`
 }
 
-func (client *Client) GetExponentialMovingAverageCSVRows(ctx context.Context, q ExponentialMovingAverageQuery) ([]ExponentialMovingAverageRow, error) {
+func (q ExponentialMovingAverageQuery) CSVRows(ctx context.Context, client Doer) ([]ExponentialMovingAverageRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetExponentialMovingAverage(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []ExponentialMovingAverageRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type KaufmanAdaptiveMovingAverageQuery url.Values
@@ -167,16 +131,8 @@ func (query KaufmanAdaptiveMovingAverageQuery) DataType(value string) KaufmanAda
 	return query
 }
 
-func (client *Client) GetKaufmanAdaptiveMovingAverage(ctx context.Context, q KaufmanAdaptiveMovingAverageQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q KaufmanAdaptiveMovingAverageQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type KaufmanAdaptiveMovingAverageRow struct {
@@ -184,19 +140,9 @@ type KaufmanAdaptiveMovingAverageRow struct {
 	Value string `column-name:"KAMA"`
 }
 
-func (client *Client) GetKaufmanAdaptiveMovingAverageCSVRows(ctx context.Context, q KaufmanAdaptiveMovingAverageQuery) ([]KaufmanAdaptiveMovingAverageRow, error) {
+func (q KaufmanAdaptiveMovingAverageQuery) CSVRows(ctx context.Context, client Doer) ([]KaufmanAdaptiveMovingAverageRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetKaufmanAdaptiveMovingAverage(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []KaufmanAdaptiveMovingAverageRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type SimpleMovingAverageQuery url.Values
@@ -230,16 +176,8 @@ func (query SimpleMovingAverageQuery) DataType(value string) SimpleMovingAverage
 	return query
 }
 
-func (client *Client) GetSimpleMovingAverage(ctx context.Context, q SimpleMovingAverageQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q SimpleMovingAverageQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type SimpleMovingAverageRow struct {
@@ -247,19 +185,9 @@ type SimpleMovingAverageRow struct {
 	Value string `column-name:"SMA"`
 }
 
-func (client *Client) GetSimpleMovingAverageCSVRows(ctx context.Context, q SimpleMovingAverageQuery) ([]SimpleMovingAverageRow, error) {
+func (q SimpleMovingAverageQuery) CSVRows(ctx context.Context, client Doer) ([]SimpleMovingAverageRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetSimpleMovingAverage(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []SimpleMovingAverageRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type T3Query url.Values
@@ -293,16 +221,8 @@ func (query T3Query) DataType(value string) T3Query {
 	return query
 }
 
-func (client *Client) GetT3(ctx context.Context, q T3Query) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q T3Query) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type T3Row struct {
@@ -310,19 +230,9 @@ type T3Row struct {
 	Value string `column-name:"T3"`
 }
 
-func (client *Client) GetT3CSVRows(ctx context.Context, q T3Query) ([]T3Row, error) {
+func (q T3Query) CSVRows(ctx context.Context, client Doer) ([]T3Row, error) {
 	q.DataTypeCSV()
-	res, err := client.GetT3(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []T3Row
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type TriangularMovingAverageQuery url.Values
@@ -356,16 +266,8 @@ func (query TriangularMovingAverageQuery) DataType(value string) TriangularMovin
 	return query
 }
 
-func (client *Client) GetTriangularMovingAverage(ctx context.Context, q TriangularMovingAverageQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q TriangularMovingAverageQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type TriangularMovingAverageRow struct {
@@ -373,19 +275,9 @@ type TriangularMovingAverageRow struct {
 	Value string `column-name:"TRIMA"`
 }
 
-func (client *Client) GetTriangularMovingAverageCSVRows(ctx context.Context, q TriangularMovingAverageQuery) ([]TriangularMovingAverageRow, error) {
+func (q TriangularMovingAverageQuery) CSVRows(ctx context.Context, client Doer) ([]TriangularMovingAverageRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetTriangularMovingAverage(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []TriangularMovingAverageRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type TripleExponentialMovingAverageQuery url.Values
@@ -419,16 +311,8 @@ func (query TripleExponentialMovingAverageQuery) DataType(value string) TripleEx
 	return query
 }
 
-func (client *Client) GetTripleExponentialMovingAverage(ctx context.Context, q TripleExponentialMovingAverageQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q TripleExponentialMovingAverageQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type TripleExponentialMovingAverageRow struct {
@@ -436,19 +320,9 @@ type TripleExponentialMovingAverageRow struct {
 	Value string `column-name:"TEMA"`
 }
 
-func (client *Client) GetTripleExponentialMovingAverageCSVRows(ctx context.Context, q TripleExponentialMovingAverageQuery) ([]TripleExponentialMovingAverageRow, error) {
+func (q TripleExponentialMovingAverageQuery) CSVRows(ctx context.Context, client Doer) ([]TripleExponentialMovingAverageRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetTripleExponentialMovingAverage(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []TripleExponentialMovingAverageRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type WeightedMovingAverageQuery url.Values
@@ -482,16 +356,8 @@ func (query WeightedMovingAverageQuery) DataType(value string) WeightedMovingAve
 	return query
 }
 
-func (client *Client) GetWeightedMovingAverage(ctx context.Context, q WeightedMovingAverageQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q WeightedMovingAverageQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type WeightedMovingAverageRow struct {
@@ -499,17 +365,7 @@ type WeightedMovingAverageRow struct {
 	Value string `column-name:"WMA"`
 }
 
-func (client *Client) GetWeightedMovingAverageCSVRows(ctx context.Context, q WeightedMovingAverageQuery) ([]WeightedMovingAverageRow, error) {
+func (q WeightedMovingAverageQuery) CSVRows(ctx context.Context, client Doer) ([]WeightedMovingAverageRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetWeightedMovingAverage(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []WeightedMovingAverageRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

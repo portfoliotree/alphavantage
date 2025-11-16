@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 	"time"
@@ -51,16 +51,8 @@ func (query AbsolutePriceOscillatorQuery) DataType(value string) AbsolutePriceOs
 	return query
 }
 
-func (client *Client) GetAbsolutePriceOscillator(ctx context.Context, q AbsolutePriceOscillatorQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q AbsolutePriceOscillatorQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type AbsolutePriceOscillatorRow struct {
@@ -68,19 +60,9 @@ type AbsolutePriceOscillatorRow struct {
 	Value string `column-name:"APO"`
 }
 
-func (client *Client) GetAbsolutePriceOscillatorCSVRows(ctx context.Context, q AbsolutePriceOscillatorQuery) ([]AbsolutePriceOscillatorRow, error) {
+func (q AbsolutePriceOscillatorQuery) CSVRows(ctx context.Context, client Doer) ([]AbsolutePriceOscillatorRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetAbsolutePriceOscillator(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []AbsolutePriceOscillatorRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type BalanceOfPowerQuery url.Values
@@ -109,16 +91,8 @@ func (query BalanceOfPowerQuery) DataType(value string) BalanceOfPowerQuery {
 	return query
 }
 
-func (client *Client) GetBalanceOfPower(ctx context.Context, q BalanceOfPowerQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q BalanceOfPowerQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type ChandeMomentumOscillatorQuery url.Values
@@ -152,16 +126,8 @@ func (query ChandeMomentumOscillatorQuery) DataType(value string) ChandeMomentum
 	return query
 }
 
-func (client *Client) GetChandeMomentumOscillator(ctx context.Context, q ChandeMomentumOscillatorQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q ChandeMomentumOscillatorQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type ChandeMomentumOscillatorRow struct {
@@ -169,19 +135,9 @@ type ChandeMomentumOscillatorRow struct {
 	Value string `column-name:"CMO"`
 }
 
-func (client *Client) GetChandeMomentumOscillatorCSVRows(ctx context.Context, q ChandeMomentumOscillatorQuery) ([]ChandeMomentumOscillatorRow, error) {
+func (q ChandeMomentumOscillatorQuery) CSVRows(ctx context.Context, client Doer) ([]ChandeMomentumOscillatorRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetChandeMomentumOscillator(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []ChandeMomentumOscillatorRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type CommodityChannelIndexQuery url.Values
@@ -215,16 +171,8 @@ func (query CommodityChannelIndexQuery) DataType(value string) CommodityChannelI
 	return query
 }
 
-func (client *Client) GetCommodityChannelIndex(ctx context.Context, q CommodityChannelIndexQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q CommodityChannelIndexQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type CommodityChannelIndexRow struct {
@@ -232,19 +180,9 @@ type CommodityChannelIndexRow struct {
 	Value string `column-name:"CCI"`
 }
 
-func (client *Client) GetCommodityChannelIndexCSVRows(ctx context.Context, q CommodityChannelIndexQuery) ([]CommodityChannelIndexRow, error) {
+func (q CommodityChannelIndexQuery) CSVRows(ctx context.Context, client Doer) ([]CommodityChannelIndexRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetCommodityChannelIndex(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []CommodityChannelIndexRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type MomentumQuery url.Values
@@ -278,16 +216,8 @@ func (query MomentumQuery) DataType(value string) MomentumQuery {
 	return query
 }
 
-func (client *Client) GetMomentum(ctx context.Context, q MomentumQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q MomentumQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type MomentumRow struct {
@@ -295,19 +225,9 @@ type MomentumRow struct {
 	Value string `column-name:"MOM"`
 }
 
-func (client *Client) GetMomentumCSVRows(ctx context.Context, q MomentumQuery) ([]MomentumRow, error) {
+func (q MomentumQuery) CSVRows(ctx context.Context, client Doer) ([]MomentumRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetMomentum(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []MomentumRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type PercentagePriceOscillatorQuery url.Values
@@ -351,16 +271,8 @@ func (query PercentagePriceOscillatorQuery) DataType(value string) PercentagePri
 	return query
 }
 
-func (client *Client) GetPercentagePriceOscillator(ctx context.Context, q PercentagePriceOscillatorQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q PercentagePriceOscillatorQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type PercentagePriceOscillatorRow struct {
@@ -368,19 +280,9 @@ type PercentagePriceOscillatorRow struct {
 	Value string `column-name:"PPO"`
 }
 
-func (client *Client) GetPercentagePriceOscillatorCSVRows(ctx context.Context, q PercentagePriceOscillatorQuery) ([]PercentagePriceOscillatorRow, error) {
+func (q PercentagePriceOscillatorQuery) CSVRows(ctx context.Context, client Doer) ([]PercentagePriceOscillatorRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetPercentagePriceOscillator(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []PercentagePriceOscillatorRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type RateOfChangeQuery url.Values
@@ -414,16 +316,8 @@ func (query RateOfChangeQuery) DataType(value string) RateOfChangeQuery {
 	return query
 }
 
-func (client *Client) GetRateOfChange(ctx context.Context, q RateOfChangeQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q RateOfChangeQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type RateOfChangeRow struct {
@@ -431,19 +325,9 @@ type RateOfChangeRow struct {
 	Value string `column-name:"ROC"`
 }
 
-func (client *Client) GetRateOfChangeCSVRows(ctx context.Context, q RateOfChangeQuery) ([]RateOfChangeRow, error) {
+func (q RateOfChangeQuery) CSVRows(ctx context.Context, client Doer) ([]RateOfChangeRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetRateOfChange(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []RateOfChangeRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type RateOfChangeRatioQuery url.Values
@@ -477,16 +361,8 @@ func (query RateOfChangeRatioQuery) DataType(value string) RateOfChangeRatioQuer
 	return query
 }
 
-func (client *Client) GetRateOfChangeRatio(ctx context.Context, q RateOfChangeRatioQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q RateOfChangeRatioQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type RateOfChangeRatioRow struct {
@@ -494,19 +370,9 @@ type RateOfChangeRatioRow struct {
 	Value string `column-name:"ROCR"`
 }
 
-func (client *Client) GetRateOfChangeRatioCSVRows(ctx context.Context, q RateOfChangeRatioQuery) ([]RateOfChangeRatioRow, error) {
+func (q RateOfChangeRatioQuery) CSVRows(ctx context.Context, client Doer) ([]RateOfChangeRatioRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetRateOfChangeRatio(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []RateOfChangeRatioRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type WilliamsRQuery url.Values
@@ -540,16 +406,8 @@ func (query WilliamsRQuery) DataType(value string) WilliamsRQuery {
 	return query
 }
 
-func (client *Client) GetWilliamsR(ctx context.Context, q WilliamsRQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q WilliamsRQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type WilliamsRRow struct {
@@ -557,17 +415,7 @@ type WilliamsRRow struct {
 	Value string `column-name:"WILLR"`
 }
 
-func (client *Client) GetWilliamsRCSVRows(ctx context.Context, q WilliamsRQuery) ([]WilliamsRRow, error) {
+func (q WilliamsRQuery) CSVRows(ctx context.Context, client Doer) ([]WilliamsRRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetWilliamsR(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []WilliamsRRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

@@ -18,6 +18,8 @@ import (
 	"strconv"
 
 	"golang.org/x/time/rate"
+
+	"github.com/portfoliotree/alphavantage/api"
 )
 
 //go:generate go run ./cmd/av-generate
@@ -62,6 +64,8 @@ type Waiter interface {
 	Wait(ctx context.Context) error
 }
 
+type Doer = api.Doer
+
 // NewClient creates a new AlphaVantage client with the specified API key.
 // The client will use environment variable ALPHA_VANTAGE_URL if set, otherwise defaults
 // to https://www.alphavantage.co.
@@ -98,15 +102,14 @@ func NewClient() *Client {
 }
 
 func (client *Client) QueryRequest(ctx context.Context, values url.Values) (*http.Request, error) {
-	apiURL := url.URL{
-		Scheme:   cmp.Or(client.BaseURL.Scheme, "https"),
-		Host:     cmp.Or(client.BaseURL.Host, "www.alphavantage.co"),
-		Path:     "/query",
-		RawQuery: values.Encode(),
-	}
 	return http.NewRequestWithContext(ctx,
 		http.MethodGet,
-		apiURL.String(),
+		(&url.URL{
+			Scheme:   api.DefaultScheme,
+			Host:     api.DefaultHost,
+			Path:     api.DefaultPath,
+			RawQuery: values.Encode(),
+		}).String(),
 		nil,
 	)
 }

@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 )
@@ -15,16 +15,8 @@ func QueryBalanceSheet(apiKey, symbol string) BalanceSheetQuery {
 	return BalanceSheetQuery{"function": []string{"BALANCE_SHEET"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetBalanceSheet(ctx context.Context, q BalanceSheetQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q BalanceSheetQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type CashFlowQuery url.Values
@@ -33,16 +25,8 @@ func QueryCashFlow(apiKey, symbol string) CashFlowQuery {
 	return CashFlowQuery{"function": []string{"CASH_FLOW"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetCashFlow(ctx context.Context, q CashFlowQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q CashFlowQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type DividendsQuery url.Values
@@ -66,16 +50,8 @@ func (query DividendsQuery) DataType(value string) DividendsQuery {
 	return query
 }
 
-func (client *Client) GetDividends(ctx context.Context, q DividendsQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q DividendsQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type DividendsRow struct {
@@ -86,19 +62,9 @@ type DividendsRow struct {
 	Amount          string `column-name:"amount"`
 }
 
-func (client *Client) GetDividendsCSVRows(ctx context.Context, q DividendsQuery) ([]DividendsRow, error) {
+func (q DividendsQuery) CSVRows(ctx context.Context, client Doer) ([]DividendsRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetDividends(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []DividendsRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type ETFProfileQuery url.Values
@@ -107,16 +73,8 @@ func QueryETFProfile(apiKey, symbol string) ETFProfileQuery {
 	return ETFProfileQuery{"function": []string{"ETF_PROFILE"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetETFProfile(ctx context.Context, q ETFProfileQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q ETFProfileQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type EarningsQuery url.Values
@@ -125,16 +83,8 @@ func QueryEarnings(apiKey, symbol string) EarningsQuery {
 	return EarningsQuery{"function": []string{"EARNINGS"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetEarnings(ctx context.Context, q EarningsQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q EarningsQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type EarningsCalendarQuery url.Values
@@ -153,16 +103,8 @@ func (query EarningsCalendarQuery) Horizon(value string) EarningsCalendarQuery {
 	return query
 }
 
-func (client *Client) GetEarningsCalendar(ctx context.Context, q EarningsCalendarQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q EarningsCalendarQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type EarningsCalendarRow struct {
@@ -174,18 +116,8 @@ type EarningsCalendarRow struct {
 	Currency         string `column-name:"currency"`
 }
 
-func (client *Client) GetEarningsCalendarCSVRows(ctx context.Context, q EarningsCalendarQuery) ([]EarningsCalendarRow, error) {
-	res, err := client.GetEarningsCalendar(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []EarningsCalendarRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+func (q EarningsCalendarQuery) CSVRows(ctx context.Context, client Doer) ([]EarningsCalendarRow, error) {
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type EarningsEstimatesQuery url.Values
@@ -194,16 +126,8 @@ func QueryEarningsEstimates(apiKey, symbol string) EarningsEstimatesQuery {
 	return EarningsEstimatesQuery{"function": []string{"EARNINGS_ESTIMATES"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetEarningsEstimates(ctx context.Context, q EarningsEstimatesQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q EarningsEstimatesQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type IPOCalendarQuery url.Values
@@ -212,16 +136,8 @@ func QueryIPOCalendar(apiKey string) IPOCalendarQuery {
 	return IPOCalendarQuery{"function": []string{"IPO_CALENDAR"}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetIPOCalendar(ctx context.Context, q IPOCalendarQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q IPOCalendarQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type IPOCalendarRow struct {
@@ -234,18 +150,8 @@ type IPOCalendarRow struct {
 	Exchange       string `column-name:"exchange"`
 }
 
-func (client *Client) GetIPOCalendarCSVRows(ctx context.Context, q IPOCalendarQuery) ([]IPOCalendarRow, error) {
-	res, err := client.GetIPOCalendar(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []IPOCalendarRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+func (q IPOCalendarQuery) CSVRows(ctx context.Context, client Doer) ([]IPOCalendarRow, error) {
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type IncomeStatementQuery url.Values
@@ -254,16 +160,8 @@ func QueryIncomeStatement(apiKey, symbol string) IncomeStatementQuery {
 	return IncomeStatementQuery{"function": []string{"INCOME_STATEMENT"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetIncomeStatement(ctx context.Context, q IncomeStatementQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q IncomeStatementQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type ListingStatusQuery url.Values
@@ -292,16 +190,8 @@ func (query ListingStatusQuery) State(value string) ListingStatusQuery {
 	return query
 }
 
-func (client *Client) GetListingStatus(ctx context.Context, q ListingStatusQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q ListingStatusQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type ListingStatusRow struct {
@@ -314,18 +204,8 @@ type ListingStatusRow struct {
 	Status        string `column-name:"status"`
 }
 
-func (client *Client) GetListingStatusCSVRows(ctx context.Context, q ListingStatusQuery) ([]ListingStatusRow, error) {
-	res, err := client.GetListingStatus(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []ListingStatusRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+func (q ListingStatusQuery) CSVRows(ctx context.Context, client Doer) ([]ListingStatusRow, error) {
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type OverviewQuery url.Values
@@ -334,16 +214,8 @@ func QueryOverview(apiKey, symbol string) OverviewQuery {
 	return OverviewQuery{"function": []string{"OVERVIEW"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetOverview(ctx context.Context, q OverviewQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q OverviewQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type SharesOutstandingQuery url.Values
@@ -367,16 +239,8 @@ func (query SharesOutstandingQuery) DataType(value string) SharesOutstandingQuer
 	return query
 }
 
-func (client *Client) GetSharesOutstanding(ctx context.Context, q SharesOutstandingQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q SharesOutstandingQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type SharesOutstandingRow struct {
@@ -385,19 +249,9 @@ type SharesOutstandingRow struct {
 	SharesOutstandingBasic   string `column-name:"shares_outstanding_basic"`
 }
 
-func (client *Client) GetSharesOutstandingCSVRows(ctx context.Context, q SharesOutstandingQuery) ([]SharesOutstandingRow, error) {
+func (q SharesOutstandingQuery) CSVRows(ctx context.Context, client Doer) ([]SharesOutstandingRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetSharesOutstanding(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []SharesOutstandingRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type SplitsQuery url.Values
@@ -421,16 +275,8 @@ func (query SplitsQuery) DataType(value string) SplitsQuery {
 	return query
 }
 
-func (client *Client) GetSplits(ctx context.Context, q SplitsQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q SplitsQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type SplitsRow struct {
@@ -438,17 +284,7 @@ type SplitsRow struct {
 	SplitFactor   string `column-name:"split_factor"`
 }
 
-func (client *Client) GetSplitsCSVRows(ctx context.Context, q SplitsQuery) ([]SplitsRow, error) {
+func (q SplitsQuery) CSVRows(ctx context.Context, client Doer) ([]SplitsRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetSplits(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []SplitsRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

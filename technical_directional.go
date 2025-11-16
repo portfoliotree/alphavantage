@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 	"time"
@@ -41,16 +41,8 @@ func (query AroonQuery) DataType(value string) AroonQuery {
 	return query
 }
 
-func (client *Client) GetAroon(ctx context.Context, q AroonQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q AroonQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type AroonRow struct {
@@ -59,19 +51,9 @@ type AroonRow struct {
 	AroonUp   string `column-name:"Aroon Up"`
 }
 
-func (client *Client) GetAroonCSVRows(ctx context.Context, q AroonQuery) ([]AroonRow, error) {
+func (q AroonQuery) CSVRows(ctx context.Context, client Doer) ([]AroonRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetAroon(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []AroonRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type AroonOscQuery url.Values
@@ -105,16 +87,8 @@ func (query AroonOscQuery) DataType(value string) AroonOscQuery {
 	return query
 }
 
-func (client *Client) GetAroonOsc(ctx context.Context, q AroonOscQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q AroonOscQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type AroonOscRow struct {
@@ -122,19 +96,9 @@ type AroonOscRow struct {
 	Value string `column-name:"AROONOSC"`
 }
 
-func (client *Client) GetAroonOscCSVRows(ctx context.Context, q AroonOscQuery) ([]AroonOscRow, error) {
+func (q AroonOscQuery) CSVRows(ctx context.Context, client Doer) ([]AroonOscRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetAroonOsc(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []AroonOscRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type AverageDirectionalMovementIndexQuery url.Values
@@ -168,16 +132,8 @@ func (query AverageDirectionalMovementIndexQuery) DataType(value string) Average
 	return query
 }
 
-func (client *Client) GetAverageDirectionalMovementIndex(ctx context.Context, q AverageDirectionalMovementIndexQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q AverageDirectionalMovementIndexQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type AverageDirectionalMovementIndexRow struct {
@@ -185,19 +141,9 @@ type AverageDirectionalMovementIndexRow struct {
 	Value string `column-name:"ADX"`
 }
 
-func (client *Client) GetAverageDirectionalMovementIndexCSVRows(ctx context.Context, q AverageDirectionalMovementIndexQuery) ([]AverageDirectionalMovementIndexRow, error) {
+func (q AverageDirectionalMovementIndexQuery) CSVRows(ctx context.Context, client Doer) ([]AverageDirectionalMovementIndexRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetAverageDirectionalMovementIndex(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []AverageDirectionalMovementIndexRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type AverageDirectionalMovementIndexRatingQuery url.Values
@@ -231,16 +177,8 @@ func (query AverageDirectionalMovementIndexRatingQuery) DataType(value string) A
 	return query
 }
 
-func (client *Client) GetAverageDirectionalMovementIndexRating(ctx context.Context, q AverageDirectionalMovementIndexRatingQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q AverageDirectionalMovementIndexRatingQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type AverageDirectionalMovementIndexRatingRow struct {
@@ -248,19 +186,9 @@ type AverageDirectionalMovementIndexRatingRow struct {
 	Value string `column-name:"ADXR"`
 }
 
-func (client *Client) GetAverageDirectionalMovementIndexRatingCSVRows(ctx context.Context, q AverageDirectionalMovementIndexRatingQuery) ([]AverageDirectionalMovementIndexRatingRow, error) {
+func (q AverageDirectionalMovementIndexRatingQuery) CSVRows(ctx context.Context, client Doer) ([]AverageDirectionalMovementIndexRatingRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetAverageDirectionalMovementIndexRating(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []AverageDirectionalMovementIndexRatingRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type DirectionalMovementIndexQuery url.Values
@@ -294,16 +222,8 @@ func (query DirectionalMovementIndexQuery) DataType(value string) DirectionalMov
 	return query
 }
 
-func (client *Client) GetDirectionalMovementIndex(ctx context.Context, q DirectionalMovementIndexQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q DirectionalMovementIndexQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type DirectionalMovementIndexRow struct {
@@ -311,19 +231,9 @@ type DirectionalMovementIndexRow struct {
 	Value string `column-name:"DX"`
 }
 
-func (client *Client) GetDirectionalMovementIndexCSVRows(ctx context.Context, q DirectionalMovementIndexQuery) ([]DirectionalMovementIndexRow, error) {
+func (q DirectionalMovementIndexQuery) CSVRows(ctx context.Context, client Doer) ([]DirectionalMovementIndexRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetDirectionalMovementIndex(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []DirectionalMovementIndexRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type MinusDirectionalIndicatorQuery url.Values
@@ -357,16 +267,8 @@ func (query MinusDirectionalIndicatorQuery) DataType(value string) MinusDirectio
 	return query
 }
 
-func (client *Client) GetMinusDirectionalIndicator(ctx context.Context, q MinusDirectionalIndicatorQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q MinusDirectionalIndicatorQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type MinusDirectionalIndicatorRow struct {
@@ -374,19 +276,9 @@ type MinusDirectionalIndicatorRow struct {
 	Value string `column-name:"MINUS_DI"`
 }
 
-func (client *Client) GetMinusDirectionalIndicatorCSVRows(ctx context.Context, q MinusDirectionalIndicatorQuery) ([]MinusDirectionalIndicatorRow, error) {
+func (q MinusDirectionalIndicatorQuery) CSVRows(ctx context.Context, client Doer) ([]MinusDirectionalIndicatorRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetMinusDirectionalIndicator(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []MinusDirectionalIndicatorRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type MinusDirectionalMovementQuery url.Values
@@ -420,16 +312,8 @@ func (query MinusDirectionalMovementQuery) DataType(value string) MinusDirection
 	return query
 }
 
-func (client *Client) GetMinusDirectionalMovement(ctx context.Context, q MinusDirectionalMovementQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q MinusDirectionalMovementQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type MinusDirectionalMovementRow struct {
@@ -437,19 +321,9 @@ type MinusDirectionalMovementRow struct {
 	Value string `column-name:"MINUS_DM"`
 }
 
-func (client *Client) GetMinusDirectionalMovementCSVRows(ctx context.Context, q MinusDirectionalMovementQuery) ([]MinusDirectionalMovementRow, error) {
+func (q MinusDirectionalMovementQuery) CSVRows(ctx context.Context, client Doer) ([]MinusDirectionalMovementRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetMinusDirectionalMovement(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []MinusDirectionalMovementRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type PlusDirectionalIndicatorQuery url.Values
@@ -483,16 +357,8 @@ func (query PlusDirectionalIndicatorQuery) DataType(value string) PlusDirectiona
 	return query
 }
 
-func (client *Client) GetPlusDirectionalIndicator(ctx context.Context, q PlusDirectionalIndicatorQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q PlusDirectionalIndicatorQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type PlusDirectionalIndicatorRow struct {
@@ -500,19 +366,9 @@ type PlusDirectionalIndicatorRow struct {
 	Value string `column-name:"PLUS_DI"`
 }
 
-func (client *Client) GetPlusDirectionalIndicatorCSVRows(ctx context.Context, q PlusDirectionalIndicatorQuery) ([]PlusDirectionalIndicatorRow, error) {
+func (q PlusDirectionalIndicatorQuery) CSVRows(ctx context.Context, client Doer) ([]PlusDirectionalIndicatorRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetPlusDirectionalIndicator(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []PlusDirectionalIndicatorRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type PlusDirectionalMovementQuery url.Values
@@ -546,16 +402,8 @@ func (query PlusDirectionalMovementQuery) DataType(value string) PlusDirectional
 	return query
 }
 
-func (client *Client) GetPlusDirectionalMovement(ctx context.Context, q PlusDirectionalMovementQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q PlusDirectionalMovementQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type PlusDirectionalMovementRow struct {
@@ -563,17 +411,7 @@ type PlusDirectionalMovementRow struct {
 	Value string `column-name:"PLUS_DM"`
 }
 
-func (client *Client) GetPlusDirectionalMovementCSVRows(ctx context.Context, q PlusDirectionalMovementQuery) ([]PlusDirectionalMovementRow, error) {
+func (q PlusDirectionalMovementQuery) CSVRows(ctx context.Context, client Doer) ([]PlusDirectionalMovementRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetPlusDirectionalMovement(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []PlusDirectionalMovementRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

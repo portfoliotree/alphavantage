@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 	"time"
@@ -46,16 +46,8 @@ func (query CryptoIntradayQuery) DataType(value string) CryptoIntradayQuery {
 	return query
 }
 
-func (client *Client) GetCryptoIntraday(ctx context.Context, q CryptoIntradayQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q CryptoIntradayQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type CryptoIntradayRow struct {
@@ -67,19 +59,9 @@ type CryptoIntradayRow struct {
 	Volume    float64   `column-name:"volume"`
 }
 
-func (client *Client) GetCryptoIntradayCSVRows(ctx context.Context, q CryptoIntradayQuery) ([]CryptoIntradayRow, error) {
+func (q CryptoIntradayQuery) CSVRows(ctx context.Context, client Doer) ([]CryptoIntradayRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetCryptoIntraday(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []CryptoIntradayRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type DigitalCurrencyDailyQuery url.Values
@@ -88,16 +70,8 @@ func QueryDigitalCurrencyDaily(apiKey, symbol, market string) DigitalCurrencyDai
 	return DigitalCurrencyDailyQuery{"function": []string{"DIGITAL_CURRENCY_DAILY"}, "symbol": []string{symbol}, "market": []string{market}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetDigitalCurrencyDaily(ctx context.Context, q DigitalCurrencyDailyQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q DigitalCurrencyDailyQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type DigitalCurrencyDailyRow struct {
@@ -109,18 +83,8 @@ type DigitalCurrencyDailyRow struct {
 	Volume    float64   `column-name:"volume"`
 }
 
-func (client *Client) GetDigitalCurrencyDailyCSVRows(ctx context.Context, q DigitalCurrencyDailyQuery) ([]DigitalCurrencyDailyRow, error) {
-	res, err := client.GetDigitalCurrencyDaily(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []DigitalCurrencyDailyRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+func (q DigitalCurrencyDailyQuery) CSVRows(ctx context.Context, client Doer) ([]DigitalCurrencyDailyRow, error) {
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type DigitalCurrencyMonthlyQuery url.Values
@@ -129,16 +93,8 @@ func QueryDigitalCurrencyMonthly(apiKey, symbol, market string) DigitalCurrencyM
 	return DigitalCurrencyMonthlyQuery{"function": []string{"DIGITAL_CURRENCY_MONTHLY"}, "symbol": []string{symbol}, "market": []string{market}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetDigitalCurrencyMonthly(ctx context.Context, q DigitalCurrencyMonthlyQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q DigitalCurrencyMonthlyQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type DigitalCurrencyMonthlyRow struct {
@@ -150,18 +106,8 @@ type DigitalCurrencyMonthlyRow struct {
 	Volume    float64   `column-name:"volume"`
 }
 
-func (client *Client) GetDigitalCurrencyMonthlyCSVRows(ctx context.Context, q DigitalCurrencyMonthlyQuery) ([]DigitalCurrencyMonthlyRow, error) {
-	res, err := client.GetDigitalCurrencyMonthly(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []DigitalCurrencyMonthlyRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+func (q DigitalCurrencyMonthlyQuery) CSVRows(ctx context.Context, client Doer) ([]DigitalCurrencyMonthlyRow, error) {
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type DigitalCurrencyWeeklyQuery url.Values
@@ -170,16 +116,8 @@ func QueryDigitalCurrencyWeekly(apiKey, symbol, market string) DigitalCurrencyWe
 	return DigitalCurrencyWeeklyQuery{"function": []string{"DIGITAL_CURRENCY_WEEKLY"}, "symbol": []string{symbol}, "market": []string{market}, "apikey": []string{apiKey}}
 }
 
-func (client *Client) GetDigitalCurrencyWeekly(ctx context.Context, q DigitalCurrencyWeeklyQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q DigitalCurrencyWeeklyQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type DigitalCurrencyWeeklyRow struct {
@@ -191,16 +129,6 @@ type DigitalCurrencyWeeklyRow struct {
 	Volume    float64   `column-name:"volume"`
 }
 
-func (client *Client) GetDigitalCurrencyWeeklyCSVRows(ctx context.Context, q DigitalCurrencyWeeklyQuery) ([]DigitalCurrencyWeeklyRow, error) {
-	res, err := client.GetDigitalCurrencyWeekly(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []DigitalCurrencyWeeklyRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+func (q DigitalCurrencyWeeklyQuery) CSVRows(ctx context.Context, client Doer) ([]DigitalCurrencyWeeklyRow, error) {
+	return api.RequestCSVRows(ctx, client, q)
 }

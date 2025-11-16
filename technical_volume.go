@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 	"time"
@@ -36,16 +36,8 @@ func (query ChaikinADLineQuery) DataType(value string) ChaikinADLineQuery {
 	return query
 }
 
-func (client *Client) GetChaikinADLine(ctx context.Context, q ChaikinADLineQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q ChaikinADLineQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type ChaikinADLineRow struct {
@@ -53,19 +45,9 @@ type ChaikinADLineRow struct {
 	Value string `column-name:"Chaikin A/D"`
 }
 
-func (client *Client) GetChaikinADLineCSVRows(ctx context.Context, q ChaikinADLineQuery) ([]ChaikinADLineRow, error) {
+func (q ChaikinADLineQuery) CSVRows(ctx context.Context, client Doer) ([]ChaikinADLineRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetChaikinADLine(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []ChaikinADLineRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type ChaikinADOscillatorQuery url.Values
@@ -104,16 +86,8 @@ func (query ChaikinADOscillatorQuery) DataType(value string) ChaikinADOscillator
 	return query
 }
 
-func (client *Client) GetChaikinADOscillator(ctx context.Context, q ChaikinADOscillatorQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q ChaikinADOscillatorQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type ChaikinADOscillatorRow struct {
@@ -121,19 +95,9 @@ type ChaikinADOscillatorRow struct {
 	Value string `column-name:"ADOSC"`
 }
 
-func (client *Client) GetChaikinADOscillatorCSVRows(ctx context.Context, q ChaikinADOscillatorQuery) ([]ChaikinADOscillatorRow, error) {
+func (q ChaikinADOscillatorQuery) CSVRows(ctx context.Context, client Doer) ([]ChaikinADOscillatorRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetChaikinADOscillator(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []ChaikinADOscillatorRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type MoneyFlowIndexQuery url.Values
@@ -167,16 +131,8 @@ func (query MoneyFlowIndexQuery) DataType(value string) MoneyFlowIndexQuery {
 	return query
 }
 
-func (client *Client) GetMoneyFlowIndex(ctx context.Context, q MoneyFlowIndexQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q MoneyFlowIndexQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type MoneyFlowIndexRow struct {
@@ -184,19 +140,9 @@ type MoneyFlowIndexRow struct {
 	Value string `column-name:"MFI"`
 }
 
-func (client *Client) GetMoneyFlowIndexCSVRows(ctx context.Context, q MoneyFlowIndexQuery) ([]MoneyFlowIndexRow, error) {
+func (q MoneyFlowIndexQuery) CSVRows(ctx context.Context, client Doer) ([]MoneyFlowIndexRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetMoneyFlowIndex(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []MoneyFlowIndexRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type OnBalanceVolumeQuery url.Values
@@ -225,16 +171,8 @@ func (query OnBalanceVolumeQuery) DataType(value string) OnBalanceVolumeQuery {
 	return query
 }
 
-func (client *Client) GetOnBalanceVolume(ctx context.Context, q OnBalanceVolumeQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q OnBalanceVolumeQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type OnBalanceVolumeRow struct {
@@ -242,19 +180,9 @@ type OnBalanceVolumeRow struct {
 	Value string `column-name:"OBV"`
 }
 
-func (client *Client) GetOnBalanceVolumeCSVRows(ctx context.Context, q OnBalanceVolumeQuery) ([]OnBalanceVolumeRow, error) {
+func (q OnBalanceVolumeQuery) CSVRows(ctx context.Context, client Doer) ([]OnBalanceVolumeRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetOnBalanceVolume(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []OnBalanceVolumeRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery url.Values
@@ -288,16 +216,8 @@ func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) DataTyp
 	return query
 }
 
-func (client *Client) GetOneDayRateOfChangeTripleSmoothExponentialMovingAverage(ctx context.Context, q OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type OneDayRateOfChangeTripleSmoothExponentialMovingAverageRow struct {
@@ -305,17 +225,7 @@ type OneDayRateOfChangeTripleSmoothExponentialMovingAverageRow struct {
 	Value string `column-name:"TRIX"`
 }
 
-func (client *Client) GetOneDayRateOfChangeTripleSmoothExponentialMovingAverageCSVRows(ctx context.Context, q OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) ([]OneDayRateOfChangeTripleSmoothExponentialMovingAverageRow, error) {
+func (q OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) CSVRows(ctx context.Context, client Doer) ([]OneDayRateOfChangeTripleSmoothExponentialMovingAverageRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetOneDayRateOfChangeTripleSmoothExponentialMovingAverage(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []OneDayRateOfChangeTripleSmoothExponentialMovingAverageRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

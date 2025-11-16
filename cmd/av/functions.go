@@ -280,7 +280,7 @@ func handleChaikinADLine(client *alphavantage.Client, args []string, output io.W
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetChaikinADLine(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -332,7 +332,7 @@ func handleChaikinADOscillator(client *alphavantage.Client, args []string, outpu
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetChaikinADOscillator(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -379,7 +379,7 @@ func handleAverageDirectionalMovementIndex(client *alphavantage.Client, args []s
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetAverageDirectionalMovementIndex(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -426,7 +426,7 @@ func handleAverageDirectionalMovementIndexRating(client *alphavantage.Client, ar
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetAverageDirectionalMovementIndexRating(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -454,7 +454,7 @@ func handleAllCommodities(client *alphavantage.Client, args []string, output io.
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetAllCommodities(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -482,7 +482,7 @@ func handleAluminum(client *alphavantage.Client, args []string, output io.Writer
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetAluminum(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -525,7 +525,7 @@ func handleAnalyticsFixedWindow(client *alphavantage.Client, args []string, outp
 		query = query.OHLC(openHighLowClose)
 	}
 	ctx := context.Background()
-	res, err := client.GetAnalyticsFixedWindow(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -573,7 +573,7 @@ func handleAnalyticsSlidingWindow(client *alphavantage.Client, args []string, ou
 		query = query.OHLC(openHighLowClose)
 	}
 	ctx := context.Background()
-	res, err := client.GetAnalyticsSlidingWindow(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -635,7 +635,7 @@ func handleAbsolutePriceOscillator(client *alphavantage.Client, args []string, o
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetAbsolutePriceOscillator(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -682,7 +682,7 @@ func handleAroon(client *alphavantage.Client, args []string, output io.Writer) e
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetAroon(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -729,7 +729,7 @@ func handleAroonOsc(client *alphavantage.Client, args []string, output io.Writer
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetAroonOsc(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -776,7 +776,7 @@ func handleAverageTrueRange(client *alphavantage.Client, args []string, output i
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetAverageTrueRange(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -799,7 +799,7 @@ func handleBalanceSheet(client *alphavantage.Client, args []string, output io.Wr
 	}
 	query := alphavantage.QueryBalanceSheet(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := client.GetBalanceSheet(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -866,7 +866,7 @@ func handleBollingerBands(client *alphavantage.Client, args []string, output io.
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetBollingerBands(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -908,7 +908,7 @@ func handleBalanceOfPower(client *alphavantage.Client, args []string, output io.
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetBalanceOfPower(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -936,7 +936,7 @@ func handleBrent(client *alphavantage.Client, args []string, output io.Writer) e
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetBrent(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -959,7 +959,7 @@ func handleCashFlow(client *alphavantage.Client, args []string, output io.Writer
 	}
 	query := alphavantage.QueryCashFlow(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := client.GetCashFlow(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1006,7 +1006,7 @@ func handleCommodityChannelIndex(client *alphavantage.Client, args []string, out
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetCommodityChannelIndex(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1058,7 +1058,7 @@ func handleChandeMomentumOscillator(client *alphavantage.Client, args []string, 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetChandeMomentumOscillator(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1086,7 +1086,7 @@ func handleCoffee(client *alphavantage.Client, args []string, output io.Writer) 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetCoffee(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1114,7 +1114,7 @@ func handleCopper(client *alphavantage.Client, args []string, output io.Writer) 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetCopper(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1142,7 +1142,7 @@ func handleCorn(client *alphavantage.Client, args []string, output io.Writer) er
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetCorn(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1170,7 +1170,7 @@ func handleCotton(client *alphavantage.Client, args []string, output io.Writer) 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetCotton(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1198,7 +1198,7 @@ func handleConsumerPriceIndex(client *alphavantage.Client, args []string, output
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetConsumerPriceIndex(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1241,7 +1241,7 @@ func handleCryptoIntraday(client *alphavantage.Client, args []string, output io.
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetCryptoIntraday(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1269,7 +1269,7 @@ func handleCurrencyExchangeRate(client *alphavantage.Client, args []string, outp
 	}
 	query := alphavantage.QueryCurrencyExchangeRate(client.APIKey, fromCurrency, toCurrency)
 	ctx := context.Background()
-	res, err := client.GetCurrencyExchangeRate(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1321,7 +1321,7 @@ func handleDoubleExponentialMovingAverage(client *alphavantage.Client, args []st
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetDoubleExponentialMovingAverage(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1349,7 +1349,7 @@ func handleDigitalCurrencyDaily(client *alphavantage.Client, args []string, outp
 	}
 	query := alphavantage.QueryDigitalCurrencyDaily(client.APIKey, symbol, market)
 	ctx := context.Background()
-	res, err := client.GetDigitalCurrencyDaily(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1377,7 +1377,7 @@ func handleDigitalCurrencyMonthly(client *alphavantage.Client, args []string, ou
 	}
 	query := alphavantage.QueryDigitalCurrencyMonthly(client.APIKey, symbol, market)
 	ctx := context.Background()
-	res, err := client.GetDigitalCurrencyMonthly(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1405,7 +1405,7 @@ func handleDigitalCurrencyWeekly(client *alphavantage.Client, args []string, out
 	}
 	query := alphavantage.QueryDigitalCurrencyWeekly(client.APIKey, symbol, market)
 	ctx := context.Background()
-	res, err := client.GetDigitalCurrencyWeekly(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1433,7 +1433,7 @@ func handleDividends(client *alphavantage.Client, args []string, output io.Write
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetDividends(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1456,7 +1456,7 @@ func handleDurables(client *alphavantage.Client, args []string, output io.Writer
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetDurables(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1503,7 +1503,7 @@ func handleDirectionalMovementIndex(client *alphavantage.Client, args []string, 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetDirectionalMovementIndex(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1526,7 +1526,7 @@ func handleEarnings(client *alphavantage.Client, args []string, output io.Writer
 	}
 	query := alphavantage.QueryEarnings(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := client.GetEarnings(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1554,7 +1554,7 @@ func handleEarningsCalendar(client *alphavantage.Client, args []string, output i
 		query = query.Horizon(horizon)
 	}
 	ctx := context.Background()
-	res, err := client.GetEarningsCalendar(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1582,7 +1582,7 @@ func handleEarningsCallTranscript(client *alphavantage.Client, args []string, ou
 	}
 	query := alphavantage.QueryEarningsCallTranscript(client.APIKey, symbol, quarter)
 	ctx := context.Background()
-	res, err := client.GetEarningsCallTranscript(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1605,7 +1605,7 @@ func handleEarningsEstimates(client *alphavantage.Client, args []string, output 
 	}
 	query := alphavantage.QueryEarningsEstimates(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := client.GetEarningsEstimates(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1657,7 +1657,7 @@ func handleExponentialMovingAverage(client *alphavantage.Client, args []string, 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetExponentialMovingAverage(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1680,7 +1680,7 @@ func handleETFProfile(client *alphavantage.Client, args []string, output io.Writ
 	}
 	query := alphavantage.QueryETFProfile(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := client.GetETFProfile(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1708,7 +1708,7 @@ func handleFederalFundsRate(client *alphavantage.Client, args []string, output i
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetFederalFundsRate(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1746,7 +1746,7 @@ func handleFXDaily(client *alphavantage.Client, args []string, output io.Writer)
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetFXDaily(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1789,7 +1789,7 @@ func handleFXIntraday(client *alphavantage.Client, args []string, output io.Writ
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetFXIntraday(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1822,7 +1822,7 @@ func handleFXMonthly(client *alphavantage.Client, args []string, output io.Write
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetFXMonthly(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1855,7 +1855,7 @@ func handleFXWeekly(client *alphavantage.Client, args []string, output io.Writer
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetFXWeekly(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1883,7 +1883,7 @@ func handleGlobalQuote(client *alphavantage.Client, args []string, output io.Wri
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetGlobalQuote(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1916,7 +1916,7 @@ func handleHistoricalOptions(client *alphavantage.Client, args []string, output 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetHistoricalOptions(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1963,7 +1963,7 @@ func handleHilbertTransformDCPeriod(client *alphavantage.Client, args []string, 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetHilbertTransformDCPeriod(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2010,7 +2010,7 @@ func handleHilbertTransformDCPhase(client *alphavantage.Client, args []string, o
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetHilbertTransformDCPhase(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2057,7 +2057,7 @@ func handleHilbertTransformPhasor(client *alphavantage.Client, args []string, ou
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetHilbertTransformPhasor(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2104,7 +2104,7 @@ func handleHilbertTransformSine(client *alphavantage.Client, args []string, outp
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetHilbertTransformSine(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2151,7 +2151,7 @@ func handleHilbertTransformTrendLine(client *alphavantage.Client, args []string,
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetHilbertTransformTrendLine(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2198,7 +2198,7 @@ func handleHilbertTransformTrendMode(client *alphavantage.Client, args []string,
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetHilbertTransformTrendMode(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2221,7 +2221,7 @@ func handleIncomeStatement(client *alphavantage.Client, args []string, output io
 	}
 	query := alphavantage.QueryIncomeStatement(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := client.GetIncomeStatement(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2244,7 +2244,7 @@ func handleInflation(client *alphavantage.Client, args []string, output io.Write
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetInflation(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2267,7 +2267,7 @@ func handleInsiderTransactions(client *alphavantage.Client, args []string, outpu
 	}
 	query := alphavantage.QueryInsiderTransactions(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := client.GetInsiderTransactions(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2285,7 +2285,7 @@ func handleIPOCalendar(client *alphavantage.Client, args []string, output io.Wri
 	}
 	query := alphavantage.QueryIPOCalendar(client.APIKey)
 	ctx := context.Background()
-	res, err := client.GetIPOCalendar(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2337,7 +2337,7 @@ func handleKaufmanAdaptiveMovingAverage(client *alphavantage.Client, args []stri
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetKaufmanAdaptiveMovingAverage(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2365,7 +2365,7 @@ func handleListingStatus(client *alphavantage.Client, args []string, output io.W
 		query = query.State(state)
 	}
 	ctx := context.Background()
-	res, err := client.GetListingStatus(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2427,7 +2427,7 @@ func handleMovingAverageConvergenceDivergence(client *alphavantage.Client, args 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetMovingAverageConvergenceDivergence(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2504,7 +2504,7 @@ func handleMovingAverageConvergenceDivergenceExt(client *alphavantage.Client, ar
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetMovingAverageConvergenceDivergenceExt(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2561,7 +2561,7 @@ func handleMESAAdaptiveMovingAverage(client *alphavantage.Client, args []string,
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetMESAAdaptiveMovingAverage(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2579,7 +2579,7 @@ func handleMarketStatus(client *alphavantage.Client, args []string, output io.Wr
 	}
 	query := alphavantage.QueryMarketStatus(client.APIKey)
 	ctx := context.Background()
-	res, err := client.GetMarketStatus(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2626,7 +2626,7 @@ func handleMoneyFlowIndex(client *alphavantage.Client, args []string, output io.
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetMoneyFlowIndex(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2678,7 +2678,7 @@ func handleMidPoint(client *alphavantage.Client, args []string, output io.Writer
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetMidPoint(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2725,7 +2725,7 @@ func handleMidPrice(client *alphavantage.Client, args []string, output io.Writer
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetMidPrice(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2772,7 +2772,7 @@ func handleMinusDirectionalIndicator(client *alphavantage.Client, args []string,
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetMinusDirectionalIndicator(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2819,7 +2819,7 @@ func handleMinusDirectionalMovement(client *alphavantage.Client, args []string, 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetMinusDirectionalMovement(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2871,7 +2871,7 @@ func handleMomentum(client *alphavantage.Client, args []string, output io.Writer
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetMomentum(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2918,7 +2918,7 @@ func handleNormalizedAverageTrueRange(client *alphavantage.Client, args []string
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetNormalizedAverageTrueRange(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2946,7 +2946,7 @@ func handleNaturalGas(client *alphavantage.Client, args []string, output io.Writ
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetNaturalGas(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3002,7 +3002,7 @@ func handleNewsSentiment(client *alphavantage.Client, args []string, output io.W
 		query = query.Limit(strconv.Itoa(limit))
 	}
 	ctx := context.Background()
-	res, err := client.GetNewsSentiment(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3025,7 +3025,7 @@ func handleNonFarmPayroll(client *alphavantage.Client, args []string, output io.
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetNonFarmPayroll(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3067,7 +3067,7 @@ func handleOnBalanceVolume(client *alphavantage.Client, args []string, output io
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetOnBalanceVolume(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3090,7 +3090,7 @@ func handleOverview(client *alphavantage.Client, args []string, output io.Writer
 	}
 	query := alphavantage.QueryOverview(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := client.GetOverview(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3137,7 +3137,7 @@ func handlePlusDirectionalIndicator(client *alphavantage.Client, args []string, 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetPlusDirectionalIndicator(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3184,7 +3184,7 @@ func handlePlusDirectionalMovement(client *alphavantage.Client, args []string, o
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetPlusDirectionalMovement(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3246,7 +3246,7 @@ func handlePercentagePriceOscillator(client *alphavantage.Client, args []string,
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetPercentagePriceOscillator(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3274,7 +3274,7 @@ func handleRealtimeBulkQuotes(client *alphavantage.Client, args []string, output
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetRealtimeBulkQuotes(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3312,7 +3312,7 @@ func handleRealtimeOptions(client *alphavantage.Client, args []string, output io
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetRealtimeOptions(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3340,7 +3340,7 @@ func handleRealGDP(client *alphavantage.Client, args []string, output io.Writer)
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetRealGDP(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3363,7 +3363,7 @@ func handleRealGDPPerCapita(client *alphavantage.Client, args []string, output i
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetRealGDPPerCapita(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3386,7 +3386,7 @@ func handleRetailSales(client *alphavantage.Client, args []string, output io.Wri
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetRetailSales(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3438,7 +3438,7 @@ func handleRateOfChange(client *alphavantage.Client, args []string, output io.Wr
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetRateOfChange(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3490,7 +3490,7 @@ func handleRateOfChangeRatio(client *alphavantage.Client, args []string, output 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetRateOfChangeRatio(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3542,7 +3542,7 @@ func handleRelativeStrengthIndex(client *alphavantage.Client, args []string, out
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetRelativeStrengthIndex(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3594,7 +3594,7 @@ func handleSAR(client *alphavantage.Client, args []string, output io.Writer) err
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetSAR(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3622,7 +3622,7 @@ func handleSharesOutstanding(client *alphavantage.Client, args []string, output 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetSharesOutstanding(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3674,7 +3674,7 @@ func handleSimpleMovingAverage(client *alphavantage.Client, args []string, outpu
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetSimpleMovingAverage(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3702,7 +3702,7 @@ func handleSplits(client *alphavantage.Client, args []string, output io.Writer) 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetSplits(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3769,7 +3769,7 @@ func handleStochasticOscillator(client *alphavantage.Client, args []string, outp
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetStochasticOscillator(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3826,7 +3826,7 @@ func handleStochasticFast(client *alphavantage.Client, args []string, output io.
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetStochasticFast(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3893,7 +3893,7 @@ func handleStochasticRelativeStrengthIndex(client *alphavantage.Client, args []s
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetStochasticRelativeStrengthIndex(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3921,7 +3921,7 @@ func handleSugar(client *alphavantage.Client, args []string, output io.Writer) e
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetSugar(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3949,7 +3949,7 @@ func handleSymbolSearch(client *alphavantage.Client, args []string, output io.Wr
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetSymbolSearch(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4001,7 +4001,7 @@ func handleT3(client *alphavantage.Client, args []string, output io.Writer) erro
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetT3(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4053,7 +4053,7 @@ func handleTripleExponentialMovingAverage(client *alphavantage.Client, args []st
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetTripleExponentialMovingAverage(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4086,7 +4086,7 @@ func handleTimeSeriesDaily(client *alphavantage.Client, args []string, output io
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetTimeSeriesDaily(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4119,7 +4119,7 @@ func handleTimeSeriesDailyAdjusted(client *alphavantage.Client, args []string, o
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetTimeSeriesDailyAdjusted(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4176,7 +4176,7 @@ func handleTimeSeriesIntraday(client *alphavantage.Client, args []string, output
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetTimeSeriesIntraday(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4204,7 +4204,7 @@ func handleTimeSeriesMonthly(client *alphavantage.Client, args []string, output 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetTimeSeriesMonthly(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4232,7 +4232,7 @@ func handleTimeSeriesMonthlyAdjusted(client *alphavantage.Client, args []string,
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetTimeSeriesMonthlyAdjusted(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4260,7 +4260,7 @@ func handleTimeSeriesWeekly(client *alphavantage.Client, args []string, output i
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetTimeSeriesWeekly(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4288,7 +4288,7 @@ func handleTimeSeriesWeeklyAdjusted(client *alphavantage.Client, args []string, 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetTimeSeriesWeeklyAdjusted(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4306,7 +4306,7 @@ func handleTopGainersLosers(client *alphavantage.Client, args []string, output i
 	}
 	query := alphavantage.QueryTopGainersLosers(client.APIKey)
 	ctx := context.Background()
-	res, err := client.GetTopGainersLosers(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4348,7 +4348,7 @@ func handleTrueRange(client *alphavantage.Client, args []string, output io.Write
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetTrueRange(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4381,7 +4381,7 @@ func handleTreasuryYield(client *alphavantage.Client, args []string, output io.W
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetTreasuryYield(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4433,7 +4433,7 @@ func handleTriangularMovingAverage(client *alphavantage.Client, args []string, o
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetTriangularMovingAverage(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4485,7 +4485,7 @@ func handleOneDayRateOfChangeTripleSmoothExponentialMovingAverage(client *alphav
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetOneDayRateOfChangeTripleSmoothExponentialMovingAverage(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4542,7 +4542,7 @@ func handleUltimateOscillator(client *alphavantage.Client, args []string, output
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetUltimateOscillator(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4565,7 +4565,7 @@ func handleUnemployment(client *alphavantage.Client, args []string, output io.Wr
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetUnemployment(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4607,7 +4607,7 @@ func handleVolumeWeightedAveragePrice(client *alphavantage.Client, args []string
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetVolumeWeightedAveragePrice(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4635,7 +4635,7 @@ func handleWheat(client *alphavantage.Client, args []string, output io.Writer) e
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetWheat(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4682,7 +4682,7 @@ func handleWilliamsR(client *alphavantage.Client, args []string, output io.Write
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetWilliamsR(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4734,7 +4734,7 @@ func handleWeightedMovingAverage(client *alphavantage.Client, args []string, out
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetWeightedMovingAverage(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4762,7 +4762,7 @@ func handleWestTexasIntermediate(client *alphavantage.Client, args []string, out
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := client.GetWestTexasIntermediate(ctx, query)
+	res, err := query.DoWith(ctx, client)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}

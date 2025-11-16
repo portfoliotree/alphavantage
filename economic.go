@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 )
@@ -35,16 +35,8 @@ func (query ConsumerPriceIndexQuery) DataType(value string) ConsumerPriceIndexQu
 	return query
 }
 
-func (client *Client) GetConsumerPriceIndex(ctx context.Context, q ConsumerPriceIndexQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q ConsumerPriceIndexQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type ConsumerPriceIndexRow struct {
@@ -52,19 +44,9 @@ type ConsumerPriceIndexRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetConsumerPriceIndexCSVRows(ctx context.Context, q ConsumerPriceIndexQuery) ([]ConsumerPriceIndexRow, error) {
+func (q ConsumerPriceIndexQuery) CSVRows(ctx context.Context, client Doer) ([]ConsumerPriceIndexRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetConsumerPriceIndex(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []ConsumerPriceIndexRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type DurablesQuery url.Values
@@ -88,16 +70,8 @@ func (query DurablesQuery) DataType(value string) DurablesQuery {
 	return query
 }
 
-func (client *Client) GetDurables(ctx context.Context, q DurablesQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q DurablesQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type DurablesRow struct {
@@ -105,19 +79,9 @@ type DurablesRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetDurablesCSVRows(ctx context.Context, q DurablesQuery) ([]DurablesRow, error) {
+func (q DurablesQuery) CSVRows(ctx context.Context, client Doer) ([]DurablesRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetDurables(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []DurablesRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type FederalFundsRateQuery url.Values
@@ -146,16 +110,8 @@ func (query FederalFundsRateQuery) DataType(value string) FederalFundsRateQuery 
 	return query
 }
 
-func (client *Client) GetFederalFundsRate(ctx context.Context, q FederalFundsRateQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q FederalFundsRateQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type FederalFundsRateRow struct {
@@ -163,19 +119,9 @@ type FederalFundsRateRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetFederalFundsRateCSVRows(ctx context.Context, q FederalFundsRateQuery) ([]FederalFundsRateRow, error) {
+func (q FederalFundsRateQuery) CSVRows(ctx context.Context, client Doer) ([]FederalFundsRateRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetFederalFundsRate(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []FederalFundsRateRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type InflationQuery url.Values
@@ -199,16 +145,8 @@ func (query InflationQuery) DataType(value string) InflationQuery {
 	return query
 }
 
-func (client *Client) GetInflation(ctx context.Context, q InflationQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q InflationQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type InflationRow struct {
@@ -216,19 +154,9 @@ type InflationRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetInflationCSVRows(ctx context.Context, q InflationQuery) ([]InflationRow, error) {
+func (q InflationQuery) CSVRows(ctx context.Context, client Doer) ([]InflationRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetInflation(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []InflationRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type NonFarmPayrollQuery url.Values
@@ -252,16 +180,8 @@ func (query NonFarmPayrollQuery) DataType(value string) NonFarmPayrollQuery {
 	return query
 }
 
-func (client *Client) GetNonFarmPayroll(ctx context.Context, q NonFarmPayrollQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q NonFarmPayrollQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type NonFarmPayrollRow struct {
@@ -269,19 +189,9 @@ type NonFarmPayrollRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetNonFarmPayrollCSVRows(ctx context.Context, q NonFarmPayrollQuery) ([]NonFarmPayrollRow, error) {
+func (q NonFarmPayrollQuery) CSVRows(ctx context.Context, client Doer) ([]NonFarmPayrollRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetNonFarmPayroll(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []NonFarmPayrollRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type RealGDPQuery url.Values
@@ -310,16 +220,8 @@ func (query RealGDPQuery) DataType(value string) RealGDPQuery {
 	return query
 }
 
-func (client *Client) GetRealGDP(ctx context.Context, q RealGDPQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q RealGDPQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type RealGDPRow struct {
@@ -327,19 +229,9 @@ type RealGDPRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetRealGDPCSVRows(ctx context.Context, q RealGDPQuery) ([]RealGDPRow, error) {
+func (q RealGDPQuery) CSVRows(ctx context.Context, client Doer) ([]RealGDPRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetRealGDP(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []RealGDPRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type RealGDPPerCapitaQuery url.Values
@@ -363,16 +255,8 @@ func (query RealGDPPerCapitaQuery) DataType(value string) RealGDPPerCapitaQuery 
 	return query
 }
 
-func (client *Client) GetRealGDPPerCapita(ctx context.Context, q RealGDPPerCapitaQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q RealGDPPerCapitaQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type RealGDPPerCapitaRow struct {
@@ -380,19 +264,9 @@ type RealGDPPerCapitaRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetRealGDPPerCapitaCSVRows(ctx context.Context, q RealGDPPerCapitaQuery) ([]RealGDPPerCapitaRow, error) {
+func (q RealGDPPerCapitaQuery) CSVRows(ctx context.Context, client Doer) ([]RealGDPPerCapitaRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetRealGDPPerCapita(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []RealGDPPerCapitaRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type RetailSalesQuery url.Values
@@ -416,16 +290,8 @@ func (query RetailSalesQuery) DataType(value string) RetailSalesQuery {
 	return query
 }
 
-func (client *Client) GetRetailSales(ctx context.Context, q RetailSalesQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q RetailSalesQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type RetailSalesRow struct {
@@ -433,19 +299,9 @@ type RetailSalesRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetRetailSalesCSVRows(ctx context.Context, q RetailSalesQuery) ([]RetailSalesRow, error) {
+func (q RetailSalesQuery) CSVRows(ctx context.Context, client Doer) ([]RetailSalesRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetRetailSales(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []RetailSalesRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type TreasuryYieldQuery url.Values
@@ -479,16 +335,8 @@ func (query TreasuryYieldQuery) DataType(value string) TreasuryYieldQuery {
 	return query
 }
 
-func (client *Client) GetTreasuryYield(ctx context.Context, q TreasuryYieldQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q TreasuryYieldQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type TreasuryYieldRow struct {
@@ -496,19 +344,9 @@ type TreasuryYieldRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetTreasuryYieldCSVRows(ctx context.Context, q TreasuryYieldQuery) ([]TreasuryYieldRow, error) {
+func (q TreasuryYieldQuery) CSVRows(ctx context.Context, client Doer) ([]TreasuryYieldRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetTreasuryYield(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []TreasuryYieldRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type UnemploymentQuery url.Values
@@ -532,16 +370,8 @@ func (query UnemploymentQuery) DataType(value string) UnemploymentQuery {
 	return query
 }
 
-func (client *Client) GetUnemployment(ctx context.Context, q UnemploymentQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q UnemploymentQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type UnemploymentRow struct {
@@ -549,17 +379,7 @@ type UnemploymentRow struct {
 	Value     string `column-name:"value"`
 }
 
-func (client *Client) GetUnemploymentCSVRows(ctx context.Context, q UnemploymentQuery) ([]UnemploymentRow, error) {
+func (q UnemploymentQuery) CSVRows(ctx context.Context, client Doer) ([]UnemploymentRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetUnemployment(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []UnemploymentRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

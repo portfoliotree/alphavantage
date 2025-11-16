@@ -4,7 +4,7 @@ package alphavantage
 
 import (
 	"context"
-	"github.com/portfoliotree/alphavantage/response"
+	"github.com/portfoliotree/alphavantage/api"
 	"net/http"
 	"net/url"
 	"time"
@@ -41,16 +41,8 @@ func (query AverageTrueRangeQuery) DataType(value string) AverageTrueRangeQuery 
 	return query
 }
 
-func (client *Client) GetAverageTrueRange(ctx context.Context, q AverageTrueRangeQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q AverageTrueRangeQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type AverageTrueRangeRow struct {
@@ -58,19 +50,9 @@ type AverageTrueRangeRow struct {
 	Value string `column-name:"ATR"`
 }
 
-func (client *Client) GetAverageTrueRangeCSVRows(ctx context.Context, q AverageTrueRangeQuery) ([]AverageTrueRangeRow, error) {
+func (q AverageTrueRangeQuery) CSVRows(ctx context.Context, client Doer) ([]AverageTrueRangeRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetAverageTrueRange(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []AverageTrueRangeRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type BollingerBandsQuery url.Values
@@ -119,16 +101,8 @@ func (query BollingerBandsQuery) DataType(value string) BollingerBandsQuery {
 	return query
 }
 
-func (client *Client) GetBollingerBands(ctx context.Context, q BollingerBandsQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q BollingerBandsQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type BollingerBandsRow struct {
@@ -138,19 +112,9 @@ type BollingerBandsRow struct {
 	RealUpperBand  string `column-name:"Real Upper Band"`
 }
 
-func (client *Client) GetBollingerBandsCSVRows(ctx context.Context, q BollingerBandsQuery) ([]BollingerBandsRow, error) {
+func (q BollingerBandsQuery) CSVRows(ctx context.Context, client Doer) ([]BollingerBandsRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetBollingerBands(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []BollingerBandsRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type NormalizedAverageTrueRangeQuery url.Values
@@ -184,16 +148,8 @@ func (query NormalizedAverageTrueRangeQuery) DataType(value string) NormalizedAv
 	return query
 }
 
-func (client *Client) GetNormalizedAverageTrueRange(ctx context.Context, q NormalizedAverageTrueRangeQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q NormalizedAverageTrueRangeQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type NormalizedAverageTrueRangeRow struct {
@@ -201,19 +157,9 @@ type NormalizedAverageTrueRangeRow struct {
 	Value string `column-name:"NATR"`
 }
 
-func (client *Client) GetNormalizedAverageTrueRangeCSVRows(ctx context.Context, q NormalizedAverageTrueRangeQuery) ([]NormalizedAverageTrueRangeRow, error) {
+func (q NormalizedAverageTrueRangeQuery) CSVRows(ctx context.Context, client Doer) ([]NormalizedAverageTrueRangeRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetNormalizedAverageTrueRange(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []NormalizedAverageTrueRangeRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type SARQuery url.Values
@@ -252,16 +198,8 @@ func (query SARQuery) DataType(value string) SARQuery {
 	return query
 }
 
-func (client *Client) GetSAR(ctx context.Context, q SARQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q SARQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type SARRow struct {
@@ -269,19 +207,9 @@ type SARRow struct {
 	Value string `column-name:"SAR"`
 }
 
-func (client *Client) GetSARCSVRows(ctx context.Context, q SARQuery) ([]SARRow, error) {
+func (q SARQuery) CSVRows(ctx context.Context, client Doer) ([]SARRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetSAR(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []SARRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type TrueRangeQuery url.Values
@@ -310,16 +238,8 @@ func (query TrueRangeQuery) DataType(value string) TrueRangeQuery {
 	return query
 }
 
-func (client *Client) GetTrueRange(ctx context.Context, q TrueRangeQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q TrueRangeQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type TrueRangeRow struct {
@@ -327,19 +247,9 @@ type TrueRangeRow struct {
 	Value string `column-name:"TRANGE"`
 }
 
-func (client *Client) GetTrueRangeCSVRows(ctx context.Context, q TrueRangeQuery) ([]TrueRangeRow, error) {
+func (q TrueRangeQuery) CSVRows(ctx context.Context, client Doer) ([]TrueRangeRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetTrueRange(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []TrueRangeRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }
 
 type UltimateOscillatorQuery url.Values
@@ -383,16 +293,8 @@ func (query UltimateOscillatorQuery) DataType(value string) UltimateOscillatorQu
 	return query
 }
 
-func (client *Client) GetUltimateOscillator(ctx context.Context, q UltimateOscillatorQuery) (*http.Response, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return nil, err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
+func (q UltimateOscillatorQuery) DoWith(ctx context.Context, client Doer) (*http.Response, error) {
+	return api.DoQuery(ctx, client, url.Values(q))
 }
 
 type UltimateOscillatorRow struct {
@@ -400,17 +302,7 @@ type UltimateOscillatorRow struct {
 	Value string `column-name:"ULTOSC"`
 }
 
-func (client *Client) GetUltimateOscillatorCSVRows(ctx context.Context, q UltimateOscillatorQuery) ([]UltimateOscillatorRow, error) {
+func (q UltimateOscillatorQuery) CSVRows(ctx context.Context, client Doer) ([]UltimateOscillatorRow, error) {
 	q.DataTypeCSV()
-	res, err := client.GetUltimateOscillator(ctx, q)
-	if err != nil {
-		return nil, err
-	}
-	defer res.Body.Close()
-	var rows []UltimateOscillatorRow
-	err = response.ParseCSV(res.Body, &rows, nil)
-	if err != nil {
-		return nil, err
-	}
-	return rows, nil
+	return api.RequestCSVRows(ctx, client, q)
 }

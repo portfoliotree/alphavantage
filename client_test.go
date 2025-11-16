@@ -17,6 +17,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/portfoliotree/alphavantage"
+	"github.com/portfoliotree/alphavantage/api"
 )
 
 const apiKeyTestValue = "demo"
@@ -34,7 +35,7 @@ func (wf waitFunc) Wait(ctx context.Context) error {
 func TestParse(t *testing.T) {
 	t.Run("nil data", func(t *testing.T) {
 		assert.Panics(t, func() {
-			_ = alphavantage.ParseCSV(bytes.NewReader(nil), (*[]alphavantage.TimeSeriesDailyQuery)(nil), nil)
+			_ = api.ParseCSV(bytes.NewReader(nil), (*[]alphavantage.TimeSeriesDailyQuery)(nil), nil)
 		})
 	})
 
@@ -46,7 +47,7 @@ func TestParse(t *testing.T) {
 			Mass         float64   `column-name:"mass"`
 		}
 
-		err := alphavantage.ParseCSV(strings.NewReader(panthersCSV), &someFolks, nil)
+		err := api.ParseCSV(strings.NewReader(panthersCSV), &someFolks, nil)
 		require.NoError(t, err)
 		assert.Len(t, someFolks, 3)
 
@@ -74,7 +75,7 @@ const panthersCSV = `id,first_initial,birth_date,mass
 `
 
 func mustParseDate(t *testing.T, date string) time.Time {
-	tm, err := time.ParseInLocation(alphavantage.DefaultDateFormat, date, time.UTC)
+	tm, err := time.ParseInLocation(api.DefaultDateFormat, date, time.UTC)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -173,7 +174,7 @@ func ExampleParseCSV() {
 2020-08-19,13.5700,13.7100,13.4700,13.5000,521089`
 
 	var prices []StockPrice
-	err := alphavantage.ParseCSV(strings.NewReader(csvData), &prices, time.UTC)
+	err := api.ParseCSV(strings.NewReader(csvData), &prices, time.UTC)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		return
@@ -195,7 +196,7 @@ BA,Boeing Company,Equity,United States,09:30,16:00,UTC-04,USD,1.0000
 BAB,Invesco Taxable Municipal Bond ETF,ETF,United States,09:30,16:00,UTC-04,USD,0.8000`
 
 	count := 0
-	for result := range alphavantage.ParseCSVRows[SearchResult](strings.NewReader(csvData), time.UTC, func(err error) bool {
+	for result := range api.ParseCSVRows[SearchResult](strings.NewReader(csvData), time.UTC, func(err error) bool {
 		fmt.Printf("Parse error: %v\n", err)
 		return false // stop on error
 	}) {
@@ -244,7 +245,8 @@ func TestTimeSeriesIntraday(t *testing.T) {
 		APIKey:  "test-key",
 	}
 
-	result, err := mockClient.GetTimeSeriesIntradayCSVRows(ctx, alphavantage.QueryTimeSeriesIntraday("test-key", "IBM", alphavantage.IntervalOption15min).ExtendedHours(true).OutputSizeCompact())
+	query := alphavantage.QueryTimeSeriesIntraday("test-key", "IBM", alphavantage.IntervalOption15min).ExtendedHours(true).OutputSizeCompact()
+	result, err := query.CSVRows(ctx, mockClient)
 	require.NoError(t, err)
 
 	// Verify we got the expected number of quotes
@@ -384,7 +386,7 @@ func TestSearch(t *testing.T) {
 		waitCallCount = 0
 	)
 
-	results, err := (&alphavantage.Client{
+	results, err := alphavantage.QuerySymbolSearch("demo", "BA").DoWith(ctx, &alphavantage.Client{
 		Client: doerFunc(func(request *http.Request) (*http.Response, error) {
 			avReq = request
 			return &http.Response{
@@ -397,7 +399,7 @@ func TestSearch(t *testing.T) {
 			waitCallCount++
 			return nil
 		}),
-	}).GetSymbolSearchCSVRows(ctx, alphavantage.QuerySymbolSearch("demo", "BA"))
+	})
 	require.NoError(t, err)
 	assert.Len(t, results, 10)
 
