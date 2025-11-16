@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"runtime/debug"
 
@@ -28,7 +27,7 @@ func main() {
 	default:
 		client := alphavantage.NewClient()
 
-		err := RunFunction(client, cmd, os.Args[1:], os.Stdout)
+		err := runFunction(client, cmd, os.Args[1:], os.Stdout)
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "ERROR: %v\n", err)
 			os.Exit(1)
@@ -56,8 +55,4 @@ func help() {
 	fmt.Println("  av SMA --symbol=MSFT --interval=daily --time-period=20 --series-type=close")
 	fmt.Println()
 	fmt.Println("Documentation: https://www.alphavantage.co/documentation/")
-}
-
-func closeAndIgnoreError(c io.Closer) {
-	_ = c.Close()
 }

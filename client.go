@@ -101,13 +101,13 @@ func NewClient() *Client {
 	}
 }
 
-func (client *Client) QueryRequest(ctx context.Context, values url.Values) (*http.Request, error) {
+func (client *Client) QueryRequest(ctx context.Context, values api.Encoder) (*http.Request, error) {
 	return http.NewRequestWithContext(ctx,
 		http.MethodGet,
 		(&url.URL{
-			Scheme:   api.DefaultScheme,
-			Host:     api.DefaultHost,
-			Path:     api.DefaultPath,
+			Scheme:   cmp.Or(client.BaseURL.Scheme, api.DefaultScheme),
+			Host:     cmp.Or(client.BaseURL.Host, api.DefaultHost),
+			Path:     cmp.Or(client.BaseURL.Path, api.DefaultPath),
 			RawQuery: values.Encode(),
 		}).String(),
 		nil,

@@ -5,11 +5,15 @@ import (
 	"context"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/portfoliotree/alphavantage/api"
+	"github.com/portfoliotree/alphavantage/query/timeseries"
 )
 
 func TestClient_GlobalQuote(t *testing.T) {
@@ -21,6 +25,8 @@ func TestClient_GlobalQuote(t *testing.T) {
 	mockClient := &Client{
 		Client: doerFunc(func(req *http.Request) (*http.Response, error) {
 			// Verify the request
+			assert.Equal(t, "https", req.URL.Scheme)
+			assert.Equal(t, "example.com", req.URL.Host)
 			assert.Equal(t, "/query", req.URL.Path)
 			assert.Equal(t, "GLOBAL_QUOTE", req.URL.Query().Get("function"))
 			assert.Equal(t, "IBM", req.URL.Query().Get("symbol"))
@@ -42,7 +48,11 @@ IBM,129.00,130.50,128.50,129.75,1234567,2023-12-01,129.25,0.50,0.3867%`
 	}
 
 	ctx := context.Background()
-	res, err := mockClient.GetGlobalQuote(ctx, QueryGlobalQuote(mockClient.APIKey, "IBM").DataTypeCSV())
+	query := timeseries.QueryGlobalQuote(mockClient.APIKey, "IBM").DataTypeCSV()
+	res, err := api.DoQuery(ctx, mockClient, url.URL{
+		Scheme: "https",
+		Host:   "example.com",
+	}, query)
 
 	require.NoError(t, err)
 	defer res.Body.Close()
@@ -69,9 +79,12 @@ func TestClient_GlobalQuote_Integration(t *testing.T) {
 	client := NewClient()
 	ctx := context.Background()
 
-	res, err := client.GetGlobalQuote(ctx, QueryGlobalQuote(token, "IBM"))
+	query := timeseries.QueryGlobalQuote(token, "IBM")
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	require.NoError(t, err)
-	defer res.Body.Close()
+	t.Cleanup(func() {
+		closeAndIgnoreError(res.Body)
+	})
 
 	// Verify we get valid CSV data
 	content, err := io.ReadAll(res.Body)

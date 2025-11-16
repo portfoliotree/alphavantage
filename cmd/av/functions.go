@@ -10,9 +10,19 @@ import (
 	"time"
 	"github.com/spf13/pflag"
 	"github.com/portfoliotree/alphavantage"
+	"github.com/portfoliotree/alphavantage/api"
+	"github.com/portfoliotree/alphavantage/query/commodities"
+	"github.com/portfoliotree/alphavantage/query/crypto"
+	"github.com/portfoliotree/alphavantage/query/economic"
+	"github.com/portfoliotree/alphavantage/query/forex"
+	"github.com/portfoliotree/alphavantage/query/fundamental"
+	"github.com/portfoliotree/alphavantage/query/intelligence"
+	"github.com/portfoliotree/alphavantage/query/options"
+	"github.com/portfoliotree/alphavantage/query/technical"
+	"github.com/portfoliotree/alphavantage/query/timeseries"
 )
-// RunFunction executes the specified AlphaVantage API function with the given arguments.
-func RunFunction(client *alphavantage.Client, functionName string, args []string, output io.Writer) error {
+// runFunction executes the specified AlphaVantage API function with the given arguments.
+func runFunction(client *alphavantage.Client, functionName string, args []string, output io.Writer) error {
 	switch functionName {
 	case "AD", "ad":
 		return handleChaikinADLine(client, args, output)
@@ -268,7 +278,7 @@ func handleChaikinADLine(client *alphavantage.Client, args []string, output io.W
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryChaikinADLine(client.APIKey, symbol, interval)
+	query := technical.QueryChaikinADLine(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -280,7 +290,7 @@ func handleChaikinADLine(client *alphavantage.Client, args []string, output io.W
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -314,7 +324,7 @@ func handleChaikinADOscillator(client *alphavantage.Client, args []string, outpu
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryChaikinADOscillator(client.APIKey, symbol, interval)
+	query := technical.QueryChaikinADOscillator(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -332,7 +342,7 @@ func handleChaikinADOscillator(client *alphavantage.Client, args []string, outpu
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -364,7 +374,7 @@ func handleAverageDirectionalMovementIndex(client *alphavantage.Client, args []s
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryAverageDirectionalMovementIndex(client.APIKey, symbol, interval)
+	query := technical.QueryAverageDirectionalMovementIndex(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -379,7 +389,7 @@ func handleAverageDirectionalMovementIndex(client *alphavantage.Client, args []s
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -411,7 +421,7 @@ func handleAverageDirectionalMovementIndexRating(client *alphavantage.Client, ar
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryAverageDirectionalMovementIndexRating(client.APIKey, symbol, interval)
+	query := technical.QueryAverageDirectionalMovementIndexRating(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -426,7 +436,7 @@ func handleAverageDirectionalMovementIndexRating(client *alphavantage.Client, ar
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -446,7 +456,7 @@ func handleAllCommodities(client *alphavantage.Client, args []string, output io.
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryAllCommodities(client.APIKey)
+	query := commodities.QueryAll(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -454,7 +464,7 @@ func handleAllCommodities(client *alphavantage.Client, args []string, output io.
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -474,7 +484,7 @@ func handleAluminum(client *alphavantage.Client, args []string, output io.Writer
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryAluminum(client.APIKey)
+	query := commodities.QueryAluminum(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -482,7 +492,7 @@ func handleAluminum(client *alphavantage.Client, args []string, output io.Writer
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -520,12 +530,12 @@ func handleAnalyticsFixedWindow(client *alphavantage.Client, args []string, outp
 	if calculations == "" {
 		return fmt.Errorf("required flag --calculations not set")
 	}
-	query := alphavantage.QueryAnalyticsFixedWindow(client.APIKey, symbols, rng, intervalAnalytics, calculations)
+	query := intelligence.QueryAnalyticsFixedWindow(client.APIKey, symbols, rng, intervalAnalytics, calculations)
 	if openHighLowClose != "" {
 		query = query.OHLC(openHighLowClose)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -568,12 +578,12 @@ func handleAnalyticsSlidingWindow(client *alphavantage.Client, args []string, ou
 	if calculations == "" {
 		return fmt.Errorf("required flag --calculations not set")
 	}
-	query := alphavantage.QueryAnalyticsSlidingWindow(client.APIKey, symbols, rng, intervalAnalytics, windowSize, calculations)
+	query := intelligence.QueryAnalyticsSlidingWindow(client.APIKey, symbols, rng, intervalAnalytics, windowSize, calculations)
 	if openHighLowClose != "" {
 		query = query.OHLC(openHighLowClose)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -614,7 +624,7 @@ func handleAbsolutePriceOscillator(client *alphavantage.Client, args []string, o
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryAbsolutePriceOscillator(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryAbsolutePriceOscillator(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -635,7 +645,7 @@ func handleAbsolutePriceOscillator(client *alphavantage.Client, args []string, o
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -667,7 +677,7 @@ func handleAroon(client *alphavantage.Client, args []string, output io.Writer) e
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryAroon(client.APIKey, symbol, interval)
+	query := technical.QueryAroon(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -682,7 +692,7 @@ func handleAroon(client *alphavantage.Client, args []string, output io.Writer) e
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -714,7 +724,7 @@ func handleAroonOsc(client *alphavantage.Client, args []string, output io.Writer
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryAroonOsc(client.APIKey, symbol, interval)
+	query := technical.QueryAroonOsc(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -729,7 +739,7 @@ func handleAroonOsc(client *alphavantage.Client, args []string, output io.Writer
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -761,7 +771,7 @@ func handleAverageTrueRange(client *alphavantage.Client, args []string, output i
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryAverageTrueRange(client.APIKey, symbol, interval)
+	query := technical.QueryAverageTrueRange(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -776,7 +786,7 @@ func handleAverageTrueRange(client *alphavantage.Client, args []string, output i
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -797,9 +807,9 @@ func handleBalanceSheet(client *alphavantage.Client, args []string, output io.Wr
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryBalanceSheet(client.APIKey, symbol)
+	query := fundamental.QueryBalanceSheet(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -842,7 +852,7 @@ func handleBollingerBands(client *alphavantage.Client, args []string, output io.
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryBollingerBands(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryBollingerBands(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -866,7 +876,7 @@ func handleBollingerBands(client *alphavantage.Client, args []string, output io.
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -896,7 +906,7 @@ func handleBalanceOfPower(client *alphavantage.Client, args []string, output io.
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryBalanceOfPower(client.APIKey, symbol, interval)
+	query := technical.QueryBalanceOfPower(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -908,7 +918,7 @@ func handleBalanceOfPower(client *alphavantage.Client, args []string, output io.
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -928,7 +938,7 @@ func handleBrent(client *alphavantage.Client, args []string, output io.Writer) e
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryBrent(client.APIKey)
+	query := commodities.QueryBrent(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -936,7 +946,7 @@ func handleBrent(client *alphavantage.Client, args []string, output io.Writer) e
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -957,9 +967,9 @@ func handleCashFlow(client *alphavantage.Client, args []string, output io.Writer
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryCashFlow(client.APIKey, symbol)
+	query := fundamental.QueryCashFlow(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -991,7 +1001,7 @@ func handleCommodityChannelIndex(client *alphavantage.Client, args []string, out
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryCommodityChannelIndex(client.APIKey, symbol, interval)
+	query := technical.QueryCommodityChannelIndex(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -1006,7 +1016,7 @@ func handleCommodityChannelIndex(client *alphavantage.Client, args []string, out
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1043,7 +1053,7 @@ func handleChandeMomentumOscillator(client *alphavantage.Client, args []string, 
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryChandeMomentumOscillator(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryChandeMomentumOscillator(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -1058,7 +1068,7 @@ func handleChandeMomentumOscillator(client *alphavantage.Client, args []string, 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1078,7 +1088,7 @@ func handleCoffee(client *alphavantage.Client, args []string, output io.Writer) 
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryCoffee(client.APIKey)
+	query := commodities.QueryCoffee(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -1086,7 +1096,7 @@ func handleCoffee(client *alphavantage.Client, args []string, output io.Writer) 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1106,7 +1116,7 @@ func handleCopper(client *alphavantage.Client, args []string, output io.Writer) 
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryCopper(client.APIKey)
+	query := commodities.QueryCopper(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -1114,7 +1124,7 @@ func handleCopper(client *alphavantage.Client, args []string, output io.Writer) 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1134,7 +1144,7 @@ func handleCorn(client *alphavantage.Client, args []string, output io.Writer) er
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryCorn(client.APIKey)
+	query := commodities.QueryCorn(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -1142,7 +1152,7 @@ func handleCorn(client *alphavantage.Client, args []string, output io.Writer) er
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1162,7 +1172,7 @@ func handleCotton(client *alphavantage.Client, args []string, output io.Writer) 
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryCotton(client.APIKey)
+	query := commodities.QueryCotton(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -1170,7 +1180,7 @@ func handleCotton(client *alphavantage.Client, args []string, output io.Writer) 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1190,7 +1200,7 @@ func handleConsumerPriceIndex(client *alphavantage.Client, args []string, output
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryConsumerPriceIndex(client.APIKey)
+	query := economic.QueryConsumerPriceIndex(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -1198,7 +1208,7 @@ func handleConsumerPriceIndex(client *alphavantage.Client, args []string, output
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1233,7 +1243,7 @@ func handleCryptoIntraday(client *alphavantage.Client, args []string, output io.
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryCryptoIntraday(client.APIKey, symbol, market, interval)
+	query := crypto.QueryIntraday(client.APIKey, symbol, market, interval)
 	if outputSize != "" {
 		query = query.OutputSize(outputSize)
 	}
@@ -1241,7 +1251,7 @@ func handleCryptoIntraday(client *alphavantage.Client, args []string, output io.
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1267,9 +1277,9 @@ func handleCurrencyExchangeRate(client *alphavantage.Client, args []string, outp
 	if toCurrency == "" {
 		return fmt.Errorf("required flag --to-currency not set")
 	}
-	query := alphavantage.QueryCurrencyExchangeRate(client.APIKey, fromCurrency, toCurrency)
+	query := forex.QueryCurrencyExchangeRate(client.APIKey, fromCurrency, toCurrency)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1306,7 +1316,7 @@ func handleDoubleExponentialMovingAverage(client *alphavantage.Client, args []st
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryDoubleExponentialMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryDoubleExponentialMovingAverage(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -1321,7 +1331,7 @@ func handleDoubleExponentialMovingAverage(client *alphavantage.Client, args []st
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1347,9 +1357,9 @@ func handleDigitalCurrencyDaily(client *alphavantage.Client, args []string, outp
 	if market == "" {
 		return fmt.Errorf("required flag --market not set")
 	}
-	query := alphavantage.QueryDigitalCurrencyDaily(client.APIKey, symbol, market)
+	query := crypto.QueryDigitalCurrencyDaily(client.APIKey, symbol, market)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1375,9 +1385,9 @@ func handleDigitalCurrencyMonthly(client *alphavantage.Client, args []string, ou
 	if market == "" {
 		return fmt.Errorf("required flag --market not set")
 	}
-	query := alphavantage.QueryDigitalCurrencyMonthly(client.APIKey, symbol, market)
+	query := crypto.QueryDigitalCurrencyMonthly(client.APIKey, symbol, market)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1403,9 +1413,9 @@ func handleDigitalCurrencyWeekly(client *alphavantage.Client, args []string, out
 	if market == "" {
 		return fmt.Errorf("required flag --market not set")
 	}
-	query := alphavantage.QueryDigitalCurrencyWeekly(client.APIKey, symbol, market)
+	query := crypto.QueryDigitalCurrencyWeekly(client.APIKey, symbol, market)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1428,12 +1438,12 @@ func handleDividends(client *alphavantage.Client, args []string, output io.Write
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryDividends(client.APIKey, symbol)
+	query := fundamental.QueryDividends(client.APIKey, symbol)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1451,12 +1461,12 @@ func handleDurables(client *alphavantage.Client, args []string, output io.Writer
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryDurables(client.APIKey)
+	query := economic.QueryDurables(client.APIKey)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1488,7 +1498,7 @@ func handleDirectionalMovementIndex(client *alphavantage.Client, args []string, 
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryDirectionalMovementIndex(client.APIKey, symbol, interval)
+	query := technical.QueryDirectionalMovementIndex(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -1503,7 +1513,7 @@ func handleDirectionalMovementIndex(client *alphavantage.Client, args []string, 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1524,9 +1534,9 @@ func handleEarnings(client *alphavantage.Client, args []string, output io.Writer
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryEarnings(client.APIKey, symbol)
+	query := fundamental.QueryEarnings(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1546,7 +1556,7 @@ func handleEarningsCalendar(client *alphavantage.Client, args []string, output i
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryEarningsCalendar(client.APIKey)
+	query := fundamental.QueryEarningsCalendar(client.APIKey)
 	if symbol != "" {
 		query = query.Symbol(symbol)
 	}
@@ -1554,7 +1564,7 @@ func handleEarningsCalendar(client *alphavantage.Client, args []string, output i
 		query = query.Horizon(horizon)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1580,9 +1590,9 @@ func handleEarningsCallTranscript(client *alphavantage.Client, args []string, ou
 	if quarter == "" {
 		return fmt.Errorf("required flag --quarter not set")
 	}
-	query := alphavantage.QueryEarningsCallTranscript(client.APIKey, symbol, quarter)
+	query := intelligence.QueryEarningsCallTranscript(client.APIKey, symbol, quarter)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1603,9 +1613,9 @@ func handleEarningsEstimates(client *alphavantage.Client, args []string, output 
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryEarningsEstimates(client.APIKey, symbol)
+	query := fundamental.QueryEarningsEstimates(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1642,7 +1652,7 @@ func handleExponentialMovingAverage(client *alphavantage.Client, args []string, 
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryExponentialMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryExponentialMovingAverage(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -1657,7 +1667,7 @@ func handleExponentialMovingAverage(client *alphavantage.Client, args []string, 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1678,9 +1688,9 @@ func handleETFProfile(client *alphavantage.Client, args []string, output io.Writ
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryETFProfile(client.APIKey, symbol)
+	query := fundamental.QueryETFProfile(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1700,7 +1710,7 @@ func handleFederalFundsRate(client *alphavantage.Client, args []string, output i
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryFederalFundsRate(client.APIKey)
+	query := economic.QueryFederalFundsRate(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -1708,7 +1718,7 @@ func handleFederalFundsRate(client *alphavantage.Client, args []string, output i
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1738,7 +1748,7 @@ func handleFXDaily(client *alphavantage.Client, args []string, output io.Writer)
 	if toSymbol == "" {
 		return fmt.Errorf("required flag --to-symbol not set")
 	}
-	query := alphavantage.QueryFXDaily(client.APIKey, fromSymbol, toSymbol)
+	query := forex.QueryDaily(client.APIKey, fromSymbol, toSymbol)
 	if outputSize != "" {
 		query = query.OutputSize(outputSize)
 	}
@@ -1746,7 +1756,7 @@ func handleFXDaily(client *alphavantage.Client, args []string, output io.Writer)
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1781,7 +1791,7 @@ func handleFXIntraday(client *alphavantage.Client, args []string, output io.Writ
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryFXIntraday(client.APIKey, fromSymbol, toSymbol, interval)
+	query := forex.QueryIntraday(client.APIKey, fromSymbol, toSymbol, interval)
 	if outputSize != "" {
 		query = query.OutputSize(outputSize)
 	}
@@ -1789,7 +1799,7 @@ func handleFXIntraday(client *alphavantage.Client, args []string, output io.Writ
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1817,12 +1827,12 @@ func handleFXMonthly(client *alphavantage.Client, args []string, output io.Write
 	if toSymbol == "" {
 		return fmt.Errorf("required flag --to-symbol not set")
 	}
-	query := alphavantage.QueryFXMonthly(client.APIKey, fromSymbol, toSymbol)
+	query := forex.QueryMonthly(client.APIKey, fromSymbol, toSymbol)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1850,12 +1860,12 @@ func handleFXWeekly(client *alphavantage.Client, args []string, output io.Writer
 	if toSymbol == "" {
 		return fmt.Errorf("required flag --to-symbol not set")
 	}
-	query := alphavantage.QueryFXWeekly(client.APIKey, fromSymbol, toSymbol)
+	query := forex.QueryWeekly(client.APIKey, fromSymbol, toSymbol)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1878,12 +1888,12 @@ func handleGlobalQuote(client *alphavantage.Client, args []string, output io.Wri
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryGlobalQuote(client.APIKey, symbol)
+	query := timeseries.QueryGlobalQuote(client.APIKey, symbol)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1908,7 +1918,7 @@ func handleHistoricalOptions(client *alphavantage.Client, args []string, output 
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryHistoricalOptions(client.APIKey, symbol)
+	query := options.QueryHistorical(client.APIKey, symbol)
 	if date != "" {
 		query = query.Date(date)
 	}
@@ -1916,7 +1926,7 @@ func handleHistoricalOptions(client *alphavantage.Client, args []string, output 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1951,7 +1961,7 @@ func handleHilbertTransformDCPeriod(client *alphavantage.Client, args []string, 
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryHilbertTransformDCPeriod(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryHilbertTransformDCPeriod(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -1963,7 +1973,7 @@ func handleHilbertTransformDCPeriod(client *alphavantage.Client, args []string, 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -1998,7 +2008,7 @@ func handleHilbertTransformDCPhase(client *alphavantage.Client, args []string, o
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryHilbertTransformDCPhase(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryHilbertTransformDCPhase(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2010,7 +2020,7 @@ func handleHilbertTransformDCPhase(client *alphavantage.Client, args []string, o
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2045,7 +2055,7 @@ func handleHilbertTransformPhasor(client *alphavantage.Client, args []string, ou
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryHilbertTransformPhasor(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryHilbertTransformPhasor(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2057,7 +2067,7 @@ func handleHilbertTransformPhasor(client *alphavantage.Client, args []string, ou
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2092,7 +2102,7 @@ func handleHilbertTransformSine(client *alphavantage.Client, args []string, outp
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryHilbertTransformSine(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryHilbertTransformSine(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2104,7 +2114,7 @@ func handleHilbertTransformSine(client *alphavantage.Client, args []string, outp
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2139,7 +2149,7 @@ func handleHilbertTransformTrendLine(client *alphavantage.Client, args []string,
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryHilbertTransformTrendLine(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryHilbertTransformTrendLine(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2151,7 +2161,7 @@ func handleHilbertTransformTrendLine(client *alphavantage.Client, args []string,
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2186,7 +2196,7 @@ func handleHilbertTransformTrendMode(client *alphavantage.Client, args []string,
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryHilbertTransformTrendMode(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryHilbertTransformTrendMode(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2198,7 +2208,7 @@ func handleHilbertTransformTrendMode(client *alphavantage.Client, args []string,
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2219,9 +2229,9 @@ func handleIncomeStatement(client *alphavantage.Client, args []string, output io
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryIncomeStatement(client.APIKey, symbol)
+	query := fundamental.QueryIncomeStatement(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2239,12 +2249,12 @@ func handleInflation(client *alphavantage.Client, args []string, output io.Write
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryInflation(client.APIKey)
+	query := economic.QueryInflation(client.APIKey)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2265,9 +2275,9 @@ func handleInsiderTransactions(client *alphavantage.Client, args []string, outpu
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryInsiderTransactions(client.APIKey, symbol)
+	query := intelligence.QueryInsiderTransactions(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2283,9 +2293,9 @@ func handleIPOCalendar(client *alphavantage.Client, args []string, output io.Wri
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryIPOCalendar(client.APIKey)
+	query := fundamental.QueryIPOCalendar(client.APIKey)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2322,7 +2332,7 @@ func handleKaufmanAdaptiveMovingAverage(client *alphavantage.Client, args []stri
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryKaufmanAdaptiveMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryKaufmanAdaptiveMovingAverage(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2337,7 +2347,7 @@ func handleKaufmanAdaptiveMovingAverage(client *alphavantage.Client, args []stri
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2357,7 +2367,7 @@ func handleListingStatus(client *alphavantage.Client, args []string, output io.W
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryListingStatus(client.APIKey)
+	query := fundamental.QueryListingStatus(client.APIKey)
 	if date != "" {
 		query = query.Date(date)
 	}
@@ -2365,7 +2375,7 @@ func handleListingStatus(client *alphavantage.Client, args []string, output io.W
 		query = query.State(state)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2406,7 +2416,7 @@ func handleMovingAverageConvergenceDivergence(client *alphavantage.Client, args 
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryMovingAverageConvergenceDivergence(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryMovingAverageConvergenceDivergence(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2427,7 +2437,7 @@ func handleMovingAverageConvergenceDivergence(client *alphavantage.Client, args 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2474,7 +2484,7 @@ func handleMovingAverageConvergenceDivergenceExt(client *alphavantage.Client, ar
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryMovingAverageConvergenceDivergenceExt(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryMovingAverageConvergenceDivergenceExt(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2504,7 +2514,7 @@ func handleMovingAverageConvergenceDivergenceExt(client *alphavantage.Client, ar
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2543,7 +2553,7 @@ func handleMESAAdaptiveMovingAverage(client *alphavantage.Client, args []string,
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryMESAAdaptiveMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryMESAAdaptiveMovingAverage(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2561,7 +2571,7 @@ func handleMESAAdaptiveMovingAverage(client *alphavantage.Client, args []string,
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2577,9 +2587,9 @@ func handleMarketStatus(client *alphavantage.Client, args []string, output io.Wr
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryMarketStatus(client.APIKey)
+	query := timeseries.QueryMarketStatus(client.APIKey)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2611,7 +2621,7 @@ func handleMoneyFlowIndex(client *alphavantage.Client, args []string, output io.
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryMoneyFlowIndex(client.APIKey, symbol, interval)
+	query := technical.QueryMoneyFlowIndex(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2626,7 +2636,7 @@ func handleMoneyFlowIndex(client *alphavantage.Client, args []string, output io.
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2666,7 +2676,7 @@ func handleMidPoint(client *alphavantage.Client, args []string, output io.Writer
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryMidPoint(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
+	query := technical.QueryMidPoint(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2678,7 +2688,7 @@ func handleMidPoint(client *alphavantage.Client, args []string, output io.Writer
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2713,7 +2723,7 @@ func handleMidPrice(client *alphavantage.Client, args []string, output io.Writer
 	if timePeriod == 0 {
 		return fmt.Errorf("required flag --time-period not set")
 	}
-	query := alphavantage.QueryMidPrice(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
+	query := technical.QueryMidPrice(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2725,7 +2735,7 @@ func handleMidPrice(client *alphavantage.Client, args []string, output io.Writer
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2757,7 +2767,7 @@ func handleMinusDirectionalIndicator(client *alphavantage.Client, args []string,
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryMinusDirectionalIndicator(client.APIKey, symbol, interval)
+	query := technical.QueryMinusDirectionalIndicator(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2772,7 +2782,7 @@ func handleMinusDirectionalIndicator(client *alphavantage.Client, args []string,
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2804,7 +2814,7 @@ func handleMinusDirectionalMovement(client *alphavantage.Client, args []string, 
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryMinusDirectionalMovement(client.APIKey, symbol, interval)
+	query := technical.QueryMinusDirectionalMovement(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2819,7 +2829,7 @@ func handleMinusDirectionalMovement(client *alphavantage.Client, args []string, 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2856,7 +2866,7 @@ func handleMomentum(client *alphavantage.Client, args []string, output io.Writer
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryMomentum(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryMomentum(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2871,7 +2881,7 @@ func handleMomentum(client *alphavantage.Client, args []string, output io.Writer
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2903,7 +2913,7 @@ func handleNormalizedAverageTrueRange(client *alphavantage.Client, args []string
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryNormalizedAverageTrueRange(client.APIKey, symbol, interval)
+	query := technical.QueryNormalizedAverageTrueRange(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2918,7 +2928,7 @@ func handleNormalizedAverageTrueRange(client *alphavantage.Client, args []string
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2938,7 +2948,7 @@ func handleNaturalGas(client *alphavantage.Client, args []string, output io.Writ
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryNaturalGas(client.APIKey)
+	query := commodities.QueryNaturalGas(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -2946,7 +2956,7 @@ func handleNaturalGas(client *alphavantage.Client, args []string, output io.Writ
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -2974,7 +2984,7 @@ func handleNewsSentiment(client *alphavantage.Client, args []string, output io.W
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryNewsSentiment(client.APIKey)
+	query := intelligence.QueryNewsSentiment(client.APIKey)
 	if tickers != "" {
 		query = query.Tickers(tickers)
 	}
@@ -3002,7 +3012,7 @@ func handleNewsSentiment(client *alphavantage.Client, args []string, output io.W
 		query = query.Limit(strconv.Itoa(limit))
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3020,12 +3030,12 @@ func handleNonFarmPayroll(client *alphavantage.Client, args []string, output io.
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryNonFarmPayroll(client.APIKey)
+	query := economic.QueryNonFarmPayroll(client.APIKey)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3055,7 +3065,7 @@ func handleOnBalanceVolume(client *alphavantage.Client, args []string, output io
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryOnBalanceVolume(client.APIKey, symbol, interval)
+	query := technical.QueryOnBalanceVolume(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3067,7 +3077,7 @@ func handleOnBalanceVolume(client *alphavantage.Client, args []string, output io
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3088,9 +3098,9 @@ func handleOverview(client *alphavantage.Client, args []string, output io.Writer
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryOverview(client.APIKey, symbol)
+	query := fundamental.QueryOverview(client.APIKey, symbol)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3122,7 +3132,7 @@ func handlePlusDirectionalIndicator(client *alphavantage.Client, args []string, 
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryPlusDirectionalIndicator(client.APIKey, symbol, interval)
+	query := technical.QueryPlusDirectionalIndicator(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3137,7 +3147,7 @@ func handlePlusDirectionalIndicator(client *alphavantage.Client, args []string, 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3169,7 +3179,7 @@ func handlePlusDirectionalMovement(client *alphavantage.Client, args []string, o
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryPlusDirectionalMovement(client.APIKey, symbol, interval)
+	query := technical.QueryPlusDirectionalMovement(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3184,7 +3194,7 @@ func handlePlusDirectionalMovement(client *alphavantage.Client, args []string, o
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3225,7 +3235,7 @@ func handlePercentagePriceOscillator(client *alphavantage.Client, args []string,
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryPercentagePriceOscillator(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryPercentagePriceOscillator(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3246,7 +3256,7 @@ func handlePercentagePriceOscillator(client *alphavantage.Client, args []string,
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3269,12 +3279,12 @@ func handleRealtimeBulkQuotes(client *alphavantage.Client, args []string, output
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryRealtimeBulkQuotes(client.APIKey, symbol)
+	query := timeseries.QueryRealtimeBulkQuotes(client.APIKey, symbol)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3301,7 +3311,7 @@ func handleRealtimeOptions(client *alphavantage.Client, args []string, output io
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryRealtimeOptions(client.APIKey, symbol)
+	query := options.QueryRealtime(client.APIKey, symbol)
 	if requireGreeks {
 		query = query.RequireGreeks(requireGreeks)
 	}
@@ -3312,7 +3322,7 @@ func handleRealtimeOptions(client *alphavantage.Client, args []string, output io
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3332,7 +3342,7 @@ func handleRealGDP(client *alphavantage.Client, args []string, output io.Writer)
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryRealGDP(client.APIKey)
+	query := economic.QueryRealGDP(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -3340,7 +3350,7 @@ func handleRealGDP(client *alphavantage.Client, args []string, output io.Writer)
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3358,12 +3368,12 @@ func handleRealGDPPerCapita(client *alphavantage.Client, args []string, output i
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryRealGDPPerCapita(client.APIKey)
+	query := economic.QueryRealGDPPerCapita(client.APIKey)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3381,12 +3391,12 @@ func handleRetailSales(client *alphavantage.Client, args []string, output io.Wri
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryRetailSales(client.APIKey)
+	query := economic.QueryRetailSales(client.APIKey)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3423,7 +3433,7 @@ func handleRateOfChange(client *alphavantage.Client, args []string, output io.Wr
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryRateOfChange(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryRateOfChange(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3438,7 +3448,7 @@ func handleRateOfChange(client *alphavantage.Client, args []string, output io.Wr
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3475,7 +3485,7 @@ func handleRateOfChangeRatio(client *alphavantage.Client, args []string, output 
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryRateOfChangeRatio(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryRateOfChangeRatio(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3490,7 +3500,7 @@ func handleRateOfChangeRatio(client *alphavantage.Client, args []string, output 
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3527,7 +3537,7 @@ func handleRelativeStrengthIndex(client *alphavantage.Client, args []string, out
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryRelativeStrengthIndex(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryRelativeStrengthIndex(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3542,7 +3552,7 @@ func handleRelativeStrengthIndex(client *alphavantage.Client, args []string, out
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3576,7 +3586,7 @@ func handleSAR(client *alphavantage.Client, args []string, output io.Writer) err
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QuerySAR(client.APIKey, symbol, interval)
+	query := technical.QuerySAR(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3594,7 +3604,7 @@ func handleSAR(client *alphavantage.Client, args []string, output io.Writer) err
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3617,12 +3627,12 @@ func handleSharesOutstanding(client *alphavantage.Client, args []string, output 
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QuerySharesOutstanding(client.APIKey, symbol)
+	query := fundamental.QuerySharesOutstanding(client.APIKey, symbol)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3659,7 +3669,7 @@ func handleSimpleMovingAverage(client *alphavantage.Client, args []string, outpu
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QuerySimpleMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QuerySimpleMovingAverage(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3674,7 +3684,7 @@ func handleSimpleMovingAverage(client *alphavantage.Client, args []string, outpu
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3697,12 +3707,12 @@ func handleSplits(client *alphavantage.Client, args []string, output io.Writer) 
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QuerySplits(client.APIKey, symbol)
+	query := fundamental.QuerySplits(client.APIKey, symbol)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3742,7 +3752,7 @@ func handleStochasticOscillator(client *alphavantage.Client, args []string, outp
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryStochasticOscillator(client.APIKey, symbol, interval)
+	query := technical.QueryStochasticOscillator(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3769,7 +3779,7 @@ func handleStochasticOscillator(client *alphavantage.Client, args []string, outp
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3805,7 +3815,7 @@ func handleStochasticFast(client *alphavantage.Client, args []string, output io.
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryStochasticFast(client.APIKey, symbol, interval)
+	query := technical.QueryStochasticFast(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3826,7 +3836,7 @@ func handleStochasticFast(client *alphavantage.Client, args []string, output io.
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3869,7 +3879,7 @@ func handleStochasticRelativeStrengthIndex(client *alphavantage.Client, args []s
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryStochasticRelativeStrengthIndex(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryStochasticRelativeStrengthIndex(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3893,7 +3903,7 @@ func handleStochasticRelativeStrengthIndex(client *alphavantage.Client, args []s
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3913,7 +3923,7 @@ func handleSugar(client *alphavantage.Client, args []string, output io.Writer) e
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QuerySugar(client.APIKey)
+	query := commodities.QuerySugar(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -3921,7 +3931,7 @@ func handleSugar(client *alphavantage.Client, args []string, output io.Writer) e
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3944,12 +3954,12 @@ func handleSymbolSearch(client *alphavantage.Client, args []string, output io.Wr
 	if keywords == "" {
 		return fmt.Errorf("required flag --keywords not set")
 	}
-	query := alphavantage.QuerySymbolSearch(client.APIKey, keywords)
+	query := timeseries.QuerySymbolSearch(client.APIKey, keywords)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -3986,7 +3996,7 @@ func handleT3(client *alphavantage.Client, args []string, output io.Writer) erro
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryT3(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryT3(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4001,7 +4011,7 @@ func handleT3(client *alphavantage.Client, args []string, output io.Writer) erro
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4038,7 +4048,7 @@ func handleTripleExponentialMovingAverage(client *alphavantage.Client, args []st
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryTripleExponentialMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryTripleExponentialMovingAverage(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4053,7 +4063,7 @@ func handleTripleExponentialMovingAverage(client *alphavantage.Client, args []st
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4078,7 +4088,7 @@ func handleTimeSeriesDaily(client *alphavantage.Client, args []string, output io
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryTimeSeriesDaily(client.APIKey, symbol)
+	query := timeseries.QueryDaily(client.APIKey, symbol)
 	if outputSize != "" {
 		query = query.OutputSize(outputSize)
 	}
@@ -4086,7 +4096,7 @@ func handleTimeSeriesDaily(client *alphavantage.Client, args []string, output io
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4111,7 +4121,7 @@ func handleTimeSeriesDailyAdjusted(client *alphavantage.Client, args []string, o
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryTimeSeriesDailyAdjusted(client.APIKey, symbol)
+	query := timeseries.QueryDailyAdjusted(client.APIKey, symbol)
 	if outputSize != "" {
 		query = query.OutputSize(outputSize)
 	}
@@ -4119,7 +4129,7 @@ func handleTimeSeriesDailyAdjusted(client *alphavantage.Client, args []string, o
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4155,7 +4165,7 @@ func handleTimeSeriesIntraday(client *alphavantage.Client, args []string, output
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryTimeSeriesIntraday(client.APIKey, symbol, interval)
+	query := timeseries.QueryIntraday(client.APIKey, symbol, interval)
 	if adjusted {
 		query = query.Adjusted(adjusted)
 	}
@@ -4176,7 +4186,7 @@ func handleTimeSeriesIntraday(client *alphavantage.Client, args []string, output
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4199,12 +4209,12 @@ func handleTimeSeriesMonthly(client *alphavantage.Client, args []string, output 
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryTimeSeriesMonthly(client.APIKey, symbol)
+	query := timeseries.QueryMonthly(client.APIKey, symbol)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4227,12 +4237,12 @@ func handleTimeSeriesMonthlyAdjusted(client *alphavantage.Client, args []string,
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryTimeSeriesMonthlyAdjusted(client.APIKey, symbol)
+	query := timeseries.QueryMonthlyAdjusted(client.APIKey, symbol)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4255,12 +4265,12 @@ func handleTimeSeriesWeekly(client *alphavantage.Client, args []string, output i
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryTimeSeriesWeekly(client.APIKey, symbol)
+	query := timeseries.QueryWeekly(client.APIKey, symbol)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4283,12 +4293,12 @@ func handleTimeSeriesWeeklyAdjusted(client *alphavantage.Client, args []string, 
 	if symbol == "" {
 		return fmt.Errorf("required flag --symbol not set")
 	}
-	query := alphavantage.QueryTimeSeriesWeeklyAdjusted(client.APIKey, symbol)
+	query := timeseries.QueryWeeklyAdjusted(client.APIKey, symbol)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4304,9 +4314,9 @@ func handleTopGainersLosers(client *alphavantage.Client, args []string, output i
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryTopGainersLosers(client.APIKey)
+	query := intelligence.QueryTopGainersLosers(client.APIKey)
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4336,7 +4346,7 @@ func handleTrueRange(client *alphavantage.Client, args []string, output io.Write
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryTrueRange(client.APIKey, symbol, interval)
+	query := technical.QueryTrueRange(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4348,7 +4358,7 @@ func handleTrueRange(client *alphavantage.Client, args []string, output io.Write
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4370,7 +4380,7 @@ func handleTreasuryYield(client *alphavantage.Client, args []string, output io.W
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryTreasuryYield(client.APIKey)
+	query := economic.QueryTreasuryYield(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -4381,7 +4391,7 @@ func handleTreasuryYield(client *alphavantage.Client, args []string, output io.W
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4418,7 +4428,7 @@ func handleTriangularMovingAverage(client *alphavantage.Client, args []string, o
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryTriangularMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryTriangularMovingAverage(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4433,7 +4443,7 @@ func handleTriangularMovingAverage(client *alphavantage.Client, args []string, o
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4470,7 +4480,7 @@ func handleOneDayRateOfChangeTripleSmoothExponentialMovingAverage(client *alphav
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryOneDayRateOfChangeTripleSmoothExponentialMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryOneDayRateOfChangeTripleSmoothExponentialMovingAverage(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4485,7 +4495,7 @@ func handleOneDayRateOfChangeTripleSmoothExponentialMovingAverage(client *alphav
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4521,7 +4531,7 @@ func handleUltimateOscillator(client *alphavantage.Client, args []string, output
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryUltimateOscillator(client.APIKey, symbol, interval)
+	query := technical.QueryUltimateOscillator(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4542,7 +4552,7 @@ func handleUltimateOscillator(client *alphavantage.Client, args []string, output
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4560,12 +4570,12 @@ func handleUnemployment(client *alphavantage.Client, args []string, output io.Wr
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryUnemployment(client.APIKey)
+	query := economic.QueryUnemployment(client.APIKey)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4595,7 +4605,7 @@ func handleVolumeWeightedAveragePrice(client *alphavantage.Client, args []string
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryVolumeWeightedAveragePrice(client.APIKey, symbol, interval)
+	query := technical.QueryVolumeWeightedAveragePrice(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4607,7 +4617,7 @@ func handleVolumeWeightedAveragePrice(client *alphavantage.Client, args []string
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4627,7 +4637,7 @@ func handleWheat(client *alphavantage.Client, args []string, output io.Writer) e
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryWheat(client.APIKey)
+	query := commodities.QueryWheat(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -4635,7 +4645,7 @@ func handleWheat(client *alphavantage.Client, args []string, output io.Writer) e
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4667,7 +4677,7 @@ func handleWilliamsR(client *alphavantage.Client, args []string, output io.Write
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := alphavantage.QueryWilliamsR(client.APIKey, symbol, interval)
+	query := technical.QueryWilliamsR(client.APIKey, symbol, interval)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4682,7 +4692,7 @@ func handleWilliamsR(client *alphavantage.Client, args []string, output io.Write
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4719,7 +4729,7 @@ func handleWeightedMovingAverage(client *alphavantage.Client, args []string, out
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := alphavantage.QueryWeightedMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryWeightedMovingAverage(client.APIKey, symbol, interval, seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4734,7 +4744,7 @@ func handleWeightedMovingAverage(client *alphavantage.Client, args []string, out
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}
@@ -4754,7 +4764,7 @@ func handleWestTexasIntermediate(client *alphavantage.Client, args []string, out
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	query := alphavantage.QueryWestTexasIntermediate(client.APIKey)
+	query := commodities.QueryWestTexasIntermediate(client.APIKey)
 	if interval != "" {
 		query = query.Interval(interval)
 	}
@@ -4762,7 +4772,7 @@ func handleWestTexasIntermediate(client *alphavantage.Client, args []string, out
 		query = query.DataType(dataType)
 	}
 	ctx := context.Background()
-	res, err := query.DoWith(ctx, client)
+	res, err := api.DoQuery(ctx, client, client.BaseURL, query)
 	if err != nil {
 		return fmt.Errorf("API request failed: %w", err)
 	}

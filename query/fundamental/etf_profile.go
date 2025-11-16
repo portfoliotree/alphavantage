@@ -1,12 +1,4 @@
-package alphavantage
-
-import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"io"
-	"net/url"
-)
+package fundamental
 
 type ETFProfile struct {
 	Symbol            string       `json:"symbol,omitempty"`
@@ -29,26 +21,4 @@ type ETFHolding struct {
 	Symbol      string `json:"symbol,omitempty"`
 	Description string `json:"description,omitempty"`
 	Weight      string `json:"weight,omitempty"`
-}
-
-func (client *Client) ETFProfile(ctx context.Context, q ETFProfileQuery) (ETFProfile, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return ETFProfile{}, fmt.Errorf("failed to create ETF profile request: %w", err)
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return ETFProfile{}, err
-	}
-	defer closeAndIgnoreError(res.Body)
-
-	buf, err := io.ReadAll(res.Body)
-	if err != nil {
-		return ETFProfile{}, err
-	}
-
-	var result ETFProfile
-	err = json.Unmarshal(buf, &result)
-	return result, err
 }

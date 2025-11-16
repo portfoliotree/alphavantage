@@ -1,6 +1,7 @@
 package api
 
 import (
+	"cmp"
 	"context"
 	"net/http"
 	"net/url"
@@ -14,13 +15,12 @@ type Encoder interface {
 	Encode() string
 }
 
-func DoQuery(ctx context.Context, client Doer, query Encoder) (*http.Response, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, (&url.URL{
-		Scheme:   DefaultScheme,
-		Host:     DefaultHost,
-		Path:     DefaultPath,
-		RawQuery: query.Encode(),
-	}).String(), nil)
+func DoQuery(ctx context.Context, client Doer, u url.URL, query Encoder) (*http.Response, error) {
+	u.Scheme = cmp.Or(u.Scheme, DefaultScheme)
+	u.Host = cmp.Or(u.Host, DefaultHost)
+	u.Path = "/query"
+	u.RawQuery = query.Encode()
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
 		return nil, err
 	}

@@ -3,20 +3,32 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"os"
 
 	"github.com/portfoliotree/alphavantage"
+	"github.com/portfoliotree/alphavantage/api"
+	"github.com/portfoliotree/alphavantage/query/timeseries"
 )
 
 func main() {
 	client := alphavantage.NewClient()
 
 	ctx := context.Background()
-	query := alphavantage.QueryTimeSeriesDaily(client.APIKey, "AAPL")
-	rows, err := client.GetTimeSeriesDailyCSVRows(ctx, query)
+	query := timeseries.QueryDaily(client.APIKey, "AAPL")
+	result, err := api.DoQuery(ctx, client, url.URL{
+		Scheme: "https",
+		Host:   "www.alphavantage.co",
+	}, query)
 	if err != nil {
 		printErrorAndExit(err)
 	}
+
+	var rows []timeseries.DailyRow
+	if err := api.ParseCSV(result.Body, &rows, nil); err != nil {
+		printErrorAndExit(err)
+	}
+
 	for _, row := range rows[:10] {
 		fmt.Println(row.Close - row.Open)
 	}

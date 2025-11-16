@@ -4,691 +4,698 @@ package api_test
 
 import (
 	"bytes"
+	"github.com/portfoliotree/alphavantage/api"
+	"github.com/portfoliotree/alphavantage/query/commodities"
+	"github.com/portfoliotree/alphavantage/query/crypto"
+	"github.com/portfoliotree/alphavantage/query/economic"
+	"github.com/portfoliotree/alphavantage/query/forex"
+	"github.com/portfoliotree/alphavantage/query/fundamental"
+	"github.com/portfoliotree/alphavantage/query/options"
+	"github.com/portfoliotree/alphavantage/query/technical"
+	"github.com/portfoliotree/alphavantage/query/timeseries"
+	"github.com/stretchr/testify/require"
 	"os"
 	"path/filepath"
 	"testing"
-	"github.com/stretchr/testify/require"
-	"github.com/portfoliotree/alphavantage"
-	"github.com/portfoliotree/alphavantage/api"
 )
 
 func TestCSV(t *testing.T) {
 	t.Run("ADOSC_2df56d05", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_volume/ADOSC_2df56d05.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_volume/ADOSC_2df56d05.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.ChaikinADOscillatorRow
+		var rows []technical.ChaikinADOscillatorRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("ADXR_bc985409", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_directional/ADXR_bc985409.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_directional/ADXR_bc985409.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.AverageDirectionalMovementIndexRatingRow
+		var rows []technical.AverageDirectionalMovementIndexRatingRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("ADX_a8d5fbcc", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_directional/ADX_a8d5fbcc.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_directional/ADX_a8d5fbcc.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.AverageDirectionalMovementIndexRow
+		var rows []technical.AverageDirectionalMovementIndexRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("AD_207c5d92", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_volume/AD_207c5d92.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_volume/AD_207c5d92.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.ChaikinADLineRow
+		var rows []technical.ChaikinADLineRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("ALL_COMMODITIES_4033e3d9", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/commodities/ALL_COMMODITIES_4033e3d9.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/commodities/ALL_COMMODITIES_4033e3d9.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.AllCommoditiesRow
+		var rows []commodities.AllRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("ALUMINUM_85383733", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/commodities/ALUMINUM_85383733.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/commodities/ALUMINUM_85383733.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.AluminumRow
+		var rows []commodities.AluminumRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("APO_87e8859c", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_momentum/APO_87e8859c.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_momentum/APO_87e8859c.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.AbsolutePriceOscillatorRow
+		var rows []technical.AbsolutePriceOscillatorRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("AROONOSC_9945ac9d", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_directional/AROONOSC_9945ac9d.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_directional/AROONOSC_9945ac9d.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.AroonOscRow
+		var rows []technical.AroonOscRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("AROON_de4ed20e", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_directional/AROON_de4ed20e.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_directional/AROON_de4ed20e.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.AroonRow
+		var rows []technical.AroonRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("ATR_4cc3ee79", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_volatility/ATR_4cc3ee79.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_volatility/ATR_4cc3ee79.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.AverageTrueRangeRow
+		var rows []technical.AverageTrueRangeRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("BBANDS_9bd4a9ab", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_volatility/BBANDS_9bd4a9ab.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_volatility/BBANDS_9bd4a9ab.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.BollingerBandsRow
+		var rows []technical.BollingerBandsRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("BRENT_44bdfc84", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/commodities/BRENT_44bdfc84.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/commodities/BRENT_44bdfc84.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.BrentRow
+		var rows []commodities.BrentRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("CCI_dd423e9c", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_momentum/CCI_dd423e9c.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_momentum/CCI_dd423e9c.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.CommodityChannelIndexRow
+		var rows []technical.CommodityChannelIndexRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("CMO_b6a98564", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_momentum/CMO_b6a98564.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_momentum/CMO_b6a98564.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.ChandeMomentumOscillatorRow
+		var rows []technical.ChandeMomentumOscillatorRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("COFFEE_24b082fc", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/commodities/COFFEE_24b082fc.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/commodities/COFFEE_24b082fc.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.CoffeeRow
+		var rows []commodities.CoffeeRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("COPPER_639627b4", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/commodities/COPPER_639627b4.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/commodities/COPPER_639627b4.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.CopperRow
+		var rows []commodities.CopperRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("CORN_3d3a03fa", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/commodities/CORN_3d3a03fa.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/commodities/CORN_3d3a03fa.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.CornRow
+		var rows []commodities.CornRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("COTTON_63260621", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/commodities/COTTON_63260621.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/commodities/COTTON_63260621.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.CottonRow
+		var rows []commodities.CottonRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("CPI_453fbf7c", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/economic/CPI_453fbf7c.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/economic/CPI_453fbf7c.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.ConsumerPriceIndexRow
+		var rows []economic.ConsumerPriceIndexRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("CRYPTO_INTRADAY_38f15660", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/crypto/CRYPTO_INTRADAY_38f15660.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/crypto/CRYPTO_INTRADAY_38f15660.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.CryptoIntradayRow
+		var rows []crypto.IntradayRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("DEMA_42b33e8d", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_moving_averages/DEMA_42b33e8d.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_moving_averages/DEMA_42b33e8d.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.DoubleExponentialMovingAverageRow
+		var rows []technical.DoubleExponentialMovingAverageRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("DIGITAL_CURRENCY_DAILY_ffab6e21", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/crypto/DIGITAL_CURRENCY_DAILY_ffab6e21.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/crypto/DIGITAL_CURRENCY_DAILY_ffab6e21.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.DigitalCurrencyDailyRow
+		var rows []crypto.DigitalCurrencyDailyRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("DIGITAL_CURRENCY_MONTHLY_708fbbc6", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/crypto/DIGITAL_CURRENCY_MONTHLY_708fbbc6.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/crypto/DIGITAL_CURRENCY_MONTHLY_708fbbc6.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.DigitalCurrencyMonthlyRow
+		var rows []crypto.DigitalCurrencyMonthlyRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("DIGITAL_CURRENCY_WEEKLY_b80e3492", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/crypto/DIGITAL_CURRENCY_WEEKLY_b80e3492.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/crypto/DIGITAL_CURRENCY_WEEKLY_b80e3492.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.DigitalCurrencyWeeklyRow
+		var rows []crypto.DigitalCurrencyWeeklyRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("DIVIDENDS_5b9f5d9f", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/fundamental/DIVIDENDS_5b9f5d9f.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/fundamental/DIVIDENDS_5b9f5d9f.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.DividendsRow
+		var rows []fundamental.DividendsRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("DURABLES_e4cfe1f5", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/economic/DURABLES_e4cfe1f5.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/economic/DURABLES_e4cfe1f5.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.DurablesRow
+		var rows []economic.DurablesRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("DX_51079af1", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_directional/DX_51079af1.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_directional/DX_51079af1.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.DirectionalMovementIndexRow
+		var rows []technical.DirectionalMovementIndexRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("EARNINGS_CALENDAR_c674ae28", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/fundamental/EARNINGS_CALENDAR_c674ae28.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/fundamental/EARNINGS_CALENDAR_c674ae28.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.EarningsCalendarRow
+		var rows []fundamental.EarningsCalendarRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("EMA_725a3e7b", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_moving_averages/EMA_725a3e7b.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_moving_averages/EMA_725a3e7b.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.ExponentialMovingAverageRow
+		var rows []technical.ExponentialMovingAverageRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("FEDERAL_FUNDS_RATE_e4372b7a", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/economic/FEDERAL_FUNDS_RATE_e4372b7a.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/economic/FEDERAL_FUNDS_RATE_e4372b7a.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.FederalFundsRateRow
+		var rows []economic.FederalFundsRateRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("FX_DAILY_b7946c44", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/forex/FX_DAILY_b7946c44.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/forex/FX_DAILY_b7946c44.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.FXDailyRow
+		var rows []forex.DailyRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("FX_INTRADAY_f0be5c32", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/forex/FX_INTRADAY_f0be5c32.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/forex/FX_INTRADAY_f0be5c32.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.FXIntradayRow
+		var rows []forex.IntradayRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("FX_MONTHLY_63bfd9fd", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/forex/FX_MONTHLY_63bfd9fd.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/forex/FX_MONTHLY_63bfd9fd.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.FXMonthlyRow
+		var rows []forex.MonthlyRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("FX_WEEKLY_e2a3f5ad", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/forex/FX_WEEKLY_e2a3f5ad.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/forex/FX_WEEKLY_e2a3f5ad.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.FXWeeklyRow
+		var rows []forex.WeeklyRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("GLOBAL_QUOTE_db7544f0", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/time_series/GLOBAL_QUOTE_db7544f0.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/time_series/GLOBAL_QUOTE_db7544f0.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.GlobalQuoteRow
+		var rows []timeseries.GlobalQuoteRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("HISTORICAL_OPTIONS_6c0b1a36", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/options/HISTORICAL_OPTIONS_6c0b1a36.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/options/HISTORICAL_OPTIONS_6c0b1a36.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.HistoricalOptionsRow
+		var rows []options.HistoricalRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("HT_DCPERIOD_1f51b571", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_hilbert/HT_DCPERIOD_1f51b571.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_hilbert/HT_DCPERIOD_1f51b571.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.HilbertTransformDCPeriodRow
+		var rows []technical.HilbertTransformDCPeriodRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("HT_DCPHASE_7072d4d1", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_hilbert/HT_DCPHASE_7072d4d1.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_hilbert/HT_DCPHASE_7072d4d1.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.HilbertTransformDCPhaseRow
+		var rows []technical.HilbertTransformDCPhaseRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("HT_PHASOR_5030e26f", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_hilbert/HT_PHASOR_5030e26f.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_hilbert/HT_PHASOR_5030e26f.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.HilbertTransformPhasorRow
+		var rows []technical.HilbertTransformPhasorRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("HT_SINE_015dabd4", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_hilbert/HT_SINE_015dabd4.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_hilbert/HT_SINE_015dabd4.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.HilbertTransformSineRow
+		var rows []technical.HilbertTransformSineRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("HT_TRENDLINE_459bf2f7", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_hilbert/HT_TRENDLINE_459bf2f7.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_hilbert/HT_TRENDLINE_459bf2f7.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.HilbertTransformTrendLineRow
+		var rows []technical.HilbertTransformTrendLineRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("HT_TRENDMODE_90313721", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_hilbert/HT_TRENDMODE_90313721.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_hilbert/HT_TRENDMODE_90313721.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.HilbertTransformTrendModeRow
+		var rows []technical.HilbertTransformTrendModeRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("INFLATION_ae098c06", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/economic/INFLATION_ae098c06.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/economic/INFLATION_ae098c06.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.InflationRow
+		var rows []economic.InflationRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("IPO_CALENDAR_bed45bed", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/fundamental/IPO_CALENDAR_bed45bed.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/fundamental/IPO_CALENDAR_bed45bed.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.IPOCalendarRow
+		var rows []fundamental.IPOCalendarRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("KAMA_b92e803d", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_moving_averages/KAMA_b92e803d.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_moving_averages/KAMA_b92e803d.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.KaufmanAdaptiveMovingAverageRow
+		var rows []technical.KaufmanAdaptiveMovingAverageRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("LISTING_STATUS_42ba3c24", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/fundamental/LISTING_STATUS_42ba3c24.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/fundamental/LISTING_STATUS_42ba3c24.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.ListingStatusRow
+		var rows []fundamental.ListingStatusRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("MACDEXT_84eb70e4", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_macd_stoch/MACDEXT_84eb70e4.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_macd_stoch/MACDEXT_84eb70e4.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.MovingAverageConvergenceDivergenceExtRow
+		var rows []technical.MovingAverageConvergenceDivergenceExtRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("MACD_19e73cc7", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_macd_stoch/MACD_19e73cc7.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_macd_stoch/MACD_19e73cc7.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.MovingAverageConvergenceDivergenceRow
+		var rows []technical.MovingAverageConvergenceDivergenceRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("MAMA_f93f21b3", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_special_ma/MAMA_f93f21b3.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_special_ma/MAMA_f93f21b3.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.MESAAdaptiveMovingAverageRow
+		var rows []technical.MESAAdaptiveMovingAverageRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("MFI_648317da", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_volume/MFI_648317da.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_volume/MFI_648317da.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.MoneyFlowIndexRow
+		var rows []technical.MoneyFlowIndexRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("MIDPOINT_c735d994", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_price/MIDPOINT_c735d994.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_price/MIDPOINT_c735d994.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.MidPointRow
+		var rows []technical.MidPointRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("MIDPRICE_00f6d973", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_price/MIDPRICE_00f6d973.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_price/MIDPRICE_00f6d973.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.MidPriceRow
+		var rows []technical.MidPriceRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("MINUS_DI_c854c442", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_directional/MINUS_DI_c854c442.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_directional/MINUS_DI_c854c442.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.MinusDirectionalIndicatorRow
+		var rows []technical.MinusDirectionalIndicatorRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("MINUS_DM_225feb25", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_directional/MINUS_DM_225feb25.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_directional/MINUS_DM_225feb25.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.MinusDirectionalMovementRow
+		var rows []technical.MinusDirectionalMovementRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("MOM_4be2b205", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_momentum/MOM_4be2b205.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_momentum/MOM_4be2b205.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.MomentumRow
+		var rows []technical.MomentumRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("NATR_26008ea8", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_volatility/NATR_26008ea8.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_volatility/NATR_26008ea8.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.NormalizedAverageTrueRangeRow
+		var rows []technical.NormalizedAverageTrueRangeRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("NATURAL_GAS_4be4453d", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/commodities/NATURAL_GAS_4be4453d.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/commodities/NATURAL_GAS_4be4453d.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.NaturalGasRow
+		var rows []commodities.NaturalGasRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("NONFARM_PAYROLL_cf8e3bcd", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/economic/NONFARM_PAYROLL_cf8e3bcd.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/economic/NONFARM_PAYROLL_cf8e3bcd.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.NonFarmPayrollRow
+		var rows []economic.NonFarmPayrollRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("OBV_454e2ac4", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_volume/OBV_454e2ac4.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_volume/OBV_454e2ac4.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.OnBalanceVolumeRow
+		var rows []technical.OnBalanceVolumeRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("PLUS_DI_993eebda", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_directional/PLUS_DI_993eebda.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_directional/PLUS_DI_993eebda.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.PlusDirectionalIndicatorRow
+		var rows []technical.PlusDirectionalIndicatorRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("PLUS_DM_e0682566", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_directional/PLUS_DM_e0682566.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_directional/PLUS_DM_e0682566.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.PlusDirectionalMovementRow
+		var rows []technical.PlusDirectionalMovementRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("PPO_7bbc8407", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_momentum/PPO_7bbc8407.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_momentum/PPO_7bbc8407.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.PercentagePriceOscillatorRow
+		var rows []technical.PercentagePriceOscillatorRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("REAL_GDP_73a04ece", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/economic/REAL_GDP_73a04ece.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/economic/REAL_GDP_73a04ece.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.RealGDPRow
+		var rows []economic.RealGDPRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("REAL_GDP_PER_CAPITA_57884c33", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/economic/REAL_GDP_PER_CAPITA_57884c33.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/economic/REAL_GDP_PER_CAPITA_57884c33.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.RealGDPPerCapitaRow
+		var rows []economic.RealGDPPerCapitaRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("RETAIL_SALES_c609adfe", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/economic/RETAIL_SALES_c609adfe.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/economic/RETAIL_SALES_c609adfe.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.RetailSalesRow
+		var rows []economic.RetailSalesRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("ROCR_c9cd207d", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_momentum/ROCR_c9cd207d.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_momentum/ROCR_c9cd207d.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.RateOfChangeRatioRow
+		var rows []technical.RateOfChangeRatioRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("ROC_9ffc04fa", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_momentum/ROC_9ffc04fa.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_momentum/ROC_9ffc04fa.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.RateOfChangeRow
+		var rows []technical.RateOfChangeRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("RSI_fbad53b2", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_macd_stoch/RSI_fbad53b2.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_macd_stoch/RSI_fbad53b2.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.RelativeStrengthIndexRow
+		var rows []technical.RelativeStrengthIndexRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("SAR_c1dff5a5", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_volatility/SAR_c1dff5a5.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_volatility/SAR_c1dff5a5.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.SARRow
+		var rows []technical.SARRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("SHARES_OUTSTANDING_696752e2", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/fundamental/SHARES_OUTSTANDING_696752e2.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/fundamental/SHARES_OUTSTANDING_696752e2.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.SharesOutstandingRow
+		var rows []fundamental.SharesOutstandingRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("SMA_2e3849d5", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_moving_averages/SMA_2e3849d5.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_moving_averages/SMA_2e3849d5.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.SimpleMovingAverageRow
+		var rows []technical.SimpleMovingAverageRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("SPLITS_358e2618", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/fundamental/SPLITS_358e2618.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/fundamental/SPLITS_358e2618.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.SplitsRow
+		var rows []fundamental.SplitsRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("STOCHF_aae33090", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_macd_stoch/STOCHF_aae33090.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_macd_stoch/STOCHF_aae33090.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.StochasticFastRow
+		var rows []technical.StochasticFastRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("STOCHRSI_87df549e", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_macd_stoch/STOCHRSI_87df549e.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_macd_stoch/STOCHRSI_87df549e.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.StochasticRelativeStrengthIndexRow
+		var rows []technical.StochasticRelativeStrengthIndexRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("STOCH_18a572fd", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_macd_stoch/STOCH_18a572fd.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_macd_stoch/STOCH_18a572fd.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.StochasticOscillatorRow
+		var rows []technical.StochasticOscillatorRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("SUGAR_9675b985", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/commodities/SUGAR_9675b985.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/commodities/SUGAR_9675b985.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.SugarRow
+		var rows []commodities.SugarRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("SYMBOL_SEARCH_c3e00cd4", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/time_series/SYMBOL_SEARCH_c3e00cd4.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/time_series/SYMBOL_SEARCH_c3e00cd4.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.SymbolSearchRow
+		var rows []timeseries.SymbolSearchRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("T3_8ad10afc", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_moving_averages/T3_8ad10afc.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_moving_averages/T3_8ad10afc.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.T3Row
+		var rows []technical.T3Row
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("TEMA_c7d8425e", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_moving_averages/TEMA_c7d8425e.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_moving_averages/TEMA_c7d8425e.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.TripleExponentialMovingAverageRow
+		var rows []technical.TripleExponentialMovingAverageRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("TIME_SERIES_DAILY_42a08190", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/time_series/TIME_SERIES_DAILY_42a08190.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/time_series/TIME_SERIES_DAILY_42a08190.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.TimeSeriesDailyRow
+		var rows []timeseries.DailyRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("TIME_SERIES_DAILY_ADJUSTED_572d0539", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/time_series/TIME_SERIES_DAILY_ADJUSTED_572d0539.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/time_series/TIME_SERIES_DAILY_ADJUSTED_572d0539.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.TimeSeriesDailyAdjustedRow
+		var rows []timeseries.DailyAdjustedRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("TIME_SERIES_INTRADAY_3dbdcdc7", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/time_series/TIME_SERIES_INTRADAY_3dbdcdc7.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/time_series/TIME_SERIES_INTRADAY_3dbdcdc7.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.TimeSeriesIntradayRow
+		var rows []timeseries.IntradayRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("TIME_SERIES_MONTHLY_3ced87e9", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/time_series/TIME_SERIES_MONTHLY_3ced87e9.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/time_series/TIME_SERIES_MONTHLY_3ced87e9.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.TimeSeriesMonthlyRow
+		var rows []timeseries.MonthlyRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("TIME_SERIES_MONTHLY_ADJUSTED_62a3844d", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/time_series/TIME_SERIES_MONTHLY_ADJUSTED_62a3844d.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/time_series/TIME_SERIES_MONTHLY_ADJUSTED_62a3844d.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.TimeSeriesMonthlyAdjustedRow
+		var rows []timeseries.MonthlyAdjustedRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("TIME_SERIES_WEEKLY_74eb54d6", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/time_series/TIME_SERIES_WEEKLY_74eb54d6.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/time_series/TIME_SERIES_WEEKLY_74eb54d6.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.TimeSeriesWeeklyRow
+		var rows []timeseries.WeeklyRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("TIME_SERIES_WEEKLY_ADJUSTED_9cd0a0b1", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/time_series/TIME_SERIES_WEEKLY_ADJUSTED_9cd0a0b1.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/time_series/TIME_SERIES_WEEKLY_ADJUSTED_9cd0a0b1.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.TimeSeriesWeeklyAdjustedRow
+		var rows []timeseries.WeeklyAdjustedRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("TRANGE_61f61d8e", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_volatility/TRANGE_61f61d8e.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_volatility/TRANGE_61f61d8e.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.TrueRangeRow
+		var rows []technical.TrueRangeRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("TREASURY_YIELD_a4d134a9", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/economic/TREASURY_YIELD_a4d134a9.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/economic/TREASURY_YIELD_a4d134a9.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.TreasuryYieldRow
+		var rows []economic.TreasuryYieldRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("TRIMA_44737774", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_moving_averages/TRIMA_44737774.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_moving_averages/TRIMA_44737774.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.TriangularMovingAverageRow
+		var rows []technical.TriangularMovingAverageRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("TRIX_5d057c38", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_volume/TRIX_5d057c38.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_volume/TRIX_5d057c38.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.OneDayRateOfChangeTripleSmoothExponentialMovingAverageRow
+		var rows []technical.OneDayRateOfChangeTripleSmoothExponentialMovingAverageRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("ULTOSC_b91aa1db", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_volatility/ULTOSC_b91aa1db.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_volatility/ULTOSC_b91aa1db.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.UltimateOscillatorRow
+		var rows []technical.UltimateOscillatorRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("UNEMPLOYMENT_a0671528", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/economic/UNEMPLOYMENT_a0671528.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/economic/UNEMPLOYMENT_a0671528.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.UnemploymentRow
+		var rows []economic.UnemploymentRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("VWAP_2cb5b135", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_special_ma/VWAP_2cb5b135.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_special_ma/VWAP_2cb5b135.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.VolumeWeightedAveragePriceRow
+		var rows []technical.VolumeWeightedAveragePriceRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("WHEAT_92552a45", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/commodities/WHEAT_92552a45.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/commodities/WHEAT_92552a45.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.WheatRow
+		var rows []commodities.WheatRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("WILLR_6d7a9722", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_momentum/WILLR_6d7a9722.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_momentum/WILLR_6d7a9722.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.WilliamsRRow
+		var rows []technical.WilliamsRRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("WMA_b6c190fa", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/technical_moving_averages/WMA_b6c190fa.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_moving_averages/WMA_b6c190fa.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.WeightedMovingAverageRow
+		var rows []technical.WeightedMovingAverageRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
 	t.Run("WTI_6498cf9f", func(t *testing.T) {
-		buf, err := os.ReadFile(filepath.FromSlash("specification/testdata/examples/commodities/WTI_6498cf9f.csv"))
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/commodities/WTI_6498cf9f.csv"))
 		require.NoError(t, err)
-		var rows []alphavantage.WestTexasIntermediateRow
+		var rows []commodities.WestTexasIntermediateRow
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})

@@ -66,37 +66,49 @@ func main() {
 		"commodities":  "commodities.json",
 		"crypto":       "crypto.json",
 		"economic":     "economic.json",
+		"options":      "options.json",
+		"forex":        "forex.json",
 		"fundamental":  "fundamental.json",
 		"intelligence": "intelligence.json",
 		"technical":    "technical_*.json",
 		"timeseries":   "time_series.json",
 	}
 
+	for pkgName := range packages {
+		if err := os.MkdirAll(filepath.Join("query", pkgName), 0755); err != nil && !os.IsExist(err) {
+			panic(err)
+		}
+	}
+
+	querierTypes := make(map[string]QuerierType)
 	for filePath, functions := range functionFiles {
 		baseFileName := strings.TrimSuffix(filepath.Base(filePath), ".json")
 
 		var pkgName string
 		for name, pattern := range packages {
-			if ok, err := path.Match(pattern, baseFileName); err != nil {
+			if ok, err := path.Match(pattern, filepath.Base(filePath)); err != nil {
 				panic(err)
 			} else if ok {
 				pkgName = name
 			}
+		}
+		if pkgName == "" {
+			panic("package name not found in " + filePath)
 		}
 
 		slices.SortFunc(functions, func(a, b specification.Function) int {
 			return cmp.Compare(goIdentifiers[a.Name][0], goIdentifiers[b.Name][0])
 		})
 
-		outFileName := filepath.Join(pkgName, baseFileName+".go")
+		outFileName := filepath.Join("query", pkgName, baseFileName+".go")
 
-		if err := generateFile(pkgName, outFileName, baseFileName, functions, goIdentifiers, queryParams); err != nil {
+		if err := generateFile(querierTypes, pkgName, outFileName, baseFileName, functions, goIdentifiers, queryParams); err != nil {
 			panic(err)
 		}
 	}
 
 	// Generate CLI functions.go
-	if err := generateCLIFile(functionFiles, goIdentifiers, queryParams); err != nil {
+	if err := generateCLIFile(querierTypes, functionFiles, goIdentifiers, queryParams); err != nil {
 		panic(err)
 	}
 
@@ -115,9 +127,17 @@ func main() {
 	}
 
 	// Generate CSV parsing tests
-	if err := generateCSVTests(functionFiles, goIdentifiers, indexEntrees); err != nil {
+	if err := generateCSVTests(querierTypes, functionFiles, goIdentifiers, indexEntrees); err != nil {
 		panic(err)
 	}
+}
+
+type QuerierType struct {
+	PackageIdent string
+	PackagePath  string
+	NewQueryFunc string
+	QueryType    string
+	RowType      string
 }
 
 func errNeqNil() *ast.BinaryExpr {
@@ -181,7 +201,9 @@ func formatGo(node *ast.File, fileName string) error {
 	if err := format.Node(&buf, token.NewFileSet(), node); err != nil {
 		return err
 	}
-	result := bytes.ReplaceAll(buf.Bytes(), []byte("}\nfunc"), []byte("}\n\nfunc"))
+	result := buf.Bytes()
+	result = bytes.ReplaceAll(result, []byte("}\nfunc"), []byte("}\n\nfunc"))
+	result = bytes.ReplaceAll(result, []byte("}\ntype"), []byte("}\n\ntype"))
 
 	fp := filepath.FromSlash(fileName)
 
@@ -202,11 +224,7 @@ func stringBasicLiteral(str string) *ast.BasicLit {
 	return &ast.BasicLit{Kind: token.STRING, Value: strconv.Quote(str)}
 }
 
-func doer() *ast.Ident {
-	return ast.NewIdent("Doer")
-}
-
-func generateFile(pkgName, outFileName, baseFileName string, functions []specification.Function, goIdentifiers map[string][]string, queryParams []specification.QueryParameter) error {
+func generateFile(querierTypes map[string]QuerierType, pkgName, outFileName, baseFileName string, functions []specification.Function, goIdentifiers map[string][]string, queryParams []specification.QueryParameter) error {
 	file := ast.File{
 		Name: ast.NewIdent(pkgName),
 	}
@@ -222,9 +240,11 @@ func generateFile(pkgName, outFileName, baseFileName string, functions []specifi
 	imports = addTimeForColumnType(functions, imports)
 
 	for _, fn := range functions {
-		goIdent := goIdentifiers[fn.Name][0]
+		goIdent := goIdentifier(goIdentifiers, pkgName, fn.Name)
 		rowTypeIdent := goIdent + "Row"
 		queryTypeIdent := goIdent + "Query"
+		newQueryFunc := "Query" + goIdent
+		packagePath := path.Join("github.com/portfoliotree/alphavantage", path.Dir(outFileName))
 
 		file.Decls = append(file.Decls, &ast.GenDecl{
 			Tok: token.TYPE,
@@ -235,7 +255,7 @@ func generateFile(pkgName, outFileName, baseFileName string, functions []specifi
 				},
 			},
 		})
-		queryFuncDecls, im, err := queryInitializerFunc(goIdent, queryTypeIdent, fn, goIdentifiers, queryParams)
+		queryFuncDecls, im, err := queryInitializerFunc(newQueryFunc, queryTypeIdent, fn, goIdentifiers, queryParams)
 		if err != nil {
 			return err
 		}
@@ -248,14 +268,21 @@ func generateFile(pkgName, outFileName, baseFileName string, functions []specifi
 			file.Decls = append(file.Decls, fnDecl)
 		}
 
-		file.Decls = append(file.Decls, queryMethodDoWith(queryTypeIdent))
-
-		imports = append(imports, "context", "net/http", "github.com/portfoliotree/alphavantage/api")
-		slices.Sort(imports)
-		imports = slices.Compact(imports)
-
 		if len(fn.CSVColumns) == 0 {
+			querierTypes[fn.Name] = QuerierType{
+				PackageIdent: pkgName,
+				PackagePath:  packagePath,
+				QueryType:    queryTypeIdent,
+				NewQueryFunc: newQueryFunc,
+			}
 			continue
+		}
+		querierTypes[fn.Name] = QuerierType{
+			PackageIdent: pkgName,
+			PackagePath:  packagePath,
+			NewQueryFunc: newQueryFunc,
+			QueryType:    queryTypeIdent,
+			RowType:      rowTypeIdent,
 		}
 
 		file.Decls = append(file.Decls, &ast.GenDecl{
@@ -268,7 +295,7 @@ func generateFile(pkgName, outFileName, baseFileName string, functions []specifi
 					},
 				},
 			},
-		}, getCSVRows(fn, goIdent, rowTypeIdent, queryTypeIdent))
+		})
 	}
 
 	if len(file.Decls) <= 1 {
@@ -284,97 +311,18 @@ func generateFile(pkgName, outFileName, baseFileName string, functions []specifi
 	return formatGo(&file, outFileName)
 }
 
-func getCSVRows(fn specification.Function, goIdent, rowTypeIdent, queryTypeIdent string) *ast.FuncDecl {
-	return &ast.FuncDecl{
-		Name: ast.NewIdent("CSVRows"),
-		Recv: &ast.FieldList{
-			List: []*ast.Field{
-				{Names: []*ast.Ident{ast.NewIdent("q")}, Type: ast.NewIdent(queryTypeIdent)},
-			},
-		},
-		Type: &ast.FuncType{
-			Params: &ast.FieldList{
-				List: []*ast.Field{
-					{Names: []*ast.Ident{ast.NewIdent("ctx")}, Type: newSel("context", "Context")},
-					{Names: []*ast.Ident{ast.NewIdent("client")}, Type: doer()},
-				},
-			},
-			Results: &ast.FieldList{
-				List: []*ast.Field{
-					{Type: &ast.ArrayType{Elt: ast.NewIdent(rowTypeIdent)}},
-					{Type: ast.NewIdent("error")},
-				},
-			},
-		},
-		Body: generateGetCSVRowsBody(fn, rowTypeIdent),
+func goIdentifier(goIdents map[string][]string, pkgName, name string) string {
+	val := goIdents[name][0]
+	if idx := strings.Index(strings.ToLower(val), pkgName); idx >= 0 {
+		val = val[:idx] + val[idx+len(pkgName):]
 	}
+	if strings.HasPrefix(val, "FX") {
+		val = strings.TrimPrefix(val, "FX")
+	}
+	return val
 }
 
-func queryMethodDoWith(queryTypeIdent string) *ast.FuncDecl {
-	return &ast.FuncDecl{
-		Name: ast.NewIdent("DoWith"),
-		Recv: &ast.FieldList{
-			List: []*ast.Field{
-				{Names: []*ast.Ident{ast.NewIdent("q")}, Type: ast.NewIdent(queryTypeIdent)},
-			},
-		},
-		Type: &ast.FuncType{
-			Params: &ast.FieldList{
-				List: []*ast.Field{
-					{Names: []*ast.Ident{ast.NewIdent("ctx")}, Type: newSel("context", "Context")},
-					{Names: []*ast.Ident{ast.NewIdent("client")}, Type: doer()},
-				},
-			},
-			Results: &ast.FieldList{
-				List: []*ast.Field{
-					{Type: &ast.StarExpr{
-						X: newSel("http", "Response"),
-					}},
-					{Type: ast.NewIdent("error")},
-				},
-			},
-		},
-		Body: &ast.BlockStmt{
-			List: []ast.Stmt{
-				&ast.ReturnStmt{Results: []ast.Expr{
-					&ast.CallExpr{
-						Fun: newSel("api", "DoQuery"),
-						Args: append(idExprList("ctx", "client"), &ast.CallExpr{
-							Fun:  newSel("url", "Values"),
-							Args: []ast.Expr{ast.NewIdent("q")},
-						}),
-					},
-				}},
-			},
-		},
-	}
-}
-
-func generateGetCSVRowsBody(fn specification.Function, rowTypeIdent string) *ast.BlockStmt {
-	var list []ast.Stmt
-
-	if fn.HasDatatypeParameter() {
-		list = append(list, &ast.ExprStmt{
-			X: &ast.CallExpr{
-				Fun:  newSel("q", "DataTypeCSV"),
-				Args: []ast.Expr{},
-			},
-		})
-	}
-
-	list = append(list,
-		&ast.ReturnStmt{Results: []ast.Expr{&ast.CallExpr{
-			Fun:  newSel("api", "RequestCSVRows"),
-			Args: idExprList("ctx", "client", "q"),
-		}}},
-	)
-
-	return &ast.BlockStmt{
-		List: list,
-	}
-}
-
-func queryInitializerFunc(goIdent, queryTypeIdent string, fn specification.Function, goIdentifiers map[string][]string, queryParams []specification.QueryParameter) ([]*ast.FuncDecl, []string, error) {
+func queryInitializerFunc(funcName, queryTypeIdent string, fn specification.Function, goIdentifiers map[string][]string, queryParams []specification.QueryParameter) ([]*ast.FuncDecl, []string, error) {
 	requiredFields := &ast.Field{
 		Type: ast.NewIdent("string"),
 	}
@@ -411,7 +359,7 @@ func queryInitializerFunc(goIdent, queryTypeIdent string, fn specification.Funct
 
 	decls := []*ast.FuncDecl{
 		{
-			Name: ast.NewIdent("Query" + goIdent),
+			Name: ast.NewIdent(funcName),
 			Type: &ast.FuncType{
 				Params:  &ast.FieldList{List: []*ast.Field{requiredFields}},
 				Results: &ast.FieldList{List: []*ast.Field{newField(ast.NewIdent(queryTypeIdent))}},
@@ -511,6 +459,28 @@ func queryInitializerFunc(goIdent, queryTypeIdent string, fn specification.Funct
 	slices.Sort(imports)
 	imports = slices.Compact(imports)
 
+	decls = append(decls, &ast.FuncDecl{
+		Name: ast.NewIdent("Encode"),
+		Type: &ast.FuncType{
+			Results: &ast.FieldList{List: []*ast.Field{
+				{Type: ast.NewIdent("string")},
+			}},
+		},
+		Recv: &ast.FieldList{List: []*ast.Field{
+			newField(ast.NewIdent(queryTypeIdent), "q"),
+		}},
+		Body: &ast.BlockStmt{
+			List: []ast.Stmt{
+				&ast.ReturnStmt{Results: []ast.Expr{&ast.CallExpr{
+					Fun: &ast.SelectorExpr{
+						X:   &ast.CallExpr{Fun: newSel("url", "Values"), Args: []ast.Expr{ast.NewIdent("q")}},
+						Sel: ast.NewIdent("Encode"),
+					},
+				}}},
+			},
+		},
+	})
+
 	return decls, imports, nil
 }
 
@@ -605,7 +575,7 @@ func csvFields(baseFileName string, fn specification.Function, goIdentifiers map
 	return &fields
 }
 
-func generateCLIFile(functionFiles map[string][]specification.Function, goIdentifiers map[string][]string, queryParams []specification.QueryParameter) error {
+func generateCLIFile(querierTypes map[string]QuerierType, functionFiles map[string][]specification.Function, goIdentifiers map[string][]string, queryParams []specification.QueryParameter) error {
 	var allFunctions []specification.Function
 	for _, functions := range functionFiles {
 		allFunctions = append(allFunctions, functions...)
@@ -659,10 +629,10 @@ func generateCLIFile(functionFiles map[string][]specification.Function, goIdenti
 	runFunctionDecl := &ast.FuncDecl{
 		Doc: &ast.CommentGroup{
 			List: []*ast.Comment{
-				{Text: "// RunFunction executes the specified AlphaVantage API function with the given arguments."},
+				{Text: "// runFunction executes the specified AlphaVantage API function with the given arguments."},
 			},
 		},
-		Name: ast.NewIdent("RunFunction"),
+		Name: ast.NewIdent("runFunction"),
 		Type: &ast.FuncType{
 			Params: &ast.FieldList{
 				List: []*ast.Field{
@@ -689,7 +659,7 @@ func generateCLIFile(functionFiles map[string][]specification.Function, goIdenti
 	file.Decls = append(file.Decls, runFunctionDecl)
 
 	for _, fn := range allFunctions {
-		funcDecl, fnImports, err := generateHandlerFunction(fn, goIdentifiers, queryParams)
+		funcDecl, fnImports, err := generateHandlerFunction(fn, querierTypes[fn.Name], goIdentifiers, queryParams)
 		if err != nil {
 			return err
 		}
@@ -708,7 +678,18 @@ func generateCLIFile(functionFiles map[string][]specification.Function, goIdenti
 		imports = append(imports, imp)
 	}
 	slices.Sort(imports)
-	imports = append(imports, "github.com/spf13/pflag", "github.com/portfoliotree/alphavantage")
+	imports = append(imports, "github.com/spf13/pflag", "github.com/portfoliotree/alphavantage", "github.com/portfoliotree/alphavantage/api")
+
+	var querierPackages []string
+	for _, id := range querierTypes {
+		if id.PackagePath == "" {
+			continue
+		}
+		querierPackages = append(querierPackages, id.PackagePath)
+		slices.Sort(querierPackages)
+		querierPackages = slices.Compact(querierPackages)
+	}
+	imports = append(imports, querierPackages...)
 
 	for _, imp := range imports {
 		importSpecs = append(importSpecs, &ast.ImportSpec{
@@ -728,7 +709,7 @@ func generateCLIFile(functionFiles map[string][]specification.Function, goIdenti
 	return formatGo(file, "cmd/av/functions.go")
 }
 
-func generateHandlerFunction(fn specification.Function, goIdentifiers map[string][]string, queryParams []specification.QueryParameter) (*ast.FuncDecl, []string, error) {
+func generateHandlerFunction(fn specification.Function, qt QuerierType, goIdentifiers map[string][]string, queryParams []specification.QueryParameter) (*ast.FuncDecl, []string, error) {
 	goIdent := goIdentifiers[fn.Name][0]
 
 	var (
@@ -942,7 +923,7 @@ func generateHandlerFunction(fn specification.Function, goIdentifiers map[string
 		Tok: token.DEFINE,
 		Rhs: []ast.Expr{
 			&ast.CallExpr{
-				Fun:  newSel("alphavantage", "Query"+goIdent),
+				Fun:  newSel(qt.PackageIdent, qt.NewQueryFunc),
 				Args: queryArgs,
 			},
 		},
@@ -1102,8 +1083,13 @@ func generateHandlerFunction(fn specification.Function, goIdentifiers map[string
 		Tok: token.DEFINE,
 		Rhs: []ast.Expr{
 			&ast.CallExpr{
-				Fun:  newSel("query", "DoWith"),
-				Args: idExprList("ctx", "client"),
+				Fun: newSel("api", "DoQuery"),
+				Args: []ast.Expr{
+					ast.NewIdent("ctx"),
+					ast.NewIdent("client"),
+					newSel("client", "BaseURL"),
+					ast.NewIdent("query"),
+				},
 			},
 		},
 	})
@@ -1307,7 +1293,7 @@ func generateCLITestData(functionFiles map[string][]specification.Function) erro
 	return nil
 }
 
-func generateCSVTests(functionFiles map[string][]specification.Function, goIdentifiers map[string][]string, indexEntrees []specification.IndexEntree) error {
+func generateCSVTests(querierTypes map[string]QuerierType, functionFiles map[string][]specification.Function, goIdentifiers map[string][]string, indexEntrees []specification.IndexEntree) error {
 	file := ast.File{
 		Name: ast.NewIdent("api_test"),
 	}
@@ -1328,11 +1314,7 @@ func generateCSVTests(functionFiles map[string][]specification.Function, goIdent
 	imports = slices.Compact(imports)
 	imports = append(imports,
 		"github.com/stretchr/testify/require",
-		"github.com/portfoliotree/alphavantage",
 		"github.com/portfoliotree/alphavantage/api")
-	for _, im := range imports {
-		importsDecl.Specs = append(importsDecl.Specs, &ast.ImportSpec{Path: stringBasicLiteral(im)})
-	}
 
 	testFunc := &ast.FuncDecl{
 		Name: ast.NewIdent("TestCSV"),
@@ -1354,9 +1336,13 @@ func generateCSVTests(functionFiles map[string][]specification.Function, goIdent
 
 		for _, functions := range functionFiles {
 			for _, fn := range functions {
+				qt := querierTypes[fn.Name]
 				if fn.Name != functionName || len(fn.CSVColumns) == 0 || path.Ext(entree.Path) != ".csv" {
 					continue
 				}
+				imports = append(imports, qt.PackagePath)
+				slices.Sort(imports)
+				imports = slices.Compact(imports)
 				testFunc.Body.List = append(testFunc.Body.List, &ast.ExprStmt{X: &ast.CallExpr{
 					Fun: newSel("t", "Run"),
 					Args: []ast.Expr{
@@ -1377,7 +1363,7 @@ func generateCSVTests(functionFiles map[string][]specification.Function, goIdent
 											Args: []ast.Expr{
 												&ast.CallExpr{
 													Fun:  newSel("filepath", "FromSlash"),
-													Args: []ast.Expr{stringBasicLiteral(path.Join("specification", entree.Path))},
+													Args: []ast.Expr{stringBasicLiteral(path.Join("../specification", entree.Path))},
 												},
 											},
 										}},
@@ -1390,7 +1376,7 @@ func generateCSVTests(functionFiles map[string][]specification.Function, goIdent
 												&ast.ValueSpec{
 													Names: []*ast.Ident{ast.NewIdent("rows")},
 													Type: &ast.ArrayType{
-														Elt: newSel("alphavantage", goIdentifiers[fn.Name][0]+"Row"),
+														Elt: newSel(qt.PackageIdent, qt.RowType),
 													},
 												},
 											},
@@ -1416,6 +1402,10 @@ func generateCSVTests(functionFiles map[string][]specification.Function, goIdent
 				}})
 			}
 		}
+	}
+
+	for _, im := range imports {
+		importsDecl.Specs = append(importsDecl.Specs, &ast.ImportSpec{Path: stringBasicLiteral(im)})
 	}
 
 	return formatGo(&file, "api/csv_test.go")

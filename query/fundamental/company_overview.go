@@ -1,12 +1,8 @@
-package alphavantage
+package fundamental
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
-	"io"
-	"log"
-	"net/url"
 	"reflect"
 	"strconv"
 	"time"
@@ -76,34 +72,6 @@ type CompanyOverview struct {
 	ExDividendDate             time.Time `av-json:"ExDividendDate"`
 	LastSplitFactor            string    `av-json:"LastSplitFactor"`
 	LastSplitDate              time.Time `av-json:"LastSplitDate"`
-}
-
-// CompanyOverview fetches comprehensive company information for the specified symbol.
-// It returns detailed company data including financial metrics, sector information,
-// and key statistics as a CompanyOverview struct.
-func (client *Client) CompanyOverview(ctx context.Context, q OverviewQuery) (CompanyOverview, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
-	if err != nil {
-		return CompanyOverview{}, fmt.Errorf("failed to create listing status request: %w", err)
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return CompanyOverview{}, err
-	}
-	defer closeAndIgnoreError(res.Body)
-
-	buf, err := io.ReadAll(res.Body)
-	if err != nil {
-		return CompanyOverview{}, err
-	}
-
-	var result CompanyOverview
-	err = json.Unmarshal(buf, &result)
-	if err != nil {
-		log.Println(err)
-	}
-	return result, err
 }
 
 func (c *CompanyOverview) UnmarshalJSON(in []byte) error {
