@@ -12,14 +12,9 @@ import (
 )
 
 func (client *Client) ETFProfile(ctx context.Context, q fundamental.ETFProfileQuery) (fundamental.ETFProfile, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
+	res, err := client.Query(ctx, url.Values(q))
 	if err != nil {
 		return fundamental.ETFProfile{}, fmt.Errorf("failed to create ETF profile request: %w", err)
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return fundamental.ETFProfile{}, err
 	}
 	defer closeAndIgnoreError(res.Body)
 
@@ -37,14 +32,9 @@ func (client *Client) ETFProfile(ctx context.Context, q fundamental.ETFProfileQu
 // It returns detailed company data including financial metrics, sector information,
 // and key statistics as a CompanyOverview struct.
 func (client *Client) CompanyOverview(ctx context.Context, q fundamental.OverviewQuery) (fundamental.CompanyOverview, error) {
-	req, err := client.QueryRequest(ctx, url.Values(q))
+	res, err := client.Query(ctx, url.Values(q))
 	if err != nil {
 		return fundamental.CompanyOverview{}, fmt.Errorf("failed to create listing status request: %w", err)
-	}
-
-	res, err := client.Do(req)
-	if err != nil {
-		return fundamental.CompanyOverview{}, err
 	}
 	defer closeAndIgnoreError(res.Body)
 

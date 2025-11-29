@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"net/url"
 	"os"
 
 	"github.com/portfoliotree/alphavantage"
@@ -16,10 +15,7 @@ func main() {
 
 	ctx := context.Background()
 	query := timeseries.QueryDaily(client.APIKey, "AAPL")
-	result, err := api.DoQuery(ctx, client, url.URL{
-		Scheme: "https",
-		Host:   "www.alphavantage.co",
-	}, query)
+	result, err := client.Query(ctx, query)
 	if err != nil {
 		printErrorAndExit(err)
 	}

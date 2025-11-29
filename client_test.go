@@ -5,6 +5,7 @@ import (
 	"context"
 	_ "embed"
 	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -172,29 +173,6 @@ func ExampleParseCSV() {
 	// First price: 2020-08-21 - Close: 13.25, Volume: 751279
 }
 
-// ExampleParseCSVRows demonstrates streaming CSV parsing using an iterator.
-// This is memory-efficient for large datasets as it processes one row at a time.
-func ExampleParseCSVRows() {
-	csvData := `symbol,name,type,region,marketOpen,marketClose,timezone,currency,matchScore
-BA,Boeing Company,Equity,United States,09:30,16:00,UTC-04,USD,1.0000
-BAB,Invesco Taxable Municipal Bond ETF,ETF,United States,09:30,16:00,UTC-04,USD,0.8000`
-
-	count := 0
-	for result := range api.ParseCSVRows[SearchResult](strings.NewReader(csvData), time.UTC, func(err error) bool {
-		fmt.Printf("Parse error: %v\n", err)
-		return false // stop on error
-	}) {
-		count++
-		fmt.Printf("Symbol: %s, Match: %.1f\n", result.Symbol, result.MatchScore)
-	}
-
-	fmt.Printf("Processed %d results\n", count)
-
-	// Output: Symbol: BA, Match: 1.0
-	// Symbol: BAB, Match: 0.8
-	// Processed 2 results
-}
-
 func TestTimeSeriesIntraday(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 		http.ServeFile(res, req, "testdata/intraday_5min_IBM.csv")
@@ -208,7 +186,7 @@ func TestTimeSeriesIntraday(t *testing.T) {
 
 	query := timeseries.QueryIntraday("test-key-literal", "IBM", alphavantage.IntervalOption15min).ExtendedHours(true).OutputSizeCompact().DataTypeCSV()
 
-	res, err := api.DoQuery(t.Context(), client, client.BaseURL, query)
+	res, err := client.Query(t.Context(), query)
 	require.NoError(t, err)
 
 	req := res.Request
@@ -351,7 +329,7 @@ func TestSearch(t *testing.T) {
 
 	query := timeseries.QuerySymbolSearch("demo", "BA").DataTypeCSV()
 
-	res, err := api.DoQuery(t.Context(), client, client.BaseURL, query)
+	res, err := client.Query(t.Context(), query)
 	require.NoError(t, err)
 
 	var results []timeseries.SymbolSearchRow
@@ -364,4 +342,35 @@ func TestSearch(t *testing.T) {
 	assert.Equal(t, apiKeyTestValue, res.Request.URL.Query().Get("apikey"))
 	assert.Equal(t, "csv", res.Request.URL.Query().Get("datatype"))
 	assert.Equal(t, 1, waitCallCount)
+}
+
+func TestClient_GlobalQuote(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+		http.ServeFile(res, req, "testdata/global_quote_IBM.csv")
+	}))
+	server.Client()
+	t.Cleanup(server.Close)
+
+	t.Setenv(alphavantage.APIKeyEnvironmentVariableName, apiKeyTestValue)
+	t.Setenv(alphavantage.APIURLEnvironmentVariableName, server.URL)
+
+	client := alphavantage.NewClient()
+
+	ctx := context.Background()
+	query := timeseries.QueryGlobalQuote(client.APIKey, "IBM").DataTypeCSV()
+	res, err := client.Query(ctx, query)
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		_ = res.Body.Close()
+	})
+
+	// Verify we can read the CSV response
+	content, err := io.ReadAll(res.Body)
+	require.NoError(t, err)
+
+	var data []timeseries.GlobalQuoteRow
+	require.NoError(t, api.ParseCSV(bytes.NewReader(content), &data, nil))
+
+	require.Len(t, data, 1)
+	assert.Equal(t, data[0].Symbol, "IBM")
 }

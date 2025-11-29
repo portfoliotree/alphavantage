@@ -678,7 +678,7 @@ func generateCLIFile(querierTypes map[string]QuerierType, functionFiles map[stri
 		imports = append(imports, imp)
 	}
 	slices.Sort(imports)
-	imports = append(imports, "github.com/spf13/pflag", "github.com/portfoliotree/alphavantage", "github.com/portfoliotree/alphavantage/api")
+	imports = append(imports, "github.com/spf13/pflag", "github.com/portfoliotree/alphavantage")
 
 	var querierPackages []string
 	for _, id := range querierTypes {
@@ -1083,11 +1083,9 @@ func generateHandlerFunction(fn specification.Function, qt QuerierType, goIdenti
 		Tok: token.DEFINE,
 		Rhs: []ast.Expr{
 			&ast.CallExpr{
-				Fun: newSel("api", "DoQuery"),
+				Fun: newSel("client", "Query"),
 				Args: []ast.Expr{
 					ast.NewIdent("ctx"),
-					ast.NewIdent("client"),
-					newSel("client", "BaseURL"),
 					ast.NewIdent("query"),
 				},
 			},

@@ -99,7 +99,7 @@ func ParseCSV[T any](r io.Reader, data *[]T, location *time.Location) error {
 		panic(fmt.Errorf("data must not be nil"))
 	}
 	var err error
-	for row := range ParseCSVRows[T](ensureReadCloser(r), location, func(e error) bool {
+	for row := range parseCSVRows[T](ensureReadCloser(r), location, func(e error) bool {
 		err = e
 		return false
 	}) {
@@ -115,7 +115,7 @@ func ensureReadCloser(r io.Reader) io.ReadCloser {
 	return io.NopCloser(r)
 }
 
-// ParseCSVRows returns an iterator that parses CSV data row by row into structs.
+// parseCSVRows returns an iterator that parses CSV data row by row into structs.
 // This is memory-efficient for large datasets as it processes one row at a time.
 //
 // Uses the same struct field tagging system as ParseCSV:
@@ -127,13 +127,13 @@ func ensureReadCloser(r io.Reader) io.ReadCloser {
 //
 // Example usage:
 //
-//	for price := range ParseCSVRows[StockPrice](reader, time.UTC, func(err error) bool {
+//	for price := range parseCSVRows[StockPrice](reader, time.UTC, func(err error) bool {
 //	    log.Printf("Parse error: %v", err)
 //	    return true // continue on errors
 //	}) {
 //	    fmt.Printf("Price: %+v\n", price)
 //	}
-func ParseCSVRows[T any](r io.Reader, location *time.Location, handleErr func(error) bool) iter.Seq[T] {
+func parseCSVRows[T any](r io.Reader, location *time.Location, handleErr func(error) bool) iter.Seq[T] {
 	rc := ensureReadCloser(r)
 	return func(yield func(T) bool) {
 		defer func() { _ = rc.Close() }()

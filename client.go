@@ -64,8 +64,6 @@ type Waiter interface {
 	Wait(ctx context.Context) error
 }
 
-type Doer = api.Doer
-
 // NewClient creates a new AlphaVantage client with the specified API key.
 // The client will use environment variable ALPHA_VANTAGE_URL if set, otherwise defaults
 // to https://www.alphavantage.co.
@@ -101,19 +99,6 @@ func NewClient() *Client {
 	}
 }
 
-func (client *Client) QueryRequest(ctx context.Context, values api.Encoder) (*http.Request, error) {
-	return http.NewRequestWithContext(ctx,
-		http.MethodGet,
-		(&url.URL{
-			Scheme:   cmp.Or(client.BaseURL.Scheme, api.DefaultScheme),
-			Host:     cmp.Or(client.BaseURL.Host, api.DefaultHost),
-			Path:     cmp.Or(client.BaseURL.Path, api.DefaultPath),
-			RawQuery: values.Encode(),
-		}).String(),
-		nil,
-	)
-}
-
 func (client *Client) Do(req *http.Request) (*http.Response, error) {
 	if client.Client == nil {
 		client.Client = http.DefaultClient
@@ -139,6 +124,26 @@ func (client *Client) Do(req *http.Request) (*http.Response, error) {
 			res.StatusCode, http.StatusText(res.StatusCode), string(buf))
 	}
 
+	return res, nil
+}
+
+func (client *Client) Query(ctx context.Context, query interface {
+	Encode() string
+}) (*http.Response, error) {
+	u := url.URL{
+		Scheme:   cmp.Or(client.BaseURL.Scheme, api.DefaultScheme),
+		Host:     cmp.Or(client.BaseURL.Host, api.DefaultHost),
+		Path:     api.DefaultPath,
+		RawQuery: query.Encode(),
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
 	return res, nil
 }
 
