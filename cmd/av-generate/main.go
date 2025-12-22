@@ -130,6 +130,11 @@ func main() {
 	if err := generateCSVTests(querierTypes, functionFiles, goIdentifiers, indexEntrees); err != nil {
 		panic(err)
 	}
+
+	// Generate client category helpers (functions.go)
+	if err := generateClientHelpers(querierTypes, functionFiles, goIdentifiers, packages); err != nil {
+		panic(err)
+	}
 }
 
 type QuerierType struct {
@@ -1407,4 +1412,195 @@ func generateCSVTests(querierTypes map[string]QuerierType, functionFiles map[str
 	}
 
 	return formatGo(&file, "api/csv_test.go")
+}
+
+func generateClientHelpers(querierTypes map[string]QuerierType, functionFiles map[string][]specification.Function, goIdentifiers map[string][]string, packages map[string]string) error {
+	// Category names mapped to their exported type names
+	categoryNames := map[string]string{
+		"timeseries":   "TimeSeries",
+		"fundamental":  "Fundamental",
+		"technical":    "Technical",
+		"economic":     "Economic",
+		"forex":        "Forex",
+		"crypto":       "Crypto",
+		"commodities":  "Commodities",
+		"intelligence": "Intelligence",
+		"options":      "Options",
+	}
+
+	file := &ast.File{Name: ast.NewIdent("alphavantage")}
+
+	importsSet := make(map[string]struct{})
+	importsSet["context"] = struct{}{}
+
+	// Gather functions by category
+	categoryFunctions := make(map[string][]specification.Function)
+	for filePath, functions := range functionFiles {
+		var pkgName string
+		for name, pattern := range packages {
+			if ok, err := path.Match(pattern, filepath.Base(filePath)); err != nil {
+				return err
+			} else if ok {
+				pkgName = name
+			}
+		}
+		if pkgName == "" {
+			continue
+		}
+		categoryFunctions[pkgName] = append(categoryFunctions[pkgName], functions...)
+	}
+
+	// Sort category names for deterministic output
+	var sortedCategories []string
+	for cat := range categoryNames {
+		sortedCategories = append(sortedCategories, cat)
+	}
+	slices.Sort(sortedCategories)
+
+	var decls []ast.Decl
+
+	// Generate type declarations and accessor methods for each category
+	for _, pkgName := range sortedCategories {
+		categoryTypeName := categoryNames[pkgName] + "Functions"
+
+		// Type declaration: type TimeSeriesFunctions Client
+		decls = append(decls, &ast.GenDecl{
+			Tok: token.TYPE,
+			Specs: []ast.Spec{
+				&ast.TypeSpec{
+					Name: ast.NewIdent(categoryTypeName),
+					Type: ast.NewIdent("Client"),
+				},
+			},
+		})
+
+		// Accessor method: func (c *Client) TimeSeries() *TimeSeriesFunctions
+		decls = append(decls, &ast.FuncDecl{
+			Recv: &ast.FieldList{
+				List: []*ast.Field{
+					newField(&ast.StarExpr{X: ast.NewIdent("Client")}, "c"),
+				},
+			},
+			Name: ast.NewIdent(categoryNames[pkgName]),
+			Type: &ast.FuncType{
+				Results: &ast.FieldList{
+					List: []*ast.Field{
+						{Type: &ast.StarExpr{X: ast.NewIdent(categoryTypeName)}},
+					},
+				},
+			},
+			Body: &ast.BlockStmt{
+				List: []ast.Stmt{
+					&ast.ReturnStmt{
+						Results: []ast.Expr{
+							&ast.CallExpr{
+								Fun: &ast.ParenExpr{
+									X: &ast.StarExpr{X: ast.NewIdent(categoryTypeName)},
+								},
+								Args: []ast.Expr{ast.NewIdent("c")},
+							},
+						},
+					},
+				},
+			},
+		})
+	}
+
+	// Generate helper methods for each function in each category
+	for _, pkgName := range sortedCategories {
+		categoryTypeName := categoryNames[pkgName] + "Functions"
+		functions := categoryFunctions[pkgName]
+
+		// Sort functions by their Go identifier
+		slices.SortFunc(functions, func(a, b specification.Function) int {
+			return cmp.Compare(goIdentifiers[a.Name][0], goIdentifiers[b.Name][0])
+		})
+
+		for _, fn := range functions {
+			qt := querierTypes[fn.Name]
+			// Skip functions without CSV row types (JSON-only functions)
+			if qt.PackagePath == "" || qt.RowType == "" {
+				continue
+			}
+
+			// Add import for the query package (only when we have a function to generate)
+			pkgPath := path.Join("github.com/portfoliotree/alphavantage/query", pkgName)
+			importsSet[pkgPath] = struct{}{}
+
+			goIdent := goIdentifier(goIdentifiers, pkgName, fn.Name)
+			methodName := goIdent
+
+			// Build the method
+			// func (f *TimeSeriesFunctions) GlobalQuote(ctx context.Context, query timeseries.GlobalQuoteQuery) ([]timeseries.GlobalQuoteRow, error)
+			resultType := &ast.ArrayType{Elt: newSel(pkgName, qt.RowType)}
+			params := []*ast.Field{
+				newField(newSel("context", "Context"), "ctx"),
+				newField(newSel(pkgName, qt.QueryType), "query"),
+			}
+			body := []ast.Stmt{
+				&ast.ReturnStmt{
+					Results: []ast.Expr{
+						&ast.CallExpr{
+							Fun: &ast.IndexExpr{
+								X:     ast.NewIdent("queryRows"),
+								Index: newSel(pkgName, qt.RowType),
+							},
+							Args: []ast.Expr{
+								ast.NewIdent("ctx"),
+								&ast.CallExpr{
+									Fun: &ast.ParenExpr{
+										X: &ast.StarExpr{X: ast.NewIdent("Client")},
+									},
+									Args: []ast.Expr{ast.NewIdent("f")},
+								},
+								ast.NewIdent("query"),
+							},
+						},
+					},
+				},
+			}
+
+			decls = append(decls, &ast.FuncDecl{
+				Recv: &ast.FieldList{
+					List: []*ast.Field{
+						newField(&ast.StarExpr{X: ast.NewIdent(categoryTypeName)}, "f"),
+					},
+				},
+				Name: ast.NewIdent(methodName),
+				Type: &ast.FuncType{
+					Params: &ast.FieldList{List: params},
+					Results: &ast.FieldList{
+						List: []*ast.Field{
+							{Type: resultType},
+							{Type: ast.NewIdent("error")},
+						},
+					},
+				},
+				Body: &ast.BlockStmt{List: body},
+			})
+		}
+	}
+
+	// Build imports
+	var imports []string
+	for imp := range importsSet {
+		imports = append(imports, imp)
+	}
+	slices.Sort(imports)
+
+	var importSpecs []ast.Spec
+	for _, imp := range imports {
+		importSpecs = append(importSpecs, &ast.ImportSpec{
+			Path: stringBasicLiteral(imp),
+		})
+	}
+
+	file.Decls = append([]ast.Decl{
+		&ast.GenDecl{
+			Tok:   token.IMPORT,
+			Specs: importSpecs,
+		},
+	}, decls...)
+
+	return formatGo(file, "functions.go")
 }

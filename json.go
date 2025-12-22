@@ -8,7 +8,12 @@ import (
 	"log"
 	"net/url"
 
+	"github.com/portfoliotree/alphavantage/query/forex"
 	"github.com/portfoliotree/alphavantage/query/fundamental"
+	"github.com/portfoliotree/alphavantage/query/intelligence"
+	"github.com/portfoliotree/alphavantage/query/options"
+	"github.com/portfoliotree/alphavantage/query/technical"
+	"github.com/portfoliotree/alphavantage/query/timeseries"
 )
 
 func (client *Client) ETFProfile(ctx context.Context, q fundamental.ETFProfileQuery) (fundamental.ETFProfile, error) {
@@ -49,4 +54,148 @@ func (client *Client) CompanyOverview(ctx context.Context, q fundamental.Overvie
 		log.Println(err)
 	}
 	return result, err
+}
+
+func (f *ForexFunctions) CurrencyExchangeRate(ctx context.Context, query forex.CurrencyExchangeRateQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *FundamentalFunctions) BalanceSheet(ctx context.Context, query fundamental.BalanceSheetQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *FundamentalFunctions) CashFlow(ctx context.Context, query fundamental.CashFlowQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *FundamentalFunctions) ETFProfile(ctx context.Context, query fundamental.ETFProfileQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *FundamentalFunctions) Earnings(ctx context.Context, query fundamental.EarningsQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *FundamentalFunctions) EarningsEstimates(ctx context.Context, query fundamental.EarningsEstimatesQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *FundamentalFunctions) IncomeStatement(ctx context.Context, query fundamental.IncomeStatementQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *FundamentalFunctions) Overview(ctx context.Context, query fundamental.OverviewQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *IntelligenceFunctions) AnalyticsFixedWindow(ctx context.Context, query intelligence.AnalyticsFixedWindowQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *IntelligenceFunctions) AnalyticsSlidingWindow(ctx context.Context, query intelligence.AnalyticsSlidingWindowQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *IntelligenceFunctions) EarningsCallTranscript(ctx context.Context, query intelligence.EarningsCallTranscriptQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *IntelligenceFunctions) InsiderTransactions(ctx context.Context, query intelligence.InsiderTransactionsQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *IntelligenceFunctions) NewsSentiment(ctx context.Context, query intelligence.NewsSentimentQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *IntelligenceFunctions) TopGainersLosers(ctx context.Context, query intelligence.TopGainersLosersQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *OptionsFunctions) Realtime(ctx context.Context, query options.RealtimeQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *TechnicalFunctions) BalanceOfPower(ctx context.Context, query technical.BalanceOfPowerQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *TimeSeriesFunctions) MarketStatus(ctx context.Context, query timeseries.MarketStatusQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
+}
+
+func (f *TimeSeriesFunctions) RealtimeBulkQuotes(ctx context.Context, query timeseries.RealtimeBulkQuotesQuery) (io.ReadCloser, error) {
+	res, err := (*Client)(f).Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	return res.Body, nil
 }

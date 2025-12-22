@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+	"time"
 
 	"golang.org/x/time/rate"
 
@@ -127,9 +128,11 @@ func (client *Client) Do(req *http.Request) (*http.Response, error) {
 	return res, nil
 }
 
-func (client *Client) Query(ctx context.Context, query interface {
+type QueryEncoder interface {
 	Encode() string
-}) (*http.Response, error) {
+}
+
+func (client *Client) Query(ctx context.Context, query QueryEncoder) (*http.Response, error) {
 	u := url.URL{
 		Scheme:   cmp.Or(client.BaseURL.Scheme, api.DefaultScheme),
 		Host:     cmp.Or(client.BaseURL.Host, api.DefaultHost),
@@ -145,6 +148,24 @@ func (client *Client) Query(ctx context.Context, query interface {
 		return nil, err
 	}
 	return res, nil
+}
+
+type querier interface {
+	Query(ctx context.Context, query QueryEncoder) (*http.Response, error)
+}
+
+func queryRows[R any](ctx context.Context, client querier, query QueryEncoder) ([]R, error) {
+	res, err := client.Query(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer closeAndIgnoreError(res.Body)
+	var rows []R
+	err = api.ParseCSV(res.Body, &rows, time.UTC)
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
 }
 
 func closeAndIgnoreError(c io.Closer) {
