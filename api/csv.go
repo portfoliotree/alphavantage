@@ -154,7 +154,6 @@ func parseCSVRows[T any](r io.Reader, location *time.Location, handleErr func(er
 
 		if rowType.Kind() != reflect.Struct {
 			panic(fmt.Errorf("expected a struct kind: got %s", rowType.Kind()))
-			return
 		}
 
 		structType := rowType
