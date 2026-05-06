@@ -17,6 +17,7 @@ before:
 
 builds:
   - main: ./cmd/av
+    binary: av
     env:
       - CGO_ENABLED=0
     goos:
