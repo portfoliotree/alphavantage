@@ -19,9 +19,14 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"golang.org/x/time/rate"
 
 	"github.com/portfoliotree/alphavantage/specification"
 )
+
+// fetchLimiter throttles example fetches to stay under AlphaVantage's
+// per-second burst limit. Paid tiers cap at 5 req/s; we hold to 4 for safety.
+var fetchLimiter = rate.NewLimiter(rate.Every(250*time.Millisecond), 1)
 
 const testdataExampleIndex = "testdata/examples/index.json"
 
@@ -128,44 +133,93 @@ func downloadExample(t *testing.T, apikey, example, dir, filename string) (strin
 	q.Set("datatype", "csv")
 	q.Set("apikey", apikey)
 	u.RawQuery = q.Encode()
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
-	if err != nil {
-		return "", fmt.Errorf("failed to create request: %w", err)
-	}
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return "", fmt.Errorf("failed to do example request: %w", err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("unexpected status code: %d", resp.StatusCode)
-	}
-	buf, err := io.ReadAll(resp.Body)
-	if err := resp.Body.Close(); err != nil {
-		return "", fmt.Errorf("failed to close response body: %w", err)
-	}
-	if err != nil {
-		return "", fmt.Errorf("failed to read example response: %w", err)
-	}
 
-	ct, _, err := mime.ParseMediaType(resp.Header.Get("content-type"))
-	if err != nil {
-		return "", fmt.Errorf("failed to parse response content type: %w", err)
-	}
+	const maxAttempts = 3
+	for attempt := 1; ; attempt++ {
+		if err := fetchLimiter.Wait(ctx); err != nil {
+			return "", fmt.Errorf("rate limiter wait: %w", err)
+		}
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
+		if err != nil {
+			return "", fmt.Errorf("failed to create request: %w", err)
+		}
+		resp, err := http.DefaultClient.Do(req)
+		if err != nil {
+			return "", fmt.Errorf("failed to do example request: %w", err)
+		}
+		if resp.StatusCode != http.StatusOK {
+			_ = resp.Body.Close()
+			return "", fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+		}
+		buf, readErr := io.ReadAll(resp.Body)
+		closeErr := resp.Body.Close()
+		if readErr != nil {
+			return "", fmt.Errorf("failed to read example response: %w", readErr)
+		}
+		if closeErr != nil {
+			return "", fmt.Errorf("failed to close response body: %w", closeErr)
+		}
 
-	switch ct {
-	case "application/json":
-		bodyFilename := filepath.Join(dir, filename+".json")
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("content-type"))
+		if err != nil {
+			return "", fmt.Errorf("failed to parse response content type: %w", err)
+		}
+
+		// AlphaVantage signals throttling with HTTP 200 + a JSON envelope
+		// containing a Note/Information/Error Message field. Detect that and
+		// retry rather than caching the error as legitimate data.
+		if ct == "application/json" {
+			if msg, isErr := alphavantageErrorEnvelope(buf); isErr {
+				if attempt >= maxAttempts {
+					return "", fmt.Errorf("alphavantage rate-limited after %d attempts: %s", attempt, msg)
+				}
+				const cooldown = 30 * time.Second
+				t.Logf("alphavantage error envelope on attempt %d (%q); sleeping %s before retry", attempt, msg, cooldown)
+				select {
+				case <-ctx.Done():
+					return "", ctx.Err()
+				case <-time.After(cooldown):
+				}
+				continue
+			}
+		}
+
+		var ext string
+		switch ct {
+		case "application/json":
+			ext = ".json"
+		case "application/x-download":
+			ext = ".csv"
+		default:
+			return "", fmt.Errorf("unexpected content type: %s", ct)
+		}
+		bodyFilename := filepath.Join(dir, filename+ext)
 		if err := os.WriteFile(bodyFilename, buf, 0644); err != nil {
 			return "", fmt.Errorf("failed to write example response: %w", err)
 		}
 		return bodyFilename, nil
-	case "application/x-download":
-		bodyFilename := filepath.Join(dir, filename+".csv")
-		if err := os.WriteFile(bodyFilename, buf, 0644); err != nil {
-			return "", fmt.Errorf("failed to write example response: %w", err)
-		}
-		return bodyFilename, nil
-	default:
-		return "", fmt.Errorf("unexpected content type: %s", ct)
 	}
+}
+
+// alphavantageErrorEnvelope reports whether buf is a JSON object whose only
+// meaningful content is one of AlphaVantage's notice fields (rate limiting,
+// invalid params, etc.). When true, the second return is the notice text.
+func alphavantageErrorEnvelope(buf []byte) (string, bool) {
+	var msg struct {
+		Note         string `json:"Note,omitempty"`
+		Information  string `json:"Information,omitempty"`
+		ErrorMessage string `json:"Error Message,omitempty"`
+	}
+	if err := json.Unmarshal(buf, &msg); err != nil {
+		return "", false
+	}
+	switch {
+	case msg.Note != "":
+		return msg.Note, true
+	case msg.Information != "":
+		return msg.Information, true
+	case msg.ErrorMessage != "":
+		return msg.ErrorMessage, true
+	}
+	return "", false
 }
