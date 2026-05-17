@@ -236,6 +236,10 @@ func (f *TechnicalFunctions) AverageTrueRange(ctx context.Context, query technic
 	return queryRows[technical.AverageTrueRangeRow](ctx, (*Client)(f), query)
 }
 
+func (f *TechnicalFunctions) BalanceOfPower(ctx context.Context, query technical.BalanceOfPowerQuery) ([]technical.BalanceOfPowerRow, error) {
+	return queryRows[technical.BalanceOfPowerRow](ctx, (*Client)(f), query)
+}
+
 func (f *TechnicalFunctions) BollingerBands(ctx context.Context, query technical.BollingerBandsQuery) ([]technical.BollingerBandsRow, error) {
 	return queryRows[technical.BollingerBandsRow](ctx, (*Client)(f), query)
 }

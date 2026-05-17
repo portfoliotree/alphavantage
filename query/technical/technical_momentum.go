@@ -87,6 +87,11 @@ func (q BalanceOfPowerQuery) Encode() string {
 	return url.Values(q).Encode()
 }
 
+type BalanceOfPowerRow struct {
+	Time  string `column-name:"time"`
+	Value string `column-name:"BOP"`
+}
+
 type ChandeMomentumOscillatorQuery url.Values
 
 func QueryChandeMomentumOscillator(apiKey, symbol, interval, seriesType string) ChandeMomentumOscillatorQuery {

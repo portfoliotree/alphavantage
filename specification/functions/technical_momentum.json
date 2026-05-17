@@ -163,6 +163,16 @@
 		},
 		"examples": [
 			"https://www.alphavantage.co/query?function=BOP\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+		],
+		"csv_columns": [
+			{
+				"name": "time",
+				"type": "string"
+			},
+			{
+				"name": "BOP",
+				"type": "string"
+			}
 		]
 	},
 	{

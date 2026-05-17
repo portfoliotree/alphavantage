@@ -97,6 +97,13 @@ func TestCSV(t *testing.T) {
 		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
 		require.NoError(t, err)
 	})
+	t.Run("BOP_088a5081", func(t *testing.T) {
+		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/technical_momentum/BOP_088a5081.csv"))
+		require.NoError(t, err)
+		var rows []technical.BalanceOfPowerRow
+		err = api.ParseCSV(bytes.NewReader(buf), &rows, nil)
+		require.NoError(t, err)
+	})
 	t.Run("BRENT_44bdfc84", func(t *testing.T) {
 		buf, err := os.ReadFile(filepath.FromSlash("../specification/testdata/examples/commodities/BRENT_44bdfc84.csv"))
 		require.NoError(t, err)

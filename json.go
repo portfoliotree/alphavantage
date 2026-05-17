@@ -12,7 +12,6 @@ import (
 	"github.com/portfoliotree/alphavantage/query/fundamental"
 	"github.com/portfoliotree/alphavantage/query/intelligence"
 	"github.com/portfoliotree/alphavantage/query/options"
-	"github.com/portfoliotree/alphavantage/query/technical"
 	"github.com/portfoliotree/alphavantage/query/timeseries"
 )
 
@@ -169,14 +168,6 @@ func (f *IntelligenceFunctions) TopGainersLosers(ctx context.Context, query inte
 }
 
 func (f *OptionsFunctions) Realtime(ctx context.Context, query options.RealtimeQuery) (io.ReadCloser, error) {
-	res, err := (*Client)(f).Query(ctx, query)
-	if err != nil {
-		return nil, err
-	}
-	return res.Body, nil
-}
-
-func (f *TechnicalFunctions) BalanceOfPower(ctx context.Context, query technical.BalanceOfPowerQuery) (io.ReadCloser, error) {
 	res, err := (*Client)(f).Query(ctx, query)
 	if err != nil {
 		return nil, err

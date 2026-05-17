@@ -104,6 +104,7 @@ type EarningsCalendarRow struct {
 	FiscalDateEnding string `column-name:"fiscalDateEnding"`
 	Estimate         string `column-name:"estimate"`
 	Currency         string `column-name:"currency"`
+	TimeOfTheDay     string `column-name:"timeOfTheDay"`
 }
 
 type EarningsEstimatesQuery url.Values

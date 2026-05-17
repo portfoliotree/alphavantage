@@ -879,6 +879,10 @@
 		"RequireGreeks",
 		"requireGreeks"
 	],
+	"timeOfTheDay": [
+		"TimeOfTheDay",
+		"timeOfTheDay"
+	],
 	"rho": [
 		"RHO",
 		"rho"
