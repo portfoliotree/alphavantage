@@ -33,6 +33,21 @@ func (query ChaikinADLineQuery) DataType(value string) ChaikinADLineQuery {
 	return query
 }
 
+func (query ChaikinADLineQuery) EntitlementRealtime() ChaikinADLineQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query ChaikinADLineQuery) EntitlementDelayed() ChaikinADLineQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query ChaikinADLineQuery) Entitlement(value string) ChaikinADLineQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q ChaikinADLineQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -78,6 +93,21 @@ func (query ChaikinADOscillatorQuery) DataType(value string) ChaikinADOscillator
 	return query
 }
 
+func (query ChaikinADOscillatorQuery) EntitlementRealtime() ChaikinADOscillatorQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query ChaikinADOscillatorQuery) EntitlementDelayed() ChaikinADOscillatorQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query ChaikinADOscillatorQuery) Entitlement(value string) ChaikinADOscillatorQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q ChaikinADOscillatorQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -89,17 +119,12 @@ type ChaikinADOscillatorRow struct {
 
 type MoneyFlowIndexQuery url.Values
 
-func QueryMoneyFlowIndex(apiKey, symbol, interval string) MoneyFlowIndexQuery {
-	return MoneyFlowIndexQuery{"function": []string{"MFI"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryMoneyFlowIndex(apiKey, symbol, interval, timePeriod string) MoneyFlowIndexQuery {
+	return MoneyFlowIndexQuery{"function": []string{"MFI"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query MoneyFlowIndexQuery) Month(value time.Time) MoneyFlowIndexQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query MoneyFlowIndexQuery) TimePeriod(value string) MoneyFlowIndexQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -115,6 +140,21 @@ func (query MoneyFlowIndexQuery) DataTypeJSON() MoneyFlowIndexQuery {
 
 func (query MoneyFlowIndexQuery) DataType(value string) MoneyFlowIndexQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query MoneyFlowIndexQuery) EntitlementRealtime() MoneyFlowIndexQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query MoneyFlowIndexQuery) EntitlementDelayed() MoneyFlowIndexQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query MoneyFlowIndexQuery) Entitlement(value string) MoneyFlowIndexQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 
@@ -153,6 +193,21 @@ func (query OnBalanceVolumeQuery) DataType(value string) OnBalanceVolumeQuery {
 	return query
 }
 
+func (query OnBalanceVolumeQuery) EntitlementRealtime() OnBalanceVolumeQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query OnBalanceVolumeQuery) EntitlementDelayed() OnBalanceVolumeQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query OnBalanceVolumeQuery) Entitlement(value string) OnBalanceVolumeQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q OnBalanceVolumeQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -164,17 +219,12 @@ type OnBalanceVolumeRow struct {
 
 type OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery url.Values
 
-func QueryOneDayRateOfChangeTripleSmoothExponentialMovingAverage(apiKey, symbol, interval, seriesType string) OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
-	return OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery{"function": []string{"TRIX"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryOneDayRateOfChangeTripleSmoothExponentialMovingAverage(apiKey, symbol, interval, timePeriod, seriesType string) OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
+	return OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery{"function": []string{"TRIX"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) Month(value time.Time) OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) TimePeriod(value string) OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -190,6 +240,21 @@ func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) DataTyp
 
 func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) DataType(value string) OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) EntitlementRealtime() OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) EntitlementDelayed() OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery) Entitlement(value string) OneDayRateOfChangeTripleSmoothExponentialMovingAverageQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 

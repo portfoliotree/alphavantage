@@ -9,17 +9,12 @@ import (
 
 type AroonQuery url.Values
 
-func QueryAroon(apiKey, symbol, interval string) AroonQuery {
-	return AroonQuery{"function": []string{"AROON"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryAroon(apiKey, symbol, interval, timePeriod string) AroonQuery {
+	return AroonQuery{"function": []string{"AROON"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query AroonQuery) Month(value time.Time) AroonQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query AroonQuery) TimePeriod(value string) AroonQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -38,6 +33,21 @@ func (query AroonQuery) DataType(value string) AroonQuery {
 	return query
 }
 
+func (query AroonQuery) EntitlementRealtime() AroonQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query AroonQuery) EntitlementDelayed() AroonQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query AroonQuery) Entitlement(value string) AroonQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q AroonQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -50,17 +60,12 @@ type AroonRow struct {
 
 type AroonOscQuery url.Values
 
-func QueryAroonOsc(apiKey, symbol, interval string) AroonOscQuery {
-	return AroonOscQuery{"function": []string{"AROONOSC"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryAroonOsc(apiKey, symbol, interval, timePeriod string) AroonOscQuery {
+	return AroonOscQuery{"function": []string{"AROONOSC"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query AroonOscQuery) Month(value time.Time) AroonOscQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query AroonOscQuery) TimePeriod(value string) AroonOscQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -79,6 +84,21 @@ func (query AroonOscQuery) DataType(value string) AroonOscQuery {
 	return query
 }
 
+func (query AroonOscQuery) EntitlementRealtime() AroonOscQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query AroonOscQuery) EntitlementDelayed() AroonOscQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query AroonOscQuery) Entitlement(value string) AroonOscQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q AroonOscQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -90,17 +110,12 @@ type AroonOscRow struct {
 
 type AverageDirectionalMovementIndexQuery url.Values
 
-func QueryAverageDirectionalMovementIndex(apiKey, symbol, interval string) AverageDirectionalMovementIndexQuery {
-	return AverageDirectionalMovementIndexQuery{"function": []string{"ADX"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryAverageDirectionalMovementIndex(apiKey, symbol, interval, timePeriod string) AverageDirectionalMovementIndexQuery {
+	return AverageDirectionalMovementIndexQuery{"function": []string{"ADX"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query AverageDirectionalMovementIndexQuery) Month(value time.Time) AverageDirectionalMovementIndexQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query AverageDirectionalMovementIndexQuery) TimePeriod(value string) AverageDirectionalMovementIndexQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -119,6 +134,21 @@ func (query AverageDirectionalMovementIndexQuery) DataType(value string) Average
 	return query
 }
 
+func (query AverageDirectionalMovementIndexQuery) EntitlementRealtime() AverageDirectionalMovementIndexQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query AverageDirectionalMovementIndexQuery) EntitlementDelayed() AverageDirectionalMovementIndexQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query AverageDirectionalMovementIndexQuery) Entitlement(value string) AverageDirectionalMovementIndexQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q AverageDirectionalMovementIndexQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -130,17 +160,12 @@ type AverageDirectionalMovementIndexRow struct {
 
 type AverageDirectionalMovementIndexRatingQuery url.Values
 
-func QueryAverageDirectionalMovementIndexRating(apiKey, symbol, interval string) AverageDirectionalMovementIndexRatingQuery {
-	return AverageDirectionalMovementIndexRatingQuery{"function": []string{"ADXR"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryAverageDirectionalMovementIndexRating(apiKey, symbol, interval, timePeriod string) AverageDirectionalMovementIndexRatingQuery {
+	return AverageDirectionalMovementIndexRatingQuery{"function": []string{"ADXR"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query AverageDirectionalMovementIndexRatingQuery) Month(value time.Time) AverageDirectionalMovementIndexRatingQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query AverageDirectionalMovementIndexRatingQuery) TimePeriod(value string) AverageDirectionalMovementIndexRatingQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -159,6 +184,21 @@ func (query AverageDirectionalMovementIndexRatingQuery) DataType(value string) A
 	return query
 }
 
+func (query AverageDirectionalMovementIndexRatingQuery) EntitlementRealtime() AverageDirectionalMovementIndexRatingQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query AverageDirectionalMovementIndexRatingQuery) EntitlementDelayed() AverageDirectionalMovementIndexRatingQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query AverageDirectionalMovementIndexRatingQuery) Entitlement(value string) AverageDirectionalMovementIndexRatingQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q AverageDirectionalMovementIndexRatingQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -170,17 +210,12 @@ type AverageDirectionalMovementIndexRatingRow struct {
 
 type DirectionalMovementIndexQuery url.Values
 
-func QueryDirectionalMovementIndex(apiKey, symbol, interval string) DirectionalMovementIndexQuery {
-	return DirectionalMovementIndexQuery{"function": []string{"DX"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryDirectionalMovementIndex(apiKey, symbol, interval, timePeriod string) DirectionalMovementIndexQuery {
+	return DirectionalMovementIndexQuery{"function": []string{"DX"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query DirectionalMovementIndexQuery) Month(value time.Time) DirectionalMovementIndexQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query DirectionalMovementIndexQuery) TimePeriod(value string) DirectionalMovementIndexQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -199,6 +234,21 @@ func (query DirectionalMovementIndexQuery) DataType(value string) DirectionalMov
 	return query
 }
 
+func (query DirectionalMovementIndexQuery) EntitlementRealtime() DirectionalMovementIndexQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query DirectionalMovementIndexQuery) EntitlementDelayed() DirectionalMovementIndexQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query DirectionalMovementIndexQuery) Entitlement(value string) DirectionalMovementIndexQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q DirectionalMovementIndexQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -210,17 +260,12 @@ type DirectionalMovementIndexRow struct {
 
 type MinusDirectionalIndicatorQuery url.Values
 
-func QueryMinusDirectionalIndicator(apiKey, symbol, interval string) MinusDirectionalIndicatorQuery {
-	return MinusDirectionalIndicatorQuery{"function": []string{"MINUS_DI"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryMinusDirectionalIndicator(apiKey, symbol, interval, timePeriod string) MinusDirectionalIndicatorQuery {
+	return MinusDirectionalIndicatorQuery{"function": []string{"MINUS_DI"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query MinusDirectionalIndicatorQuery) Month(value time.Time) MinusDirectionalIndicatorQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query MinusDirectionalIndicatorQuery) TimePeriod(value string) MinusDirectionalIndicatorQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -239,6 +284,21 @@ func (query MinusDirectionalIndicatorQuery) DataType(value string) MinusDirectio
 	return query
 }
 
+func (query MinusDirectionalIndicatorQuery) EntitlementRealtime() MinusDirectionalIndicatorQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query MinusDirectionalIndicatorQuery) EntitlementDelayed() MinusDirectionalIndicatorQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query MinusDirectionalIndicatorQuery) Entitlement(value string) MinusDirectionalIndicatorQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q MinusDirectionalIndicatorQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -250,17 +310,12 @@ type MinusDirectionalIndicatorRow struct {
 
 type MinusDirectionalMovementQuery url.Values
 
-func QueryMinusDirectionalMovement(apiKey, symbol, interval string) MinusDirectionalMovementQuery {
-	return MinusDirectionalMovementQuery{"function": []string{"MINUS_DM"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryMinusDirectionalMovement(apiKey, symbol, interval, timePeriod string) MinusDirectionalMovementQuery {
+	return MinusDirectionalMovementQuery{"function": []string{"MINUS_DM"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query MinusDirectionalMovementQuery) Month(value time.Time) MinusDirectionalMovementQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query MinusDirectionalMovementQuery) TimePeriod(value string) MinusDirectionalMovementQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -279,6 +334,21 @@ func (query MinusDirectionalMovementQuery) DataType(value string) MinusDirection
 	return query
 }
 
+func (query MinusDirectionalMovementQuery) EntitlementRealtime() MinusDirectionalMovementQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query MinusDirectionalMovementQuery) EntitlementDelayed() MinusDirectionalMovementQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query MinusDirectionalMovementQuery) Entitlement(value string) MinusDirectionalMovementQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q MinusDirectionalMovementQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -290,17 +360,12 @@ type MinusDirectionalMovementRow struct {
 
 type PlusDirectionalIndicatorQuery url.Values
 
-func QueryPlusDirectionalIndicator(apiKey, symbol, interval string) PlusDirectionalIndicatorQuery {
-	return PlusDirectionalIndicatorQuery{"function": []string{"PLUS_DI"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryPlusDirectionalIndicator(apiKey, symbol, interval, timePeriod string) PlusDirectionalIndicatorQuery {
+	return PlusDirectionalIndicatorQuery{"function": []string{"PLUS_DI"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query PlusDirectionalIndicatorQuery) Month(value time.Time) PlusDirectionalIndicatorQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query PlusDirectionalIndicatorQuery) TimePeriod(value string) PlusDirectionalIndicatorQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -319,6 +384,21 @@ func (query PlusDirectionalIndicatorQuery) DataType(value string) PlusDirectiona
 	return query
 }
 
+func (query PlusDirectionalIndicatorQuery) EntitlementRealtime() PlusDirectionalIndicatorQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query PlusDirectionalIndicatorQuery) EntitlementDelayed() PlusDirectionalIndicatorQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query PlusDirectionalIndicatorQuery) Entitlement(value string) PlusDirectionalIndicatorQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q PlusDirectionalIndicatorQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -330,17 +410,12 @@ type PlusDirectionalIndicatorRow struct {
 
 type PlusDirectionalMovementQuery url.Values
 
-func QueryPlusDirectionalMovement(apiKey, symbol, interval string) PlusDirectionalMovementQuery {
-	return PlusDirectionalMovementQuery{"function": []string{"PLUS_DM"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryPlusDirectionalMovement(apiKey, symbol, interval, timePeriod string) PlusDirectionalMovementQuery {
+	return PlusDirectionalMovementQuery{"function": []string{"PLUS_DM"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query PlusDirectionalMovementQuery) Month(value time.Time) PlusDirectionalMovementQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query PlusDirectionalMovementQuery) TimePeriod(value string) PlusDirectionalMovementQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -356,6 +431,21 @@ func (query PlusDirectionalMovementQuery) DataTypeJSON() PlusDirectionalMovement
 
 func (query PlusDirectionalMovementQuery) DataType(value string) PlusDirectionalMovementQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query PlusDirectionalMovementQuery) EntitlementRealtime() PlusDirectionalMovementQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query PlusDirectionalMovementQuery) EntitlementDelayed() PlusDirectionalMovementQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query PlusDirectionalMovementQuery) Entitlement(value string) PlusDirectionalMovementQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 

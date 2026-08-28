@@ -249,6 +249,26 @@ type CottonRow struct {
 	Value     string `column-name:"value"`
 }
 
+type GoldSilverHistoryQuery url.Values
+
+func QueryGoldSilverHistory(apiKey, symbol, interval string) GoldSilverHistoryQuery {
+	return GoldSilverHistoryQuery{"function": []string{"GOLD_SILVER_HISTORY"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+}
+
+func (q GoldSilverHistoryQuery) Encode() string {
+	return url.Values(q).Encode()
+}
+
+type GoldSilverSpotQuery url.Values
+
+func QueryGoldSilverSpot(apiKey, symbol string) GoldSilverSpotQuery {
+	return GoldSilverSpotQuery{"function": []string{"GOLD_SILVER_SPOT"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
+}
+
+func (q GoldSilverSpotQuery) Encode() string {
+	return url.Values(q).Encode()
+}
+
 type NaturalGasQuery url.Values
 
 func QueryNaturalGas(apiKey string) NaturalGasQuery {

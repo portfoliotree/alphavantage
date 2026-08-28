@@ -29,6 +29,21 @@ func (query GlobalQuoteQuery) DataType(value string) GlobalQuoteQuery {
 	return query
 }
 
+func (query GlobalQuoteQuery) EntitlementRealtime() GlobalQuoteQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query GlobalQuoteQuery) EntitlementDelayed() GlobalQuoteQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query GlobalQuoteQuery) Entitlement(value string) GlobalQuoteQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q GlobalQuoteQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -53,6 +68,31 @@ func QueryMarketStatus(apiKey string) MarketStatusQuery {
 }
 
 func (q MarketStatusQuery) Encode() string {
+	return url.Values(q).Encode()
+}
+
+type RealtimeBulkBidAskPricesQuery url.Values
+
+func QueryRealtimeBulkBidAskPrices(apiKey, symbol string) RealtimeBulkBidAskPricesQuery {
+	return RealtimeBulkBidAskPricesQuery{"function": []string{"REALTIME_BULK_BID_ASK_PRICES"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
+}
+
+func (query RealtimeBulkBidAskPricesQuery) DataTypeCSV() RealtimeBulkBidAskPricesQuery {
+	query["datatype"] = []string{"csv"}
+	return query
+}
+
+func (query RealtimeBulkBidAskPricesQuery) DataTypeJSON() RealtimeBulkBidAskPricesQuery {
+	query["datatype"] = []string{"json"}
+	return query
+}
+
+func (query RealtimeBulkBidAskPricesQuery) DataType(value string) RealtimeBulkBidAskPricesQuery {
+	query["datatype"] = []string{value}
+	return query
+}
+
+func (q RealtimeBulkBidAskPricesQuery) Encode() string {
 	return url.Values(q).Encode()
 }
 
@@ -203,6 +243,21 @@ func (query DailyAdjustedQuery) DataType(value string) DailyAdjustedQuery {
 	return query
 }
 
+func (query DailyAdjustedQuery) EntitlementRealtime() DailyAdjustedQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query DailyAdjustedQuery) EntitlementDelayed() DailyAdjustedQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query DailyAdjustedQuery) Entitlement(value string) DailyAdjustedQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q DailyAdjustedQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -267,6 +322,21 @@ func (query IntradayQuery) DataTypeJSON() IntradayQuery {
 
 func (query IntradayQuery) DataType(value string) IntradayQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query IntradayQuery) EntitlementRealtime() IntradayQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query IntradayQuery) EntitlementDelayed() IntradayQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query IntradayQuery) Entitlement(value string) IntradayQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 

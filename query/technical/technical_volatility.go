@@ -9,17 +9,12 @@ import (
 
 type AverageTrueRangeQuery url.Values
 
-func QueryAverageTrueRange(apiKey, symbol, interval string) AverageTrueRangeQuery {
-	return AverageTrueRangeQuery{"function": []string{"ATR"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryAverageTrueRange(apiKey, symbol, interval, timePeriod string) AverageTrueRangeQuery {
+	return AverageTrueRangeQuery{"function": []string{"ATR"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query AverageTrueRangeQuery) Month(value time.Time) AverageTrueRangeQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query AverageTrueRangeQuery) TimePeriod(value string) AverageTrueRangeQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -38,6 +33,21 @@ func (query AverageTrueRangeQuery) DataType(value string) AverageTrueRangeQuery 
 	return query
 }
 
+func (query AverageTrueRangeQuery) EntitlementRealtime() AverageTrueRangeQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query AverageTrueRangeQuery) EntitlementDelayed() AverageTrueRangeQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query AverageTrueRangeQuery) Entitlement(value string) AverageTrueRangeQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q AverageTrueRangeQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -49,17 +59,12 @@ type AverageTrueRangeRow struct {
 
 type BollingerBandsQuery url.Values
 
-func QueryBollingerBands(apiKey, symbol, interval, seriesType string) BollingerBandsQuery {
-	return BollingerBandsQuery{"function": []string{"BBANDS"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryBollingerBands(apiKey, symbol, interval, timePeriod, seriesType string) BollingerBandsQuery {
+	return BollingerBandsQuery{"function": []string{"BBANDS"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query BollingerBandsQuery) Month(value time.Time) BollingerBandsQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query BollingerBandsQuery) TimePeriod(value string) BollingerBandsQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -93,6 +98,21 @@ func (query BollingerBandsQuery) DataType(value string) BollingerBandsQuery {
 	return query
 }
 
+func (query BollingerBandsQuery) EntitlementRealtime() BollingerBandsQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query BollingerBandsQuery) EntitlementDelayed() BollingerBandsQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query BollingerBandsQuery) Entitlement(value string) BollingerBandsQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q BollingerBandsQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -106,17 +126,12 @@ type BollingerBandsRow struct {
 
 type NormalizedAverageTrueRangeQuery url.Values
 
-func QueryNormalizedAverageTrueRange(apiKey, symbol, interval string) NormalizedAverageTrueRangeQuery {
-	return NormalizedAverageTrueRangeQuery{"function": []string{"NATR"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryNormalizedAverageTrueRange(apiKey, symbol, interval, timePeriod string) NormalizedAverageTrueRangeQuery {
+	return NormalizedAverageTrueRangeQuery{"function": []string{"NATR"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query NormalizedAverageTrueRangeQuery) Month(value time.Time) NormalizedAverageTrueRangeQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query NormalizedAverageTrueRangeQuery) TimePeriod(value string) NormalizedAverageTrueRangeQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -132,6 +147,21 @@ func (query NormalizedAverageTrueRangeQuery) DataTypeJSON() NormalizedAverageTru
 
 func (query NormalizedAverageTrueRangeQuery) DataType(value string) NormalizedAverageTrueRangeQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query NormalizedAverageTrueRangeQuery) EntitlementRealtime() NormalizedAverageTrueRangeQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query NormalizedAverageTrueRangeQuery) EntitlementDelayed() NormalizedAverageTrueRangeQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query NormalizedAverageTrueRangeQuery) Entitlement(value string) NormalizedAverageTrueRangeQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 
@@ -180,6 +210,21 @@ func (query SARQuery) DataType(value string) SARQuery {
 	return query
 }
 
+func (query SARQuery) EntitlementRealtime() SARQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query SARQuery) EntitlementDelayed() SARQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query SARQuery) Entitlement(value string) SARQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q SARQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -212,6 +257,21 @@ func (query TrueRangeQuery) DataTypeJSON() TrueRangeQuery {
 
 func (query TrueRangeQuery) DataType(value string) TrueRangeQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query TrueRangeQuery) EntitlementRealtime() TrueRangeQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query TrueRangeQuery) EntitlementDelayed() TrueRangeQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query TrueRangeQuery) Entitlement(value string) TrueRangeQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 
@@ -262,6 +322,21 @@ func (query UltimateOscillatorQuery) DataTypeJSON() UltimateOscillatorQuery {
 
 func (query UltimateOscillatorQuery) DataType(value string) UltimateOscillatorQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query UltimateOscillatorQuery) EntitlementRealtime() UltimateOscillatorQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query UltimateOscillatorQuery) EntitlementDelayed() UltimateOscillatorQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query UltimateOscillatorQuery) Entitlement(value string) UltimateOscillatorQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 

@@ -93,7 +93,22 @@ func QueryInsiderTransactions(apiKey, symbol string) InsiderTransactionsQuery {
 	return InsiderTransactionsQuery{"function": []string{"INSIDER_TRANSACTIONS"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
 }
 
+func (query InsiderTransactionsQuery) From(value time.Time) InsiderTransactionsQuery {
+	query["from"] = []string{value.Format("2006-01-02")}
+	return query
+}
+
 func (q InsiderTransactionsQuery) Encode() string {
+	return url.Values(q).Encode()
+}
+
+type InstitutionalHoldingsQuery url.Values
+
+func QueryInstitutionalHoldings(apiKey, symbol string) InstitutionalHoldingsQuery {
+	return InstitutionalHoldingsQuery{"function": []string{"INSTITUTIONAL_HOLDINGS"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
+}
+
+func (q InstitutionalHoldingsQuery) Encode() string {
 	return url.Values(q).Encode()
 }
 
@@ -141,6 +156,21 @@ type TopGainersLosersQuery url.Values
 
 func QueryTopGainersLosers(apiKey string) TopGainersLosersQuery {
 	return TopGainersLosersQuery{"function": []string{"TOP_GAINERS_LOSERS"}, "apikey": []string{apiKey}}
+}
+
+func (query TopGainersLosersQuery) EntitlementRealtime() TopGainersLosersQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query TopGainersLosersQuery) EntitlementDelayed() TopGainersLosersQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query TopGainersLosersQuery) Entitlement(value string) TopGainersLosersQuery {
+	query["entitlement"] = []string{value}
+	return query
 }
 
 func (q TopGainersLosersQuery) Encode() string {

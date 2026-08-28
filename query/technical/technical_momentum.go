@@ -48,6 +48,21 @@ func (query AbsolutePriceOscillatorQuery) DataType(value string) AbsolutePriceOs
 	return query
 }
 
+func (query AbsolutePriceOscillatorQuery) EntitlementRealtime() AbsolutePriceOscillatorQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query AbsolutePriceOscillatorQuery) EntitlementDelayed() AbsolutePriceOscillatorQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query AbsolutePriceOscillatorQuery) Entitlement(value string) AbsolutePriceOscillatorQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q AbsolutePriceOscillatorQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -83,6 +98,21 @@ func (query BalanceOfPowerQuery) DataType(value string) BalanceOfPowerQuery {
 	return query
 }
 
+func (query BalanceOfPowerQuery) EntitlementRealtime() BalanceOfPowerQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query BalanceOfPowerQuery) EntitlementDelayed() BalanceOfPowerQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query BalanceOfPowerQuery) Entitlement(value string) BalanceOfPowerQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q BalanceOfPowerQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -94,17 +124,12 @@ type BalanceOfPowerRow struct {
 
 type ChandeMomentumOscillatorQuery url.Values
 
-func QueryChandeMomentumOscillator(apiKey, symbol, interval, seriesType string) ChandeMomentumOscillatorQuery {
-	return ChandeMomentumOscillatorQuery{"function": []string{"CMO"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryChandeMomentumOscillator(apiKey, symbol, interval, timePeriod, seriesType string) ChandeMomentumOscillatorQuery {
+	return ChandeMomentumOscillatorQuery{"function": []string{"CMO"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query ChandeMomentumOscillatorQuery) Month(value time.Time) ChandeMomentumOscillatorQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query ChandeMomentumOscillatorQuery) TimePeriod(value string) ChandeMomentumOscillatorQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -123,6 +148,21 @@ func (query ChandeMomentumOscillatorQuery) DataType(value string) ChandeMomentum
 	return query
 }
 
+func (query ChandeMomentumOscillatorQuery) EntitlementRealtime() ChandeMomentumOscillatorQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query ChandeMomentumOscillatorQuery) EntitlementDelayed() ChandeMomentumOscillatorQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query ChandeMomentumOscillatorQuery) Entitlement(value string) ChandeMomentumOscillatorQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q ChandeMomentumOscillatorQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -134,17 +174,12 @@ type ChandeMomentumOscillatorRow struct {
 
 type CommodityChannelIndexQuery url.Values
 
-func QueryCommodityChannelIndex(apiKey, symbol, interval string) CommodityChannelIndexQuery {
-	return CommodityChannelIndexQuery{"function": []string{"CCI"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryCommodityChannelIndex(apiKey, symbol, interval, timePeriod string) CommodityChannelIndexQuery {
+	return CommodityChannelIndexQuery{"function": []string{"CCI"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query CommodityChannelIndexQuery) Month(value time.Time) CommodityChannelIndexQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query CommodityChannelIndexQuery) TimePeriod(value string) CommodityChannelIndexQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -163,6 +198,21 @@ func (query CommodityChannelIndexQuery) DataType(value string) CommodityChannelI
 	return query
 }
 
+func (query CommodityChannelIndexQuery) EntitlementRealtime() CommodityChannelIndexQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query CommodityChannelIndexQuery) EntitlementDelayed() CommodityChannelIndexQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query CommodityChannelIndexQuery) Entitlement(value string) CommodityChannelIndexQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q CommodityChannelIndexQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -174,17 +224,12 @@ type CommodityChannelIndexRow struct {
 
 type MomentumQuery url.Values
 
-func QueryMomentum(apiKey, symbol, interval, seriesType string) MomentumQuery {
-	return MomentumQuery{"function": []string{"MOM"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryMomentum(apiKey, symbol, interval, timePeriod, seriesType string) MomentumQuery {
+	return MomentumQuery{"function": []string{"MOM"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query MomentumQuery) Month(value time.Time) MomentumQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query MomentumQuery) TimePeriod(value string) MomentumQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -200,6 +245,21 @@ func (query MomentumQuery) DataTypeJSON() MomentumQuery {
 
 func (query MomentumQuery) DataType(value string) MomentumQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query MomentumQuery) EntitlementRealtime() MomentumQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query MomentumQuery) EntitlementDelayed() MomentumQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query MomentumQuery) Entitlement(value string) MomentumQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 
@@ -253,6 +313,21 @@ func (query PercentagePriceOscillatorQuery) DataType(value string) PercentagePri
 	return query
 }
 
+func (query PercentagePriceOscillatorQuery) EntitlementRealtime() PercentagePriceOscillatorQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query PercentagePriceOscillatorQuery) EntitlementDelayed() PercentagePriceOscillatorQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query PercentagePriceOscillatorQuery) Entitlement(value string) PercentagePriceOscillatorQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q PercentagePriceOscillatorQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -264,17 +339,12 @@ type PercentagePriceOscillatorRow struct {
 
 type RateOfChangeQuery url.Values
 
-func QueryRateOfChange(apiKey, symbol, interval, seriesType string) RateOfChangeQuery {
-	return RateOfChangeQuery{"function": []string{"ROC"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryRateOfChange(apiKey, symbol, interval, timePeriod, seriesType string) RateOfChangeQuery {
+	return RateOfChangeQuery{"function": []string{"ROC"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query RateOfChangeQuery) Month(value time.Time) RateOfChangeQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query RateOfChangeQuery) TimePeriod(value string) RateOfChangeQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -293,6 +363,21 @@ func (query RateOfChangeQuery) DataType(value string) RateOfChangeQuery {
 	return query
 }
 
+func (query RateOfChangeQuery) EntitlementRealtime() RateOfChangeQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query RateOfChangeQuery) EntitlementDelayed() RateOfChangeQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query RateOfChangeQuery) Entitlement(value string) RateOfChangeQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q RateOfChangeQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -304,17 +389,12 @@ type RateOfChangeRow struct {
 
 type RateOfChangeRatioQuery url.Values
 
-func QueryRateOfChangeRatio(apiKey, symbol, interval, seriesType string) RateOfChangeRatioQuery {
-	return RateOfChangeRatioQuery{"function": []string{"ROCR"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryRateOfChangeRatio(apiKey, symbol, interval, timePeriod, seriesType string) RateOfChangeRatioQuery {
+	return RateOfChangeRatioQuery{"function": []string{"ROCR"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query RateOfChangeRatioQuery) Month(value time.Time) RateOfChangeRatioQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query RateOfChangeRatioQuery) TimePeriod(value string) RateOfChangeRatioQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -333,6 +413,21 @@ func (query RateOfChangeRatioQuery) DataType(value string) RateOfChangeRatioQuer
 	return query
 }
 
+func (query RateOfChangeRatioQuery) EntitlementRealtime() RateOfChangeRatioQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query RateOfChangeRatioQuery) EntitlementDelayed() RateOfChangeRatioQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query RateOfChangeRatioQuery) Entitlement(value string) RateOfChangeRatioQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q RateOfChangeRatioQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -344,17 +439,12 @@ type RateOfChangeRatioRow struct {
 
 type WilliamsRQuery url.Values
 
-func QueryWilliamsR(apiKey, symbol, interval string) WilliamsRQuery {
-	return WilliamsRQuery{"function": []string{"WILLR"}, "symbol": []string{symbol}, "interval": []string{interval}, "apikey": []string{apiKey}}
+func QueryWilliamsR(apiKey, symbol, interval, timePeriod string) WilliamsRQuery {
+	return WilliamsRQuery{"function": []string{"WILLR"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "apikey": []string{apiKey}}
 }
 
 func (query WilliamsRQuery) Month(value time.Time) WilliamsRQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query WilliamsRQuery) TimePeriod(value string) WilliamsRQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -370,6 +460,21 @@ func (query WilliamsRQuery) DataTypeJSON() WilliamsRQuery {
 
 func (query WilliamsRQuery) DataType(value string) WilliamsRQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query WilliamsRQuery) EntitlementRealtime() WilliamsRQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query WilliamsRQuery) EntitlementDelayed() WilliamsRQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query WilliamsRQuery) Entitlement(value string) WilliamsRQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 

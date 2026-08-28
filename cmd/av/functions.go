@@ -15,6 +15,7 @@ import (
 	"github.com/portfoliotree/alphavantage/query/economic"
 	"github.com/portfoliotree/alphavantage/query/forex"
 	"github.com/portfoliotree/alphavantage/query/fundamental"
+	"github.com/portfoliotree/alphavantage/query/indices"
 	"github.com/portfoliotree/alphavantage/query/intelligence"
 	"github.com/portfoliotree/alphavantage/query/options"
 	"github.com/portfoliotree/alphavantage/query/technical"
@@ -63,6 +64,8 @@ func runFunction(client *alphavantage.Client, functionName string, args []string
 		return handleChandeMomentumOscillator(client, args, output)
 	case "COFFEE", "coffee":
 		return handleCoffee(client, args, output)
+	case "COMPANY_LOGO", "company-logo":
+		return handleCompanyLogo(client, args, output)
 	case "COPPER", "copper":
 		return handleCopper(client, args, output)
 	case "CORN", "corn":
@@ -113,8 +116,16 @@ func runFunction(client *alphavantage.Client, functionName string, args []string
 		return handleFXWeekly(client, args, output)
 	case "GLOBAL_QUOTE", "global-quote":
 		return handleGlobalQuote(client, args, output)
+	case "GOLD_SILVER_HISTORY", "gold-silver-history":
+		return handleGoldSilverHistory(client, args, output)
+	case "GOLD_SILVER_SPOT", "gold-silver-spot":
+		return handleGoldSilverSpot(client, args, output)
 	case "HISTORICAL_OPTIONS", "historical-options":
 		return handleHistoricalOptions(client, args, output)
+	case "HISTORICAL_PUT_CALL_RATIO", "historical-put-call-ratio":
+		return handleHistoricalPutCallRatio(client, args, output)
+	case "HISTORICAL_VOLUME_OPEN_INTEREST_RATIO", "historical-volume-open-interest-ratio":
+		return handleHistoricalVolumeOpenInterestRatio(client, args, output)
 	case "HT_DCPERIOD", "ht-dcperiod":
 		return handleHilbertTransformDCPeriod(client, args, output)
 	case "HT_DCPHASE", "ht-dcphase":
@@ -129,10 +140,16 @@ func runFunction(client *alphavantage.Client, functionName string, args []string
 		return handleHilbertTransformTrendMode(client, args, output)
 	case "INCOME_STATEMENT", "income-statement":
 		return handleIncomeStatement(client, args, output)
+	case "INDEX_CATALOG", "index-catalog":
+		return handleIndexCatalog(client, args, output)
+	case "INDEX_DATA", "index-data":
+		return handleIndexData(client, args, output)
 	case "INFLATION", "inflation":
 		return handleInflation(client, args, output)
 	case "INSIDER_TRANSACTIONS", "insider-transactions":
 		return handleInsiderTransactions(client, args, output)
+	case "INSTITUTIONAL_HOLDINGS", "institutional-holdings":
+		return handleInstitutionalHoldings(client, args, output)
 	case "IPO_CALENDAR", "ipo-calendar":
 		return handleIPOCalendar(client, args, output)
 	case "KAMA", "kama":
@@ -177,10 +194,16 @@ func runFunction(client *alphavantage.Client, functionName string, args []string
 		return handlePlusDirectionalMovement(client, args, output)
 	case "PPO", "ppo":
 		return handlePercentagePriceOscillator(client, args, output)
+	case "REALTIME_BULK_BID_ASK_PRICES", "realtime-bulk-bid-ask-prices":
+		return handleRealtimeBulkBidAskPrices(client, args, output)
 	case "REALTIME_BULK_QUOTES", "realtime-bulk-quotes":
 		return handleRealtimeBulkQuotes(client, args, output)
 	case "REALTIME_OPTIONS", "realtime-options":
 		return handleRealtimeOptions(client, args, output)
+	case "REALTIME_PUT_CALL_RATIO", "realtime-put-call-ratio":
+		return handleRealtimePutCallRatio(client, args, output)
+	case "REALTIME_VOLUME_OPEN_INTEREST_RATIO", "realtime-volume-open-interest-ratio":
+		return handleRealtimeVolumeOpenInterestRatio(client, args, output)
 	case "REAL_GDP", "real-gdp":
 		return handleRealGDP(client, args, output)
 	case "REAL_GDP_PER_CAPITA", "real-gdp-per-capita":
@@ -268,6 +291,8 @@ func handleChaikinADLine(client *alphavantage.Client, args []string, output io.W
 	flags.StringVar(&month, "month", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -287,6 +312,9 @@ func handleChaikinADLine(client *alphavantage.Client, args []string, output io.W
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -314,6 +342,8 @@ func handleChaikinADOscillator(client *alphavantage.Client, args []string, outpu
 	flags.IntVar(&slowPeriod, "slowperiod", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -340,6 +370,9 @@ func handleChaikinADOscillator(client *alphavantage.Client, args []string, outpu
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
+	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
 	if err != nil {
@@ -358,12 +391,14 @@ func handleAverageDirectionalMovementIndex(client *alphavantage.Client, args []s
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -373,7 +408,10 @@ func handleAverageDirectionalMovementIndex(client *alphavantage.Client, args []s
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryAverageDirectionalMovementIndex(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryAverageDirectionalMovementIndex(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -381,11 +419,11 @@ func handleAverageDirectionalMovementIndex(client *alphavantage.Client, args []s
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -405,12 +443,14 @@ func handleAverageDirectionalMovementIndexRating(client *alphavantage.Client, ar
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -420,7 +460,10 @@ func handleAverageDirectionalMovementIndexRating(client *alphavantage.Client, ar
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryAverageDirectionalMovementIndexRating(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryAverageDirectionalMovementIndexRating(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -428,11 +471,11 @@ func handleAverageDirectionalMovementIndexRating(client *alphavantage.Client, ar
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -611,6 +654,8 @@ func handleAbsolutePriceOscillator(client *alphavantage.Client, args []string, o
 	flags.IntVar(&movingAverageType, "matype", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -643,6 +688,9 @@ func handleAbsolutePriceOscillator(client *alphavantage.Client, args []string, o
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
+	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
 	if err != nil {
@@ -661,12 +709,14 @@ func handleAroon(client *alphavantage.Client, args []string, output io.Writer) e
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -676,7 +726,10 @@ func handleAroon(client *alphavantage.Client, args []string, output io.Writer) e
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryAroon(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryAroon(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -684,11 +737,11 @@ func handleAroon(client *alphavantage.Client, args []string, output io.Writer) e
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -708,12 +761,14 @@ func handleAroonOsc(client *alphavantage.Client, args []string, output io.Writer
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -723,7 +778,10 @@ func handleAroonOsc(client *alphavantage.Client, args []string, output io.Writer
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryAroonOsc(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryAroonOsc(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -731,11 +789,11 @@ func handleAroonOsc(client *alphavantage.Client, args []string, output io.Writer
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -755,12 +813,14 @@ func handleAverageTrueRange(client *alphavantage.Client, args []string, output i
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -770,7 +830,10 @@ func handleAverageTrueRange(client *alphavantage.Client, args []string, output i
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryAverageTrueRange(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryAverageTrueRange(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -778,11 +841,11 @@ func handleAverageTrueRange(client *alphavantage.Client, args []string, output i
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -825,12 +888,12 @@ func handleBollingerBands(client *alphavantage.Client, args []string, output io.
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var upperBandStandardDeviationMultiplier string
 	flags.StringVar(&upperBandStandardDeviationMultiplier, "nbdevup", "", "")
 	var lowerBandStandardDeviationMultiplier string
@@ -839,6 +902,8 @@ func handleBollingerBands(client *alphavantage.Client, args []string, output io.
 	flags.IntVar(&movingAverageType, "matype", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -848,19 +913,19 @@ func handleBollingerBands(client *alphavantage.Client, args []string, output io.
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryBollingerBands(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryBollingerBands(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
 			return fmt.Errorf("invalid month format: %w", err)
 		}
 		query = query.Month(t)
-	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
 	}
 	if upperBandStandardDeviationMultiplier != "" {
 		query = query.UpperBandStandardDeviationMultiplier(upperBandStandardDeviationMultiplier)
@@ -873,6 +938,9 @@ func handleBollingerBands(client *alphavantage.Client, args []string, output io.
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -896,6 +964,8 @@ func handleBalanceOfPower(client *alphavantage.Client, args []string, output io.
 	flags.StringVar(&month, "month", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -915,6 +985,9 @@ func handleBalanceOfPower(client *alphavantage.Client, args []string, output io.
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -985,12 +1058,14 @@ func handleCommodityChannelIndex(client *alphavantage.Client, args []string, out
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -1000,7 +1075,10 @@ func handleCommodityChannelIndex(client *alphavantage.Client, args []string, out
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryCommodityChannelIndex(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryCommodityChannelIndex(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -1008,11 +1086,11 @@ func handleCommodityChannelIndex(client *alphavantage.Client, args []string, out
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -1032,14 +1110,16 @@ func handleChandeMomentumOscillator(client *alphavantage.Client, args []string, 
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -1049,10 +1129,13 @@ func handleChandeMomentumOscillator(client *alphavantage.Client, args []string, 
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryChandeMomentumOscillator(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryChandeMomentumOscillator(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -1060,11 +1143,11 @@ func handleChandeMomentumOscillator(client *alphavantage.Client, args []string, 
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -1094,6 +1177,29 @@ func handleCoffee(client *alphavantage.Client, args []string, output io.Writer) 
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
+	ctx := context.Background()
+	res, err := client.Query(ctx, query)
+	if err != nil {
+		return fmt.Errorf("API request failed: %w", err)
+	}
+	defer res.Body.Close()
+	if _, err := io.Copy(output, res.Body); err != nil {
+		return fmt.Errorf("failed to write response: %w", err)
+	}
+	return nil
+}
+
+func handleCompanyLogo(client *alphavantage.Client, args []string, output io.Writer) error {
+	flags := pflag.NewFlagSet("COMPANY_LOGO", pflag.ContinueOnError)
+	var symbol string
+	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+	if symbol == "" {
+		return fmt.Errorf("required flag --symbol not set")
+	}
+	query := fundamental.QueryCompanyLogo(client.APIKey, symbol)
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
 	if err != nil {
@@ -1295,14 +1401,16 @@ func handleDoubleExponentialMovingAverage(client *alphavantage.Client, args []st
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -1312,10 +1420,13 @@ func handleDoubleExponentialMovingAverage(client *alphavantage.Client, args []st
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryDoubleExponentialMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryDoubleExponentialMovingAverage(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -1323,11 +1434,11 @@ func handleDoubleExponentialMovingAverage(client *alphavantage.Client, args []st
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -1482,12 +1593,14 @@ func handleDirectionalMovementIndex(client *alphavantage.Client, args []string, 
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -1497,7 +1610,10 @@ func handleDirectionalMovementIndex(client *alphavantage.Client, args []string, 
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryDirectionalMovementIndex(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryDirectionalMovementIndex(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -1505,11 +1621,11 @@ func handleDirectionalMovementIndex(client *alphavantage.Client, args []string, 
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -1631,14 +1747,16 @@ func handleExponentialMovingAverage(client *alphavantage.Client, args []string, 
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -1648,10 +1766,13 @@ func handleExponentialMovingAverage(client *alphavantage.Client, args []string, 
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryExponentialMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryExponentialMovingAverage(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -1659,11 +1780,11 @@ func handleExponentialMovingAverage(client *alphavantage.Client, args []string, 
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -1881,6 +2002,8 @@ func handleGlobalQuote(client *alphavantage.Client, args []string, output io.Wri
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -1891,6 +2014,60 @@ func handleGlobalQuote(client *alphavantage.Client, args []string, output io.Wri
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
+	}
+	ctx := context.Background()
+	res, err := client.Query(ctx, query)
+	if err != nil {
+		return fmt.Errorf("API request failed: %w", err)
+	}
+	defer res.Body.Close()
+	if _, err := io.Copy(output, res.Body); err != nil {
+		return fmt.Errorf("failed to write response: %w", err)
+	}
+	return nil
+}
+
+func handleGoldSilverHistory(client *alphavantage.Client, args []string, output io.Writer) error {
+	flags := pflag.NewFlagSet("GOLD_SILVER_HISTORY", pflag.ContinueOnError)
+	var symbol string
+	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
+	var interval string
+	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+	if symbol == "" {
+		return fmt.Errorf("required flag --symbol not set")
+	}
+	if interval == "" {
+		return fmt.Errorf("required flag --interval not set")
+	}
+	query := commodities.QueryGoldSilverHistory(client.APIKey, symbol, interval)
+	ctx := context.Background()
+	res, err := client.Query(ctx, query)
+	if err != nil {
+		return fmt.Errorf("API request failed: %w", err)
+	}
+	defer res.Body.Close()
+	if _, err := io.Copy(output, res.Body); err != nil {
+		return fmt.Errorf("failed to write response: %w", err)
+	}
+	return nil
+}
+
+func handleGoldSilverSpot(client *alphavantage.Client, args []string, output io.Writer) error {
+	flags := pflag.NewFlagSet("GOLD_SILVER_SPOT", pflag.ContinueOnError)
+	var symbol string
+	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+	if symbol == "" {
+		return fmt.Errorf("required flag --symbol not set")
+	}
+	query := commodities.QueryGoldSilverSpot(client.APIKey, symbol)
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
 	if err != nil {
@@ -1909,6 +2086,10 @@ func handleHistoricalOptions(client *alphavantage.Client, args []string, output 
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var date string
 	flags.StringVar(&date, "date", "", "")
+	var contract string
+	flags.StringVar(&contract, "contract", "", "")
+	var expiration string
+	flags.StringVar(&expiration, "expiration", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
 	if err := flags.Parse(args); err != nil {
@@ -1921,8 +2102,74 @@ func handleHistoricalOptions(client *alphavantage.Client, args []string, output 
 	if date != "" {
 		query = query.Date(date)
 	}
+	if contract != "" {
+		query = query.Contract(contract)
+	}
+	if expiration != "" {
+		t, err := time.Parse("2006-01", expiration)
+		if err != nil {
+			return fmt.Errorf("invalid expiration format: %w", err)
+		}
+		query = query.Expiration(t)
+	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	ctx := context.Background()
+	res, err := client.Query(ctx, query)
+	if err != nil {
+		return fmt.Errorf("API request failed: %w", err)
+	}
+	defer res.Body.Close()
+	if _, err := io.Copy(output, res.Body); err != nil {
+		return fmt.Errorf("failed to write response: %w", err)
+	}
+	return nil
+}
+
+func handleHistoricalPutCallRatio(client *alphavantage.Client, args []string, output io.Writer) error {
+	flags := pflag.NewFlagSet("HISTORICAL_PUT_CALL_RATIO", pflag.ContinueOnError)
+	var symbol string
+	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
+	var date string
+	flags.StringVar(&date, "date", "", "")
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+	if symbol == "" {
+		return fmt.Errorf("required flag --symbol not set")
+	}
+	query := options.QueryHistoricalPutCallRatio(client.APIKey, symbol)
+	if date != "" {
+		query = query.Date(date)
+	}
+	ctx := context.Background()
+	res, err := client.Query(ctx, query)
+	if err != nil {
+		return fmt.Errorf("API request failed: %w", err)
+	}
+	defer res.Body.Close()
+	if _, err := io.Copy(output, res.Body); err != nil {
+		return fmt.Errorf("failed to write response: %w", err)
+	}
+	return nil
+}
+
+func handleHistoricalVolumeOpenInterestRatio(client *alphavantage.Client, args []string, output io.Writer) error {
+	flags := pflag.NewFlagSet("HISTORICAL_VOLUME_OPEN_INTEREST_RATIO", pflag.ContinueOnError)
+	var symbol string
+	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
+	var date string
+	flags.StringVar(&date, "date", "", "")
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+	if symbol == "" {
+		return fmt.Errorf("required flag --symbol not set")
+	}
+	query := options.QueryHistoricalVolumeOpenInterestRatio(client.APIKey, symbol)
+	if date != "" {
+		query = query.Date(date)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -1948,6 +2195,8 @@ func handleHilbertTransformDCPeriod(client *alphavantage.Client, args []string, 
 	flags.StringVar(&month, "month", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -1970,6 +2219,9 @@ func handleHilbertTransformDCPeriod(client *alphavantage.Client, args []string, 
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -1995,6 +2247,8 @@ func handleHilbertTransformDCPhase(client *alphavantage.Client, args []string, o
 	flags.StringVar(&month, "month", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2017,6 +2271,9 @@ func handleHilbertTransformDCPhase(client *alphavantage.Client, args []string, o
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -2042,6 +2299,8 @@ func handleHilbertTransformPhasor(client *alphavantage.Client, args []string, ou
 	flags.StringVar(&month, "month", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2064,6 +2323,9 @@ func handleHilbertTransformPhasor(client *alphavantage.Client, args []string, ou
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -2089,6 +2351,8 @@ func handleHilbertTransformSine(client *alphavantage.Client, args []string, outp
 	flags.StringVar(&month, "month", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2111,6 +2375,9 @@ func handleHilbertTransformSine(client *alphavantage.Client, args []string, outp
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -2136,6 +2403,8 @@ func handleHilbertTransformTrendLine(client *alphavantage.Client, args []string,
 	flags.StringVar(&month, "month", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2158,6 +2427,9 @@ func handleHilbertTransformTrendLine(client *alphavantage.Client, args []string,
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -2183,6 +2455,8 @@ func handleHilbertTransformTrendMode(client *alphavantage.Client, args []string,
 	flags.StringVar(&month, "month", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2205,6 +2479,9 @@ func handleHilbertTransformTrendMode(client *alphavantage.Client, args []string,
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -2229,6 +2506,62 @@ func handleIncomeStatement(client *alphavantage.Client, args []string, output io
 		return fmt.Errorf("required flag --symbol not set")
 	}
 	query := fundamental.QueryIncomeStatement(client.APIKey, symbol)
+	ctx := context.Background()
+	res, err := client.Query(ctx, query)
+	if err != nil {
+		return fmt.Errorf("API request failed: %w", err)
+	}
+	defer res.Body.Close()
+	if _, err := io.Copy(output, res.Body); err != nil {
+		return fmt.Errorf("failed to write response: %w", err)
+	}
+	return nil
+}
+
+func handleIndexCatalog(client *alphavantage.Client, args []string, output io.Writer) error {
+	flags := pflag.NewFlagSet("INDEX_CATALOG", pflag.ContinueOnError)
+	var dataType string
+	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+	query := indices.QueryIndexCatalog(client.APIKey)
+	if dataType != "" {
+		query = query.DataType(dataType)
+	}
+	ctx := context.Background()
+	res, err := client.Query(ctx, query)
+	if err != nil {
+		return fmt.Errorf("API request failed: %w", err)
+	}
+	defer res.Body.Close()
+	if _, err := io.Copy(output, res.Body); err != nil {
+		return fmt.Errorf("failed to write response: %w", err)
+	}
+	return nil
+}
+
+func handleIndexData(client *alphavantage.Client, args []string, output io.Writer) error {
+	flags := pflag.NewFlagSet("INDEX_DATA", pflag.ContinueOnError)
+	var symbol string
+	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
+	var interval string
+	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var dataType string
+	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+	if symbol == "" {
+		return fmt.Errorf("required flag --symbol not set")
+	}
+	if interval == "" {
+		return fmt.Errorf("required flag --interval not set")
+	}
+	query := indices.QueryIndexData(client.APIKey, symbol, interval)
+	if dataType != "" {
+		query = query.DataType(dataType)
+	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
 	if err != nil {
@@ -2268,6 +2601,8 @@ func handleInsiderTransactions(client *alphavantage.Client, args []string, outpu
 	flags := pflag.NewFlagSet("INSIDER_TRANSACTIONS", pflag.ContinueOnError)
 	var symbol string
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
+	var from string
+	flags.StringVar(&from, "from", "", "")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2275,6 +2610,36 @@ func handleInsiderTransactions(client *alphavantage.Client, args []string, outpu
 		return fmt.Errorf("required flag --symbol not set")
 	}
 	query := intelligence.QueryInsiderTransactions(client.APIKey, symbol)
+	if from != "" {
+		t, err := time.Parse("2006-01", from)
+		if err != nil {
+			return fmt.Errorf("invalid from format: %w", err)
+		}
+		query = query.From(t)
+	}
+	ctx := context.Background()
+	res, err := client.Query(ctx, query)
+	if err != nil {
+		return fmt.Errorf("API request failed: %w", err)
+	}
+	defer res.Body.Close()
+	if _, err := io.Copy(output, res.Body); err != nil {
+		return fmt.Errorf("failed to write response: %w", err)
+	}
+	return nil
+}
+
+func handleInstitutionalHoldings(client *alphavantage.Client, args []string, output io.Writer) error {
+	flags := pflag.NewFlagSet("INSTITUTIONAL_HOLDINGS", pflag.ContinueOnError)
+	var symbol string
+	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+	if symbol == "" {
+		return fmt.Errorf("required flag --symbol not set")
+	}
+	query := intelligence.QueryInstitutionalHoldings(client.APIKey, symbol)
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
 	if err != nil {
@@ -2311,14 +2676,16 @@ func handleKaufmanAdaptiveMovingAverage(client *alphavantage.Client, args []stri
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2328,10 +2695,13 @@ func handleKaufmanAdaptiveMovingAverage(client *alphavantage.Client, args []stri
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryKaufmanAdaptiveMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryKaufmanAdaptiveMovingAverage(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2339,11 +2709,11 @@ func handleKaufmanAdaptiveMovingAverage(client *alphavantage.Client, args []stri
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -2403,6 +2773,8 @@ func handleMovingAverageConvergenceDivergence(client *alphavantage.Client, args 
 	flags.IntVar(&signalPeriod, "signalperiod", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2434,6 +2806,9 @@ func handleMovingAverageConvergenceDivergence(client *alphavantage.Client, args 
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -2471,6 +2846,8 @@ func handleMovingAverageConvergenceDivergenceExt(client *alphavantage.Client, ar
 	flags.IntVar(&signalMAType, "signalmatype", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2512,6 +2889,9 @@ func handleMovingAverageConvergenceDivergenceExt(client *alphavantage.Client, ar
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
+	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
 	if err != nil {
@@ -2540,6 +2920,8 @@ func handleMESAAdaptiveMovingAverage(client *alphavantage.Client, args []string,
 	flags.StringVar(&slowLimit, "slowlimit", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2568,6 +2950,9 @@ func handleMESAAdaptiveMovingAverage(client *alphavantage.Client, args []string,
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -2605,12 +2990,14 @@ func handleMoneyFlowIndex(client *alphavantage.Client, args []string, output io.
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2620,7 +3007,10 @@ func handleMoneyFlowIndex(client *alphavantage.Client, args []string, output io.
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryMoneyFlowIndex(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryMoneyFlowIndex(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2628,11 +3018,11 @@ func handleMoneyFlowIndex(client *alphavantage.Client, args []string, output io.
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -2660,6 +3050,8 @@ func handleMidPoint(client *alphavantage.Client, args []string, output io.Writer
 	flags.StringVar(&month, "month", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2686,6 +3078,9 @@ func handleMidPoint(client *alphavantage.Client, args []string, output io.Writer
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
+	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
 	if err != nil {
@@ -2710,6 +3105,8 @@ func handleMidPrice(client *alphavantage.Client, args []string, output io.Writer
 	flags.StringVar(&month, "month", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2733,6 +3130,9 @@ func handleMidPrice(client *alphavantage.Client, args []string, output io.Writer
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
+	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
 	if err != nil {
@@ -2751,12 +3151,14 @@ func handleMinusDirectionalIndicator(client *alphavantage.Client, args []string,
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2766,7 +3168,10 @@ func handleMinusDirectionalIndicator(client *alphavantage.Client, args []string,
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryMinusDirectionalIndicator(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryMinusDirectionalIndicator(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2774,11 +3179,11 @@ func handleMinusDirectionalIndicator(client *alphavantage.Client, args []string,
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -2798,12 +3203,14 @@ func handleMinusDirectionalMovement(client *alphavantage.Client, args []string, 
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2813,7 +3220,10 @@ func handleMinusDirectionalMovement(client *alphavantage.Client, args []string, 
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryMinusDirectionalMovement(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryMinusDirectionalMovement(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2821,11 +3231,11 @@ func handleMinusDirectionalMovement(client *alphavantage.Client, args []string, 
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -2845,14 +3255,16 @@ func handleMomentum(client *alphavantage.Client, args []string, output io.Writer
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2862,10 +3274,13 @@ func handleMomentum(client *alphavantage.Client, args []string, output io.Writer
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryMomentum(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryMomentum(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2873,11 +3288,11 @@ func handleMomentum(client *alphavantage.Client, args []string, output io.Writer
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -2897,12 +3312,14 @@ func handleNormalizedAverageTrueRange(client *alphavantage.Client, args []string
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -2912,7 +3329,10 @@ func handleNormalizedAverageTrueRange(client *alphavantage.Client, args []string
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryNormalizedAverageTrueRange(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryNormalizedAverageTrueRange(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -2920,11 +3340,11 @@ func handleNormalizedAverageTrueRange(client *alphavantage.Client, args []string
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -3055,6 +3475,8 @@ func handleOnBalanceVolume(client *alphavantage.Client, args []string, output io
 	flags.StringVar(&month, "month", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -3074,6 +3496,9 @@ func handleOnBalanceVolume(client *alphavantage.Client, args []string, output io
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -3116,12 +3541,14 @@ func handlePlusDirectionalIndicator(client *alphavantage.Client, args []string, 
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -3131,7 +3558,10 @@ func handlePlusDirectionalIndicator(client *alphavantage.Client, args []string, 
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryPlusDirectionalIndicator(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryPlusDirectionalIndicator(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3139,11 +3569,11 @@ func handlePlusDirectionalIndicator(client *alphavantage.Client, args []string, 
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -3163,12 +3593,14 @@ func handlePlusDirectionalMovement(client *alphavantage.Client, args []string, o
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -3178,7 +3610,10 @@ func handlePlusDirectionalMovement(client *alphavantage.Client, args []string, o
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryPlusDirectionalMovement(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryPlusDirectionalMovement(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3186,11 +3621,11 @@ func handlePlusDirectionalMovement(client *alphavantage.Client, args []string, o
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -3222,6 +3657,8 @@ func handlePercentagePriceOscillator(client *alphavantage.Client, args []string,
 	flags.IntVar(&movingAverageType, "matype", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -3251,6 +3688,37 @@ func handlePercentagePriceOscillator(client *alphavantage.Client, args []string,
 	if movingAverageType != 0 {
 		query = query.MovingAverageType(strconv.Itoa(movingAverageType))
 	}
+	if dataType != "" {
+		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
+	}
+	ctx := context.Background()
+	res, err := client.Query(ctx, query)
+	if err != nil {
+		return fmt.Errorf("API request failed: %w", err)
+	}
+	defer res.Body.Close()
+	if _, err := io.Copy(output, res.Body); err != nil {
+		return fmt.Errorf("failed to write response: %w", err)
+	}
+	return nil
+}
+
+func handleRealtimeBulkBidAskPrices(client *alphavantage.Client, args []string, output io.Writer) error {
+	flags := pflag.NewFlagSet("REALTIME_BULK_BID_ASK_PRICES", pflag.ContinueOnError)
+	var symbol string
+	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
+	var dataType string
+	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+	if symbol == "" {
+		return fmt.Errorf("required flag --symbol not set")
+	}
+	query := timeseries.QueryRealtimeBulkBidAskPrices(client.APIKey, symbol)
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
@@ -3302,6 +3770,8 @@ func handleRealtimeOptions(client *alphavantage.Client, args []string, output io
 	flags.BoolVar(&requireGreeks, "require-greeks", false, "")
 	var contract string
 	flags.StringVar(&contract, "contract", "", "")
+	var expiration string
+	flags.StringVar(&expiration, "expiration", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
 	if err := flags.Parse(args); err != nil {
@@ -3317,9 +3787,62 @@ func handleRealtimeOptions(client *alphavantage.Client, args []string, output io
 	if contract != "" {
 		query = query.Contract(contract)
 	}
+	if expiration != "" {
+		t, err := time.Parse("2006-01", expiration)
+		if err != nil {
+			return fmt.Errorf("invalid expiration format: %w", err)
+		}
+		query = query.Expiration(t)
+	}
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
+	ctx := context.Background()
+	res, err := client.Query(ctx, query)
+	if err != nil {
+		return fmt.Errorf("API request failed: %w", err)
+	}
+	defer res.Body.Close()
+	if _, err := io.Copy(output, res.Body); err != nil {
+		return fmt.Errorf("failed to write response: %w", err)
+	}
+	return nil
+}
+
+func handleRealtimePutCallRatio(client *alphavantage.Client, args []string, output io.Writer) error {
+	flags := pflag.NewFlagSet("REALTIME_PUT_CALL_RATIO", pflag.ContinueOnError)
+	var symbol string
+	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+	if symbol == "" {
+		return fmt.Errorf("required flag --symbol not set")
+	}
+	query := options.QueryRealtimePutCallRatio(client.APIKey, symbol)
+	ctx := context.Background()
+	res, err := client.Query(ctx, query)
+	if err != nil {
+		return fmt.Errorf("API request failed: %w", err)
+	}
+	defer res.Body.Close()
+	if _, err := io.Copy(output, res.Body); err != nil {
+		return fmt.Errorf("failed to write response: %w", err)
+	}
+	return nil
+}
+
+func handleRealtimeVolumeOpenInterestRatio(client *alphavantage.Client, args []string, output io.Writer) error {
+	flags := pflag.NewFlagSet("REALTIME_VOLUME_OPEN_INTEREST_RATIO", pflag.ContinueOnError)
+	var symbol string
+	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
+	if err := flags.Parse(args); err != nil {
+		return err
+	}
+	if symbol == "" {
+		return fmt.Errorf("required flag --symbol not set")
+	}
+	query := options.QueryRealtimeVolumeOpenInterestRatio(client.APIKey, symbol)
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
 	if err != nil {
@@ -3412,14 +3935,16 @@ func handleRateOfChange(client *alphavantage.Client, args []string, output io.Wr
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -3429,10 +3954,13 @@ func handleRateOfChange(client *alphavantage.Client, args []string, output io.Wr
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryRateOfChange(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryRateOfChange(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3440,11 +3968,11 @@ func handleRateOfChange(client *alphavantage.Client, args []string, output io.Wr
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -3464,14 +3992,16 @@ func handleRateOfChangeRatio(client *alphavantage.Client, args []string, output 
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -3481,10 +4011,13 @@ func handleRateOfChangeRatio(client *alphavantage.Client, args []string, output 
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryRateOfChangeRatio(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryRateOfChangeRatio(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3492,11 +4025,11 @@ func handleRateOfChangeRatio(client *alphavantage.Client, args []string, output 
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -3516,14 +4049,16 @@ func handleRelativeStrengthIndex(client *alphavantage.Client, args []string, out
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -3533,10 +4068,13 @@ func handleRelativeStrengthIndex(client *alphavantage.Client, args []string, out
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryRelativeStrengthIndex(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryRelativeStrengthIndex(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3544,11 +4082,11 @@ func handleRelativeStrengthIndex(client *alphavantage.Client, args []string, out
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -3576,6 +4114,8 @@ func handleSAR(client *alphavantage.Client, args []string, output io.Writer) err
 	flags.StringVar(&maximum, "maximum", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -3601,6 +4141,9 @@ func handleSAR(client *alphavantage.Client, args []string, output io.Writer) err
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -3648,14 +4191,16 @@ func handleSimpleMovingAverage(client *alphavantage.Client, args []string, outpu
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -3665,10 +4210,13 @@ func handleSimpleMovingAverage(client *alphavantage.Client, args []string, outpu
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QuerySimpleMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QuerySimpleMovingAverage(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -3676,11 +4224,11 @@ func handleSimpleMovingAverage(client *alphavantage.Client, args []string, outpu
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -3742,6 +4290,8 @@ func handleStochasticOscillator(client *alphavantage.Client, args []string, outp
 	flags.IntVar(&slowDMAType, "slowdmatype", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -3777,6 +4327,9 @@ func handleStochasticOscillator(client *alphavantage.Client, args []string, outp
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
+	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
 	if err != nil {
@@ -3805,6 +4358,8 @@ func handleStochasticFast(client *alphavantage.Client, args []string, output io.
 	flags.IntVar(&fastDMAType, "fastdmatype", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -3834,6 +4389,9 @@ func handleStochasticFast(client *alphavantage.Client, args []string, output io.
 	if dataType != "" {
 		query = query.DataType(dataType)
 	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
+	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
 	if err != nil {
@@ -3852,12 +4410,12 @@ func handleStochasticRelativeStrengthIndex(client *alphavantage.Client, args []s
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var fastKPeriod int
 	flags.IntVar(&fastKPeriod, "fastkperiod", 0, "")
 	var fastDPeriod int
@@ -3866,6 +4424,8 @@ func handleStochasticRelativeStrengthIndex(client *alphavantage.Client, args []s
 	flags.IntVar(&fastDMAType, "fastdmatype", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -3875,19 +4435,19 @@ func handleStochasticRelativeStrengthIndex(client *alphavantage.Client, args []s
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryStochasticRelativeStrengthIndex(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryStochasticRelativeStrengthIndex(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
 			return fmt.Errorf("invalid month format: %w", err)
 		}
 		query = query.Month(t)
-	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
 	}
 	if fastKPeriod != 0 {
 		query = query.FastKPeriod(strconv.Itoa(fastKPeriod))
@@ -3900,6 +4460,9 @@ func handleStochasticRelativeStrengthIndex(client *alphavantage.Client, args []s
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -3975,14 +4538,16 @@ func handleT3(client *alphavantage.Client, args []string, output io.Writer) erro
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -3992,10 +4557,13 @@ func handleT3(client *alphavantage.Client, args []string, output io.Writer) erro
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryT3(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryT3(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4003,11 +4571,11 @@ func handleT3(client *alphavantage.Client, args []string, output io.Writer) erro
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -4027,14 +4595,16 @@ func handleTripleExponentialMovingAverage(client *alphavantage.Client, args []st
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -4044,10 +4614,13 @@ func handleTripleExponentialMovingAverage(client *alphavantage.Client, args []st
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryTripleExponentialMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryTripleExponentialMovingAverage(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4055,11 +4628,11 @@ func handleTripleExponentialMovingAverage(client *alphavantage.Client, args []st
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -4114,6 +4687,8 @@ func handleTimeSeriesDailyAdjusted(client *alphavantage.Client, args []string, o
 	flags.StringVar(&outputSize, "outputsize", "", "options: compact, full")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -4126,6 +4701,9 @@ func handleTimeSeriesDailyAdjusted(client *alphavantage.Client, args []string, o
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -4155,6 +4733,8 @@ func handleTimeSeriesIntraday(client *alphavantage.Client, args []string, output
 	flags.StringVar(&outputSize, "outputsize", "", "options: compact, full")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -4183,6 +4763,9 @@ func handleTimeSeriesIntraday(client *alphavantage.Client, args []string, output
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -4310,10 +4893,15 @@ func handleTimeSeriesWeeklyAdjusted(client *alphavantage.Client, args []string, 
 
 func handleTopGainersLosers(client *alphavantage.Client, args []string, output io.Writer) error {
 	flags := pflag.NewFlagSet("TOP_GAINERS_LOSERS", pflag.ContinueOnError)
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
 	query := intelligence.QueryTopGainersLosers(client.APIKey)
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
+	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
 	if err != nil {
@@ -4336,6 +4924,8 @@ func handleTrueRange(client *alphavantage.Client, args []string, output io.Write
 	flags.StringVar(&month, "month", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -4355,6 +4945,9 @@ func handleTrueRange(client *alphavantage.Client, args []string, output io.Write
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -4407,14 +5000,16 @@ func handleTriangularMovingAverage(client *alphavantage.Client, args []string, o
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -4424,10 +5019,13 @@ func handleTriangularMovingAverage(client *alphavantage.Client, args []string, o
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryTriangularMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryTriangularMovingAverage(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4435,11 +5033,11 @@ func handleTriangularMovingAverage(client *alphavantage.Client, args []string, o
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -4459,14 +5057,16 @@ func handleOneDayRateOfChangeTripleSmoothExponentialMovingAverage(client *alphav
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -4476,10 +5076,13 @@ func handleOneDayRateOfChangeTripleSmoothExponentialMovingAverage(client *alphav
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryOneDayRateOfChangeTripleSmoothExponentialMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryOneDayRateOfChangeTripleSmoothExponentialMovingAverage(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4487,11 +5090,11 @@ func handleOneDayRateOfChangeTripleSmoothExponentialMovingAverage(client *alphav
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -4521,6 +5124,8 @@ func handleUltimateOscillator(client *alphavantage.Client, args []string, output
 	flags.IntVar(&timePeriod3, "timeperiod3", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -4549,6 +5154,9 @@ func handleUltimateOscillator(client *alphavantage.Client, args []string, output
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -4595,6 +5203,8 @@ func handleVolumeWeightedAveragePrice(client *alphavantage.Client, args []string
 	flags.StringVar(&month, "month", "", "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -4614,6 +5224,9 @@ func handleVolumeWeightedAveragePrice(client *alphavantage.Client, args []string
 	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -4661,12 +5274,14 @@ func handleWilliamsR(client *alphavantage.Client, args []string, output io.Write
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -4676,7 +5291,10 @@ func handleWilliamsR(client *alphavantage.Client, args []string, output io.Write
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
-	query := technical.QueryWilliamsR(client.APIKey, symbol, interval)
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
+	query := technical.QueryWilliamsR(client.APIKey, symbol, interval, strconv.Itoa(timePeriod))
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4684,11 +5302,11 @@ func handleWilliamsR(client *alphavantage.Client, args []string, output io.Write
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)
@@ -4708,14 +5326,16 @@ func handleWeightedMovingAverage(client *alphavantage.Client, args []string, out
 	flags.StringVar(&symbol, "symbol", "", "[REQUIRED]")
 	var interval string
 	flags.StringVar(&interval, "interval", "", "[REQUIRED] options: daily, weekly, monthly")
+	var timePeriod int
+	flags.IntVar(&timePeriod, "time-period", 0, "[REQUIRED]")
 	var seriesType string
 	flags.StringVar(&seriesType, "series-type", "", "[REQUIRED] options: close, open, high, low")
 	var month string
 	flags.StringVar(&month, "month", "", "")
-	var timePeriod int
-	flags.IntVar(&timePeriod, "time-period", 0, "")
 	var dataType string
 	flags.StringVar(&dataType, "datatype", "", "options: csv, json")
+	var entitlement string
+	flags.StringVar(&entitlement, "entitlement", "", "options: realtime, delayed")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -4725,10 +5345,13 @@ func handleWeightedMovingAverage(client *alphavantage.Client, args []string, out
 	if interval == "" {
 		return fmt.Errorf("required flag --interval not set")
 	}
+	if timePeriod == 0 {
+		return fmt.Errorf("required flag --time-period not set")
+	}
 	if seriesType == "" {
 		return fmt.Errorf("required flag --series-type not set")
 	}
-	query := technical.QueryWeightedMovingAverage(client.APIKey, symbol, interval, seriesType)
+	query := technical.QueryWeightedMovingAverage(client.APIKey, symbol, interval, strconv.Itoa(timePeriod), seriesType)
 	if month != "" {
 		t, err := time.Parse("2006-01", month)
 		if err != nil {
@@ -4736,11 +5359,11 @@ func handleWeightedMovingAverage(client *alphavantage.Client, args []string, out
 		}
 		query = query.Month(t)
 	}
-	if timePeriod != 0 {
-		query = query.TimePeriod(strconv.Itoa(timePeriod))
-	}
 	if dataType != "" {
 		query = query.DataType(dataType)
+	}
+	if entitlement != "" {
+		query = query.Entitlement(entitlement)
 	}
 	ctx := context.Background()
 	res, err := client.Query(ctx, query)

@@ -24,6 +24,16 @@ func (q CashFlowQuery) Encode() string {
 	return url.Values(q).Encode()
 }
 
+type CompanyLogoQuery url.Values
+
+func QueryCompanyLogo(apiKey, symbol string) CompanyLogoQuery {
+	return CompanyLogoQuery{"function": []string{"COMPANY_LOGO"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
+}
+
+func (q CompanyLogoQuery) Encode() string {
+	return url.Values(q).Encode()
+}
+
 type DividendsQuery url.Values
 
 func QueryDividends(apiKey, symbol string) DividendsQuery {

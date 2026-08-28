@@ -5,6 +5,7 @@ package options
 import (
 	"net/url"
 	"strconv"
+	"time"
 )
 
 type HistoricalQuery url.Values
@@ -15,6 +16,16 @@ func QueryHistorical(apiKey, symbol string) HistoricalQuery {
 
 func (query HistoricalQuery) Date(value string) HistoricalQuery {
 	query["date"] = []string{value}
+	return query
+}
+
+func (query HistoricalQuery) Contract(value string) HistoricalQuery {
+	query["contract"] = []string{value}
+	return query
+}
+
+func (query HistoricalQuery) Expiration(value time.Time) HistoricalQuery {
+	query["expiration"] = []string{value.Format("2006-01-02")}
 	return query
 }
 
@@ -60,6 +71,36 @@ type HistoricalRow struct {
 	RHO               string `column-name:"rho"`
 }
 
+type HistoricalPutCallRatioQuery url.Values
+
+func QueryHistoricalPutCallRatio(apiKey, symbol string) HistoricalPutCallRatioQuery {
+	return HistoricalPutCallRatioQuery{"function": []string{"HISTORICAL_PUT_CALL_RATIO"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
+}
+
+func (query HistoricalPutCallRatioQuery) Date(value string) HistoricalPutCallRatioQuery {
+	query["date"] = []string{value}
+	return query
+}
+
+func (q HistoricalPutCallRatioQuery) Encode() string {
+	return url.Values(q).Encode()
+}
+
+type HistoricalVolumeOpenInterestRatioQuery url.Values
+
+func QueryHistoricalVolumeOpenInterestRatio(apiKey, symbol string) HistoricalVolumeOpenInterestRatioQuery {
+	return HistoricalVolumeOpenInterestRatioQuery{"function": []string{"HISTORICAL_VOLUME_OPEN_INTEREST_RATIO"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
+}
+
+func (query HistoricalVolumeOpenInterestRatioQuery) Date(value string) HistoricalVolumeOpenInterestRatioQuery {
+	query["date"] = []string{value}
+	return query
+}
+
+func (q HistoricalVolumeOpenInterestRatioQuery) Encode() string {
+	return url.Values(q).Encode()
+}
+
 type RealtimeQuery url.Values
 
 func QueryRealtime(apiKey, symbol string) RealtimeQuery {
@@ -73,6 +114,11 @@ func (query RealtimeQuery) RequireGreeks(value bool) RealtimeQuery {
 
 func (query RealtimeQuery) Contract(value string) RealtimeQuery {
 	query["contract"] = []string{value}
+	return query
+}
+
+func (query RealtimeQuery) Expiration(value time.Time) RealtimeQuery {
+	query["expiration"] = []string{value.Format("2006-01-02")}
 	return query
 }
 
@@ -92,5 +138,25 @@ func (query RealtimeQuery) DataType(value string) RealtimeQuery {
 }
 
 func (q RealtimeQuery) Encode() string {
+	return url.Values(q).Encode()
+}
+
+type RealtimePutCallRatioQuery url.Values
+
+func QueryRealtimePutCallRatio(apiKey, symbol string) RealtimePutCallRatioQuery {
+	return RealtimePutCallRatioQuery{"function": []string{"REALTIME_PUT_CALL_RATIO"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
+}
+
+func (q RealtimePutCallRatioQuery) Encode() string {
+	return url.Values(q).Encode()
+}
+
+type RealtimeVolumeOpenInterestRatioQuery url.Values
+
+func QueryRealtimeVolumeOpenInterestRatio(apiKey, symbol string) RealtimeVolumeOpenInterestRatioQuery {
+	return RealtimeVolumeOpenInterestRatioQuery{"function": []string{"REALTIME_VOLUME_OPEN_INTEREST_RATIO"}, "symbol": []string{symbol}, "apikey": []string{apiKey}}
+}
+
+func (q RealtimeVolumeOpenInterestRatioQuery) Encode() string {
 	return url.Values(q).Encode()
 }
