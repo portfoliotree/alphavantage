@@ -114,5 +114,57 @@
 				"type": "string"
 			}
 		]
+	},
+	{
+		"name": "REALTIME_PUT_CALL_RATIO",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=REALTIME_PUT_CALL_RATIO\u0026symbol=IBM\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "REALTIME_VOLUME_OPEN_INTEREST_RATIO",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=REALTIME_VOLUME_OPEN_INTEREST_RATIO\u0026symbol=NVDA\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "HISTORICAL_PUT_CALL_RATIO",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"date"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=HISTORICAL_PUT_CALL_RATIO\u0026symbol=IBM\u0026date=2026-03-12\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "HISTORICAL_VOLUME_OPEN_INTEREST_RATIO",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"date"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=HISTORICAL_VOLUME_OPEN_INTEREST_RATIO\u0026symbol=NVDA\u0026date=2026-04-06\u0026apikey=demo"
+		]
 	}
 ]

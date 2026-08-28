@@ -69,6 +69,7 @@ func main() {
 		"options":      "options.json",
 		"forex":        "forex.json",
 		"fundamental":  "fundamental.json",
+		"indices":      "indices.json",
 		"intelligence": "intelligence.json",
 		"technical":    "technical_*.json",
 		"timeseries":   "time_series.json",
@@ -1424,6 +1425,7 @@ func generateClientHelpers(querierTypes map[string]QuerierType, functionFiles ma
 		"forex":        "Forex",
 		"crypto":       "Crypto",
 		"commodities":  "Commodities",
+		"indices":      "Indices",
 		"intelligence": "Intelligence",
 		"options":      "Options",
 	}

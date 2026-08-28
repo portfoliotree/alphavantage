@@ -91,6 +91,10 @@
 		"Coffee",
 		"coffee"
 	],
+	"COMPANY_LOGO": [
+		"CompanyLogo",
+		"companyLogo"
+	],
 	"COPPER": [
 		"Copper",
 		"copper"
@@ -211,9 +215,25 @@
 		"GlobalQuote",
 		"globalQuote"
 	],
+	"GOLD_SILVER_HISTORY": [
+		"GoldSilverHistory",
+		"goldSilverHistory"
+	],
+	"GOLD_SILVER_SPOT": [
+		"GoldSilverSpot",
+		"goldSilverSpot"
+	],
 	"HISTORICAL_OPTIONS": [
 		"HistoricalOptions",
 		"historicalOptions"
+	],
+	"HISTORICAL_PUT_CALL_RATIO": [
+		"HistoricalPutCallRatio",
+		"historicalPutCallRatio"
+	],
+	"HISTORICAL_VOLUME_OPEN_INTEREST_RATIO": [
+		"HistoricalVolumeOpenInterestRatio",
+		"historicalVolumeOpenInterestRatio"
 	],
 	"HT_DCPERIOD": [
 		"HilbertTransformDCPeriod",
@@ -243,6 +263,14 @@
 		"IncomeStatement",
 		"incomeStatement"
 	],
+	"INDEX_CATALOG": [
+		"IndexCatalog",
+		"indexCatalog"
+	],
+	"INDEX_DATA": [
+		"IndexData",
+		"indexData"
+	],
 	"INFLATION": [
 		"Inflation",
 		"inflation"
@@ -250,6 +278,10 @@
 	"INSIDER_TRANSACTIONS": [
 		"InsiderTransactions",
 		"insiderTransactions"
+	],
+	"INSTITUTIONAL_HOLDINGS": [
+		"InstitutionalHoldings",
+		"institutionalHoldings"
 	],
 	"INTERVAL": [
 		"IntervalAnalytics",
@@ -371,6 +403,10 @@
 		"Range",
 		"rng"
 	],
+	"REALTIME_BULK_BID_ASK_PRICES": [
+		"RealtimeBulkBidAskPrices",
+		"realtimeBulkBidAskPrices"
+	],
 	"REALTIME_BULK_QUOTES": [
 		"RealtimeBulkQuotes",
 		"realtimeBulkQuotes"
@@ -378,6 +414,14 @@
 	"REALTIME_OPTIONS": [
 		"RealtimeOptions",
 		"realtimeOptions"
+	],
+	"REALTIME_PUT_CALL_RATIO": [
+		"RealtimePutCallRatio",
+		"realtimePutCallRatio"
+	],
+	"REALTIME_VOLUME_OPEN_INTEREST_RATIO": [
+		"RealtimeVolumeOpenInterestRatio",
+		"realtimeVolumeOpenInterestRatio"
 	],
 	"REAL_GDP": [
 		"RealGDP",

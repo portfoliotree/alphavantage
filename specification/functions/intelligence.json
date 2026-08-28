@@ -91,5 +91,17 @@
 		"examples": [
 			"https://www.alphavantage.co/query?function=ANALYTICS_SLIDING_WINDOW\u0026SYMBOLS=AAPL,IBM\u0026RANGE=2month\u0026INTERVAL=DAILY\u0026OHLC=close\u0026WINDOW_SIZE=20\u0026CALCULATIONS=MEAN,STDDEV(annualized=True)\u0026apikey=demo"
 		]
+	},
+	{
+		"name": "INSTITUTIONAL_HOLDINGS",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=INSTITUTIONAL_HOLDINGS\u0026symbol=IBM\u0026apikey=demo"
+		]
 	}
 ]
