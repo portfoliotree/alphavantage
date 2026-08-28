@@ -9,6 +9,7 @@
 		"optional": [
 			"require_greeks",
 			"contract",
+			"expiration",
 			"datatype"
 		],
 		"examples": [
@@ -24,6 +25,8 @@
 		],
 		"optional": [
 			"date",
+			"contract",
+			"expiration",
 			"datatype"
 		],
 		"examples": [

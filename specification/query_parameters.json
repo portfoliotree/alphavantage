@@ -369,5 +369,23 @@
 	{
 		"name": "keywords",
 		"type": "string"
+	},
+	{
+		"name": "entitlement",
+		"type": "enum",
+		"values": [
+			"realtime",
+			"delayed"
+		]
+	},
+	{
+		"name": "from",
+		"type": "time",
+		"format": "2006-01-02"
+	},
+	{
+		"name": "expiration",
+		"type": "time",
+		"format": "2006-01-02"
 	}
 ]
