@@ -13,7 +13,8 @@
 			"fastperiod",
 			"slowperiod",
 			"signalperiod",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -61,7 +62,8 @@
 			"fastmatype",
 			"slowmatype",
 			"signalmatype",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -107,7 +109,8 @@
 			"slowdperiod",
 			"slowkmatype",
 			"slowdmatype",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -147,7 +150,8 @@
 			"fastkperiod",
 			"fastdperiod",
 			"fastdmatype",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -186,7 +190,8 @@
 		"optional": [
 			"month",
 			"time_period",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -224,7 +229,8 @@
 			"fastkperiod",
 			"fastdperiod",
 			"fastdmatype",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [

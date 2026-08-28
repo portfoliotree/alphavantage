@@ -11,7 +11,8 @@
 		],
 		"optional": [
 			"month",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -45,7 +46,8 @@
 		],
 		"optional": [
 			"month",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [

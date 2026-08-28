@@ -36,7 +36,9 @@
 			"function",
 			"apikey"
 		],
-		"optional": [],
+		"optional": [
+			"entitlement"
+		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS\u0026apikey=demo"
 		]
@@ -48,7 +50,9 @@
 			"symbol",
 			"apikey"
 		],
-		"optional": [],
+		"optional": [
+			"from"
+		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=INSIDER_TRANSACTIONS\u0026symbol=IBM\u0026apikey=demo"
 		]

@@ -12,7 +12,8 @@
 			"extended_hours",
 			"month",
 			"outputsize",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -105,7 +106,8 @@
 		],
 		"optional": [
 			"outputsize",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED\u0026symbol=IBM\u0026apikey=demo"
@@ -415,7 +417,8 @@
 			"apikey"
 		],
 		"optional": [
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"examples": [
 			"https://www.alphavantage.co/query?function=GLOBAL_QUOTE\u0026symbol=IBM\u0026apikey=demo"

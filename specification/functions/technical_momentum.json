@@ -10,7 +10,8 @@
 		"optional": [
 			"month",
 			"time_period",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -47,7 +48,8 @@
 			"fastperiod",
 			"slowperiod",
 			"matype",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -84,7 +86,8 @@
 			"fastperiod",
 			"slowperiod",
 			"matype",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -119,7 +122,8 @@
 		"optional": [
 			"month",
 			"time_period",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -152,7 +156,8 @@
 		],
 		"optional": [
 			"month",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -186,7 +191,8 @@
 		"optional": [
 			"month",
 			"time_period",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -221,7 +227,8 @@
 		"optional": [
 			"month",
 			"time_period",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -256,7 +263,8 @@
 		"optional": [
 			"month",
 			"time_period",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -291,7 +299,8 @@
 		"optional": [
 			"month",
 			"time_period",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [

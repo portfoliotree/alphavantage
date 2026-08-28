@@ -643,6 +643,10 @@
 		"DeclarationDate",
 		"declarationDate"
 	],
+	"delayed": [
+		"Delayed",
+		"delayed"
+	],
 	"delistingDate": [
 		"DelistingDate",
 		"delistingDate"
@@ -662,6 +666,10 @@
 	"effective_date": [
 		"EffectiveDate",
 		"effectiveDate"
+	],
+	"entitlement": [
+		"Entitlement",
+		"entitlement"
 	],
 	"estimate": [
 		"Estimate",
@@ -710,6 +718,10 @@
 	"fiscalDateEnding": [
 		"FiscalDateEnding",
 		"fiscalDateEnding"
+	],
+	"from": [
+		"From",
+		"from"
 	],
 	"from_currency": [
 		"FromCurrency",
@@ -862,6 +874,10 @@
 	"quarter": [
 		"Quarter",
 		"quarter"
+	],
+	"realtime": [
+		"Realtime",
+		"realtime"
 	],
 	"record_date": [
 		"RecordDate",

@@ -14,7 +14,8 @@
 			"nbdevup",
 			"nbdevdn",
 			"matype",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -55,7 +56,8 @@
 		],
 		"optional": [
 			"month",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -89,7 +91,8 @@
 		"optional": [
 			"month",
 			"time_period",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -123,7 +126,8 @@
 		"optional": [
 			"month",
 			"time_period",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -158,7 +162,8 @@
 			"month",
 			"acceleration",
 			"maximum",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
@@ -194,7 +199,8 @@
 			"timeperiod1",
 			"timeperiod2",
 			"timeperiod3",
-			"datatype"
+			"datatype",
+			"entitlement"
 		],
 		"enum_subset": {
 			"interval": [
