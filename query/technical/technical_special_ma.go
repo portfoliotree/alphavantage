@@ -43,6 +43,21 @@ func (query MESAAdaptiveMovingAverageQuery) DataType(value string) MESAAdaptiveM
 	return query
 }
 
+func (query MESAAdaptiveMovingAverageQuery) EntitlementRealtime() MESAAdaptiveMovingAverageQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query MESAAdaptiveMovingAverageQuery) EntitlementDelayed() MESAAdaptiveMovingAverageQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query MESAAdaptiveMovingAverageQuery) Entitlement(value string) MESAAdaptiveMovingAverageQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q MESAAdaptiveMovingAverageQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -76,6 +91,21 @@ func (query VolumeWeightedAveragePriceQuery) DataTypeJSON() VolumeWeightedAverag
 
 func (query VolumeWeightedAveragePriceQuery) DataType(value string) VolumeWeightedAveragePriceQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query VolumeWeightedAveragePriceQuery) EntitlementRealtime() VolumeWeightedAveragePriceQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query VolumeWeightedAveragePriceQuery) EntitlementDelayed() VolumeWeightedAveragePriceQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query VolumeWeightedAveragePriceQuery) Entitlement(value string) VolumeWeightedAveragePriceQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 

@@ -33,6 +33,21 @@ func (query MidPointQuery) DataType(value string) MidPointQuery {
 	return query
 }
 
+func (query MidPointQuery) EntitlementRealtime() MidPointQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query MidPointQuery) EntitlementDelayed() MidPointQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query MidPointQuery) Entitlement(value string) MidPointQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q MidPointQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -65,6 +80,21 @@ func (query MidPriceQuery) DataTypeJSON() MidPriceQuery {
 
 func (query MidPriceQuery) DataType(value string) MidPriceQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query MidPriceQuery) EntitlementRealtime() MidPriceQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query MidPriceQuery) EntitlementDelayed() MidPriceQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query MidPriceQuery) Entitlement(value string) MidPriceQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 

@@ -44,6 +44,12 @@ func (c *Client) Fundamental() *FundamentalFunctions {
 	return (*FundamentalFunctions)(c)
 }
 
+type IndicesFunctions Client
+
+func (c *Client) Indices() *IndicesFunctions {
+	return (*IndicesFunctions)(c)
+}
+
 type IntelligenceFunctions Client
 
 func (c *Client) Intelligence() *IntelligenceFunctions {

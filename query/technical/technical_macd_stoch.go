@@ -48,6 +48,21 @@ func (query MovingAverageConvergenceDivergenceQuery) DataType(value string) Movi
 	return query
 }
 
+func (query MovingAverageConvergenceDivergenceQuery) EntitlementRealtime() MovingAverageConvergenceDivergenceQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query MovingAverageConvergenceDivergenceQuery) EntitlementDelayed() MovingAverageConvergenceDivergenceQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query MovingAverageConvergenceDivergenceQuery) Entitlement(value string) MovingAverageConvergenceDivergenceQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q MovingAverageConvergenceDivergenceQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -115,6 +130,21 @@ func (query MovingAverageConvergenceDivergenceExtQuery) DataType(value string) M
 	return query
 }
 
+func (query MovingAverageConvergenceDivergenceExtQuery) EntitlementRealtime() MovingAverageConvergenceDivergenceExtQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query MovingAverageConvergenceDivergenceExtQuery) EntitlementDelayed() MovingAverageConvergenceDivergenceExtQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query MovingAverageConvergenceDivergenceExtQuery) Entitlement(value string) MovingAverageConvergenceDivergenceExtQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q MovingAverageConvergenceDivergenceExtQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -128,17 +158,12 @@ type MovingAverageConvergenceDivergenceExtRow struct {
 
 type RelativeStrengthIndexQuery url.Values
 
-func QueryRelativeStrengthIndex(apiKey, symbol, interval, seriesType string) RelativeStrengthIndexQuery {
-	return RelativeStrengthIndexQuery{"function": []string{"RSI"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryRelativeStrengthIndex(apiKey, symbol, interval, timePeriod, seriesType string) RelativeStrengthIndexQuery {
+	return RelativeStrengthIndexQuery{"function": []string{"RSI"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query RelativeStrengthIndexQuery) Month(value time.Time) RelativeStrengthIndexQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query RelativeStrengthIndexQuery) TimePeriod(value string) RelativeStrengthIndexQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -154,6 +179,21 @@ func (query RelativeStrengthIndexQuery) DataTypeJSON() RelativeStrengthIndexQuer
 
 func (query RelativeStrengthIndexQuery) DataType(value string) RelativeStrengthIndexQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query RelativeStrengthIndexQuery) EntitlementRealtime() RelativeStrengthIndexQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query RelativeStrengthIndexQuery) EntitlementDelayed() RelativeStrengthIndexQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query RelativeStrengthIndexQuery) Entitlement(value string) RelativeStrengthIndexQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 
@@ -204,6 +244,21 @@ func (query StochasticFastQuery) DataTypeJSON() StochasticFastQuery {
 
 func (query StochasticFastQuery) DataType(value string) StochasticFastQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query StochasticFastQuery) EntitlementRealtime() StochasticFastQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query StochasticFastQuery) EntitlementDelayed() StochasticFastQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query StochasticFastQuery) Entitlement(value string) StochasticFastQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 
@@ -268,6 +323,21 @@ func (query StochasticOscillatorQuery) DataType(value string) StochasticOscillat
 	return query
 }
 
+func (query StochasticOscillatorQuery) EntitlementRealtime() StochasticOscillatorQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query StochasticOscillatorQuery) EntitlementDelayed() StochasticOscillatorQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query StochasticOscillatorQuery) Entitlement(value string) StochasticOscillatorQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q StochasticOscillatorQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -280,17 +350,12 @@ type StochasticOscillatorRow struct {
 
 type StochasticRelativeStrengthIndexQuery url.Values
 
-func QueryStochasticRelativeStrengthIndex(apiKey, symbol, interval, seriesType string) StochasticRelativeStrengthIndexQuery {
-	return StochasticRelativeStrengthIndexQuery{"function": []string{"STOCHRSI"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryStochasticRelativeStrengthIndex(apiKey, symbol, interval, timePeriod, seriesType string) StochasticRelativeStrengthIndexQuery {
+	return StochasticRelativeStrengthIndexQuery{"function": []string{"STOCHRSI"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query StochasticRelativeStrengthIndexQuery) Month(value time.Time) StochasticRelativeStrengthIndexQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query StochasticRelativeStrengthIndexQuery) TimePeriod(value string) StochasticRelativeStrengthIndexQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -321,6 +386,21 @@ func (query StochasticRelativeStrengthIndexQuery) DataTypeJSON() StochasticRelat
 
 func (query StochasticRelativeStrengthIndexQuery) DataType(value string) StochasticRelativeStrengthIndexQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query StochasticRelativeStrengthIndexQuery) EntitlementRealtime() StochasticRelativeStrengthIndexQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query StochasticRelativeStrengthIndexQuery) EntitlementDelayed() StochasticRelativeStrengthIndexQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query StochasticRelativeStrengthIndexQuery) Entitlement(value string) StochasticRelativeStrengthIndexQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 

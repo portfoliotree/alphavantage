@@ -33,6 +33,21 @@ func (query HilbertTransformDCPeriodQuery) DataType(value string) HilbertTransfo
 	return query
 }
 
+func (query HilbertTransformDCPeriodQuery) EntitlementRealtime() HilbertTransformDCPeriodQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query HilbertTransformDCPeriodQuery) EntitlementDelayed() HilbertTransformDCPeriodQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query HilbertTransformDCPeriodQuery) Entitlement(value string) HilbertTransformDCPeriodQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q HilbertTransformDCPeriodQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -68,6 +83,21 @@ func (query HilbertTransformDCPhaseQuery) DataType(value string) HilbertTransfor
 	return query
 }
 
+func (query HilbertTransformDCPhaseQuery) EntitlementRealtime() HilbertTransformDCPhaseQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query HilbertTransformDCPhaseQuery) EntitlementDelayed() HilbertTransformDCPhaseQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query HilbertTransformDCPhaseQuery) Entitlement(value string) HilbertTransformDCPhaseQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q HilbertTransformDCPhaseQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -100,6 +130,21 @@ func (query HilbertTransformPhasorQuery) DataTypeJSON() HilbertTransformPhasorQu
 
 func (query HilbertTransformPhasorQuery) DataType(value string) HilbertTransformPhasorQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query HilbertTransformPhasorQuery) EntitlementRealtime() HilbertTransformPhasorQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query HilbertTransformPhasorQuery) EntitlementDelayed() HilbertTransformPhasorQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query HilbertTransformPhasorQuery) Entitlement(value string) HilbertTransformPhasorQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 
@@ -139,6 +184,21 @@ func (query HilbertTransformSineQuery) DataType(value string) HilbertTransformSi
 	return query
 }
 
+func (query HilbertTransformSineQuery) EntitlementRealtime() HilbertTransformSineQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query HilbertTransformSineQuery) EntitlementDelayed() HilbertTransformSineQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query HilbertTransformSineQuery) Entitlement(value string) HilbertTransformSineQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q HilbertTransformSineQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -175,6 +235,21 @@ func (query HilbertTransformTrendLineQuery) DataType(value string) HilbertTransf
 	return query
 }
 
+func (query HilbertTransformTrendLineQuery) EntitlementRealtime() HilbertTransformTrendLineQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query HilbertTransformTrendLineQuery) EntitlementDelayed() HilbertTransformTrendLineQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query HilbertTransformTrendLineQuery) Entitlement(value string) HilbertTransformTrendLineQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q HilbertTransformTrendLineQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -207,6 +282,21 @@ func (query HilbertTransformTrendModeQuery) DataTypeJSON() HilbertTransformTrend
 
 func (query HilbertTransformTrendModeQuery) DataType(value string) HilbertTransformTrendModeQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query HilbertTransformTrendModeQuery) EntitlementRealtime() HilbertTransformTrendModeQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query HilbertTransformTrendModeQuery) EntitlementDelayed() HilbertTransformTrendModeQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query HilbertTransformTrendModeQuery) Entitlement(value string) HilbertTransformTrendModeQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 

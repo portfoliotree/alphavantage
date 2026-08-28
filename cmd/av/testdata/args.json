@@ -175,6 +175,13 @@
     ]
   },
   {
+    "name": "COMPANY_LOGO_d51f90e3",
+    "args": [
+      "COMPANY_LOGO",
+      "--symbol=IBM"
+    ]
+  },
+  {
     "name": "COPPER_639627b4",
     "args": [
       "COPPER",
@@ -369,10 +376,41 @@
     ]
   },
   {
+    "name": "GOLD_SILVER_HISTORY_1a94f04a",
+    "args": [
+      "GOLD_SILVER_HISTORY",
+      "--interval=daily",
+      "--symbol=SILVER"
+    ]
+  },
+  {
+    "name": "GOLD_SILVER_SPOT_084a155b",
+    "args": [
+      "GOLD_SILVER_SPOT",
+      "--symbol=SILVER"
+    ]
+  },
+  {
     "name": "HISTORICAL_OPTIONS_6c0b1a36",
     "args": [
       "HISTORICAL_OPTIONS",
       "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "HISTORICAL_PUT_CALL_RATIO_2a03d692",
+    "args": [
+      "HISTORICAL_PUT_CALL_RATIO",
+      "--date=2026-03-12",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "HISTORICAL_VOLUME_OPEN_INTEREST_RATIO_09b4d9de",
+    "args": [
+      "HISTORICAL_VOLUME_OPEN_INTEREST_RATIO",
+      "--date=2026-04-06",
+      "--symbol=NVDA"
     ]
   },
   {
@@ -437,6 +475,20 @@
     ]
   },
   {
+    "name": "INDEX_CATALOG_00201c6b",
+    "args": [
+      "INDEX_CATALOG"
+    ]
+  },
+  {
+    "name": "INDEX_DATA_55f3f5ad",
+    "args": [
+      "INDEX_DATA",
+      "--interval=weekly",
+      "--symbol=DJI"
+    ]
+  },
+  {
     "name": "INFLATION_ae098c06",
     "args": [
       "INFLATION"
@@ -446,6 +498,13 @@
     "name": "INSIDER_TRANSACTIONS_65985270",
     "args": [
       "INSIDER_TRANSACTIONS",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "INSTITUTIONAL_HOLDINGS_e1268d03",
+    "args": [
+      "INSTITUTIONAL_HOLDINGS",
       "--symbol=IBM"
     ]
   },
@@ -632,6 +691,13 @@
     ]
   },
   {
+    "name": "REALTIME_BULK_BID_ASK_PRICES_921e8ec6",
+    "args": [
+      "REALTIME_BULK_BID_ASK_PRICES",
+      "--symbol=MSFT,AAPL,IBM"
+    ]
+  },
+  {
     "name": "REALTIME_BULK_QUOTES_505ed5cc",
     "args": [
       "REALTIME_BULK_QUOTES",
@@ -643,6 +709,20 @@
     "args": [
       "REALTIME_OPTIONS",
       "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "REALTIME_PUT_CALL_RATIO_01262388",
+    "args": [
+      "REALTIME_PUT_CALL_RATIO",
+      "--symbol=IBM"
+    ]
+  },
+  {
+    "name": "REALTIME_VOLUME_OPEN_INTEREST_RATIO_cadce483",
+    "args": [
+      "REALTIME_VOLUME_OPEN_INTEREST_RATIO",
+      "--symbol=NVDA"
     ]
   },
   {

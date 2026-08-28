@@ -9,17 +9,12 @@ import (
 
 type DoubleExponentialMovingAverageQuery url.Values
 
-func QueryDoubleExponentialMovingAverage(apiKey, symbol, interval, seriesType string) DoubleExponentialMovingAverageQuery {
-	return DoubleExponentialMovingAverageQuery{"function": []string{"DEMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryDoubleExponentialMovingAverage(apiKey, symbol, interval, timePeriod, seriesType string) DoubleExponentialMovingAverageQuery {
+	return DoubleExponentialMovingAverageQuery{"function": []string{"DEMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query DoubleExponentialMovingAverageQuery) Month(value time.Time) DoubleExponentialMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query DoubleExponentialMovingAverageQuery) TimePeriod(value string) DoubleExponentialMovingAverageQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -38,6 +33,21 @@ func (query DoubleExponentialMovingAverageQuery) DataType(value string) DoubleEx
 	return query
 }
 
+func (query DoubleExponentialMovingAverageQuery) EntitlementRealtime() DoubleExponentialMovingAverageQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query DoubleExponentialMovingAverageQuery) EntitlementDelayed() DoubleExponentialMovingAverageQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query DoubleExponentialMovingAverageQuery) Entitlement(value string) DoubleExponentialMovingAverageQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q DoubleExponentialMovingAverageQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -49,17 +59,12 @@ type DoubleExponentialMovingAverageRow struct {
 
 type ExponentialMovingAverageQuery url.Values
 
-func QueryExponentialMovingAverage(apiKey, symbol, interval, seriesType string) ExponentialMovingAverageQuery {
-	return ExponentialMovingAverageQuery{"function": []string{"EMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryExponentialMovingAverage(apiKey, symbol, interval, timePeriod, seriesType string) ExponentialMovingAverageQuery {
+	return ExponentialMovingAverageQuery{"function": []string{"EMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query ExponentialMovingAverageQuery) Month(value time.Time) ExponentialMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query ExponentialMovingAverageQuery) TimePeriod(value string) ExponentialMovingAverageQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -78,6 +83,21 @@ func (query ExponentialMovingAverageQuery) DataType(value string) ExponentialMov
 	return query
 }
 
+func (query ExponentialMovingAverageQuery) EntitlementRealtime() ExponentialMovingAverageQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query ExponentialMovingAverageQuery) EntitlementDelayed() ExponentialMovingAverageQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query ExponentialMovingAverageQuery) Entitlement(value string) ExponentialMovingAverageQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q ExponentialMovingAverageQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -89,17 +109,12 @@ type ExponentialMovingAverageRow struct {
 
 type KaufmanAdaptiveMovingAverageQuery url.Values
 
-func QueryKaufmanAdaptiveMovingAverage(apiKey, symbol, interval, seriesType string) KaufmanAdaptiveMovingAverageQuery {
-	return KaufmanAdaptiveMovingAverageQuery{"function": []string{"KAMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryKaufmanAdaptiveMovingAverage(apiKey, symbol, interval, timePeriod, seriesType string) KaufmanAdaptiveMovingAverageQuery {
+	return KaufmanAdaptiveMovingAverageQuery{"function": []string{"KAMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query KaufmanAdaptiveMovingAverageQuery) Month(value time.Time) KaufmanAdaptiveMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query KaufmanAdaptiveMovingAverageQuery) TimePeriod(value string) KaufmanAdaptiveMovingAverageQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -118,6 +133,21 @@ func (query KaufmanAdaptiveMovingAverageQuery) DataType(value string) KaufmanAda
 	return query
 }
 
+func (query KaufmanAdaptiveMovingAverageQuery) EntitlementRealtime() KaufmanAdaptiveMovingAverageQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query KaufmanAdaptiveMovingAverageQuery) EntitlementDelayed() KaufmanAdaptiveMovingAverageQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query KaufmanAdaptiveMovingAverageQuery) Entitlement(value string) KaufmanAdaptiveMovingAverageQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q KaufmanAdaptiveMovingAverageQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -129,17 +159,12 @@ type KaufmanAdaptiveMovingAverageRow struct {
 
 type SimpleMovingAverageQuery url.Values
 
-func QuerySimpleMovingAverage(apiKey, symbol, interval, seriesType string) SimpleMovingAverageQuery {
-	return SimpleMovingAverageQuery{"function": []string{"SMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QuerySimpleMovingAverage(apiKey, symbol, interval, timePeriod, seriesType string) SimpleMovingAverageQuery {
+	return SimpleMovingAverageQuery{"function": []string{"SMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query SimpleMovingAverageQuery) Month(value time.Time) SimpleMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query SimpleMovingAverageQuery) TimePeriod(value string) SimpleMovingAverageQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -158,6 +183,21 @@ func (query SimpleMovingAverageQuery) DataType(value string) SimpleMovingAverage
 	return query
 }
 
+func (query SimpleMovingAverageQuery) EntitlementRealtime() SimpleMovingAverageQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query SimpleMovingAverageQuery) EntitlementDelayed() SimpleMovingAverageQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query SimpleMovingAverageQuery) Entitlement(value string) SimpleMovingAverageQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q SimpleMovingAverageQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -169,17 +209,12 @@ type SimpleMovingAverageRow struct {
 
 type T3Query url.Values
 
-func QueryT3(apiKey, symbol, interval, seriesType string) T3Query {
-	return T3Query{"function": []string{"T3"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryT3(apiKey, symbol, interval, timePeriod, seriesType string) T3Query {
+	return T3Query{"function": []string{"T3"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query T3Query) Month(value time.Time) T3Query {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query T3Query) TimePeriod(value string) T3Query {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -198,6 +233,21 @@ func (query T3Query) DataType(value string) T3Query {
 	return query
 }
 
+func (query T3Query) EntitlementRealtime() T3Query {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query T3Query) EntitlementDelayed() T3Query {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query T3Query) Entitlement(value string) T3Query {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q T3Query) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -209,17 +259,12 @@ type T3Row struct {
 
 type TriangularMovingAverageQuery url.Values
 
-func QueryTriangularMovingAverage(apiKey, symbol, interval, seriesType string) TriangularMovingAverageQuery {
-	return TriangularMovingAverageQuery{"function": []string{"TRIMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryTriangularMovingAverage(apiKey, symbol, interval, timePeriod, seriesType string) TriangularMovingAverageQuery {
+	return TriangularMovingAverageQuery{"function": []string{"TRIMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query TriangularMovingAverageQuery) Month(value time.Time) TriangularMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query TriangularMovingAverageQuery) TimePeriod(value string) TriangularMovingAverageQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -238,6 +283,21 @@ func (query TriangularMovingAverageQuery) DataType(value string) TriangularMovin
 	return query
 }
 
+func (query TriangularMovingAverageQuery) EntitlementRealtime() TriangularMovingAverageQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query TriangularMovingAverageQuery) EntitlementDelayed() TriangularMovingAverageQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query TriangularMovingAverageQuery) Entitlement(value string) TriangularMovingAverageQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q TriangularMovingAverageQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -249,17 +309,12 @@ type TriangularMovingAverageRow struct {
 
 type TripleExponentialMovingAverageQuery url.Values
 
-func QueryTripleExponentialMovingAverage(apiKey, symbol, interval, seriesType string) TripleExponentialMovingAverageQuery {
-	return TripleExponentialMovingAverageQuery{"function": []string{"TEMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryTripleExponentialMovingAverage(apiKey, symbol, interval, timePeriod, seriesType string) TripleExponentialMovingAverageQuery {
+	return TripleExponentialMovingAverageQuery{"function": []string{"TEMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query TripleExponentialMovingAverageQuery) Month(value time.Time) TripleExponentialMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query TripleExponentialMovingAverageQuery) TimePeriod(value string) TripleExponentialMovingAverageQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -278,6 +333,21 @@ func (query TripleExponentialMovingAverageQuery) DataType(value string) TripleEx
 	return query
 }
 
+func (query TripleExponentialMovingAverageQuery) EntitlementRealtime() TripleExponentialMovingAverageQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query TripleExponentialMovingAverageQuery) EntitlementDelayed() TripleExponentialMovingAverageQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query TripleExponentialMovingAverageQuery) Entitlement(value string) TripleExponentialMovingAverageQuery {
+	query["entitlement"] = []string{value}
+	return query
+}
+
 func (q TripleExponentialMovingAverageQuery) Encode() string {
 	return url.Values(q).Encode()
 }
@@ -289,17 +359,12 @@ type TripleExponentialMovingAverageRow struct {
 
 type WeightedMovingAverageQuery url.Values
 
-func QueryWeightedMovingAverage(apiKey, symbol, interval, seriesType string) WeightedMovingAverageQuery {
-	return WeightedMovingAverageQuery{"function": []string{"WMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
+func QueryWeightedMovingAverage(apiKey, symbol, interval, timePeriod, seriesType string) WeightedMovingAverageQuery {
+	return WeightedMovingAverageQuery{"function": []string{"WMA"}, "symbol": []string{symbol}, "interval": []string{interval}, "time_period": []string{timePeriod}, "series_type": []string{seriesType}, "apikey": []string{apiKey}}
 }
 
 func (query WeightedMovingAverageQuery) Month(value time.Time) WeightedMovingAverageQuery {
 	query["month"] = []string{value.Format("2006-01")}
-	return query
-}
-
-func (query WeightedMovingAverageQuery) TimePeriod(value string) WeightedMovingAverageQuery {
-	query["time_period"] = []string{value}
 	return query
 }
 
@@ -315,6 +380,21 @@ func (query WeightedMovingAverageQuery) DataTypeJSON() WeightedMovingAverageQuer
 
 func (query WeightedMovingAverageQuery) DataType(value string) WeightedMovingAverageQuery {
 	query["datatype"] = []string{value}
+	return query
+}
+
+func (query WeightedMovingAverageQuery) EntitlementRealtime() WeightedMovingAverageQuery {
+	query["entitlement"] = []string{"realtime"}
+	return query
+}
+
+func (query WeightedMovingAverageQuery) EntitlementDelayed() WeightedMovingAverageQuery {
+	query["entitlement"] = []string{"delayed"}
+	return query
+}
+
+func (query WeightedMovingAverageQuery) Entitlement(value string) WeightedMovingAverageQuery {
+	query["entitlement"] = []string{value}
 	return query
 }
 
