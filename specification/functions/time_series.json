@@ -465,5 +465,19 @@
 				"type": "string"
 			}
 		]
+	},
+	{
+		"name": "REALTIME_BULK_BID_ASK_PRICES",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=REALTIME_BULK_BID_ASK_PRICES\u0026symbol=MSFT,AAPL,IBM\u0026apikey=demo"
+		]
 	}
 ]

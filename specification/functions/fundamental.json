@@ -299,5 +299,17 @@
 				"type": "string"
 			}
 		]
+	},
+	{
+		"name": "COMPANY_LOGO",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=COMPANY_LOGO\u0026symbol=IBM\u0026apikey=demo"
+		]
 	}
 ]

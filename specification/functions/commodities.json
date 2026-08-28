@@ -343,5 +343,37 @@
 				"type": "string"
 			}
 		]
+	},
+	{
+		"name": "GOLD_SILVER_SPOT",
+		"required": [
+			"function",
+			"symbol",
+			"apikey"
+		],
+		"optional": [],
+		"examples": [
+			"https://www.alphavantage.co/query?function=GOLD_SILVER_SPOT\u0026symbol=SILVER\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "GOLD_SILVER_HISTORY",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"apikey"
+		],
+		"optional": [],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=GOLD_SILVER_HISTORY\u0026symbol=SILVER\u0026interval=daily\u0026apikey=demo"
+		]
 	}
 ]

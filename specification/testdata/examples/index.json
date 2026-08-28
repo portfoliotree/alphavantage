@@ -120,6 +120,12 @@
 		"url": "https://www.alphavantage.co/query?function=COFFEE\u0026interval=monthly\u0026apikey=demo"
 	},
 	{
+		"ID": "COMPANY_LOGO_d51f90e3",
+		"path": "testdata/examples/fundamental/COMPANY_LOGO_d51f90e3.json",
+		"fetched": "2026-08-26T18:53:31.655649-07:00",
+		"url": "https://www.alphavantage.co/query?function=COMPANY_LOGO\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
 		"ID": "COPPER_639627b4",
 		"path": "testdata/examples/commodities/COPPER_639627b4.csv",
 		"fetched": "2026-05-17T10:12:32.363416-07:00",
@@ -270,10 +276,34 @@
 		"url": "https://www.alphavantage.co/query?function=GLOBAL_QUOTE\u0026symbol=IBM\u0026apikey=demo"
 	},
 	{
+		"ID": "GOLD_SILVER_HISTORY_1a94f04a",
+		"path": "testdata/examples/commodities/GOLD_SILVER_HISTORY_1a94f04a.json",
+		"fetched": "2026-08-28T11:20:14.451064-07:00",
+		"url": "https://www.alphavantage.co/query?function=GOLD_SILVER_HISTORY\u0026symbol=SILVER\u0026interval=daily\u0026apikey=demo"
+	},
+	{
+		"ID": "GOLD_SILVER_SPOT_084a155b",
+		"path": "testdata/examples/commodities/GOLD_SILVER_SPOT_084a155b.json",
+		"fetched": "2026-08-26T18:53:27.54319-07:00",
+		"url": "https://www.alphavantage.co/query?function=GOLD_SILVER_SPOT\u0026symbol=SILVER\u0026apikey=demo"
+	},
+	{
 		"ID": "HISTORICAL_OPTIONS_6c0b1a36",
 		"path": "testdata/examples/options/HISTORICAL_OPTIONS_6c0b1a36.csv",
 		"fetched": "2026-05-17T10:12:40.050636-07:00",
 		"url": "https://www.alphavantage.co/query?function=HISTORICAL_OPTIONS\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "HISTORICAL_PUT_CALL_RATIO_2a03d692",
+		"path": "testdata/examples/options/HISTORICAL_PUT_CALL_RATIO_2a03d692.json",
+		"fetched": "2026-08-26T18:53:45.402905-07:00",
+		"url": "https://www.alphavantage.co/query?function=HISTORICAL_PUT_CALL_RATIO\u0026symbol=IBM\u0026date=2026-03-12\u0026apikey=demo"
+	},
+	{
+		"ID": "HISTORICAL_VOLUME_OPEN_INTEREST_RATIO_09b4d9de",
+		"path": "testdata/examples/options/HISTORICAL_VOLUME_OPEN_INTEREST_RATIO_09b4d9de.json",
+		"fetched": "2026-08-26T18:53:48.144199-07:00",
+		"url": "https://www.alphavantage.co/query?function=HISTORICAL_VOLUME_OPEN_INTEREST_RATIO\u0026symbol=NVDA\u0026date=2026-04-06\u0026apikey=demo"
 	},
 	{
 		"ID": "HT_DCPERIOD_1f51b571",
@@ -318,6 +348,18 @@
 		"url": "https://www.alphavantage.co/query?function=INCOME_STATEMENT\u0026symbol=IBM\u0026apikey=demo"
 	},
 	{
+		"ID": "INDEX_CATALOG_00201c6b",
+		"path": "testdata/examples/indices/INDEX_CATALOG_00201c6b.json",
+		"fetched": "2026-08-28T11:20:24.543509-07:00",
+		"url": "https://www.alphavantage.co/query?function=INDEX_CATALOG\u0026apikey=demo"
+	},
+	{
+		"ID": "INDEX_DATA_55f3f5ad",
+		"path": "testdata/examples/indices/INDEX_DATA_55f3f5ad.json",
+		"fetched": "2026-08-28T11:20:18.839341-07:00",
+		"url": "https://www.alphavantage.co/query?function=INDEX_DATA\u0026symbol=DJI\u0026interval=weekly\u0026apikey=demo"
+	},
+	{
 		"ID": "INFLATION_ae098c06",
 		"path": "testdata/examples/economic/INFLATION_ae098c06.csv",
 		"fetched": "2026-05-17T10:12:20.026047-07:00",
@@ -328,6 +370,12 @@
 		"path": "testdata/examples/intelligence/INSIDER_TRANSACTIONS_65985270.json",
 		"fetched": "2026-05-17T10:12:38.489989-07:00",
 		"url": "https://www.alphavantage.co/query?function=INSIDER_TRANSACTIONS\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "INSTITUTIONAL_HOLDINGS_e1268d03",
+		"path": "testdata/examples/intelligence/INSTITUTIONAL_HOLDINGS_e1268d03.json",
+		"fetched": "2026-08-26T18:53:38.157077-07:00",
+		"url": "https://www.alphavantage.co/query?function=INSTITUTIONAL_HOLDINGS\u0026symbol=IBM\u0026apikey=demo"
 	},
 	{
 		"ID": "IPO_CALENDAR_bed45bed",
@@ -462,6 +510,12 @@
 		"url": "https://www.alphavantage.co/query?function=PPO\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026apikey=demo"
 	},
 	{
+		"ID": "REALTIME_BULK_BID_ASK_PRICES_921e8ec6",
+		"path": "testdata/examples/time_series/REALTIME_BULK_BID_ASK_PRICES_921e8ec6.json",
+		"fetched": "2026-08-28T11:20:36.665836-07:00",
+		"url": "https://www.alphavantage.co/query?function=REALTIME_BULK_BID_ASK_PRICES\u0026symbol=MSFT,AAPL,IBM\u0026apikey=demo"
+	},
+	{
 		"ID": "REALTIME_BULK_QUOTES_505ed5cc",
 		"path": "testdata/examples/time_series/REALTIME_BULK_QUOTES_505ed5cc.json",
 		"fetched": "2026-05-17T10:12:43.034672-07:00",
@@ -472,6 +526,18 @@
 		"path": "testdata/examples/options/REALTIME_OPTIONS_e1db0de5.json",
 		"fetched": "2026-05-17T10:12:39.950506-07:00",
 		"url": "https://www.alphavantage.co/query?function=REALTIME_OPTIONS\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "REALTIME_PUT_CALL_RATIO_01262388",
+		"path": "testdata/examples/options/REALTIME_PUT_CALL_RATIO_01262388.json",
+		"fetched": "2026-08-26T18:53:40.526608-07:00",
+		"url": "https://www.alphavantage.co/query?function=REALTIME_PUT_CALL_RATIO\u0026symbol=IBM\u0026apikey=demo"
+	},
+	{
+		"ID": "REALTIME_VOLUME_OPEN_INTEREST_RATIO_cadce483",
+		"path": "testdata/examples/options/REALTIME_VOLUME_OPEN_INTEREST_RATIO_cadce483.json",
+		"fetched": "2026-08-26T18:53:43.261484-07:00",
+		"url": "https://www.alphavantage.co/query?function=REALTIME_VOLUME_OPEN_INTEREST_RATIO\u0026symbol=NVDA\u0026apikey=demo"
 	},
 	{
 		"ID": "REAL_GDP_73a04ece",

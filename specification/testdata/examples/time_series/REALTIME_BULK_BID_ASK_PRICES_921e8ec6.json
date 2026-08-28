@@ -1,0 +1,30 @@
+{
+    "endpoint": "Realtime Bulk Bid and Ask Prices",
+    "message": "This is a premium endpoint. ***THE SAMPLE DATA SCHEMA BELOW IS ARTIFICIAL AND FOR ILLUSTRATION PURPOSES ONLY***. To access the actual data, please subscribe to any premium plan that mentions 'Realtime US Market Data' in its description at https://www.alphavantage.co/premium/ for your personal non-professional use. For professional/commercial use, please contact support at support@alphavantage.co.",
+    "data": [
+        {
+            "symbol": "MSFT",
+            "timestamp": "2024-10-18 19:59:55.291",
+            "bid_price": "417.61",
+            "bid_size": "3",
+            "ask_price": "417.62",
+            "ask_size": "5"
+        },
+        {
+            "symbol": "AAPL",
+            "timestamp": "2024-10-18 19:59:50.451",
+            "bid_price": "236.0",
+            "bid_size": "10",
+            "ask_price": "236.1",
+            "ask_size": "15"
+        },
+        {
+            "symbol": "IBM",
+            "timestamp": "2024-10-18 19:54:00.879",
+            "bid_price": "231.29",
+            "bid_size": "20",
+            "ask_price": "231.32",
+            "ask_size": "22"
+        }
+    ]
+}

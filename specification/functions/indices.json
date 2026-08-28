@@ -1,0 +1,37 @@
+[
+	{
+		"name": "INDEX_DATA",
+		"required": [
+			"function",
+			"symbol",
+			"interval",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"enum_subset": {
+			"interval": [
+				"daily",
+				"weekly",
+				"monthly"
+			]
+		},
+		"examples": [
+			"https://www.alphavantage.co/query?function=INDEX_DATA\u0026symbol=DJI\u0026interval=weekly\u0026apikey=demo"
+		]
+	},
+	{
+		"name": "INDEX_CATALOG",
+		"required": [
+			"function",
+			"apikey"
+		],
+		"optional": [
+			"datatype"
+		],
+		"examples": [
+			"https://www.alphavantage.co/query?function=INDEX_CATALOG\u0026apikey=demo"
+		]
+	}
+]
