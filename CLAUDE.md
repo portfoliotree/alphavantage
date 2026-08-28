@@ -12,17 +12,18 @@ This is an unofficial Go client library and CLI for the AlphaVantage REST API (h
 
 ## API Coverage
 
-**Complete Coverage**: This library supports **all AlphaVantage API functions** across 9 categories:
+**Complete Coverage**: This library supports **all AlphaVantage API functions** (126 total) across 10 categories:
 
-- ✅ Core Stock APIs (11 functions) - TIME_SERIES_*, GLOBAL_QUOTE, MARKET_STATUS, etc.
-- ✅ Fundamental Data (12 functions) - OVERVIEW, INCOME_STATEMENT, BALANCE_SHEET, EARNINGS, etc.
-- ✅ Technical Indicators (56 functions) - SMA, EMA, RSI, MACD, BBANDS, etc.
+- ✅ Core Stock APIs (12 functions) - TIME_SERIES_*, GLOBAL_QUOTE, MARKET_STATUS, REALTIME_BULK_*, etc.
+- ✅ Index Data (2 functions) - INDEX_DATA, INDEX_CATALOG
+- ✅ Fundamental Data (14 functions) - OVERVIEW, INCOME_STATEMENT, BALANCE_SHEET, EARNINGS, COMPANY_LOGO, etc.
+- ✅ Technical Indicators (53 functions) - SMA, EMA, RSI, MACD, BBANDS, etc.
 - ✅ Economic Indicators (10 functions) - REAL_GDP, UNEMPLOYMENT, CPI, INFLATION, etc.
 - ✅ Forex Data (5 functions) - CURRENCY_EXCHANGE_RATE, FX_DAILY, FX_INTRADAY, etc.
 - ✅ Cryptocurrency (4 functions) - CRYPTO_INTRADAY, DIGITAL_CURRENCY_DAILY, etc.
-- ✅ Commodities (10 functions) - WTI, BRENT, NATURAL_GAS, COPPER, WHEAT, etc.
-- ✅ Intelligence & Analytics (6 functions) - NEWS_SENTIMENT, TOP_GAINERS_LOSERS, INSIDER_TRANSACTIONS, etc.
-- ✅ Options Data (2 functions) - REALTIME_OPTIONS, HISTORICAL_OPTIONS
+- ✅ Commodities (13 functions) - WTI, BRENT, NATURAL_GAS, GOLD_SILVER_SPOT, WHEAT, etc.
+- ✅ Intelligence & Analytics (7 functions) - NEWS_SENTIMENT, TOP_GAINERS_LOSERS, INSTITUTIONAL_HOLDINGS, etc.
+- ✅ Options Data (6 functions) - REALTIME_OPTIONS, HISTORICAL_OPTIONS, put/call and volume/open-interest ratios
 
 See [specification/README.md](specification/README.md) for complete function list.
 
@@ -32,7 +33,7 @@ See [specification/README.md](specification/README.md) for complete function lis
 
 ### Code Generation Architecture
 - Specifications: `specification/functions/*.json` and `specification/query_parameters.json`
-- Generator: `cmd/generate/main.go` uses `go/ast` to generate code
+- Generator: `cmd/av-generate/main.go` uses `go/ast` to generate code
 - Generated files: `*.go` files in root package (time_series.go, fundamental.go, etc.)
 - CLI handlers: `cmd/av/functions.go`
 
@@ -133,10 +134,10 @@ specification/
 - **Client methods**: `time_series.go`, `fundamental.go`, `technical_*.go`, etc. (in root package)
 - **Query types**: Type-safe query builders for each API function
 - **Response structs**: CSV row types with `column-name` tags
-- **CLI handlers**: `cmd/av/functions.go` with all 92 commands
+- **CLI handlers**: `cmd/av/functions.go` with all 126 commands
 
 #### Code Generator
-- **Location**: `cmd/generate/main.go`
+- **Location**: `cmd/av-generate/main.go`
 - **Uses**: `go/ast` package to build Abstract Syntax Trees
 - **Output**: Formatted Go code with proper imports and documentation
 
@@ -177,7 +178,7 @@ rows, err := client.GetTimeSeriesDailyCSVRows(ctx, query)
 
 ### CLI Tool
 - **Function-based commands**: `av TIME_SERIES_DAILY --symbol=IBM`
-- **Coverage**: All 92 API functions available as commands
+- **Coverage**: All 126 API functions available as commands
 - **Generation**: Auto-generated from same specifications as Go client
 - **Authentication**: Uses `ALPHA_VANTAGE_TOKEN` environment variable
 
