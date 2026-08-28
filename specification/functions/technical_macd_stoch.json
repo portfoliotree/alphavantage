@@ -24,7 +24,7 @@
 			]
 		},
 		"examples": [
-			"https://www.alphavantage.co/query?function=MACD\u0026symbol=IBM\u0026interval=daily\u0026series_type=open\u0026apikey=demo"
+			"https://www.alphavantage.co/query?function=MACD&symbol=IBM&interval=daily&series_type=open&apikey=demo"
 		],
 		"csv_columns": [
 			{
@@ -73,7 +73,7 @@
 			]
 		},
 		"examples": [
-			"https://www.alphavantage.co/query?function=MACDEXT\u0026symbol=IBM\u0026interval=daily\u0026series_type=open\u0026apikey=demo"
+			"https://www.alphavantage.co/query?function=MACDEXT&symbol=IBM&interval=daily&series_type=open&apikey=demo"
 		],
 		"csv_columns": [
 			{
@@ -120,7 +120,7 @@
 			]
 		},
 		"examples": [
-			"https://www.alphavantage.co/query?function=STOCH\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+			"https://www.alphavantage.co/query?function=STOCH&symbol=IBM&interval=daily&apikey=demo"
 		],
 		"csv_columns": [
 			{
@@ -161,7 +161,7 @@
 			]
 		},
 		"examples": [
-			"https://www.alphavantage.co/query?function=STOCHF\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+			"https://www.alphavantage.co/query?function=STOCHF&symbol=IBM&interval=daily&apikey=demo"
 		],
 		"csv_columns": [
 			{
@@ -184,12 +184,12 @@
 			"function",
 			"symbol",
 			"interval",
+			"time_period",
 			"series_type",
 			"apikey"
 		],
 		"optional": [
 			"month",
-			"time_period",
 			"datatype",
 			"entitlement"
 		],
@@ -201,7 +201,7 @@
 			]
 		},
 		"examples": [
-			"https://www.alphavantage.co/query?function=RSI\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026series_type=open\u0026apikey=demo"
+			"https://www.alphavantage.co/query?function=RSI&symbol=IBM&interval=weekly&time_period=10&series_type=open&apikey=demo"
 		],
 		"csv_columns": [
 			{
@@ -220,12 +220,12 @@
 			"function",
 			"symbol",
 			"interval",
+			"time_period",
 			"series_type",
 			"apikey"
 		],
 		"optional": [
 			"month",
-			"time_period",
 			"fastkperiod",
 			"fastdperiod",
 			"fastdmatype",
@@ -240,7 +240,7 @@
 			]
 		},
 		"examples": [
-			"https://www.alphavantage.co/query?function=STOCHRSI\u0026symbol=IBM\u0026interval=daily\u0026time_period=10\u0026series_type=close\u0026fastkperiod=6\u0026fastdmatype=1\u0026apikey=demo"
+			"https://www.alphavantage.co/query?function=STOCHRSI&symbol=IBM&interval=daily&time_period=10&series_type=close&fastkperiod=6&fastdmatype=1&apikey=demo"
 		],
 		"csv_columns": [
 			{

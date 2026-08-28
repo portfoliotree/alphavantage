@@ -5,11 +5,11 @@
 			"function",
 			"symbol",
 			"interval",
+			"time_period",
 			"apikey"
 		],
 		"optional": [
 			"month",
-			"time_period",
 			"datatype",
 			"entitlement"
 		],
@@ -21,7 +21,7 @@
 			]
 		},
 		"examples": [
-			"https://www.alphavantage.co/query?function=MFI\u0026symbol=IBM\u0026interval=weekly\u0026time_period=10\u0026apikey=demo"
+			"https://www.alphavantage.co/query?function=MFI&symbol=IBM&interval=weekly&time_period=10&apikey=demo"
 		],
 		"csv_columns": [
 			{
@@ -40,12 +40,12 @@
 			"function",
 			"symbol",
 			"interval",
+			"time_period",
 			"series_type",
 			"apikey"
 		],
 		"optional": [
 			"month",
-			"time_period",
 			"datatype",
 			"entitlement"
 		],
@@ -57,7 +57,7 @@
 			]
 		},
 		"examples": [
-			"https://www.alphavantage.co/query?function=TRIX\u0026symbol=IBM\u0026interval=daily\u0026series_type=close\u0026time_period=10\u0026apikey=demo"
+			"https://www.alphavantage.co/query?function=TRIX&symbol=IBM&interval=daily&series_type=close&time_period=10&apikey=demo"
 		],
 		"csv_columns": [
 			{
@@ -91,7 +91,7 @@
 			]
 		},
 		"examples": [
-			"https://www.alphavantage.co/query?function=AD\u0026symbol=IBM\u0026interval=daily\u0026apikey=demo"
+			"https://www.alphavantage.co/query?function=AD&symbol=IBM&interval=daily&apikey=demo"
 		],
 		"csv_columns": [
 			{
@@ -127,7 +127,7 @@
 			]
 		},
 		"examples": [
-			"https://www.alphavantage.co/query?function=ADOSC\u0026symbol=IBM\u0026interval=daily\u0026fastperiod=5\u0026apikey=demo"
+			"https://www.alphavantage.co/query?function=ADOSC&symbol=IBM&interval=daily&fastperiod=5&apikey=demo"
 		],
 		"csv_columns": [
 			{
@@ -161,7 +161,7 @@
 			]
 		},
 		"examples": [
-			"https://www.alphavantage.co/query?function=OBV\u0026symbol=IBM\u0026interval=weekly\u0026apikey=demo"
+			"https://www.alphavantage.co/query?function=OBV&symbol=IBM&interval=weekly&apikey=demo"
 		],
 		"csv_columns": [
 			{
