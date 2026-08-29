@@ -2106,7 +2106,7 @@ func handleHistoricalOptions(client *alphavantage.Client, args []string, output 
 		query = query.Contract(contract)
 	}
 	if expiration != "" {
-		t, err := time.Parse("2006-01", expiration)
+		t, err := time.Parse("2006-01-02", expiration)
 		if err != nil {
 			return fmt.Errorf("invalid expiration format: %w", err)
 		}
@@ -2611,7 +2611,7 @@ func handleInsiderTransactions(client *alphavantage.Client, args []string, outpu
 	}
 	query := intelligence.QueryInsiderTransactions(client.APIKey, symbol)
 	if from != "" {
-		t, err := time.Parse("2006-01", from)
+		t, err := time.Parse("2006-01-02", from)
 		if err != nil {
 			return fmt.Errorf("invalid from format: %w", err)
 		}
@@ -3411,14 +3411,14 @@ func handleNewsSentiment(client *alphavantage.Client, args []string, output io.W
 		query = query.Topics(topics)
 	}
 	if timeFrom != "" {
-		t, err := time.Parse("2006-01", timeFrom)
+		t, err := time.Parse("20060102T1504", timeFrom)
 		if err != nil {
 			return fmt.Errorf("invalid time_from format: %w", err)
 		}
 		query = query.TimeFrom(t)
 	}
 	if timeTo != "" {
-		t, err := time.Parse("2006-01", timeTo)
+		t, err := time.Parse("20060102T1504", timeTo)
 		if err != nil {
 			return fmt.Errorf("invalid time_to format: %w", err)
 		}
@@ -3788,7 +3788,7 @@ func handleRealtimeOptions(client *alphavantage.Client, args []string, output io
 		query = query.Contract(contract)
 	}
 	if expiration != "" {
-		t, err := time.Parse("2006-01", expiration)
+		t, err := time.Parse("2006-01-02", expiration)
 		if err != nil {
 			return fmt.Errorf("invalid expiration format: %w", err)
 		}

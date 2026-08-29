@@ -944,9 +944,11 @@ func generateHandlerFunction(fn specification.Function, qt QuerierType, goIdenti
 		}
 
 		paramType := "string"
+		paramFormat := ""
 		for _, qp := range queryParams {
 			if qp.Name == paramName {
 				paramType = qp.Type
+				paramFormat = qp.Format
 				break
 			}
 		}
@@ -1010,7 +1012,7 @@ func generateHandlerFunction(fn specification.Function, qt QuerierType, goIdenti
 						&ast.CallExpr{
 							Fun: newSel("time", "Parse"),
 							Args: []ast.Expr{
-								stringBasicLiteral("2006-01"),
+								stringBasicLiteral(paramFormat),
 								ast.NewIdent(varName),
 							},
 						},
